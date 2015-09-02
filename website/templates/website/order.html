@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>ClickGarage.in - Your One Stop for All Car Solutions</title>
+
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/font-awesome.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/custom.css" %}" />
+    <link rel="stylesheet/less" type="text/css" href="{% static "less/styles.less" %}" />
+    <link rel="stylesheet/less" type="text/css" href="{% static "less/login-html.less" %}" />
+    <script type="text/javascript" src="{%  static "js/jquery-2.1.4.min.js" %}"></script>
+    <script type="text/javascript" src="{%  static "js/json2html.js" %}"></script>
+    <script type="text/javascript" src="{%  static "js/jquery.json2html.js" %}"></script>
+    <script type="text/javascript" src="{%  static "js/plugin.js" %}"></script>
+    <script type="text/javascript" src="{%  static "js/common.js" %}"></script>
+    <script type="text/javascript" src="{%  static "js/order.js" %}"></script>
+    <script src="{%  static "js/less.min.js" %}"></script>
+
+    {% load js %}
+    <script type="text/javascript">
+{#        {% if cars %}#}
+{#            <ul>#}
+{#            {% for car in cars %}#}
+{#                <li>{{ car.name }}</li>#}
+{#            {% endfor %}#}
+{#            </ul>#}
+{#        {% else %}#}
+{#            <p>No polls are available.</p>#}
+{#        {% endif %}#}
+        Global.carData = {{ cars | js}};
+        Global.carSelected = {{ carSelected | js}};
+    </script>
+{#    <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>#}
+{#    <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.5.1/less.min.js"></script>#}
+
+</head>
+<body class="order-body">
+    <div class="solid-header">
+        {% include "website/dash-header.html" %}
+    </div>
+    <div class="pane order-pane">
+        <div class="centered-content">
+            <div class="content-holder">
+                <div class="workflow-holder">
+                    <div class="marker-mover">
+                            <div class="marker"></div>
+                    </div>
+                    <div class="workflow-line">
+                        <div class="completion"></div>
+                        <div class="milestone mile0 completed"></div>
+                        <div class="milestone mile1"></div>
+                        <div class="milestone mile2"></div>
+                        <div class="milestone mile3"></div>
+                    </div>
+                </div>
+                <div class="selected-data-holder" id="selected-details">
+                    <div class="sel-car-holder">
+                        <div class="icon-holder">
+                        </div>
+                        <div class="detail-holder">
+                            <span class="c-make"></span>
+                            <span class="c-name"></span>
+                        </div>
+                        <div class="edit-btn"><i class="fa fa-pencil"></i><i class="label"> Edit</i></div>
+                    </div>
+                    <div class="sel-serv-holder" style="display: none;">
+
+                    </div>
+                </div>
+                <div class="section-select-holder">
+                    <div class="section-box">
+                        <div class="section-headers">
+                            <div class="section-menu-item" data-class="servicing"><div class="icon icon-servicing"></div><div class="icon-text">Servicing</div></div>
+                            <div class="section-menu-item" data-class="cleaning"><div class="icon icon-cleaning"></div><div class="icon-text">Cleaning</div></div>
+                            <div class="section-menu-item" data-class="tyres"><div class="icon icon-tyres"></div><div class="icon-text">Tyres</div></div>
+                            <div class="section-menu-item" data-class="emergency"><div class="icon icon-emergency"></div><div class="icon-text">Emergency</div></div>
+                            <div class="section-menu-item" data-class="others"><div class="icon icon-others"></div><div class="icon-text">Other Services</div></div>
+                        </div>
+                        <div class="section-listings">
+                            <div class="section-content-item servicing" data-class="servicing">servicing</div>
+                            <div class="section-content-item cleaning" data-class="cleaning">cleaning</div>
+                            <div class="section-content-item tyres" data-class="tyres">tyres</div>
+                            <div class="section-content-item emergency" data-class="emergency">emergency</div>
+                            <div class="section-content-item others" data-class="others">others</div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="dealer-select-holder" style="display:none;">
+                    <div class="selected-service-details">
+                    </div>
+                    <div class="dealer-box">
+                        <div class="dealer-headers">
+                            <div class="col-head th-dealer-select no-sort"></div>
+                            <div class="col-head th-price">Price</div>
+                            <div class="col-head th-rating">Rating</div>
+
+                            <div class="col-head th-info">Dealer</div>
+
+                        </div>
+                        <div class="dealer-listings">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="overlay overlay-pat"></div>
+
+    <div class="login-modal-container bootstrap-wrapper modal-container" style="display: none;">
+        {% include "website/login-popup.html" %}
+    </div>
+
+</body>
+</html>

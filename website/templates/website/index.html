@@ -1,0 +1,301 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>ClickGarage.in - Your One Stop for All Car Solutions</title>
+
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/font-awesome.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/custom.css" %}" />
+    <link rel="stylesheet/less" type="text/css" href="{% static "less/styles.less" %}" />
+    <link rel="stylesheet/less" type="text/css" href="{% static "less/login-html.less" %}" />
+    <script type="text/javascript" src="{%  static "js/jquery-2.1.4.min.js" %}"></script>
+    <script type="text/javascript" src="{%  static "js/plugin.js" %}"></script>
+    <script type="text/javascript" src="{%  static "js/home.js" %}"></script>
+    <script type="text/javascript" src="{%  static "js/common.js" %}"></script>
+    <script src="{%  static "js/less.min.js" %}"></script>
+
+    {% load js %}
+    <script type="text/javascript">
+{#        {% if cars %}#}
+{#            <ul>#}
+{#            {% for car in cars %}#}
+{#                <li>{{ car.name }}</li>#}
+{#            {% endfor %}#}
+{#            </ul>#}
+{#        {% else %}#}
+{#            <p>No polls are available.</p>#}
+{#        {% endif %}#}
+        Global.carData = {{ cars | js}};
+    </script>
+{#    <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>#}
+{#    <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.5.1/less.min.js"></script>#}
+
+</head>
+<body class="home-body">
+<div class="pane search-pane fit-width">
+    <div class="centered-content">
+        <div class="transparent-header">
+            {% include "website/home-header.html" %}
+        </div>
+        <div class="content-holder">
+            <div class="title-holder">
+                    <div class="title">
+                        Take the hassle out of car care
+                    </div>
+                    <div class="sub-title">
+                        Select your car to compare and book services
+                    </div>
+
+                </div>
+
+            <div class="search-set-holder" id="home-search-set-holder">
+                <div style="display: none;">
+   {% if user and not user.is_anonymous %}
+     <li>
+       <a>Hello {{ user.get_full_name|default:user.username }}!</a>
+     </li>
+     <li>
+       <a href="{% url 'auth:logout' %}?next={{ request.path }}">Logout</a>
+     </li>
+   {% else %}
+     <li>
+       <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">Login with Facebook</a>
+     </li>
+     <li>
+       <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">Login with Google</a>
+     </li>
+     <li>
+       <a href="{% url 'social:begin' 'twitter' %}?next={{ request.path }}">Login with Twitter</a>
+     </li>
+   {% endif %}
+                </div>
+                <form id="home-search-form" method="get" action="/order/" data-remote="true" accept-charset="UTF-8">
+                <div class="citybox-holder" id="home-citybox-holder">
+                    <input type="text" id="city-search-box" class="city-search-box" name="city" readonly="true" value="delhi">
+                    <i class="icon fa fa-caret-down"></i>
+                    <label for="city-search-box" class="city-drop-box" style="display: none;">
+{#                        <div class="drop-ttl">Dropdown</div>#}
+                        <ul>
+                            <li>delhi</li>
+                            <li>gurgaon</li>
+                        </ul>
+                    </label>
+                </div>
+                <div class="omnibox-holder" id="home-omnibox-holder">
+                    <input type="hidden" id="hidden-id-box" name="c_id" style="display: none;" />
+                    <input type="text" id="omni-search-box" class="omni-search-box" name="car_name" placeholder="Select Your Car">
+                    <i class="icon fa fa-search"></i>
+                    <label for="omni-search-box" class="omni-drop-box" style="display: none;">
+{#                        <div class="drop-ttl">Dropdown</div>#}
+                        <ul>
+                        </ul>
+                    </label>
+                </div>
+                <div class="submit-btn-holder orange-btn" id="home-submit-holder">
+                    <button class="form-submit-btn" type="submit">Get Started</button>
+                </div>
+                </form>
+            </div>
+            <div class="sub-text">
+                One Stop Shop &nbsp;<i class="fa fa-circle"></i>&nbsp;Doorstep Service&nbsp;<i class="fa fa-circle"></i>&nbsp;Instant Cost Estimate
+            </div>
+        </div>
+
+    </div>
+    <div class="move-next-row">
+        <div class="next-text">
+            Learn More
+        </div>
+            <div class="learn-more">
+
+            <span>
+                <i class="fa fa-angle-down fa-2x"></i>
+            </span>
+            </div>
+    </div>
+
+    <!--<div class="overlay overlay-color purple"></div>-->
+    <div class="overlay overlay-color black"></div>
+    <div class="overlay overlay-video">
+        <video autoplay loop poster="static/vid/website_loop_snapshot.png" id="bgvid" data-init="-230">
+            <source src="static/vid/website_loop.webm" type="video/webm">
+            <source src="static/vid/website_loop.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="overlay overlay-pat"></div>
+</div>
+<div class="pane steps-pane">
+    <div class="centered-content">
+        <div class="content-holder">
+            <div class="lined-box preview-box" id="preview-box">
+                <div class="wrapper">
+                    <div class="detail detail-point1" style="opacity: 1; display: block;">
+                        <div class="text-holder">
+                            <div class="big-text">
+                                Select your car and browse through our service catalogue.
+                            </div>
+                        </div>
+                        <div class="img-holder">
+                            <img src="../../static/img/pane-select.png" alt="#"/><span>.</span>
+                        </div>
+                    </div>
+                    <div class="detail detail-point2">
+                        <div class="text-holder">
+                            <div class="big-text">
+                                Select a service provider that suits your needs best and compare price estimates.
+                            </div>
+                        </div>
+                        <div class="img-holder">
+                            <img src="../../static/img/pane-compare.png" alt="#"/><span>.</span>
+                        </div>
+                    </div>
+                    <div class="detail detail-point3">
+                        <div class="text-holder">
+                            <div class="big-text">
+                                Book a slot based on your convenience. Our auto experts will get the work done so that you don’t have to waste your valuable time.
+                            </div>
+                        </div>
+                        <div class="img-holder">
+                            <img src="../../static/img/pane-relax.png" alt="#"/><span>.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="lined-box workflow-box" id="workflow-box">
+                <div class="pusher-wrapper">
+                    <div id="pusher">
+                    </div>
+                </div>
+                <div class="marker-holder">
+                    <div class="marker-line"></div>
+                    <div class="marker-point" id="point1"></div>
+                    <div class="marker-point" id="point2"></div>
+                    <div class="marker-point" id="point3"></div>
+                </div>
+                <div class="list-holder">
+                    <div class="text-holder" id="text1" data-id="point1">
+                        <div class="step-title">Tell us what you need</div>
+                        <div class="step-summary">Select your car and browse through our service catalogue.</div>
+                    </div>
+                    <div class="text-holder" id="text2" data-id="point2">
+                        <div class="step-title">Compare prices</div>
+                        <div class="step-summary">Select a service provider that suits your needs best and compare price estimates.</div>
+                    </div>
+                    <div class="text-holder" id="text3" data-id="point3">
+                        <div class="step-title">Book a time slot and relax</div>
+                        <div class="step-summary">Book a slot based on your convenience. Our auto experts will get the work done so that you don’t have to waste your valuable time.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="overlay overlay-pat"></div>
+</div>
+<div class="pane features-pane">
+    <div class="centered-content">
+        <div class="abouts-row">
+            <div class="text-holder">
+                Our goal is to ensure that never again will the depth of a pocket decide the kind of care a car deserves
+            </div>
+        </div>
+        <div class="feats-row">
+            <div class="feature-point">
+                <div class="feat-icon">
+                    <img src="../../static/img/icon-mech.png" alt=""/>
+{#                    <i class="fa fa-search"></i>#}
+                </div>
+                <div class="feat-text">
+                    <div class="title">ClickGarage Auto Experts</div>
+                    <div class="sub-title">We assign you a personal auto expert, who with an average experience of over X years, will make sure you pay for only what you need.</div>
+                </div>
+            </div>
+            <div class="feature-point">
+                <div class="feat-icon">
+                    <img src="../../static/img/icon-veri.png" alt=""/>
+{#                <i class="fa fa-mouse-pointer"></i>#}
+                </div>
+                <div class="feat-text">
+                    <div class="title">ClickGarage Workshops</div>
+                    <div class="sub-title">Our standardized garages that provide parts and services of quality which is at par with authorized service centres but at up to 30% lower price.</div>
+                </div>
+            </div>
+            <div class="feature-point">
+                <div class="feat-icon">
+                    <img src="../../static/img/icon-data.png" alt=""/>
+{#                    <i class="fa fa-opencart"></i>#}
+                </div>
+                <div class="feat-text">
+                    <div class="title">Personalized Estimates</div>
+                    <div class="sub-title">Make an informed choice using price estimates generated from our extensive data, carefully curated for your car needs.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="overlay overlay-pat"></div>
+    <!--<div class="overlay overlay-color black"></div>-->
+    <!--<div class="overlay overlay-image">-->
+        <!--<img src="../../static/img/about-bg.jpg" alt=""/>-->
+    <!--</div>-->
+
+</div>
+<div class="pane">
+    <div class="stats-pane">
+        <div class="centered-content">
+            <div class="content-holder">
+        <div class="stats-row">
+            <div class="stat-point">
+                <div class="sub-text">Service Partners on the platform :</div>
+                <div class="figure">80+</div>
+            </div>
+            <div class="stat-point">
+                <div class="sub-text">Models catered to by the system : </div>
+                <div class="figure">250+</div>
+            </div>
+        </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="footer-pane">
+        <div class="centered-content">
+            <div class="content-holder">
+                <div class="column">
+                    <ul>
+                        <lh> Click Garage </lh>
+                        <li>About Us</li>
+                        <li>Cities we are in</li>
+                        <li>Careers</li>
+                        <li>News & Blog</li>
+                        <li>Feedback</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <ul>
+                        <lh> Legal </lh>
+                        <li>Terms & Conditions</li>
+                        <li>Cancellations & Refund</li>
+                        <li>Privacy Policy</li>
+                    </ul>
+                </div>
+                <div class="column"></div>
+                <div class="column"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="login-modal-container bootstrap-wrapper modal-container" style="display: none;">
+    {% include "website/login-popup.html" %}
+</div>
+<div style="display: none;">
+{% if cars %}
+    <ul>
+    {% for car in cars %}
+        <li>{{ car.name }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No cars are available.</p>
+{% endif %}
+</div>
+</body>
+</html>

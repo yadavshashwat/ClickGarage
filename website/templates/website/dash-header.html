@@ -1,0 +1,14 @@
+<div class="header">
+    <div class="left-items-holder fl">
+        <div class="menu-logo"></div>
+    </div>
+    <div class="right-items-holder fr">
+        <div class="menu-item fl"> <i class="fa fa-shopping-cart"></i> Cart</div>
+        <div class="menu-item fl">Contact Us</div>
+        {% if user and not user.is_anonymous %}
+            <div class="menu-item fl" id="settings-drpdwn">Hi, {{ user.first_name }} &nbsp; <i class="fa fa-caret-down"></i></div>
+        {% else %}
+            <div class="menu-btn fl" id="sign-up-in-dash">Sign Up/Login</div>
+        {% endif %}
+    </div>
+</div>
