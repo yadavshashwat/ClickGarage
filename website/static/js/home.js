@@ -160,6 +160,7 @@ var Global = {
             var cls = $(this).attr('id');
             DisplayPoint(cls);
             $(this).closest('.workflow-box').find('#pusher').removeClass().addClass(cls);
+            e.stopPropagation();
         });
         $('.workflow-box .text-holder').on('click', function(e){
             if(e.screenX && e.screenX != 0 && e.screenY && e.screenY != 0){
