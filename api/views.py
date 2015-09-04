@@ -9,6 +9,7 @@ import operator
 import json
 
 from models import *
+from dataEntry.runentry import carMakers, cleanstring
 
 
 #login views
@@ -757,6 +758,39 @@ def fetch_car_tyres(request):
 
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+def addItemToCart(request):
+    obj = {}
+    aspect = None
+    obj['status'] = False
+    obj['result'] =[]
+
+    obj['counter'] = 1
+    obj['status'] = True
+    obj['msg'] = "Success"
+
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+def getCarObjFromName(carNameArray):
+    res = []
+    for carCompoundName in carNameArray:
+         carCompoundName = cleanstring(carCompoundName)
+         make = carCompoundName.split(' ')[0]
+         name_model = ''
+         if make not in carMakers:
+             make = ''
+             name_model = carCompoundName
+         else:
+             name_model = carCompoundName.split(' ', 1)[1]
+
+         # print name_model
+         findCar = Car.objects.filter(name=name_model, make=make)
+         if len(findCar):
+            carObj = findCar[0]
+            result = {'name':carObj.name, 'make':carObj.make, 'aspect_ratio':carObj.aspect_ratio, 'size':carObj.size,'id':carObj.id}
+            res.append(result)
+
+    return res
 
 #add views before this
 #below has to be the last view - i have spoken
@@ -800,6 +834,7 @@ def fetch_car_autocomplete(request):
             #     obj['result'] = obj['result'] + match[1]
         obj['status'] = True
 
+    obj['result'] = getCarObjFromName(obj['result'])
     obj['counter'] = 1
     obj['msg'] = "Success"
 
