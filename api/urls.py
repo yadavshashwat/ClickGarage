@@ -8,9 +8,26 @@ from django.conf.urls import include, url
 urlpatterns = [
     url(r'fetch_all_cars/$','api.views.fetch_all_cars',name='fetch_all_cars'),
     url(r'fetch_car/$','api.views.fetch_car',name='fetch_car'),
+
     url(r'fetch_car_autocomplete/$','api.views.fetch_car_autocomplete',name='fetch_car_autocomplete'),
-    url(r'fetch_car_services/$','api.views.fetch_car_services',name='fetch_car_services'),
-    url(r'fetch_car_servicedetails/$','api.views.fetch_car_servicedetails',name='fetch_car_servicedetails'),
+
+    #car_<servicename>, <servicename>_details
+    # params : c_id,
+    url(r'fetch_car_servicing/$','api.views.fetch_car_services',name='fetch_car_services'),
+    # params : service_id
+    url(r'fetch_servicing_details/$','api.views.fetch_car_servicedetails',name='fetch_car_servicedetails'),
+    # params : none
+    url(r'fetch_car_cleaning/$','api.views.fetch_car_cleaning',name='fetch_car_cleaning'),
+    # params : service_id, c_id
+    url(r'fetch_cleaning_details/$','api.views.fetch_clean_catservice',name='fetch_clean_catservice'),
+    # params : none
+    url(r'fetch_car_vas/$','api.views.fetch_car_vas',name='fetch_car_vas'),
+    # params : service_id, c_id
+    url(r'fetch_vas_details/$','api.views.fetch_vas_catservice',name='fetch_vas_catservice'),
+    # params : c_id
+    url(r'fetch_car_windshield/$','api.views.fetch_car_services',name='fetch_car_services'),
+    # params : service_id
+    url(r'fetch_windshield_details/$','api.views.fetch_car_servicedetails',name='fetch_car_servicedetails'),
     # url(r'fetch_car_servicedealercat/$','api.views.fetch_car_servicedealercat',name='fetch_car_servicedealercat'),
 	
     url(r'fetch_all_cleaningdealer/$','api.views.fetch_all_cleaningdealer',name='fetch_all_cleaningdealer'),
