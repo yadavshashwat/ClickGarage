@@ -175,6 +175,58 @@ def fetch_car_servicedetails(request):
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+def fetch_car_cleaning(request):
+    dealers = fetch_all_cleaningdealer(request, False)
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    if dealers['result'] and len(dealers['result']):
+        obj['status'] = True
+        for dealer in dealers['result']:
+            print dealer
+            CleanCatObjs = CleaningServiceCat.objects.filter(vendor = dealer['Name'])
+            oneObj = {
+                'name':dealer['Name'],
+                'list':[]
+                                 }
+            for service in CleanCatObjs:
+                oneObj['list'].append({
+                        'id':service.id
+                      ,'Name':service.vendor
+                      ,'Category':service.category
+                      ,'Description':service.description
+                })
+            obj['result'].append(oneObj)
+
+
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def fetch_car_vas(request):
+    dealers = fetch_all_vasdealer(request, False)
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    if dealers['result'] and len(dealers['result']):
+        obj['status'] = True
+        for dealer in dealers['result']:
+            # print dealer
+            VASCatObjs = VASServiceCat.objects.filter(vendor = dealer['Name'])
+            # CleanCatObjs = CleaningServiceCat.objects.filter(vendor = dealer['Name'])
+            oneObj = {
+                'name':dealer['Name'],
+                'list':[]
+                                 }
+            for service in VASCatObjs:
+                oneObj['list'].append({
+                        'id':service.id
+                          ,'Name':service.vendor
+                          ,'Category':service.category
+                          ,'Description':service.description
+                })
+            obj['result'].append(oneObj)
+
+
+    return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
 def fetch_all_services(request):
@@ -252,7 +304,7 @@ def fetch_all_servicedealername(request):
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
-def fetch_all_cleaningdealer(request):
+def fetch_all_cleaningdealer(request, HTTPFlag = True):
     obj = {}
     result = []
     allDealerCat = CleaningDealerName.objects.all()
@@ -265,8 +317,12 @@ def fetch_all_cleaningdealer(request):
     obj['counter'] = 1
     obj['status'] = True
     obj['msg'] = "Success"
-    return HttpResponse(json.dumps(obj), content_type='application/json')
 
+
+    if(HTTPFlag):
+        return HttpResponse(json.dumps(obj), content_type='application/json')
+    else:
+        return obj
 
 
 def fetch_dealer_cleancat(request):
@@ -300,7 +356,7 @@ def fetch_dealer_cleancat(request):
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 def fetch_clean_catservice(request):
-    catg_id = get_param(request, 'cat_id', None)
+    catg_id = get_param(request, 'service_id', None)
     car_id = get_param(request,'c_id',None)
     obj = {}
     obj['status'] = False
@@ -308,6 +364,8 @@ def fetch_clean_catservice(request):
     car = None
     make = None
     odo = None
+    vendor = None
+    size = None
 
     if car_id:
         carObj = Car.objects.filter(id=car_id)
@@ -390,7 +448,7 @@ def fetch_all_cleaningcatservices(request):
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
-def fetch_all_vasdealer(request):
+def fetch_all_vasdealer(request, HTTPFlag=True):
     obj = {}
     result = []
     allDealerCat = VASDealerName.objects.all()
@@ -403,8 +461,10 @@ def fetch_all_vasdealer(request):
     obj['counter'] = 1
     obj['status'] = True
     obj['msg'] = "Success"
-    return HttpResponse(json.dumps(obj), content_type='application/json')
-
+    if HTTPFlag:
+        return HttpResponse(json.dumps(obj), content_type='application/json')
+    else:
+        return obj
 
 
 def fetch_dealer_vascat(request):
@@ -438,7 +498,7 @@ def fetch_dealer_vascat(request):
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 def fetch_vas_catservice(request):
-    catg_id = get_param(request, 'cat_id', None)
+    catg_id = get_param(request, 'service_id', None)
     car_id = get_param(request,'c_id',None)
     obj = {}
     obj['status'] = False
@@ -446,6 +506,7 @@ def fetch_vas_catservice(request):
     car = None
     make = None
     odo = None
+    vendor = None
 
     if car_id:
         carObj = Car.objects.filter(id=car_id)
