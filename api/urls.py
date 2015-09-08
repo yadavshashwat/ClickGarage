@@ -11,6 +11,10 @@ urlpatterns = [
     url(r'fetch_car_autocomplete/$','api.views.fetch_car_autocomplete',name='fetch_car_autocomplete'),
     url(r'fetch_car_services/$','api.views.fetch_car_services',name='fetch_car_services'),
     url(r'fetch_car_servicedetails/$','api.views.fetch_car_servicedetails',name='fetch_car_servicedetails'),
+    url(r'fetch_car_cleaning/$','api.views.fetch_clean_catservice',name='fetch_clean_catservice'),
+    url(r'fetch_car_cleaningdetails/$','api.views.fetch_car_servicedetails',name='fetch_car_servicedetails'),
+    url(r'fetch_car_cleaning/$','api.views.fetch_car_services',name='fetch_car_services'),
+    url(r'fetch_car_cleaningdetails/$','api.views.fetch_car_servicedetails',name='fetch_car_servicedetails'),
     # url(r'fetch_car_servicedealercat/$','api.views.fetch_car_servicedealercat',name='fetch_car_servicedealercat'),
 	
     url(r'fetch_all_cleaningdealer/$','api.views.fetch_all_cleaningdealer',name='fetch_all_cleaningdealer'),
