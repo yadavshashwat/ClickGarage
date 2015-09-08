@@ -40,7 +40,7 @@ var Global = {
                 if(mine.hasClass('loaded')){
 
                 }else{
-                    Commons.ajaxData('fetch_car_services', {c_id:_this.carSelected.id},"get",_this,_this.loadServices)
+                    Commons.ajaxData('fetch_car_'+classy, {c_id:_this.carSelected.id},"get",_this,_this.loadServices)
                 }
             }
 //            var stateObj = { foo: "bar" };
@@ -48,13 +48,13 @@ var Global = {
         $('.section-box .section-content-item').on('click', '.service-list-item', function(e){
             var classy = $(this).closest('.section-content-item').attr('data-class');
             var s_id = $(this).attr('data-id');
-            if(classy == 'servicing'){
+            if(classy == 'servicing' || classy == 'cleaning' || classy == 'vas'){
                 var data = {};
                 data.state = 'dealer';
                 workflowState.pushToHistory(data.state, data, '#'+data.state+'?s_id'+s_id);
                 workflowState.setWorkflow(data.state, data, '#'+data.state+'?s_id'+s_id);
                 workflowState.workflowBarUpdate(data.state);
-                Commons.ajaxData('fetch_service_details', {service_id:s_id},"get",_this,_this.loadServiceDetails)
+                Commons.ajaxData('fetch_servicing_details', {service_id:s_id, c_id:_this.carSelected.id},"get",_this,_this.loadServiceDetails)
             }
         });
     },

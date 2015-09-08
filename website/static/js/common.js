@@ -32,8 +32,14 @@ var Commons = {
     },
     URLFromName : {
         'fetch_all_cars':'/api/fetch_all_cars/',
-        'fetch_car_services':'/api/fetch_car_services/',
-        'fetch_service_details':'/api/fetch_car_servicedetails/'
+        'fetch_car_servicing':'/api/fetch_car_servicing/',
+        'fetch_servicing_details':'/api/fetch_servicing_details/',
+        'fetch_car_cleaning':'/api/fetch_car_cleaning/',
+        'fetch_cleaning_details':'/api/fetch_cleaning_details/',
+        'fetch_car_vas':'/api/fetch_car_vas/',
+        'fetch_vas_details':'/api/fetch_vas_details/',
+        'fetch_car_cleanings':'/api/fetch_all_cleaningcatservices/',
+        'fetch_car_tyres':'/api/fetch_all_cleaningcatservices/'
     },
     getOrigin: function(){
         var origin = window.location.origin;
@@ -179,7 +185,6 @@ var Templates = {
                     {"tag":"div", "html":"${parts_price}"}
                 ]},
                 {"tag":"div","class":"col-item td-rating", "html":""}
-
             ]
         }]
     }
