@@ -317,7 +317,7 @@ def exportPartsList():
         findDealer = ServiceDealerCat.objects.filter(brand = service.brand, carname=service.carname, odometer=service.odometer)
         if len(findDealer):
             findDealer = findDealer[0]
-            print findDealer.part_replacement
+            #print findDealer.part_replacement
             if findDealer.part_replacement == []:
                 findDealer.part_replacement = ["No part replaced"]
                 findDealer.save()
