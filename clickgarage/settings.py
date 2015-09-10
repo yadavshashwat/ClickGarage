@@ -16,7 +16,9 @@ import os
 
 #connect('my_database', host='127.0.0.1', port=27017)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+# PROJECT_PATH = os.path.normpath(os.path.join(BASE_DIR, '..', '..'))
+PROJECT_PATH = os.path.normpath(os.path.join(BASE_DIR, '..'))
+WEBSITE_PATH = os.path.join(PROJECT_PATH, 'website')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -60,12 +62,15 @@ MIDDLEWARE_CLASSES = (
 )
 
 
-STATIC_URL = BASE_DIR + '/website/static/'
+# STATIC_URL = BASE_DIR + '/website/static/'
+STATIC_URL = WEBSITE_PATH + '/static/'
 
+print "static = ", STATIC_URL
 ROOT_URLCONF = 'clickgarage.urls'
 
 print BASE_DIR
-MEDIA_ROOT = BASE_DIR + 'static/'
+# MEDIA_ROOT = BASE_DIR + 'static/'
+MEDIA_ROOT = WEBSITE_PATH + 'static/'
 
 #def APP_MEDIA_ROOT(appName):
 #    arrDir = MEDIA_ROOT.split('/')
@@ -73,18 +78,20 @@ MEDIA_ROOT = BASE_DIR + 'static/'
 #    appMediaDir = os.path.join('/'.join(arrDir), 'media')
 #    return appMediaDir
 
-def TEMPLATES_ROOT(appName):
-    return os.path.join(BASE_DIR, appName, 'templates')
+# def TEMPLATES_ROOT(appName):
+#     return os.path.join(BASE_DIR, appName, 'templates')
 
 print os.path.join(BASE_DIR, 'website','templates')
+print os.path.join(WEBSITE_PATH,'templates')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(BASE_DIR, 'dataEntry', 'templates'),
-            os.path.join(BASE_DIR, 'website', 'templates'),
-        ],
-        'APP_DIRS': True,
+        # 'DIRS': [
+        #     os.path.join(BASE_DIR, 'dataEntry', 'templates'),
+        #     os.path.join(BASE_DIR, 'website', 'templates'),
+        #     os.path.join(WEBSITE_PATH, 'templates'),
+        # ],
+        'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -97,6 +104,20 @@ TEMPLATES = [
         },
     },
 ]
+# TEMPLATE_LOADERS = (
+#     'django.template.loaders.filesystem.load_template_source',
+#     'django.template.loaders.app_directories.load_template_source'
+# )
+STATICFILES_DIRS = ( os.path.join(WEBSITE_PATH,'static'), )
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
+TEMPLATE_DIRS = (
+    os.path.join(WEBSITE_PATH,'templates')
+)
+
+print STATIC_URL
 
 WSGI_APPLICATION = 'clickgarage.wsgi.application'
 
