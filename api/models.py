@@ -141,6 +141,8 @@ class WindShieldServiceDetails(models.Model):
     price_sealant   = models.CharField(max_length=50)
     price_labour    = models.CharField(max_length=50)
     price_insurance = models.CharField(max_length=50)
+    price_total     = models.CharField(max_length=50)
+    city            = models.CharField(max_length=50)
     description     = models.CharField(max_length=50)
     rating          = ListField(models.CharField(max_length=50))
     reviews         = ListField(models.CharField(max_length=500))

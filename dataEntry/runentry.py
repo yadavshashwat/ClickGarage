@@ -167,10 +167,11 @@ def loadWindShielddata(fileName):
             price_ws        = cleanstring(ws[5]) 
             price_sealant   = cleanstring(ws[6]) 
             price_labour    = cleanstring(ws[7]) 
-            price_insurance = cleanstring(ws[8])    
-            description     = cleanstring(ws[9]) 
+            price_insurance = cleanstring(ws[8]) 
+            price_total     = cleanstring(ws[9])    
+            city            = cleanstring(ws[10]) 
 
-            findWS = WindShieldServiceDetails.objects.filter(vendor = vendor, brand = brand, carname=carname, ws_type = ws_type, ws_subtype = ws_subtype)
+            findWS = WindShieldServiceDetails.objects.filter(vendor = vendor, brand = brand, carname=carname, ws_type = ws_type, ws_subtype = ws_subtype, city=city)
             if len(findWS):
                 findWS= findWS[0]
                 findWS.vendor        = vendor        
@@ -181,8 +182,9 @@ def loadWindShielddata(fileName):
                 findWS.price_ws      = price_ws      
                 findWS.price_sealant = price_sealant 
                 findWS.price_labour  = price_labour  
-                findWS.price_insurance   = price_insurance    
-                findWS.description   = description   
+                findWS.price_insurance   = price_insurance 
+                findWS.price_total = price_total
+                findWS.city     = city   
             else:    
                 cc = WindShieldServiceDetails(vendor        = vendor      
                                             ,brand         = brand       
@@ -193,7 +195,8 @@ def loadWindShielddata(fileName):
                                             ,price_sealant = price_sealant
                                             ,price_labour  = price_labour
                                             ,price_insurance   = price_insurance 
-                                            ,description   = description )
+                                            ,price_total = price_total
+                                            ,city=city )
                 cc.save()
     exportWindShieldCat()
 
@@ -317,7 +320,7 @@ def exportPartsList():
         findDealer = ServiceDealerCat.objects.filter(brand = service.brand, carname=service.carname, odometer=service.odometer)
         if len(findDealer):
             findDealer = findDealer[0]
-            print findDealer.part_replacement
+            #print findDealer.part_replacement
             if findDealer.part_replacement == []:
                 findDealer.part_replacement = ["No part replaced"]
                 findDealer.save()

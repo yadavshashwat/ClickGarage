@@ -616,6 +616,7 @@ def fetch_car_windshieldservices(request):
 
 def fetch_car_windshieldcatdetails(request):
     catg_id = get_param(request, 'cat_id', None)
+    city = get_param(request,'city_id',None)
     obj = {}
     obj['status'] = False
     obj['result'] = []
@@ -636,7 +637,7 @@ def fetch_car_windshieldcatdetails(request):
 
 
     if ws_type:
-        wsTypeObjs = WindShieldServiceDetails.objects.filter(vendor = vendor, ws_type = ws_type, carname = carname, brand=brand)
+        wsTypeObjs = WindShieldServiceDetails.objects.filter(city=city,vendor = vendor, ws_type = ws_type, carname = carname, brand=brand)
         for service in wsTypeObjs:
             obj['result'].append({'id':service.id
                                     ,'vendor         ':service.vendor           
@@ -647,7 +648,9 @@ def fetch_car_windshieldcatdetails(request):
                                     ,'price_ws       ':service.price_ws         
                                     ,'price_sealant  ':service.price_sealant    
                                     ,'price_labour   ':service.price_labour     
-                                    ,'price_insurance':service.price_insurance  
+                                    ,'price_insurance':service.price_insurance 
+                                    ,'price_total'    :service.price_total
+                                    ,'city'           :service.city
                                     ,'description    ':service.description      
                                     ,'rating         ':service.rating           
                                     ,'reviews        ':service.reviews                           
