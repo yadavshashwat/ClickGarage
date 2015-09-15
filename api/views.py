@@ -4,6 +4,10 @@ from django.shortcuts import render_to_response, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.db import models
+import datetime
+
+
 
 import operator
 import json
@@ -835,6 +839,9 @@ def addItemToCart(request):
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
+
+
+
 def getCarObjFromName(carNameArray):
     res = []
     for carCompoundName in carNameArray:
@@ -908,3 +915,59 @@ def fetch_car_autocomplete(request):
 #run this just once if possible
 
 carTrieObj = trie(carsTrie)
+
+def insert_tran(request):
+    cust_id         = get_param(request,'cust_id',None)   
+    trans_timestamp = datetime.datetime.now()
+    cust_name       = get_param(request,'cust_name',None)   
+    cust_brand      = get_param(request,'cust_brand',None)   
+    cust_carname    = get_param(request,'cust_carname',None)   
+    cust_number     = get_param(request,'cust_number',None)   
+    cust_email      = get_param(request,'cust_email',None)   
+    cust_pickup_add = get_param(request,'cust_pickup_add',None)   
+    cust_drop_add   = get_param(request,'cust_drop_add',None)   
+    booking_vendor  = get_param(request,'booking_vendor',None)   
+    booking_cat     = get_param(request,'booking_cat',None)   
+    booking_type    = get_param(request,'booking_type',None)   
+    price_labour    = get_param(request,'price_labour',None)   
+    price_parts     = get_param(request,'price_parts',None)   
+    price_total     = get_param(request,'price_total',None)   
+    date_booking    = get_param(request,'date_booking',None)   
+    time_booking    = get_param(request,'time_booking',None)   
+    amount_paid     = get_param(request,'amount_paid',None)   
+    status          = get_param(request,'status',None)   
+    comments        = get_param(request,'comments',None)   
+
+    tran_len = len(Transaction.objects.all())
+    if tran_len > 0:
+        tran = Transaction.objects.all().aggregate(Max('booking_id'))
+        booking_id = tran['booking_id'] + 1
+    else:
+        booking_id = 1
+    cc = ServiceDealerCat(
+        booking_id       = booking_id
+        ,trans_timestamp = trans_timestamp
+        ,cust_id         = cust_id
+        ,cust_name       = cust_name       
+        ,cust_brand      = cust_brand      
+        ,cust_carname    = cust_carname    
+        ,cust_number     = cust_number     
+        ,cust_email      = cust_email      
+        ,cust_pickup_add = cust_pickup_add 
+        ,cust_drop_add   = cust_drop_add   
+        ,booking_vendor  = booking_vendor  
+        ,booking_cat     = booking_cat     
+        ,booking_type    = booking_type    
+        ,price_labour    = price_labour    
+        ,price_parts     = price_parts     
+        ,price_total     = price_total     
+        ,date_booking    = date_booking    
+        ,time_booking    = time_booking    
+        ,amount_paid     = amount_paid     
+        ,status          = status          
+        ,comments        = comments )   
+
+
+
+
+
