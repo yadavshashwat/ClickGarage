@@ -125,8 +125,8 @@ def fetch_car_services(request):
                         ,'Odometer':service.odometer         
                         ,'Year':service.year             
                         ,'Regular Checks':service.regular_checks   
-                        ,'Paid/ Free':service.paid_free        
-                        ,'Parts Replaced ':service.part_replacement 
+                        ,'Paid-Free':service.paid_free
+                        ,'Parts Replaced':service.part_replacement
                         ,'Dealers list':service.dealer} )
             
             
@@ -242,7 +242,7 @@ def fetch_all_services(request):
                         ,'Odometer Reading' : service.odometer               
                         ,'Time Reading' : service.year                   
                         ,'Checks done' : service.regular_checks                    
-                        ,'Paid/ Free' : service.paid_free              
+                        ,'Paid-Free' : service.paid_free
                         ,'Parts Replaced' : service.part_replacement       
                         ,'Dealer Category' : service.dealer} )
 
@@ -272,9 +272,9 @@ def fetch_all_servicedealercat(request):
                         ,'Labour Price':service.price_labour        
                         ,'Wheel Alignment price':service.wheel_alignment     
                         ,'Wheel Balancing Price':service.wheel_balancing     
-                        ,'WA/ WB?':service.WA_WB_Inc           
+                        ,'WA-WB':service.WA_WB_Inc
                         ,'Dealer Details':service.detail_dealers
-                        ,'Paid/ Free?':service.paid_free      
+                        ,'Paid-Free':service.paid_free
                         ,'RegularChecks':service.regular_checks       
                         } )
     obj['result'] = result
