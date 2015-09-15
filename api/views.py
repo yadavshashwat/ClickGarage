@@ -123,15 +123,15 @@ def fetch_car_services(request):
                 for service in ServiceObjs:
                     obj['result'].append({
                         'id':service.id
-                        ,'Name':service.name             
-                        ,'Brand':service.brand            
-                        ,'Car Name':service.carname          
-                        ,'Odometer':service.odometer         
-                        ,'Year':service.year             
-                        ,'Regular Checks':service.regular_checks   
-                        ,'Paid/ Free':service.paid_free        
-                        ,'Parts Replaced ':service.part_replacement 
-                        ,'Dealers list':service.dealer} )
+                        ,'name':service.name             
+                        ,'brand':service.brand            
+                        ,'car_name':service.carname          
+                        ,'odometer':service.odometer         
+                        ,'year':service.year             
+                        ,'regular_checks':service.regular_checks   
+                        ,'paid_free':service.paid_free        
+                        ,'parts_replaced ':service.part_replacement 
+                        ,'dealers_list':service.dealer} )
             
             
     obj['status'] = True
@@ -196,9 +196,9 @@ def fetch_car_cleaning(request):
             for service in CleanCatObjs:
                 oneObj['list'].append({
                         'id':service.id
-                      ,'Name':service.vendor
-                      ,'Category':service.category
-                      ,'Description':service.description
+                      ,'name':service.vendor
+                      ,'category':service.category
+                      ,'description':service.description
                 })
             obj['result'].append(oneObj)
 
@@ -223,9 +223,9 @@ def fetch_car_vas(request):
             for service in VASCatObjs:
                 oneObj['list'].append({
                         'id':service.id
-                          ,'Name':service.vendor
-                          ,'Category':service.category
-                          ,'Description':service.description
+                          ,'name':service.vendor
+                          ,'category':service.category
+                          ,'description':service.description
                 })
             obj['result'].append(oneObj)
 
@@ -240,15 +240,15 @@ def fetch_all_services(request):
     allServices = Servicing.objects.order_by('odometer')
     for service in allServices:
         result.append({'id':service.id,
-                        'Name' : service.name  
-                        ,'Brand' : service.brand     
-                        ,'Car Name' : service.carname                   
-                        ,'Odometer Reading' : service.odometer               
-                        ,'Time Reading' : service.year                   
-                        ,'Checks done' : service.regular_checks                    
-                        ,'Paid/ Free' : service.paid_free              
-                        ,'Parts Replaced' : service.part_replacement       
-                        ,'Dealer Category' : service.dealer} )
+                        'name' : service.name  
+                        ,'brand' : service.brand     
+                        ,'car_name' : service.carname                   
+                        ,'odometer_reading' : service.odometer               
+                        ,'time_reading' : service.year                   
+                        ,'checks_done' : service.regular_checks                    
+                        ,'paid_free' : service.paid_free              
+                        ,'parts_replaced' : service.part_replacement       
+                        ,'dealer_category' : service.dealer} )
 
     obj['result'] = result
     obj['counter'] = 1
@@ -265,21 +265,21 @@ def fetch_all_servicedealercat(request):
     for service in allDealerCat:
 
         result.append({ 'id':service.id
-                        ,'Name':service.name                
-                        ,'Brand Name':service.brand               
-                        ,'Car Name':service.carname             
-                        ,'Odometer':service.odometer
+                        ,'name':service.name                
+                        ,'brand_name':service.brand               
+                        ,'car_name':service.carname             
+                        ,'odometer':service.odometer
                         ,'year':service.year           
-                        ,'Dealer Category':service.dealer_category     
-                        ,'Parts Replaced':service.part_replacement    
-                        ,'Parts Price':service.price_parts         
-                        ,'Labour Price':service.price_labour        
-                        ,'Wheel Alignment price':service.wheel_alignment     
-                        ,'Wheel Balancing Price':service.wheel_balancing     
-                        ,'WA/ WB?':service.WA_WB_Inc           
-                        ,'Dealer Details':service.detail_dealers
-                        ,'Paid/ Free?':service.paid_free      
-                        ,'RegularChecks':service.regular_checks       
+                        ,'dealer_category':service.dealer_category     
+                        ,'parts_replaced':service.part_replacement    
+                        ,'parts_price':service.price_parts         
+                        ,'labour_price':service.price_labour        
+                        ,'wheel_alignment_price':service.wheel_alignment     
+                        ,'wheel_balancing_price':service.wheel_balancing     
+                        ,'WA_WB?':service.WA_WB_Inc           
+                        ,'dealer_details':service.detail_dealers
+                        ,'paid_free?':service.paid_free      
+                        ,'regular_checks':service.regular_checks       
                         } )
     obj['result'] = result
     obj['counter'] = 1
@@ -294,13 +294,13 @@ def fetch_all_servicedealername(request):
     for service in allDealerCat:
 
         result.append({'id':service.id, 'Name':service.name           
-                        ,'Make':service.make           
-                        ,'Dealer Category':service.dealer_category
-                        ,'Address':service.address        
-                        ,'Phone':service.phone          
-                        ,'Timing':service.timing         
-                        ,'Rating':service.rating         
-                        ,'Reviews':service.reviews        } )
+                        ,'make':service.make           
+                        ,'dealer_category':service.dealer_category
+                        ,'address':service.address        
+                        ,'phone':service.phone          
+                        ,'timing':service.timing         
+                        ,'rating':service.rating         
+                        ,'reviews':service.reviews        } )
     obj['result'] = result
     obj['counter'] = 1
     obj['status'] = True
@@ -314,9 +314,9 @@ def fetch_all_cleaningdealer(request, HTTPFlag = True):
     allDealerCat = CleaningDealerName.objects.all()
     for service in allDealerCat:
 
-        result.append({'id':service.id, 'Name':service.vendor           
-                        ,'Rating':service.rating           
-                        ,'Description':service.description} )
+        result.append({'id':service.id, 'name':service.vendor           
+                        ,'rating':service.rating           
+                        ,'description':service.description} )
     obj['result'] = result
     obj['counter'] = 1
     obj['status'] = True
@@ -349,9 +349,9 @@ def fetch_dealer_cleancat(request):
                 for service in CleanCatObjs:
                     obj['result'].append({
                         'id':service.id
-                          ,'Name':service.vendor  
-                          ,'Category':service.category             
-                          ,'Description':service.description               
+                          ,'name':service.vendor  
+                          ,'category':service.category             
+                          ,'description':service.description               
                               } )
                       
     obj['status'] = True
@@ -398,12 +398,12 @@ def fetch_clean_catservice(request):
                         ,'category':service.category        
                         ,'car_cat':service.car_cat         
                         ,'service':service.service         
-                        ,'Price Labour':service.price_labour    
-                        ,'Price Parts':service.price_parts     
-                        ,'Total Price':service.price_total     
-                        ,'Description':service.description     
-                        ,'Rating':service.rating          
-                        ,'Reviews':service.reviews                        
+                        ,'price_abour':service.price_labour    
+                        ,'price_parts':service.price_parts     
+                        ,'total_price':service.price_total     
+                        ,'description':service.description     
+                        ,'rating':service.rating          
+                        ,'reviews':service.reviews                        
                               } )
                       
     obj['status'] = True
@@ -420,9 +420,9 @@ def fetch_all_cleaningcat(request):
     allDealerCat = CleaningServiceCat.objects.all()
     for service in allDealerCat:
 
-        result.append({'id':service.id, 'Name':service.vendor           
-                        ,'Category':service.category          
-                        ,'Description':service.description} )
+        result.append({'id':service.id, 'name':service.vendor           
+                        ,'category':service.category          
+                        ,'description':service.description} )
     obj['result'] = result
     obj['counter'] = 1
     obj['status'] = True
@@ -436,16 +436,16 @@ def fetch_all_cleaningcatservices(request):
     for service in allDealerCat:
 
         result.append({'id':service.id
-            ,'Name':service.vendor         
-            ,'Category':service.category       
+            ,'name':service.vendor         
+            ,'category':service.category       
             ,'car_cat':service.car_cat        
-            ,'Service':service.service        
-            ,'Price Labour':service.price_labour   
-            ,'Price Parts':service.price_parts    
-            ,'Price Total':service.price_total    
-            ,'Service Description':service.description    
-            ,'Rating':service.rating         
-            ,'Reviews':service.reviews        } )
+            ,'service':service.service        
+            ,'price_labour':service.price_labour   
+            ,'price_parts':service.price_parts    
+            ,'price_total':service.price_total    
+            ,'service_description':service.description    
+            ,'rating':service.rating         
+            ,'reviews':service.reviews        } )
     obj['result'] = result
     obj['counter'] = 1
     obj['status'] = True
@@ -491,9 +491,9 @@ def fetch_dealer_vascat(request):
                 for service in VASCatObjs:
                     obj['result'].append({
                         'id':service.id
-                          ,'Name':service.vendor  
-                          ,'Category':service.category             
-                          ,'Description':service.description               
+                          ,'name':service.vendor  
+                          ,'category':service.category             
+                          ,'description':service.description               
                               } )
                       
     obj['status'] = True
@@ -539,12 +539,12 @@ def fetch_vas_catservice(request):
                         ,'category':service.category        
                         ,'car_cat':service.car_cat         
                         ,'service':service.service         
-                        ,'Price Labour':service.price_labour    
-                        ,'Price Parts':service.price_parts     
-                        ,'Total Price':service.price_total     
-                        ,'Description':service.description     
-                        ,'Rating':service.rating          
-                        ,'Reviews':service.reviews                        
+                        ,'price_labour':service.price_labour    
+                        ,'price_parts':service.price_parts     
+                        ,'total_price':service.price_total     
+                        ,'description':service.description     
+                        ,'rating':service.rating          
+                        ,'reviews':service.reviews                        
                               } )
                       
     obj['status'] = True
@@ -558,9 +558,9 @@ def fetch_all_vascat(request):
     allDealerCat = VASServiceCat.objects.all()
     for service in allDealerCat:
 
-        result.append({'id':service.id, 'Name':service.vendor           
-                        ,'Category':service.category          
-                        ,'Description':service.description} )
+        result.append({'id':service.id, 'name':service.vendor           
+                        ,'category':service.category          
+                        ,'description':service.description} )
     obj['result'] = result
     obj['counter'] = 1
     obj['status'] = True
@@ -574,16 +574,16 @@ def fetch_all_vascatservices(request):
     for service in allDealerCat:
 
         result.append({'id':service.id
-            ,'Name':service.vendor         
-            ,'Category':service.category       
+            ,'name':service.vendor         
+            ,'category':service.category       
             ,'car_cat':service.car_cat        
-            ,'Service':service.service        
-            ,'Price Labour':service.price_labour   
-            ,'Price Parts':service.price_parts    
-            ,'Price Total':service.price_total    
-            ,'Service Description':service.description    
-            ,'Rating':service.rating         
-            ,'Reviews':service.reviews        } )
+            ,'service':service.service        
+            ,'price_labour':service.price_labour   
+            ,'price_parts':service.price_parts    
+            ,'price_total':service.price_total    
+            ,'service_description':service.description    
+            ,'rating':service.rating         
+            ,'reviews':service.reviews        } )
     obj['result'] = result
     obj['counter'] = 1
     obj['status'] = True
@@ -724,9 +724,9 @@ def fetch_all_wheelservices(request):
     allServices = WheelServices.objects.all()
     for service in allServices:
         result.append({'id':service.id,
-                        'Name':service.name        
-                        ,'Service':service.service     
-                        ,'Description':service.description     
+                        'name':service.name        
+                        ,'service':service.service     
+                        ,'description':service.description     
 
             } )
     obj['result'] = result
@@ -741,15 +741,15 @@ def fetch_all_wheelserviceprovider(request):
     allServices = WheelServiceProvider.objects.all()
     for service in allServices:
         result.append({'id':service.id,
-                'Name':service.name    
-                ,'Address':service.address 
-                ,'Phone':service.phone   
-                ,'Timing':service.timing  
-                ,'Rating':service.rating  
-                ,'Reviews':service.reviews 
-                ,'Service':service.service 
-                ,'Car':service.car     
-                ,'Price':service.price   } )
+                'name':service.name    
+                ,'address':service.address 
+                ,'phone':service.phone   
+                ,'timing':service.timing  
+                ,'rating':service.rating  
+                ,'reviews':service.reviews 
+                ,'service':service.service 
+                ,'car':service.car     
+                ,'price':service.price   } )
     obj['result'] = result
     obj['counter'] = 1
     obj['status'] = True
@@ -762,21 +762,21 @@ def fetch_all_tyresales(request):
     allServices = TyreSale.objects.all()
     for service in allServices:
         result.append({'id':service.id,
-                    'Name':service.name          
+                    'name':service.name          
                     ,'address':service.address       
-                    ,'rating dealer':service.rating_dealer 
-                    ,'aspect key':service.aspect_key    
-                    ,'Brand':service.brand         
-                    ,'Model':service.model         
-                    ,'Width':service.width         
-                    ,'Aspect Ratio':service.aspect_ratio  
-                    ,'Rim Size':service.rim_size      
-                    ,'Load Rating':service.load_rating   
-                    ,'Speed Rating':service.speed_rating  
-                    ,'Warranty':service.warranty      
-                    ,'Rating':service.rating        
-                    ,'Reviews':service.reviews       
-                    ,'Price':service.price                         
+                    ,'rating_dealer':service.rating_dealer 
+                    ,'aspect_key':service.aspect_key    
+                    ,'brand':service.brand         
+                    ,'model':service.model         
+                    ,'width':service.width         
+                    ,'aspect_ratio':service.aspect_ratio  
+                    ,'rim_size':service.rim_size      
+                    ,'load_rating':service.load_rating   
+                    ,'speed_rating':service.speed_rating  
+                    ,'warranty':service.warranty      
+                    ,'rating':service.rating        
+                    ,'reviews':service.reviews       
+                    ,'price':service.price                         
 
                  } )
     obj['result'] = result
@@ -803,21 +803,21 @@ def fetch_car_tyres(request):
 
                 for tyre in tyreObjs:
                     obj['result'].append({'id':tyre.id,
-                    'Name':tyre.name          
+                    'name':tyre.name          
                     ,'address':tyre.address       
-                    ,'rating dealer':tyre.rating_dealer 
-                    ,'aspect key':tyre.aspect_key    
-                    ,'Brand':tyre.brand         
-                    ,'Model':tyre.model         
-                    ,'Width':tyre.width         
-                    ,'Aspect Ratio':tyre.aspect_ratio  
-                    ,'Rim Size':tyre.rim_size      
-                    ,'Load Rating':tyre.load_rating   
-                    ,'Speed Rating':tyre.speed_rating  
-                    ,'Warranty':tyre.warranty      
-                    ,'Rating':tyre.rating        
-                    ,'Reviews':tyre.reviews       
-                    ,'Price':tyre.price                         
+                    ,'rating_dealer':tyre.rating_dealer 
+                    ,'aspect_key':tyre.aspect_key    
+                    ,'brand':tyre.brand         
+                    ,'model':tyre.model         
+                    ,'width':tyre.width         
+                    ,'aspect_ratio':tyre.aspect_ratio  
+                    ,'rim_size':tyre.rim_size      
+                    ,'load_rating':tyre.load_rating   
+                    ,'speed_rating':tyre.speed_rating  
+                    ,'warranty':tyre.warranty      
+                    ,'rating':tyre.rating        
+                    ,'reviews':tyre.reviews       
+                    ,'price':tyre.price                         
                  } )
                   
     obj['counter'] = 1
