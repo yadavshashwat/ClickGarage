@@ -708,6 +708,7 @@ def fetch_all_windshieldcatdetails(request):
             ,'price_sealant  ':service.price_sealant    
             ,'price_labour   ':service.price_labour     
             ,'price_insurance':service.price_insurance  
+            ,'city'           :service.city
             ,'description    ':service.description      
             ,'rating         ':service.rating           
             ,'reviews        ':service.reviews              } )
