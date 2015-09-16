@@ -241,7 +241,6 @@ def fetch_all_services(request):
     allServices = Servicing.objects.order_by('odometer')
     for service in allServices:
         result.append({'id':service.id,
-<<<<<<< HEAD
                         'name' : service.name  
                         ,'brand' : service.brand     
                         ,'car_name' : service.carname                   
@@ -251,17 +250,7 @@ def fetch_all_services(request):
                         ,'paid_free' : service.paid_free              
                         ,'parts_replaced' : service.part_replacement       
                         ,'dealer_category' : service.dealer} )
-=======
-                        'Name' : service.name  
-                        ,'Brand' : service.brand     
-                        ,'Car Name' : service.carname                   
-                        ,'Odometer Reading' : service.odometer               
-                        ,'Time Reading' : service.year                   
-                        ,'Checks done' : service.regular_checks                    
-                        ,'Paid-Free' : service.paid_free
-                        ,'Parts Replaced' : service.part_replacement       
-                        ,'Dealer Category' : service.dealer} )
->>>>>>> cd768c0b6920c189715398aaa793cc672cf7a48b
+
 
     obj['result'] = result
     obj['counter'] = 1
@@ -283,7 +272,7 @@ def fetch_all_servicedealercat(request):
                         ,'car_name':service.carname             
                         ,'odometer':service.odometer
                         ,'year':service.year           
-<<<<<<< HEAD
+
                         ,'dealer_category':service.dealer_category     
                         ,'parts_replaced':service.part_replacement    
                         ,'parts_price':service.price_parts         
@@ -294,18 +283,6 @@ def fetch_all_servicedealercat(request):
                         ,'dealer_details':service.detail_dealers
                         ,'paid_free?':service.paid_free      
                         ,'regular_checks':service.regular_checks       
-=======
-                        ,'Dealer Category':service.dealer_category     
-                        ,'Parts Replaced':service.part_replacement    
-                        ,'Parts Price':service.price_parts         
-                        ,'Labour Price':service.price_labour        
-                        ,'Wheel Alignment price':service.wheel_alignment     
-                        ,'Wheel Balancing Price':service.wheel_balancing     
-                        ,'WA-WB':service.WA_WB_Inc
-                        ,'Dealer Details':service.detail_dealers
-                        ,'Paid-Free':service.paid_free
-                        ,'RegularChecks':service.regular_checks       
->>>>>>> cd768c0b6920c189715398aaa793cc672cf7a48b
                         } )
     obj['result'] = result
     obj['counter'] = 1
