@@ -7,11 +7,11 @@ Car.objects.all().delete()
 runentry.loadCars('aspect_ratio.csv')
 
 #Loading Services
-#Servicing.objects.all().delete()
-#ServiceDealerCat.objects.all().delete()
-#runentry.loadServiceDealerCat('Servicing_Labour.txt')
-#runentry.exportServicesList()
-#runentry.loadPriceFreq('Servicing_Parts.txt')
+Servicing.objects.all().delete()
+ServiceDealerCat.objects.all().delete()
+runentry.loadServiceDealerCat('Servicing_Labour.txt')
+runentry.exportServicesList()
+runentry.loadPriceFreq('Servicing_Parts.txt')
 
 #Loading cleaning and value added services
 CleaningDealerName.objects.all().delete()

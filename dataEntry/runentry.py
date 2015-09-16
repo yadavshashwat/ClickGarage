@@ -260,7 +260,9 @@ def loadPriceFreq(fileName):
     with open(path+'/data/Servicing/'+fileName, 'rU') as csvfile:
          partData = csv.reader(csvfile, delimiter='\t', quotechar='|')
          count = 0 
-         for prt in partData:            
+         for prt in partData: 
+            count = count + 1
+            print count
             brand            = cleanstring(prt[0])          
             carname          = cleanstring(prt[1])          
             part             = cleanstring(prt[2])              
@@ -285,8 +287,7 @@ def loadPriceFreq(fileName):
                 price = price + net_price
                 findDealer.price_parts = str(price)
                 findDealer.save()
-                count = count + 1
-                print count
+                
 
             findDealer = ServiceDealerCat.objects.filter(brand = brand, carname=carname, dealer_category=dealer_category, odometer=str(second_occ))
             if len(findDealer):
@@ -299,8 +300,6 @@ def loadPriceFreq(fileName):
                 price = price + net_price
                 findDealer.price_parts = str(price)
                 findDealer.save()
-                count = count + 1
-                print count
                 
             odo = 0
             odo = second_occ + freq
@@ -317,8 +316,7 @@ def loadPriceFreq(fileName):
                     findDealer.price_parts = str(price)
                     findDealer.save()
                 odo = odo + freq
-                count = count + 1
-                print count
+               
     exportPartsList()
 
 def exportPartsList():
