@@ -299,7 +299,7 @@ def loadPriceFreq(fileName):
                 
             odo = 0
             odo = second_occ + freq
-            while (odo < 500000):
+            while (odo < 190000):
                 findDealer = ServiceDealerCat.objects.filter(brand = brand, carname=carname, dealer_category=dealer_category, odometer=str(odo))  
                 if len(findDealer):
                     findDealer = findDealer[0]
