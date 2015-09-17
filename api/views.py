@@ -401,7 +401,7 @@ def fetch_clean_catservice(request):
                         ,'category':service.category        
                         ,'car_cat':service.car_cat         
                         ,'service':service.service         
-                        ,'price_abour':service.price_labour    
+                        ,'price_labour':service.price_labour
                         ,'price_parts':service.price_parts     
                         ,'total_price':service.price_total     
                         ,'description':service.description     
