@@ -189,9 +189,9 @@ def fetch_car_cleaning(request):
         obj['status'] = True
         for dealer in dealers['result']:
             print dealer
-            CleanCatObjs = CleaningServiceCat.objects.filter(vendor = dealer['Name'])
+            CleanCatObjs = CleaningServiceCat.objects.filter(vendor = dealer['name'])
             oneObj = {
-                'name':dealer['Name'],
+                'name':dealer['name'],
                 'list':[]
                                  }
             for service in CleanCatObjs:
