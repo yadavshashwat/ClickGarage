@@ -25,9 +25,9 @@ urlpatterns = [
     # params : service_id, c_id
     url(r'fetch_vas_details/$','api.views.fetch_vas_catservice',name='fetch_vas_catservice'),
     # params : c_id
-    url(r'fetch_car_windshield/$','api.views.fetch_car_services',name='fetch_car_services'),
+    url(r'fetch_car_windshield/$','api.views.fetch_car_windshieldservices',name='fetch_car_windshieldservices'),
     # params : service_id
-    url(r'fetch_windshield_details/$','api.views.fetch_car_servicedetails',name='fetch_car_servicedetails'),
+    url(r'fetch_windshield_details/$','api.views.fetch_car_windshieldcatdetails',name='fetch_car_windshieldcatdetails'),
     # url(r'fetch_car_servicedealercat/$','api.views.fetch_car_servicedealercat',name='fetch_car_servicedealercat'),
 	
     url(r'fetch_all_cleaningdealer/$','api.views.fetch_all_cleaningdealer',name='fetch_all_cleaningdealer'),
