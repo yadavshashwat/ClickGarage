@@ -622,7 +622,7 @@ def fetch_car_windshieldservices(request):
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 def fetch_car_windshieldcatdetails(request):
-    catg_id = get_param(request, 'cat_id', None)
+    catg_id = get_param(request, 'service_id', None)
     city = get_param(request,'city_id',None)
     obj = {}
     obj['status'] = False
