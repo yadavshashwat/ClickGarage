@@ -130,7 +130,7 @@ def fetch_car_services(request):
                         ,'year':service.year             
                         ,'regular_checks':service.regular_checks   
                         ,'paid_free':service.paid_free        
-                        ,'parts_replaced ':service.part_replacement 
+                        ,'parts_replaced':service.part_replacement
                         ,'dealers_list':service.dealer} )
 
             
@@ -699,19 +699,19 @@ def fetch_all_windshieldcatdetails(request):
     for service in allDealerCat:
 
         result.append({'id':service.id
-            ,'vendor         ':service.vendor           
-            ,'brand          ':service.brand            
-            ,'carname        ':service.carname          
-            ,'ws_type        ':service.ws_type          
-            ,'ws_subtype     ':service.ws_subtype       
-            ,'price_ws       ':service.price_ws         
-            ,'price_sealant  ':service.price_sealant    
-            ,'price_labour   ':service.price_labour     
+            ,'vendor':service.vendor
+            ,'brand':service.brand
+            ,'carname':service.carname
+            ,'ws_type':service.ws_type
+            ,'ws_subtype':service.ws_subtype
+            ,'price_ws':service.price_ws
+            ,'price_sealant':service.price_sealant
+            ,'price_labour':service.price_labour
             ,'price_insurance':service.price_insurance  
             ,'city'           :service.city
-            ,'description    ':service.description      
-            ,'rating         ':service.rating           
-            ,'reviews        ':service.reviews              } )
+            ,'description':service.description
+            ,'rating':service.rating
+            ,'reviews':service.reviews              } )
     obj['result'] = result
     obj['counter'] = 1
     obj['status'] = True
