@@ -5,6 +5,7 @@ from api.models import *
 #Car loading
 Car.objects.all().delete()
 runentry.loadCars('aspect_ratio.csv')
+runentry.loadCarTrieFile()
 
 #Loading Services
 Servicing.objects.all().delete()
