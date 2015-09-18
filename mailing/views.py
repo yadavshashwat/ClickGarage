@@ -6,6 +6,12 @@ import smtplib
 import urllib2
 from datetime import datetime
 
+from email.MIMEMultipart import MIMEMultipart
+from email.MIMEText import MIMEText
+from email.MIMEImage import MIMEImage
+from email.MIMEBase import MIMEBase
+from email import Encoders
+
 helpline_number = "09953008804"
 key = "7bafe0c0-dcf3-41d9-a007-f5f05de46009"
 sendername = "CLKGRG"
@@ -865,7 +871,7 @@ def send_booking(to_address,to_name,service,time_start,time_end,date,booking_id)
 #send_booking(to_address="y.shashwat@gmail.com",to_name="Shashwat",service="Servicing",time_start="9:00AM",time_end="10:00AM",date="16-Aug-2015",booking_id="0001")
 
 
-def send_confirmation(to_address,to_name,service,booking_id):
+def send_confirmation(to_address,to_name,service,booking_id,path_file,amount):
 	me = from_address
 	you = to_address
 
@@ -1475,13 +1481,13 @@ def send_confirmation(to_address,to_name,service,booking_id):
 	                        
 	                        <td valign="top" class="mcnTextContent" style="padding-top:9px; padding-right: 18px; padding-bottom: 9px; padding-left: 18px;">
 	                        
-	                            <h1>Appointment Confirmation</h1>
+	                            <h1>Order Complete!</h1>
 
 	<h3><br>
 	Booking ID #"""+booking_id+"""</h3>
 	&nbsp;
 
-	<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span id="docs-internal-guid-a5acf9b5-2d61-8cb0-61dd-92f1d4247aeb"><span style="background-color: transparent;color: #000000;font-family: arial;font-size: 14.6666666666667px;vertical-align: baseline;white-space: pre-wrap;">Hello """+to_name+"""! Your ClickGarage booking for """+service+""" is complete. It was a pleasure serving you. Kindly spare some time to share your valuable feedback.</span></span></p>
+	<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span id="docs-internal-guid-a5acf9b5-2d61-8cb0-61dd-92f1d4247aeb"><span style="background-color: transparent;color: #000000;font-family: arial;font-size: 14.6666666666667px;vertical-align: baseline;white-space: pre-wrap;">Hello """+to_name+"""! Your ClickGarage booking for """+service+""" is complete. Your total bill amount was """+amount+""". It was a pleasure serving you. Kindly spare some time to share your valuable feedback.</span></span></p>
 <title>ClickGarage Feedback</title>
 <link rel="stylesheet" type="text/css" href="./ClickGarage Feedback - Google_files/css">
 
@@ -2051,8 +2057,17 @@ input[type='text'], input:not([type]), textarea {
 
 
 	script = MIMEText(html, 'html')
-
 	msg.attach(script)
+
+
+	# file_pdf = MIMEText(file(path_file)
+	# msg.attach(file_pdf)
+	part = MIMEBase('application', "octet-stream")
+	part.set_payload(open(path_file, "rb").read())
+	Encoders.encode_base64(part)
+	part.add_header('Content-Disposition', 'attachment; '+'filename=Invoice_'+booking_id+'.pdf')
+	
+	msg.attach(part)
 
 
 	smtp_port = '25'
@@ -2063,6 +2078,7 @@ input[type='text'], input:not([type]), textarea {
 	    port = smtp_port,
 	    timeout = 10
 	)
+	
 	server.set_debuglevel(10)
 	server.starttls()
 	server.ehlo()
