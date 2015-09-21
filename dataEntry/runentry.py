@@ -354,7 +354,16 @@ def loadCleaning(fileName):
                 else:
                     cc = CleaningDealerName(vendor=vendor)
                     cc.save()
-    
+                
+                findCatname = CleaningCatName.objects.filter(category=category)
+                if len(findCatname):
+                    findCatname = findCatname[0]
+                    findCatname.category         = category
+                    findCatname.save()
+                else:
+                    cc = CleaningCatName(category=category)
+                    cc.save()
+
                 findCat = CleaningServiceCat.objects.filter(vendor=vendor,category = category)
                 if len(findCat):
                     findCat = findCat[0]
@@ -393,7 +402,18 @@ def loadCleaning(fileName):
                 else:
                     va = VASDealerName(vendor=vendor)
                     va.save()
-    
+                
+                findCatname = VASCatName.objects.filter(category=category)
+                if len(findCatname):
+                    findCatname = findCatname[0]
+                    findCatname.category         = category
+                    findCatname.save()
+                else:
+                    cc = VASCatName(category=category)
+                    cc.save()
+                               
+
+
                 findCat = VASServiceCat.objects.filter(vendor=vendor,category = category)
                 if len(findCat):
                     findCat = findCat[0]

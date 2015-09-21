@@ -17,26 +17,33 @@ urlpatterns = [
     # params : service_id
     url(r'fetch_servicing_details/$','api.views.fetch_car_servicedetails',name='fetch_car_servicedetails'),
     # params : none
-    url(r'fetch_car_cleaning/$','api.views.fetch_car_cleaning',name='fetch_car_cleaning'),
+    url(r'fetch_car_cleaning/$','api.views.fetch_all_cleaning',name='fetch_all_cleaning'),
     # params : service_id, c_id
-    url(r'fetch_cleaning_details/$','api.views.fetch_clean_catservice',name='fetch_clean_catservice'),
+    url(r'fetch_cleaning_details/$','api.views.fetch_clean_service',name='fetch_clean_service'),
     # params : none
-    url(r'fetch_car_vas/$','api.views.fetch_car_vas',name='fetch_car_vas'),
+    url(r'fetch_car_vas/$','api.views.fetch_all_vas',name='fetch_all_vas'),
     # params : service_id, c_id
-    url(r'fetch_vas_details/$','api.views.fetch_vas_catservice',name='fetch_vas_catservice'),
+    url(r'fetch_vas_details/$','api.views.fetch_vas_service',name='fetch_vas_service'),
     # params : c_id
     url(r'fetch_car_windshield/$','api.views.fetch_car_windshieldservices',name='fetch_car_windshieldservices'),
     # params : service_id
     url(r'fetch_windshield_details/$','api.views.fetch_car_windshieldcatdetails',name='fetch_car_windshieldcatdetails'),
     # url(r'fetch_car_servicedealercat/$','api.views.fetch_car_servicedealercat',name='fetch_car_servicedealercat'),
 	
+    
+
+    url(r'fetch_all_cleaning/$','api.views.fetch_all_cleaning',name='fetch_all_cleaning'),
+    url(r'fetch_clean_service/$','api.views.fetch_clean_service',name='fetch_clean_service'),
+    
     url(r'fetch_all_cleaningdealer/$','api.views.fetch_all_cleaningdealer',name='fetch_all_cleaningdealer'),
     url(r'fetch_dealer_cleancat/$','api.views.fetch_dealer_cleancat',name='fetch_dealer_cleancat'),
     url(r'fetch_clean_catservice/$','api.views.fetch_clean_catservice',name='fetch_clean_catservice'),
     url(r'fetch_all_cleaningcat/$','api.views.fetch_all_cleaningcat',name='fetch_all_cleaningcat'),
     url(r'fetch_all_cleaningcatservices/$','api.views.fetch_all_cleaningcatservices',name='fetch_all_cleaningcatservices'),
       
-
+    url(r'fetch_all_vas/$','api.views.fetch_all_vas',name='fetch_all_vas'),
+    url(r'fetch_vas_service/$','api.views.fetch_vas_service',name='fetch_vas_service'),
+    
     url(r'fetch_all_vasdealer/$','api.views.fetch_all_vasdealer',name='fetch_all_vasdealer'),
     url(r'fetch_dealer_vascat/$','api.views.fetch_dealer_vascat',name='fetch_dealer_vascat'),
     url(r'fetch_vas_catservice/$','api.views.fetch_vas_catservice',name='fetch_vas_catservice'),

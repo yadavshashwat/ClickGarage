@@ -206,6 +206,12 @@ def fetch_car_cleaning(request):
 
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+
+
+
+
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
 def fetch_car_vas(request):
     dealers = fetch_all_vasdealer(request, False)
     obj = {}
@@ -330,6 +336,8 @@ def fetch_all_cleaningdealer(request, HTTPFlag = True):
         return HttpResponse(json.dumps(obj), content_type='application/json')
     else:
         return obj
+
+
 
 
 def fetch_dealer_cleancat(request):
@@ -842,10 +850,6 @@ def addItemToCart(request):
 
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
-
-
-
-
 def getCarObjFromName(carNameArray):
     res = []
     for carCompoundName in carNameArray:
@@ -914,6 +918,153 @@ def fetch_car_autocomplete(request):
     obj['msg'] = "Success"
 
     return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def fetch_all_cleaning(request, HTTPFlag = True):
+    obj = {}
+    result = []
+    allDealerCat = CleaningCatName.objects.all()
+    for service in allDealerCat:
+
+        result.append({'id':service.id         
+                        ,'category':service.category          
+                        ,'description':service.description} )
+    obj['result'] = result
+    obj['counter'] = 1
+    obj['status'] = True
+    obj['msg'] = "Success"
+
+
+    if(HTTPFlag):
+        return HttpResponse(json.dumps(obj), content_type='application/json')
+    else:
+        return obj
+
+def fetch_clean_service(request):
+    catg_id = get_param(request, 'service_id', None)
+    car_id = get_param(request,'c_id',None)
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    car = None
+    make = None
+    odo = None
+    vendor = None
+    size = None
+
+    if car_id:
+        carObj = Car.objects.filter(id=car_id)
+       
+        if len(carObj):
+            carObj = carObj[0]
+            size = carObj.size
+            print size
+    if catg_id:
+        cleanObj = CleaningCatName.objects.filter(id=catg_id)
+    
+        if len(cleanObj):
+            cleanObj = cleanObj[0]
+            category = cleanObj.category
+            print category
+
+    
+    if category:
+        if size:
+            CleanCatObjs = CleaningCategoryServices.objects.filter(category = category,car_cat = size)
+            for service in CleanCatObjs:
+                obj['result'].append({
+                        'id':service.id
+                        ,'vendor':service.vendor          
+                        ,'category':service.category        
+                        ,'car_cat':service.car_cat         
+                        ,'service':service.service         
+                        ,'price_labour':service.price_labour
+                        ,'price_parts':service.price_parts     
+                        ,'total_price':service.price_total     
+                        ,'description':service.description     
+                        ,'rating':service.rating          
+                        ,'reviews':service.reviews                        
+                              } )
+                      
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+
+def fetch_all_vas(request, HTTPFlag = True):
+    obj = {}
+    result = []
+    allDealerCat = VASCatName.objects.all()
+    for service in allDealerCat:
+
+        result.append({'id':service.id         
+                        ,'category':service.category          
+                        ,'description':service.description} )
+    obj['result'] = result
+    obj['counter'] = 1
+    obj['status'] = True
+    obj['msg'] = "Success"
+
+
+    if(HTTPFlag):
+        return HttpResponse(json.dumps(obj), content_type='application/json')
+    else:
+        return obj
+
+
+def fetch_vas_service(request):
+    catg_id = get_param(request, 'service_id', None)
+    car_id = get_param(request,'c_id',None)
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    car = None
+    make = None
+    odo = None
+    vendor = None
+    size = None
+
+    if car_id:
+        carObj = Car.objects.filter(id=car_id)
+       
+        if len(carObj):
+            carObj = carObj[0]
+            size = carObj.size
+            print size
+    if catg_id:
+        cleanObj = VASCatName.objects.filter(id=catg_id)
+    
+        if len(cleanObj):
+            cleanObj = cleanObj[0]
+            category = cleanObj.category
+            print category
+
+    
+    if category:
+        if size:
+            CleanCatObjs = VASCategoryServices.objects.filter(category = category,car_cat = size)
+            for service in CleanCatObjs:
+                obj['result'].append({
+                        'id':service.id
+                        ,'vendor':service.vendor          
+                        ,'category':service.category        
+                        ,'car_cat':service.car_cat         
+                        ,'service':service.service         
+                        ,'price_labour':service.price_labour
+                        ,'price_parts':service.price_parts     
+                        ,'total_price':service.price_total     
+                        ,'description':service.description     
+                        ,'rating':service.rating          
+                        ,'reviews':service.reviews                        
+                              } )
+                      
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
 
 
 #run this just once if possible

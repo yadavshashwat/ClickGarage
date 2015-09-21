@@ -84,6 +84,10 @@ class CleaningDealerName(models.Model):
     rating = models.CharField(max_length=50)
     description = models.CharField(max_length=200)
 
+class CleaningCatName(models.Model):
+    category = models.CharField(max_length=50)
+    description = models.CharField(max_length=200)
+
 class CleaningServiceCat(models.Model):
     vendor = models.CharField(max_length=50)
     category = models.CharField(max_length=50)
@@ -105,6 +109,10 @@ class CleaningCategoryServices(models.Model):
 class VASDealerName(models.Model):
     vendor  = models.CharField(max_length=50)
     rating = models.CharField(max_length=50)
+    description = models.CharField(max_length=200)
+
+class VASCatName(models.Model):
+    category = models.CharField(max_length=50)
     description = models.CharField(max_length=200)
 
 class VASServiceCat(models.Model):
