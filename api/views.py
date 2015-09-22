@@ -973,6 +973,7 @@ def fetch_clean_service(request):
     odo = None
     vendor = None
     size = None
+    category = None
 
     if car_id:
         carObj = Car.objects.filter(id=car_id)
