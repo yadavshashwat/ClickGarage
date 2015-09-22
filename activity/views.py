@@ -16,6 +16,8 @@ from config import CONFIG
 
 authomatic = Authomatic(CONFIG, 'facf8eedf58febc4a32b07129785ff70')
 
+from api.models import Car
+
 def social_login(request, provider_name):
     response = HttpResponse()
     print request
@@ -149,3 +151,52 @@ def sign_up_in(request):
 @login_required(login_url='/login/')
 def secured(request):
     return render_to_response("secure.html")
+
+
+def updateCart(user, cookie_data, action, car_id):
+    item = cookie_data
+    iuser = user
+    cartItems = iuser.uc_cart
+    if len(item):
+        items = item.split(",")
+        for i in items:
+            timestamp = i.split('*')[0]
+            # cartObj['dealer_id'] = i.split('*')[3]
+            # present = False
+            # for io in cartItems:
+            #     if 'timestamp' in io and io['timestamp'] == timestamp:
+            #         present = True
+            #         if action == 'delete':
+            #             cartItems.remove(io)
+            #
+            # if not present:
+            #     if action == 'add':
+            #         cartItems.append(cartObj)
+
+            if timestamp in cartItems:
+                if action == 'delete':
+                    del cartItems[timestamp]
+            else:
+                if action == 'add':
+                    cartObj = {}
+                    if car_id:
+                        car = Car.objects.filter(id=car_id)
+                        if len(car):
+                            car = car[0]
+                            cartObj['car'] = {
+                                'name':car.name,
+                                'model':car.model,
+                                'make':car.make,
+                                'year':car.year,
+                                'size':car.size
+                            }
+
+                    # cartObj['timestamp'] = timestamp
+                    cartObj['service'] = i.split('*')[1]
+                    cartObj['dealer'] = i.split('*')[2]
+                    cartObj['service_id'] = i.split('*')[3]
+                    cartItems[timestamp] = cartObj
+
+            iuser.uc_cart = cartItems
+            iuser.save()
+

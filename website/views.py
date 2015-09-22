@@ -8,7 +8,7 @@ import json
 import os
 
 from api import views
-
+from api.models import ServiceDealerCat
 
 # Create your views here.
 def index(request):
@@ -51,6 +51,53 @@ def checkout(request):
         template = loader.get_template('website/checkout.html')
         context = RequestContext(request, {
 
+        })
+        return HttpResponse(template.render(context))
+    else:
+        return redirect('/loginPage/')
+
+def dashboard(request):
+    if request.user.is_authenticated():
+        template = loader.get_template('himank/checkout.html')
+        context = RequestContext(request, {
+
+        })
+        return HttpResponse(template.render(context))
+    else:
+        return redirect('/loginPage/')
+
+def cart(request):
+    if request.user.is_authenticated():
+        template = loader.get_template('website/cart.html')
+        cartList = []
+        cartDict = request.user.uc_cart
+        for ts in cartDict:
+            cartObj = cartDict[ts]
+            item = {}
+            service_id = cartObj['service_id']
+            if cartObj['service'] == 'servicing':
+                serviceDetail = ServiceDealerCat.objects.filter(id=service_id)
+                if len(serviceDetail):
+                    serviceDetail = serviceDetail[0]
+                    item = {
+                        'id':serviceDetail.id,
+                        'name':serviceDetail.name,
+                        'brand':serviceDetail.brand,
+                        'car':serviceDetail.carname,
+                        'odometer':serviceDetail.odometer,
+                        'dealer_cat':serviceDetail.dealer_category,
+                        'parts_list':serviceDetail.part_replacement,
+                        'parts_price':serviceDetail.price_parts,
+                        'labour_price':serviceDetail.price_labour,
+                        'wa_price':serviceDetail.wheel_alignment,
+                        'wb_price':serviceDetail.wheel_balancing,
+                        'wa_wb_present':serviceDetail.WA_WB_Inc,
+                        'dealer_details':serviceDetail.detail_dealers,
+                    }
+                    cartDict[ts]['service_detail'] = item
+
+        context = RequestContext(request, {
+            'cart' : request.user.uc_cart
         })
         return HttpResponse(template.render(context))
     else:

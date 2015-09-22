@@ -14,7 +14,7 @@ import json
 
 from models import *
 from dataEntry.runentry import carMakers, cleanstring
-
+from activity import views as ac_vi
 
 #login views
 def loginview(request):
@@ -839,16 +839,39 @@ def fetch_car_tyres(request):
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 def addItemToCart(request):
+    cookie_data = get_param(request, 'cookie',None)
+    car_id = get_param(request, 'car_id',None)
     obj = {}
-    aspect = None
     obj['status'] = False
     obj['result'] =[]
+
+    print request
+    if request.user.is_authenticated():
+        if cookie_data:
+            resp = ac_vi.updateCart(request.user, cookie_data, 'add', car_id)
+
 
     obj['counter'] = 1
     obj['status'] = True
     obj['msg'] = "Success"
 
     return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def getUserDetails(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] ={}
+
+    print request.user
+    if request.user.is_authenticated():
+        res = {}
+        res['userid'] = request.user.id
+        res['u_cart'] = request.user.unchecked_cart
+        res['uc_cart'] = request.user.uc_cart
+        obj['result'] = res
+
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
 
 def getCarObjFromName(carNameArray):
     res = []
@@ -950,6 +973,7 @@ def fetch_clean_service(request):
     odo = None
     vendor = None
     size = None
+    category = None
 
     if car_id:
         carObj = Car.objects.filter(id=car_id)
