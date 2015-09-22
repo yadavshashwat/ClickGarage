@@ -11,6 +11,9 @@ urlpatterns = [
 
     url(r'fetch_car_autocomplete/$','api.views.fetch_car_autocomplete',name='fetch_car_autocomplete'),
 
+    url(r'fetch_user_details/$','api.views.getUserDetails',name='getUserDetails'),
+    url(r'add_to_cart/$','api.views.addItemToCart',name='addItemToCart'),
+
     #car_<servicename>, <servicename>_details
     # params : c_id,
     url(r'fetch_car_servicing/$','api.views.fetch_car_services',name='fetch_car_services'),
