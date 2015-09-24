@@ -64,7 +64,7 @@ urlpatterns = [
 
 
     url(r'fetch_all_services/$','api.views.fetch_all_services',name='fetch_all_services'),
-    # url(r'fetch_all_servicedealercat/$','api.views.fetch_all_servicedealercat',name='fetch_all_servicedealercat'),
+     #url(r'fetch_all_servicedealercat/$','api.views.fetch_all_servicedealercat',name='fetch_all_servicedealercat'),
     url(r'fetch_all_servicedealername/$','api.views.fetch_all_servicedealername',name='fetch_all_servicedealername'),
     
 	url(r'fetch_car_tyres/$','api.views.fetch_car_tyres',name='fetch_car_tyres'),

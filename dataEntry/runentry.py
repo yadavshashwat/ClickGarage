@@ -130,13 +130,13 @@ def loadServiceDealerCat(fileName):
                 findDealer.WA_WB_Inc         =  WA_WB_Inc 
                 findDealer.price_parts       =  "0" 
                 findDealer.regular_checks     = regular_checks
-                if price_labour == "0":
+                if (price_labour == "0"):
                     findDealer.paid_free = "Free"
                 else:
                     findDealer.paid_free = "Paid"
                 findDealer.save()
             else:
-                if price_labour == "0":
+                if (price_labour == "0"):
                     paid_free = "Free"
                 else:
                     paid_free = "Paid"
@@ -236,21 +236,28 @@ def exportWindShieldCat():
 
 def exportServicesList():
     allServices = ServiceDealerCat.objects.all()
+    p_f = ""
     for service in allServices:
         findDealer = Servicing.objects.filter(brand = service.brand, carname=service.carname, odometer=service.odometer)
         if len(findDealer):
             findDealer = findDealer[0]
             dealerz = findDealer.dealer
             dealerz.append(service.dealer_category)
-            findDealer.dealer = dealerz
+            findDealer.dealer = dealerz                
+            if service.dealer_category == "Authorized":
+                p_f = service.paid_free
+            findDealer.paid_free = p_f
             findDealer.save()
         else:
+            if service.dealer_category == "Authorized":
+                p_f = service.paid_free
+
             cc = Servicing(brand                = service.brand
                               ,carname          = service.carname
                               ,odometer         = service.odometer
                               ,year             = service.year
                               ,regular_checks   = service.regular_checks
-                              ,paid_free        = service.paid_free
+                              ,paid_free        = p_f
                               ,dealer           = [service.dealer_category])  
             cc.save()
 
@@ -345,6 +352,7 @@ def loadCleaning(fileName):
             price_parts      = cleanstring(service_name[6])
             price_total      = cleanstring(service_name[7])
             description      = cleanstring(service_name[8])
+
             if sup_cat == "Cleaning":
                 findVendor = CleaningDealerName.objects.filter(vendor=vendor)
                 if len(findVendor):
