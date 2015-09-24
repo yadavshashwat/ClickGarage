@@ -165,7 +165,7 @@ def fetch_car_servicedetails(request):
                           ,'brand':service.brand
                           ,'car':service.carname
                           ,'odometer':service.odometer
-                          ,'dealer_cat':service.dealer_category
+                          ,'vendor':service.dealer_category
                           ,'parts_list':service.part_replacement
                           ,'parts_price':service.price_parts
                           ,'labour_price':service.price_labour
@@ -841,6 +841,7 @@ def fetch_car_tyres(request):
 def addItemToCart(request):
     cookie_data = get_param(request, 'cookie',None)
     car_id = get_param(request, 'car_id',None)
+    remove = get_param(request, 'delete',False)
     obj = {}
     obj['status'] = False
     obj['result'] =[]
@@ -848,7 +849,10 @@ def addItemToCart(request):
     print request
     if request.user.is_authenticated():
         if cookie_data:
-            resp = ac_vi.updateCart(request.user, cookie_data, 'add', car_id)
+            if remove:
+                resp = ac_vi.updateCart(request.user, cookie_data, 'delete', car_id)
+            else:
+                resp = ac_vi.updateCart(request.user, cookie_data, 'add', car_id)
 
 
     obj['counter'] = 1

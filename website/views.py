@@ -8,7 +8,7 @@ import json
 import os
 
 from api import views
-from api.models import ServiceDealerCat
+from api.models import ServiceDealerCat, CleaningCategoryServices
 
 # Create your views here.
 def index(request):
@@ -71,8 +71,15 @@ def cart(request):
         template = loader.get_template('website/cart.html')
         cartList = []
         cartDict = request.user.uc_cart
+        contextDict = {}
         for ts in cartDict:
             cartObj = cartDict[ts]
+            if cartObj.has_key("car"):
+                carCmpName = " ".join([cartObj['car']['make'], cartObj['car']['name']])
+                if not contextDict.has_key(carCmpName):
+                    contextDict[carCmpName] = []
+            else:
+                carCmpName = ""
             item = {}
             service_id = cartObj['service_id']
             if cartObj['service'] == 'servicing':
@@ -95,9 +102,29 @@ def cart(request):
                         'dealer_details':serviceDetail.detail_dealers,
                     }
                     cartDict[ts]['service_detail'] = item
-
+                    if len(carCmpName):
+                        contextDict[carCmpName].append(cartDict[ts])
+            elif cartObj['service'] == 'cleaning':
+                serviceDetail = CleaningCategoryServices.objects.filter(id=service_id)
+                if len(serviceDetail):
+                    serviceDetail = serviceDetail[0]
+                    item = {
+                        'id':serviceDetail.id,
+                        'category':serviceDetail.category,
+                        'car_cat':serviceDetail.car_cat,
+                        'service':serviceDetail.service,
+                        'vendor':serviceDetail.vendor,
+                        'parts_price':serviceDetail.price_parts,
+                        'labour_price':serviceDetail.price_labour,
+                        'total_price':serviceDetail.price_total,
+                        'description':serviceDetail.description,
+                    }
+                    cartDict[ts]['service_detail'] = item
+                    if len(carCmpName):
+                        contextDict[carCmpName].append(cartDict[ts])
+        print contextDict
         context = RequestContext(request, {
-            'cart' : request.user.uc_cart
+            'cart' : contextDict
         })
         return HttpResponse(template.render(context))
     else:
