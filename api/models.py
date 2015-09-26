@@ -102,6 +102,7 @@ class CleaningCategoryServices(models.Model):
     price_parts     = models.CharField(max_length=50)
     price_total     = models.CharField(max_length=50)
     description     = models.CharField(max_length=500)
+    doorstep        = model.CharField(max_length=50)
     rating          = ListField(models.CharField(max_length=50))
     reviews         = ListField(models.CharField(max_length=500))
 

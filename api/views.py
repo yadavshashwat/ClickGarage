@@ -553,7 +553,8 @@ def fetch_vas_catservice(request):
                         ,'price_labour':service.price_labour    
                         ,'price_parts':service.price_parts     
                         ,'total_price':service.price_total     
-                        ,'description':service.description     
+                        ,'description':service.description 
+                        ,'doorstep':service.doorstep     
                         ,'rating':service.rating          
                         ,'reviews':service.reviews                        
                               } )
@@ -592,7 +593,8 @@ def fetch_all_vascatservices(request):
             ,'price_labour':service.price_labour   
             ,'price_parts':service.price_parts    
             ,'price_total':service.price_total    
-            ,'service_description':service.description    
+            ,'service_description':service.description   
+            ,'doorstep':service.doorstep 
             ,'rating':service.rating         
             ,'reviews':service.reviews        } )
     obj['result'] = result
@@ -898,54 +900,6 @@ def getCarObjFromName(carNameArray):
 
     return res
 
-#add views before this
-#below has to be the last view - i have spoken
-
-from dataEntry import runentry
-from dataEntry.carTrie import carsTrie
-from pytrie import SortedStringTrie as trie
-
-def fetch_car_autocomplete(request):
-    car_query = get_param(request, 'query', None)
-    car_list = []
-    obj = {}
-    obj['status'] = False
-    obj['result'] =[]
-
-    def getMatchList(word):
-        res = []
-        car_list = carTrieObj.items(word)
-        for match in car_list:
-            res = res + match[1]
-        return res
-
-    if len(car_query):
-        words = car_query.split(' ')
-        if len(words) > 1 :
-            matchArray = []
-            res = []
-            index = 0
-            for word in words:
-                matchArray.append(getMatchList(word.lower()))
-                # print word
-            # print matchArray
-            res = matchArray[0]
-            for matchRow in matchArray:
-                res = list(set(res).intersection(matchRow))
-            obj['result'] = res
-        else :
-            obj['result'] = getMatchList(car_query.lower())
-            # car_list = carTrieObj.items(car_query.lower())
-            # for match in car_list:
-            #     obj['result'] = obj['result'] + match[1]
-        obj['status'] = True
-
-    obj['result'] = getCarObjFromName(obj['result'])
-    obj['counter'] = 1
-    obj['msg'] = "Success"
-
-    return HttpResponse(json.dumps(obj), content_type='application/json')
-
 def fetch_all_cleaning(request, HTTPFlag = True):
     obj = {}
     result = []
@@ -1008,7 +962,8 @@ def fetch_clean_service(request):
                         ,'price_labour':service.price_labour
                         ,'price_parts':service.price_parts     
                         ,'total_price':service.price_total     
-                        ,'description':service.description     
+                        ,'description':service.description  
+                        ,'doorstep':service.doorstep    
                         ,'rating':service.rating          
                         ,'reviews':service.reviews                        
                               } )
@@ -1082,7 +1037,8 @@ def fetch_vas_service(request):
                         ,'price_labour':service.price_labour
                         ,'price_parts':service.price_parts     
                         ,'total_price':service.price_total     
-                        ,'description':service.description     
+                        ,'description':service.description  
+                        ,'doorstep':service.doorstep    
                         ,'rating':service.rating          
                         ,'reviews':service.reviews                        
                               } )
@@ -1095,9 +1051,54 @@ def fetch_vas_service(request):
 
 
 
-#run this just once if possible
+#add views before this
+#below has to be the last view - i have spoken
 
-carTrieObj = trie(carsTrie)
+from dataEntry import runentry
+from dataEntry.carTrie import carsTrie
+from pytrie import SortedStringTrie as trie
+
+def fetch_car_autocomplete(request):
+    car_query = get_param(request, 'query', None)
+    car_list = []
+    obj = {}
+    obj['status'] = False
+    obj['result'] =[]
+
+    def getMatchList(word):
+        res = []
+        car_list = carTrieObj.items(word)
+        for match in car_list:
+            res = res + match[1]
+        return res
+
+    if len(car_query):
+        words = car_query.split(' ')
+        if len(words) > 1 :
+            matchArray = []
+            res = []
+            index = 0
+            for word in words:
+                matchArray.append(getMatchList(word.lower()))
+                # print word
+            # print matchArray
+            res = matchArray[0]
+            for matchRow in matchArray:
+                res = list(set(res).intersection(matchRow))
+            obj['result'] = res
+        else :
+            obj['result'] = getMatchList(car_query.lower())
+            # car_list = carTrieObj.items(car_query.lower())
+            # for match in car_list:
+            #     obj['result'] = obj['result'] + match[1]
+        obj['status'] = True
+
+    obj['result'] = getCarObjFromName(obj['result'])
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
 
 def insert_tran(request):
     cust_id         = get_param(request,'cust_id',None)   
@@ -1148,7 +1149,12 @@ def insert_tran(request):
         ,time_booking    = time_booking    
         ,amount_paid     = amount_paid     
         ,status          = status          
-        ,comments        = comments )   
+        ,comments        = comments ) 
+
+#run this just once if possible
+
+carTrieObj = trie(carsTrie)
+  
 
 
 
