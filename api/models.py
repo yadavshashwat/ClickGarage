@@ -130,6 +130,7 @@ class VASCategoryServices(models.Model):
     price_parts     = models.CharField(max_length=50)
     price_total     = models.CharField(max_length=50)
     description     = models.CharField(max_length=500)
+    doorstep        = model.CharField(max_length=50)
     rating          = ListField(models.CharField(max_length=50))
     reviews         = ListField(models.CharField(max_length=500))
 
@@ -210,6 +211,29 @@ class MiscServices(models.Model):
 class Emergency(models.Model):
     name = models.CharField(max_length=50)
     service = models.CharField(max_length=50)
+
+class Transaction(models.Model):
+    booking_id = model.IntegerField
+    trans_timestamp = model.IntegerField
+    cust_id = model.CharField(max_lenght=200)
+    cust_name       = model.CharField(max_lenght=200)
+    cust_brand      = model.CharField(max_lenght=200)
+    cust_carname    = model.CharField(max_lenght=200)
+    cust_number     = model.CharField(max_lenght=200)
+    cust_email      = model.CharField(max_lenght=200)
+    cust_pickup_add = model.CharField(max_lenght=200)
+    cust_drop_add   = model.CharField(max_lenght=200)
+    booking_vendor  = model.CharField(max_lenght=200)
+    booking_cat     = model.CharField(max_lenght=200)
+    booking_type    = model.CharField(max_lenght=200)
+    price_labour    = model.CharField(max_lenght=200)
+    price_parts     = model.CharField(max_lenght=200)
+    price_total     = model.CharField(max_lenght=200)
+    date_booking    = model.IntegerField
+    time_booking    = model.IntegerField
+    amount_paid     = model.CharField(max_lenght=200)
+    status          = model.CharField(max_lenght=200)
+    comments = model.CharField(max_lenght=200)
 
 
 
