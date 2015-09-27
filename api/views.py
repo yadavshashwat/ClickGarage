@@ -74,7 +74,7 @@ def fetch_all_cars(request):
     result = []
     allCars = Car.objects.all()
     for car in allCars:
-        result.append({'name':car.name, 'make':car.make, 'aspect_ratio':car.aspect_ratio,'size':car.size,'car_bike':service.car_bike,id':car.id})
+        result.append({'name':car.name, 'make':car.make, 'aspect_ratio':car.aspect_ratio,'size':car.size,'car_bike':service.car_bike,'id':car.id})
 
     obj['result'] = result
     obj['counter'] = 1
