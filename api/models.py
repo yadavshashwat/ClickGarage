@@ -63,7 +63,7 @@ class ServiceDealerCat(models.Model):
     price_labour        = models.CharField(max_length=50)
     wheel_alignment     = models.CharField(max_length=50)
     wheel_balancing     = models.CharField(max_length=50)
-    WA_WB_Inc           = models.BooleanField()
+    WA_WB_Inc           = models.CharField(max_length=50)
     detail_dealers      = ListField(DictField())
     paid_free           = models.CharField(max_length=50)
     regular_checks      = ListField(models.CharField(max_length=200))

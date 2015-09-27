@@ -6,7 +6,7 @@ from django.conf import settings
 
 import json
 import os
-
+from decimal import Decimal
 from api import views
 from api.models import ServiceDealerCat, CleaningCategoryServices
 
@@ -49,9 +49,15 @@ def order(request):
 def checkout(request):
     if request.user.is_authenticated():
         template = loader.get_template('website/checkout.html')
+        cartDict = request.user.uc_cart
+        contextDict = {}
+
         context = RequestContext(request, {
+            'address': ['p'],
 
         })
+
+            # address : request.user.saved_address
         return HttpResponse(template.render(context))
     else:
         return redirect('/loginPage/')
@@ -60,7 +66,7 @@ def dashboard(request):
     if request.user.is_authenticated():
         template = loader.get_template('himank/checkout.html')
         context = RequestContext(request, {
-
+            cart : request.user.uc_cart,
         })
         return HttpResponse(template.render(context))
     else:
@@ -86,6 +92,12 @@ def cart(request):
                 serviceDetail = ServiceDealerCat.objects.filter(id=service_id)
                 if len(serviceDetail):
                     serviceDetail = serviceDetail[0]
+                    print serviceDetail.price_parts, serviceDetail.price_labour
+                    total_price = 0
+                    if len(serviceDetail.price_parts):
+                        total_price = total_price+ float(serviceDetail.price_parts)
+                    if len(serviceDetail.price_labour):
+                        total_price = total_price + float(serviceDetail.price_labour)
                     item = {
                         'id':serviceDetail.id,
                         'name':serviceDetail.name,
@@ -100,7 +112,10 @@ def cart(request):
                         'wb_price':serviceDetail.wheel_balancing,
                         'wa_wb_present':serviceDetail.WA_WB_Inc,
                         'dealer_details':serviceDetail.detail_dealers,
+                        'year':serviceDetail.year,
+                        'total_price':total_price
                     }
+                    # print total_price
                     cartDict[ts]['service_detail'] = item
                     if len(carCmpName):
                         contextDict[carCmpName].append(cartDict[ts])
@@ -108,6 +123,13 @@ def cart(request):
                 serviceDetail = CleaningCategoryServices.objects.filter(id=service_id)
                 if len(serviceDetail):
                     serviceDetail = serviceDetail[0]
+                    total_price = 0
+                    if len(serviceDetail.price_parts):
+                        total_price = total_price+ float(serviceDetail.price_parts)
+                    if len(serviceDetail.price_labour):
+                        total_price = total_price + float(serviceDetail.price_labour)
+
+                    # total_price = float(serviceDetail.price_parts) + float(serviceDetail.price_labour)
                     item = {
                         'id':serviceDetail.id,
                         'category':serviceDetail.category,
@@ -117,8 +139,10 @@ def cart(request):
                         'parts_price':serviceDetail.price_parts,
                         'labour_price':serviceDetail.price_labour,
                         'total_price':serviceDetail.price_total,
+                        # 'total_price':total_price,
                         'description':serviceDetail.description,
                     }
+                    # print total_price
                     cartDict[ts]['service_detail'] = item
                     if len(carCmpName):
                         contextDict[carCmpName].append(cartDict[ts])

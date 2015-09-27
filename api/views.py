@@ -874,6 +874,7 @@ def getUserDetails(request):
         res['userid'] = request.user.id
         res['u_cart'] = request.user.unchecked_cart
         res['uc_cart'] = request.user.uc_cart
+        res['saved_addresses'] = request.user.saved_address
         obj['result'] = res
 
     return HttpResponse(json.dumps(obj), content_type='application/json')

@@ -18,6 +18,7 @@ class CGUser(AbstractUser):
     unchecked_cart = ListField(models.CharField(max_length=200))
     # unchecked_cart = ListField(models.DictField)
     uc_cart = DictField()
+    saved_address = ListField(DictField())
     address_trnsaction = ListField(models.CharField(max_length=200))
     past_transaction = ListField(models.CharField(max_length=200))
 
