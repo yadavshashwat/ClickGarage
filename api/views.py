@@ -74,7 +74,7 @@ def fetch_all_cars(request):
     result = []
     allCars = Car.objects.all()
     for car in allCars:
-        result.append({'name':car.name, 'make':car.make, 'aspect_ratio':car.aspect_ratio,'size':car.size, 'id':car.id})
+        result.append({'name':car.name, 'make':car.make, 'aspect_ratio':car.aspect_ratio,'size':car.size,'car_bike':service.car_bike,id':car.id})
 
     obj['result'] = result
     obj['counter'] = 1
@@ -91,7 +91,7 @@ def fetch_car(request, HTTPFlag=True):
         carObj = Car.objects.filter(id=car_id)
         if len(carObj):
             carObj = carObj[0]
-            result = {'name':carObj.name, 'make':carObj.make, 'aspect_ratio':carObj.aspect_ratio, 'size':carObj.size,'id':carObj.id}
+            result = {'name':carObj.name, 'make':carObj.make, 'aspect_ratio':carObj.aspect_ratio, 'car_bike':carObj.car_bike,'size':carObj.size,'id':carObj.id}
             obj['result'] = result
             obj['status'] = True
 
@@ -975,7 +975,6 @@ def fetch_clean_service(request):
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
-
 def fetch_all_vas(request, HTTPFlag = True):
     obj = {}
     result = []
@@ -1048,9 +1047,6 @@ def fetch_vas_service(request):
     obj['counter'] = 1
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
-
-
-
 
 #add views before this
 #below has to be the last view - i have spoken

@@ -21,6 +21,7 @@ class Car(models.Model):
     year = models.IntegerField()
     aspect_ratio = models.CharField(max_length=20)
     size = models.CharField(max_length=50)
+    car_bike = models.CharField(max_length=50)
 
 #two sets of DBs
 #1 - data entry

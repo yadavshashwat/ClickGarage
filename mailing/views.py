@@ -21,8 +21,8 @@ def send_sms(type,to,message):
 	url = "http://sms.hspsms.com:8090/sendSMS?username=clickgarage&message="+ message + "&sendername=" + sendername+ "&smstype=" + type + "&numbers=" + to + "&apikey=" + key
 	r = urllib2.urlopen(url)
 
-def send_booking_sms(to_name, to, service, date, pick_time_start, pick_time_end, booking_id):
-	message = "Hi "+ to_name +"! Your ClickGarage " + service + " appointment has been confirmed. Appointment date: " +date + ", Pick up slot: "  + pick_time_start +"-"+ pick_time_end +". For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + booking_id + "."
+def send_booking_sms(to_name, to, date, pick_time_start, booking_id):
+	message = "Hi "+ to_name +"! Your ClickGarage appointment has been confirmed. Appointment date: " +date + ", Pick up time: "  + pick_time_start  + ". For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + booking_id + "."
 	message = message.replace(" ","+")
 	send_sms("TRANS",to,message)
 
@@ -72,7 +72,7 @@ from_address = "bookings@clickgarage.in"
 helpline_number = "09717353148"
 
 
-def send_booking_email(to_address,to_name,service,time_start,time_end,date,booking_id):
+def send_booking_email(to_address,to_name,time_start,date,booking_id):
 	me = from_address
 	you = to_address
 
@@ -688,7 +688,9 @@ def send_booking_email(to_address,to_name,service,time_start,time_end,date,booki
 	Booking ID #"""+booking_id+"""</h3>
 	&nbsp;
 
-	<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span id="docs-internal-guid-a5acf9b5-2d61-8cb0-61dd-92f1d4247aeb"><span style="background-color: transparent;color: #000000;font-family: arial;font-size: 14.6666666666667px;vertical-align: baseline;white-space: pre-wrap;">Your ClickGarage booking for """+service+""" has been confirmed. Pick up time chosen by you is between """+ time_start +""" and """+time_end+""" on """+ date +""". If further assistance is needed, please contact us on """+helpline_number+""" and quote your booking confirmation number """+booking_id+""".</span></span></p>
+
+	<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span id="docs-internal-guid-a5acf9b5-2d61-8cb0-61dd-92f1d4247aeb"><span style="background-color: transparent;color: #000000;font-family: arial;font-size: 14.6666666666667px;vertical-align: baseline;white-space: pre-wrap;">Hi """+to_name+""",</span></span></p>
+	<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span id="docs-internal-guid-a5acf9b5-2d61-8cb0-61dd-92f1d4247aeb"><span style="background-color: transparent;color: #000000;font-family: arial;font-size: 14.6666666666667px;vertical-align: baseline;white-space: pre-wrap;">Your ClickGarage booking has been confirmed. Pick up time chosen by you is """+ time_start +""" on """+ date +""". If further assistance is needed, please contact us on """+helpline_number+""" and quote your booking confirmation number """+booking_id+""".</span></span></p>
 
 	<div>&nbsp;</div>
 
@@ -2088,15 +2090,15 @@ input[type='text'], input:not([type]), textarea {
 
 
 
-def send_booking_final(username,useremail,userphone,service_name,time_start,time_end,date,booking_id,path_file):
-	send_booking_details("shashwat@clickgarage.in",booking_id,path_file)
-	send_booking_details("bhuvan@clickgarage.in",booking_id,path_file)
-	send_booking_details("sanskar@clickgarage.in",booking_id,path_file)
-	send_booking_details("bookings@clickgarage.in",booking_id,path_file)
-	send_booking_email(useremail,username,service_name,time_start,time_end,date,booking_id)
-	send_booking_sms(username, userphone, service_name, date, time_start, time_end, booking_id)
+def send_booking_final(username,useremail,userphone,time_start,date,booking_id,html_script):
+	send_booking_details("shashwat@clickgarage.in",booking_id,html_script)
+	send_booking_details("bhuvan@clickgarage.in",booking_id,html_script)
+	send_booking_details("sanskar@clickgarage.in",booking_id,html_script)
+	send_booking_details("bookings@clickgarage.in",booking_id,html_script)
+	send_booking_email(useremail,username,time_start,date,booking_id)
+	send_booking_sms(username, userphone, date, time_start, booking_id)
 
-def send_booking_details(to_address,booking_id,path_file):
+def send_booking_details(to_address,booking_id,html_script):
 	me = from_address
 	you = to_address
 
@@ -2106,18 +2108,17 @@ def send_booking_details(to_address,booking_id,path_file):
 	msg['From'] = me
 	msg['To'] = you
 
-	text = "New Booking! Please Check the attached csv."
-	script = MIMEText(text, 'html')
+	script = MIMEText(html_script, 'html')
 	msg.attach(script)
 
 	# file_pdf = MIMEText(file(path_file)
 	# msg.attach(file_pdf)
-	part = MIMEBase('application', "octet-stream")
-	part.set_payload(open(path_file, "rb").read())
-	Encoders.encode_base64(part)
-	part.add_header('Content-Disposition', 'attachment; '+'filename=details_'+booking_id+'.csv')
-	
-	msg.attach(part)
+	#part = MIMEBase('application', "octet-stream")
+	#part.set_payload(open(path_file, "rb").read())
+	#Encoders.encode_base64(part)
+	#part.add_header('Content-Disposition', 'attachment; '+'filename=details_'+booking_id+'.csv')
+	#
+	#msg.attach(part)
 
 
 	smtp_port = '25'
