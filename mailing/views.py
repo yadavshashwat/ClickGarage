@@ -13,7 +13,7 @@ from email.MIMEBase import MIMEBase
 from email import Encoders
 
 helpline_number = "09953008804"
-key = "7bafe0c0-dcf3-41d9-a007-f5f05de46009"
+key = "ab33f626-fba5-4bff-9a2b-68a7e9eed43c"
 sendername = "CLKGRG"
 
 
@@ -21,7 +21,7 @@ def send_sms(type,to,message):
 	url = "http://sms.hspsms.com:8090/sendSMS?username=clickgarage&message="+ message + "&sendername=" + sendername+ "&smstype=" + type + "&numbers=" + to + "&apikey=" + key
 	r = urllib2.urlopen(url)
 
-def send_booking(to_name, to, service, date, pick_time_start, pick_time_end, booking_id):
+def send_booking_sms(to_name, to, service, date, pick_time_start, pick_time_end, booking_id):
 	message = "Hi "+ to_name +"! Your ClickGarage " + service + " appointment has been confirmed. Appointment date: " +date + ", Pick up slot: "  + pick_time_start +"-"+ pick_time_end +". For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + booking_id + "."
 	message = message.replace(" ","+")
 	send_sms("TRANS",to,message)
@@ -72,7 +72,7 @@ from_address = "bookings@clickgarage.in"
 helpline_number = "09717353148"
 
 
-def send_booking(to_address,to_name,service,time_start,time_end,date,booking_id):
+def send_booking_email(to_address,to_name,service,time_start,time_end,date,booking_id):
 	me = from_address
 	you = to_address
 
@@ -652,7 +652,7 @@ def send_booking(to_address,to_name,service,time_start,time_end,date,booking_id)
 	                            <td class="mcnImageContent" valign="top" style="padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0; text-align:center;">
 	                                
 	                                    
-	                                        <img align="center" alt="" src="https://gallery.mailchimp.com/2cf3731a4f89990fe68c1bf2a/images/dbcf196a-117f-48b1-b1d2-6ad5d5806847.jpg" width="300" style="max-width:300px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage">
+	                                        <img align="center" alt="" src="http://blog.clickgarage.in/wp-content/uploads/2015/09/ClickGarage_Final-e1443311969815.png" width="300" style="max-width:300px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage">
 	                                    
 	                                
 	                            </td>
@@ -871,7 +871,7 @@ def send_booking(to_address,to_name,service,time_start,time_end,date,booking_id)
 #send_booking(to_address="y.shashwat@gmail.com",to_name="Shashwat",service="Servicing",time_start="9:00AM",time_end="10:00AM",date="16-Aug-2015",booking_id="0001")
 
 
-def send_confirmation(to_address,to_name,service,booking_id,path_file,amount):
+def send_feedback_bill(to_address,to_name,service,booking_id,path_file,amount):
 	me = from_address
 	you = to_address
 
@@ -1451,7 +1451,7 @@ def send_confirmation(to_address,to_name,service,booking_id,path_file,amount):
 	                            <td class="mcnImageContent" valign="top" style="padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0; text-align:center;">
 	                                
 	                                    
-	                                        <img align="center" alt="" src="https://gallery.mailchimp.com/2cf3731a4f89990fe68c1bf2a/images/dbcf196a-117f-48b1-b1d2-6ad5d5806847.jpg" width="300" style="max-width:300px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage">
+	                                        <img align="center" alt="" src="http://blog.clickgarage.in/wp-content/uploads/2015/09/ClickGarage_Final-e1443311969815.png" width="300" style="max-width:300px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage">
 	                                    
 	                                
 	                            </td>
@@ -2085,6 +2085,58 @@ input[type='text'], input:not([type]), textarea {
 	server.login(smtp_username, smtp_password)
 	server.sendmail(me, you, msg.as_string())
 	server.quit()
+
+
+
+def send_booking_final(username,useremail,userphone,service_name,time_start,time_end,date,booking_id,path_file):
+	send_booking_details("shashwat@clickgarage.in",booking_id,path_file)
+	send_booking_details("bhuvan@clickgarage.in",booking_id,path_file)
+	send_booking_details("sanskar@clickgarage.in",booking_id,path_file)
+	send_booking_details("bookings@clickgarage.in",booking_id,path_file)
+	send_booking_email(useremail,username,service_name,time_start,time_end,date,booking_id)
+	send_booking_sms(username, userphone, service_name, date, time_start, time_end, booking_id)
+
+def send_booking_details(to_address,booking_id,path_file):
+	me = from_address
+	you = to_address
+
+	# Create message container - the correct MIME type is multipart/alternative.
+	msg = MIMEMultipart('alternative')
+	msg['Subject'] = "New Booking! Booking ID :" + booking_id
+	msg['From'] = me
+	msg['To'] = you
+
+	text = "New Booking! Please Check the attached csv."
+	script = MIMEText(text, 'html')
+	msg.attach(script)
+
+	# file_pdf = MIMEText(file(path_file)
+	# msg.attach(file_pdf)
+	part = MIMEBase('application', "octet-stream")
+	part.set_payload(open(path_file, "rb").read())
+	Encoders.encode_base64(part)
+	part.add_header('Content-Disposition', 'attachment; '+'filename=details_'+booking_id+'.csv')
+	
+	msg.attach(part)
+
+
+	smtp_port = '25'
+	smtp_do_tls = True
+
+	server = smtplib.SMTP(
+	    host = smtp_server,
+	    port = smtp_port,
+	    timeout = 10
+	)
+	
+	server.set_debuglevel(10)
+	server.starttls()
+	server.ehlo()
+	server.login(smtp_username, smtp_password)
+	server.sendmail(me, you, msg.as_string())
+	server.quit()
+
+
 
 def send_mail(server_name,port,username,password,fromadd,toadd,subject,text):
 	msg = 'Subject: %s\n\n%s' % (subject, text)

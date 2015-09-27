@@ -365,6 +365,7 @@ def loadCleaning(fileName):
             price_parts      = cleanstring(service_name[6])
             price_total      = cleanstring(service_name[7])
             description      = cleanstring(service_name[8])
+            doorstep         = cleanstring(service_name[9])
 
             if sup_cat == "Cleaning":
                 findVendor = CleaningDealerName.objects.filter(vendor=vendor)
@@ -401,7 +402,8 @@ def loadCleaning(fileName):
                     findService.price_labour     = price_labour    
                     findService.price_parts      = price_parts     
                     findService.price_total      = price_total     
-                    findService.description      = description     
+                    findService.description      = description   
+                    findService.doorstep=doorstep  
                     findService.save()
                 else:
                     clcase = CleaningCategoryServices(vendor           = vendor        
@@ -411,7 +413,8 @@ def loadCleaning(fileName):
                                                      ,price_labour     = price_labour  
                                                      ,price_parts      = price_parts   
                                                      ,price_total      = price_total   
-                                                     ,description      = description   )
+                                                     ,description      = description
+                                                     ,doorstep= doorstep   )
                     clcase.save()
 
             if sup_cat == "VAS":
@@ -451,7 +454,8 @@ def loadCleaning(fileName):
                     findService.price_labour     = price_labour    
                     findService.price_parts      = price_parts     
                     findService.price_total      = price_total     
-                    findService.description      = description     
+                    findService.description      = description 
+                    findService.doorstep   = doorstep    
                     findService.save()
                 else:
                     vacase = VASCategoryServices(vendor           = vendor        
@@ -461,7 +465,8 @@ def loadCleaning(fileName):
                                                      ,price_labour     = price_labour  
                                                      ,price_parts      = price_parts   
                                                      ,price_total      = price_total   
-                                                     ,description      = description   )
+                                                     ,description      = description
+                                                     ,doorstep = doorstep   )
                     vacase.save()
 
 def loadServiceDealerName(fileName):

@@ -102,6 +102,7 @@ class CleaningCategoryServices(models.Model):
     price_parts     = models.CharField(max_length=50)
     price_total     = models.CharField(max_length=50)
     description     = models.CharField(max_length=500)
+    doorstep        = models.CharField(max_length=50)
     rating          = ListField(models.CharField(max_length=50))
     reviews         = ListField(models.CharField(max_length=500))
 
@@ -129,6 +130,7 @@ class VASCategoryServices(models.Model):
     price_parts     = models.CharField(max_length=50)
     price_total     = models.CharField(max_length=50)
     description     = models.CharField(max_length=500)
+    doorstep        = models.CharField(max_length=50)
     rating          = ListField(models.CharField(max_length=50))
     reviews         = ListField(models.CharField(max_length=500))
 
@@ -209,6 +211,29 @@ class MiscServices(models.Model):
 class Emergency(models.Model):
     name = models.CharField(max_length=50)
     service = models.CharField(max_length=50)
+
+class Transaction(models.Model):
+    booking_id      = models.IntegerField()
+    trans_timestamp = models.IntegerField()
+    cust_id         = models.CharField(max_length=200)
+    cust_name       = models.CharField(max_length=200)
+    cust_brand      = models.CharField(max_length=200)
+    cust_carname    = models.CharField(max_length=200)
+    cust_number     = models.CharField(max_length=200)
+    cust_email      = models.CharField(max_length=200)
+    cust_pickup_add = models.CharField(max_length=200)
+    cust_drop_add   = models.CharField(max_length=200)
+    booking_vendor  = models.CharField(max_length=200)
+    booking_cat     = models.CharField(max_length=200)
+    booking_type    = models.CharField(max_length=200)
+    price_labour    = models.CharField(max_length=200)
+    price_parts     = models.CharField(max_length=200)
+    price_total     = models.CharField(max_length=200)
+    date_booking    = models.IntegerField()
+    time_booking    = models.IntegerField()
+    amount_paid     = models.CharField(max_length=200)
+    status          = models.CharField(max_length=200)
+    comments        = models.CharField(max_length=200)
 
 
 
