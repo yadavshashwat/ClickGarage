@@ -21,6 +21,7 @@ class CGUser(AbstractUser):
     saved_address = ListField(DictField())
     address_trnsaction = ListField(models.CharField(max_length=200))
     past_transaction = ListField(models.CharField(max_length=200))
+    transactions_temp = ListField(DictField())
 
 # class CartCheckouts(models.Model):
 

@@ -11,10 +11,12 @@ import datetime
 
 import operator
 import json
+import ast
 
 from models import *
 from dataEntry.runentry import carMakers, cleanstring
 from activity import views as ac_vi
+from mailing import views as mviews
 
 #login views
 def loginview(request):
@@ -1096,6 +1098,164 @@ def fetch_car_autocomplete(request):
 
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+def place_order(request):
+    if request.user and request.user.is_authenticated():
+        email = request.user.email
+        name = get_param(request, 'name', None)
+        number = get_param(request, 'number', None)
+        pick_obj = get_param(request, 'pick', None)
+        drop_obj = get_param(request, 'drop', None)
+        order_list = get_param(request, 'order_list', None)
+        car_name = get_param(request, 'car_name', None)
+        # car_id = get_param(request, 'car_id', None)
+
+        # obj_pick = json.loads(pick_obj)
+        pick_obj = ast.literal_eval(pick_obj)
+        pick_obj = ast.literal_eval(pick_obj)
+        # print pick_obj
+        pick_obj = json.loads(pick_obj)
+
+        # print pick_obj
+
+        # for key in pick_obj.keys():
+        #     print key
+        # print json.loads(drop_obj)
+        order_list = json.loads(order_list)
+
+        tran_len = len(Transaction.objects.all())
+        booking_id = 1
+        if tran_len > 0:
+            tran = Transaction.objects.all().aggregate(Max('booking_id'))
+            booking_id = tran['booking_id'] + 1
+
+        html_list = []
+        html_list.append('<b>Booking ID #')
+        html_list.append(    booking_id)
+        html_list.append(            '</b><br><p>Hi Rajeev,<br> Your ClickGarage booking has been confirmed. Pick up time chosen by you is ')
+        html_list.append(            pick_obj['time'])
+        html_list.append(            ' on ')
+        html_list.append(            pick_obj['date'])
+        html_list.append(            '. If further assistance is needed, please contact us on 09717353148 and quote your booking confirmation number #')
+        html_list.append(            booking_id)
+        html_list.append(            '.</p>')
+        # html_script = ' '.join(str(x) for x in html_list)
+        html_list.append('<p>The selected services are for ')
+        html_list.append(car_name)
+        html_list.append(' are:</p>')
+        for order in order_list:
+            ts = order['ts']
+            service = order['service']
+            service_id = order['service_id']
+            if service == 'servicing':
+                serviceDetail = ServiceDealerCat.objects.filter(id=service_id)
+                if len(serviceDetail):
+                    serviceDetail = serviceDetail[0]
+                    total_price = 0
+                    if len(serviceDetail.price_parts):
+                        total_price = total_price+ float(serviceDetail.price_parts)
+                    if len(serviceDetail.price_labour):
+                        total_price = total_price + float(serviceDetail.price_labour)
+                    html_list.append('<div>')
+                    item = {
+                        'id':serviceDetail.id,
+                        'name':serviceDetail.name,
+                        'brand':serviceDetail.brand,
+                        'car':serviceDetail.carname,
+                        'odometer':serviceDetail.odometer,
+                        'dealer_cat':serviceDetail.dealer_category,
+                        'parts_list':serviceDetail.part_replacement,
+                        'parts_price':serviceDetail.price_parts,
+                        'labour_price':serviceDetail.price_labour,
+                        'wa_price':serviceDetail.wheel_alignment,
+                        'wb_price':serviceDetail.wheel_balancing,
+                        'wa_wb_present':serviceDetail.WA_WB_Inc,
+                        'dealer_details':serviceDetail.detail_dealers,
+                        'year':serviceDetail.year,
+                        'total_price':total_price
+                    }
+                    html_list.append('<span> regular servicing </span>')
+                    html_list.append('<span> due at : ')
+                    html_list.append(item['odometer'])
+                    html_list.append(' / ')
+                    html_list.append(item['year'])
+                    html_list.append('</span>')
+
+                    html_list.append('<span> dealer : ')
+                    html_list.append(item['dealer_cat'])
+                    html_list.append('</span>')
+
+                    html_list.append('<span> price : ')
+                    html_list.append(total_price)
+                    html_list.append('</span>')
+
+                    html_list.append('</div>')
+
+            elif service == 'cleaning':
+                serviceDetail = CleaningCategoryServices.objects.filter(id=service_id)
+                if len(serviceDetail):
+                    serviceDetail = serviceDetail[0]
+                    total_price = 0
+                    if len(serviceDetail.price_parts):
+                        total_price = total_price+ float(serviceDetail.price_parts)
+                    if len(serviceDetail.price_labour):
+                        total_price = total_price + float(serviceDetail.price_labour)
+
+                    # total_price = float(serviceDetail.price_parts) + float(serviceDetail.price_labour)
+                    html_list.append('<div>')
+
+                    item = {
+                        'id':serviceDetail.id,
+                        'category':serviceDetail.category,
+                        'car_cat':serviceDetail.car_cat,
+                        'service':serviceDetail.service,
+                        'vendor':serviceDetail.vendor,
+                        'parts_price':serviceDetail.price_parts,
+                        'labour_price':serviceDetail.price_labour,
+                        'total_price':serviceDetail.price_total,
+                        # 'total_price':total_price,
+                        'description':serviceDetail.description,
+                    }
+                    html_list.append('<span> Cleaning </span>')
+                    html_list.append('<span> Category : ')
+                    html_list.append(item['category'])
+                    html_list.append('</span>')
+
+                    html_list.append('<span>')
+                    html_list.append(item['vendor'])
+                    html_list.append(' - ')
+                    html_list.append(item['service'])
+                    html_list.append('</span>')
+
+                    html_list.append('<span> price : ')
+                    html_list.append(total_price)
+                    html_list.append('</span>')
+
+                    html_list.append('</div>')
+
+            ac_vi.updateCart(request.user, ts+'*', 'delete', '')
+
+
+        html_list.append('<div> <span> Address : </span><span>')
+        html_list.append(pick_obj['street'])
+        html_list.append('</span><span> Landmark : ')
+        html_list.append(pick_obj['landmark'])
+        html_list.append('</span><span> City : ')
+        html_list.append(pick_obj['city'])
+        html_list.append('</span><span> Pincode : ')
+        html_list.append(pick_obj['pincode'])
+        html_list.append('</span></div>')
+
+        html_list.append('<div><span> Contact No. : ')
+        html_list.append(str(number))
+        html_list.append('</span></div>')
+
+
+        html_script = ' '.join(str(x) for x in html_list)
+        mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
+
+        return HttpResponse(json.dumps(pick_obj), content_type='application/json')
+    else:
+        redirect('/loginPage/')
 
 def insert_tran(request):
     cust_id         = get_param(request,'cust_id',None)   

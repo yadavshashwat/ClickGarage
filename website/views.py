@@ -105,8 +105,9 @@ def checkout(request):
                         }
                         # print total_price
                         cartDict[ts]['service_detail'] = item
-                        if len(carCmpName):
-                            contextDict[carCmpName].append(cartDict[ts])
+                        cartDict[ts]['ts'] = ts
+
+                        contextDict[carCmpName].append(cartDict[ts])
                 elif cartObj['service'] == 'cleaning':
                     serviceDetail = CleaningCategoryServices.objects.filter(id=service_id)
                     if len(serviceDetail):
@@ -132,13 +133,16 @@ def checkout(request):
                         }
                         # print total_price
                         cartDict[ts]['service_detail'] = item
-                        if len(carCmpName):
-                            contextDict[carCmpName].append(cartDict[ts])
+                        cartDict[ts]['ts'] = ts
 
+                        contextDict[carCmpName].append(cartDict[ts])
+
+        print contextDict
         if contextDict.has_key(selectCarName):
             context = RequestContext(request, {
                 'address': [],
-                'cart':contextDict
+                'cart':contextDict,
+                'cart_number':len(contextDict[selectCarName])
 
             })
             return HttpResponse(template.render(context))

@@ -13,7 +13,7 @@ urlpatterns = [
 
     url(r'fetch_user_details/$','api.views.getUserDetails',name='getUserDetails'),
     url(r'add_to_cart/$','api.views.addItemToCart',name='addItemToCart'),
-
+    url(r'place_order/$','api.views.place_order',name='place_order'),
     #car_<servicename>, <servicename>_details
     # params : c_id,
     url(r'fetch_car_servicing/$','api.views.fetch_car_services',name='fetch_car_services'),
