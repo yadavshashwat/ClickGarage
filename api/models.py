@@ -88,11 +88,13 @@ class CleaningDealerName(models.Model):
 class CleaningCatName(models.Model):
     category = models.CharField(max_length=50)
     description = models.CharField(max_length=200)
+    car_bike = models.CharField(max_length=50)
 
 class CleaningServiceCat(models.Model):
     vendor = models.CharField(max_length=50)
     category = models.CharField(max_length=50)
     description = models.CharField(max_length=200)
+    car_bike = models.CharField(max_length=50)
 
 class CleaningCategoryServices(models.Model):
     vendor          = models.CharField(max_length=50)
@@ -102,8 +104,9 @@ class CleaningCategoryServices(models.Model):
     price_labour    = models.CharField(max_length=50)
     price_parts     = models.CharField(max_length=50)
     price_total     = models.CharField(max_length=50)
-    description     = models.CharField(max_length=500)
+    description     = models.CharField(max_length=1000)
     doorstep        = models.CharField(max_length=50)
+    car_bike = models.CharField(max_length=50)
     rating          = ListField(models.CharField(max_length=50))
     reviews         = ListField(models.CharField(max_length=500))
 
@@ -116,11 +119,14 @@ class VASDealerName(models.Model):
 class VASCatName(models.Model):
     category = models.CharField(max_length=50)
     description = models.CharField(max_length=200)
+    car_bike = models.CharField(max_length=50)
 
 class VASServiceCat(models.Model):
     vendor = models.CharField(max_length=50)
     category = models.CharField(max_length=50)
     description = models.CharField(max_length=200)
+    car_bike = models.CharField(max_length=50)
+
 
 class VASCategoryServices(models.Model):
     vendor          = models.CharField(max_length=50)
@@ -134,6 +140,7 @@ class VASCategoryServices(models.Model):
     doorstep        = models.CharField(max_length=50)
     rating          = ListField(models.CharField(max_length=50))
     reviews         = ListField(models.CharField(max_length=500))
+    car_bike = models.CharField(max_length=50)
 
 class WindShieldCat(models.Model):
     brand    = models.CharField(max_length=50)

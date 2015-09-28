@@ -10,7 +10,7 @@ from api.models import *
 
 # carMakers = ['Chevrolet', 'Datsun', 'Fiat', 'Ford', 'Honda', 'Hyundai', 'Mahindra', 'Maruti', 'Nissan', 'Skoda', 'Tata', 'Toyota', 'Volkswagen', 'Audi', 'Ssangyong', 'Maserati', 'Porsche', 'Mercedes-Benz', 'Rolls-Royce', 'Isuzu', 'Land', 'Mitsubishi', 'BMW', 'Lamborghini', 'Jaguar', 'Aston', 'Volvo', 'Ferrari', 'Mini', 'Bentley', 'Bugatti'];
 
-carMakers = ['Maruti Suzuki','Hyundai', 'Honda', 'Toyota','Mahindra','Tata','Ford','Chevrolet','Renault','Volkswagen','Ashok Leyland','Aston Martin','Audi','Bentley','BMW','Bugatti','Caterham','Conquest','Datsun','DC','Ferrari','Fiat','Force','ICML','Isuzu','Jaguar','Koenigsegg','Lamborghini','Land Rover','Mahindra Ssangyong','Maserati','Mercedes-Benz','Mini','Mitsubishi','Nissan','Porsche','Premier','Rolls-Royce','Skoda','Volvo']
+carMakers = ['Maruti Suzuki','Hyundai', 'Honda', 'Toyota','Mahindra','Tata','Ford','Chevrolet','Renault','Volkswagen','Ashok Leyland','Aston Martin','Audi','Bentley','BMW','Bugatti','Caterham','Conquest','Datsun','DC','Ferrari','Fiat','Force','ICML','Isuzu','Jaguar','Koenigsegg','Lamborghini','Land Rover','Mahindra Ssangyong','Maserati','Mercedes-Benz','Mini','Mitsubishi','Nissan','Porsche','Premier','Rolls-Royce','Skoda','Volvo','Royal Enfield','KTM','Honda','Suzuki','TVS','Bajaj','Yamaha','Hero']
 
 path = os.path.dirname(os.path.realpath(__file__))
 print path
@@ -70,6 +70,7 @@ def loadCars(fileName):
 
              aspectRatio = car[1]
              size = car[2]
+             car_bike = car[3]
              # make = carCompoundName.split(' ')[0]
              # if make not in carMakers:
              #     make = ''
@@ -77,14 +78,15 @@ def loadCars(fileName):
              # else:
              #     name_model = carCompoundName.split(' ', 1)[1]
 
-             findCar = Car.objects.filter(name=name_model, make=make, size= size)
+             findCar = Car.objects.filter(name=name_model, make=make)
              if len(findCar):
                  findCar = findCar[0]
                  findCar.aspect_ratio = aspectRatio
                  findCar.size = size
+                 findCar.car_bike = car_bike
                  findCar.save()
              else:
-                cc = Car(make=make, name=name_model, year=0, aspect_ratio=aspectRatio, size = size)
+                cc = Car(make=make, name=name_model, year=0, aspect_ratio=aspectRatio, size = size, car_bike=car_bike)
                 cc.save()
 
 def loadServicing(fileName):
@@ -366,6 +368,7 @@ def loadCleaning(fileName):
             price_total      = cleanstring(service_name[7])
             description      = cleanstring(service_name[8])
             doorstep         = cleanstring(service_name[9])
+            car_bike         = cleanstring(service_name[10])
 
             if sup_cat == "Cleaning":
                 findVendor = CleaningDealerName.objects.filter(vendor=vendor)
@@ -377,33 +380,36 @@ def loadCleaning(fileName):
                     cc = CleaningDealerName(vendor=vendor)
                     cc.save()
                 
-                findCatname = CleaningCatName.objects.filter(category=category)
+                findCatname = CleaningCatName.objects.filter(category=category, car_bike = car_bike)
+                
                 if len(findCatname):
                     findCatname = findCatname[0]
                     findCatname.category         = category
+                    findCatname.car_bike = car_bike
                     findCatname.save()
                 else:
-                    cc = CleaningCatName(category=category)
-                    cc.save()
+                    ccat = CleaningCatName(category=category, car_bike = car_bike)
+                    ccat.save()
 
-                findCat = CleaningServiceCat.objects.filter(vendor=vendor,category = category)
+                findCat = CleaningServiceCat.objects.filter(vendor=vendor,category = category, car_bike = car_bike)
                 if len(findCat):
                     findCat = findCat[0]
                     findCat.vendor  = vendor
                     findCat.category = category
+                    findCat.car_bike = car_bike
                     findCat.save()
                 else:
-                    clseca = CleaningServiceCat(vendor=vendor,category = category)
+                    clseca = CleaningServiceCat(vendor=vendor,category = category, car_bike = car_bike)
                     clseca.save()
     
-                findService = CleaningCategoryServices.objects.filter(vendor=vendor,car_cat = car_cat,category = category,service=service)
+                findService = CleaningCategoryServices.objects.filter(vendor=vendor,car_cat = car_cat,category = category,service=service, car_bike = car_bike)
                 if len(findService):
                     findService = findService[0]       
                     findService.price_labour     = price_labour    
                     findService.price_parts      = price_parts     
                     findService.price_total      = price_total     
                     findService.description      = description   
-                    findService.doorstep=doorstep  
+                    findService.doorstep         = doorstep  
                     findService.save()
                 else:
                     clcase = CleaningCategoryServices(vendor           = vendor        
@@ -414,7 +420,8 @@ def loadCleaning(fileName):
                                                      ,price_parts      = price_parts   
                                                      ,price_total      = price_total   
                                                      ,description      = description
-                                                     ,doorstep= doorstep   )
+                                                     ,doorstep         = doorstep
+                                                     ,car_bike = car_bike   )
                     clcase.save()
 
             if sup_cat == "VAS":
@@ -427,28 +434,31 @@ def loadCleaning(fileName):
                     va = VASDealerName(vendor=vendor)
                     va.save()
                 
-                findCatname = VASCatName.objects.filter(category=category)
+                findCatname = VASCatName.objects.filter(category=category, car_bike = car_bike)
+                
                 if len(findCatname):
                     findCatname = findCatname[0]
                     findCatname.category         = category
+                    findCatname.car_bike = car_bike
                     findCatname.save()
                 else:
-                    cc = VASCatName(category=category)
-                    cc.save()
+                    vcat = VASCatName(category=category, car_bike = car_bike)
+                    vcat.save()
                                
 
 
-                findCat = VASServiceCat.objects.filter(vendor=vendor,category = category)
+                findCat = VASServiceCat.objects.filter(vendor=vendor,category = category, car_bike = car_bike)
                 if len(findCat):
                     findCat = findCat[0]
                     findCat.vendor  = vendor
                     findCat.category = category
+                    findCat.car_bike = car_bike
                     findCat.save()
                 else:
-                    vaseca = VASServiceCat(vendor=vendor,category = category)
+                    vaseca = VASServiceCat(vendor=vendor,category = category, car_bike = car_bike)
                     vaseca.save()
     
-                findService = VASCategoryServices.objects.filter(vendor=vendor,car_cat = car_cat,category = category,service=service)
+                findService = VASCategoryServices.objects.filter(vendor=vendor,car_cat = car_cat,category = category,service=service, car_bike = car_bike)
                 if len(findService):
                     findService = findService[0]       
                     findService.price_labour     = price_labour    
@@ -466,7 +476,8 @@ def loadCleaning(fileName):
                                                      ,price_parts      = price_parts   
                                                      ,price_total      = price_total   
                                                      ,description      = description
-                                                     ,doorstep = doorstep   )
+                                                     ,doorstep = doorstep 
+                                                     ,car_bike = car_bike )
                     vacase.save()
 
 def loadServiceDealerName(fileName):

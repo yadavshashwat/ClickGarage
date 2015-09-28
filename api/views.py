@@ -906,12 +906,24 @@ def getCarObjFromName(carNameArray):
 def fetch_all_cleaning(request, HTTPFlag = True):
     obj = {}
     result = []
-    allDealerCat = CleaningCatName.objects.all()
+    car_id = get_param(request,'c_id',None)
+    car_bike = None
+    if car_id:
+        carObj = Car.objects.filter(id=car_id)
+       
+        if len(carObj):
+            carObj = carObj[0]
+            size = carObj.size
+            car_bike = carObj.car_bike
+            print size
+
+    allDealerCat = CleaningCatName.objects.filter(car_bike = car_bike)
     for service in allDealerCat:
 
         result.append({'id':service.id         
                         ,'category':service.category          
-                        ,'description':service.description} )
+                        ,'description':service.description
+                        ,'car_bike':service.car_bike} )
     obj['result'] = result
     obj['counter'] = 1
     obj['status'] = True
@@ -935,6 +947,7 @@ def fetch_clean_service(request):
     vendor = None
     size = None
     category = None
+    car_bike = None
 
     if car_id:
         carObj = Car.objects.filter(id=car_id)
@@ -942,6 +955,7 @@ def fetch_clean_service(request):
         if len(carObj):
             carObj = carObj[0]
             size = carObj.size
+            car_bike = carObj.car_bike
             print size
     if catg_id:
         cleanObj = CleaningCatName.objects.filter(id=catg_id)
@@ -954,7 +968,7 @@ def fetch_clean_service(request):
     
     if category:
         if size:
-            CleanCatObjs = CleaningCategoryServices.objects.filter(category = category,car_cat = size)
+            CleanCatObjs = CleaningCategoryServices.objects.filter(category = category,car_cat = size, car_bike = car_bike)
             for service in CleanCatObjs:
                 obj['result'].append({
                         'id':service.id
@@ -980,9 +994,19 @@ def fetch_clean_service(request):
 def fetch_all_vas(request, HTTPFlag = True):
     obj = {}
     result = []
-    allDealerCat = VASCatName.objects.all()
-    for service in allDealerCat:
+    car_id = get_param(request,'c_id',None)
+    car_bike = None
+    if car_id:
+        carObj = Car.objects.filter(id=car_id)
+       
+        if len(carObj):
+            carObj = carObj[0]
+            size = carObj.size
+            car_bike = carObj.car_bike
+            print size
 
+    allDealerCat = VASCatName.objects.filter(car_bike = car_bike)   
+    for service in allDealerCat:
         result.append({'id':service.id         
                         ,'category':service.category          
                         ,'description':service.description} )
@@ -1009,13 +1033,14 @@ def fetch_vas_service(request):
     odo = None
     vendor = None
     size = None
-
+    car_bike = None
     if car_id:
         carObj = Car.objects.filter(id=car_id)
        
         if len(carObj):
             carObj = carObj[0]
             size = carObj.size
+            car_bike = carObj.car_bike
             print size
     if catg_id:
         cleanObj = VASCatName.objects.filter(id=catg_id)
@@ -1028,7 +1053,7 @@ def fetch_vas_service(request):
     
     if category:
         if size:
-            CleanCatObjs = VASCategoryServices.objects.filter(category = category,car_cat = size)
+            CleanCatObjs = VASCategoryServices.objects.filter(category = category,car_cat = size, car_bike = car_bike)
             for service in CleanCatObjs:
                 obj['result'].append({
                         'id':service.id
