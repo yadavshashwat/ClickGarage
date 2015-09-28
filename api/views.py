@@ -1111,9 +1111,10 @@ def place_order(request):
 
         # obj_pick = json.loads(pick_obj)
         pick_obj = ast.literal_eval(pick_obj)
-        pick_obj = ast.literal_eval(pick_obj)
+        drop_obj = ast.literal_eval(drop_obj)
+        # pick_obj = ast.literal_eval(pick_obj)
         # print pick_obj
-        pick_obj = json.loads(pick_obj)
+        # pick_obj = json.loads(pick_obj)
 
         # print pick_obj
 
@@ -1235,7 +1236,7 @@ def place_order(request):
             ac_vi.updateCart(request.user, ts+'*', 'delete', '')
 
 
-        html_list.append('<div> <span> Address : </span><span>')
+        html_list.append('<div> <span>Pickup Address : </span><span>')
         html_list.append(pick_obj['street'])
         html_list.append('</span><span> Landmark : ')
         html_list.append(pick_obj['landmark'])
@@ -1247,6 +1248,16 @@ def place_order(request):
 
         html_list.append('<div><span> Contact No. : ')
         html_list.append(str(number))
+        html_list.append('</span></div>')
+
+        html_list.append('<div> <span>Drop Address : </span><span>')
+        html_list.append(drop_obj['street'])
+        html_list.append('</span><span> Landmark : ')
+        html_list.append(drop_obj['landmark'])
+        html_list.append('</span><span> City : ')
+        html_list.append(drop_obj['city'])
+        html_list.append('</span><span> Pincode : ')
+        html_list.append(drop_obj['pincode'])
         html_list.append('</span></div>')
 
 
