@@ -982,7 +982,8 @@ def fetch_clean_service(request):
                         ,'description':service.description  
                         ,'doorstep':service.doorstep    
                         ,'rating':service.rating          
-                        ,'reviews':service.reviews                        
+                        ,'reviews':service.reviews   
+                        ,'car_bike': service.car_bike                              
                               } )
                       
     obj['status'] = True
@@ -1067,7 +1068,8 @@ def fetch_vas_service(request):
                         ,'description':service.description  
                         ,'doorstep':service.doorstep    
                         ,'rating':service.rating          
-                        ,'reviews':service.reviews                        
+                        ,'reviews':service.reviews   
+                        ,'car_bike': service.car_bike                  
                               } )
                       
     obj['status'] = True
