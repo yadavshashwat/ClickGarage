@@ -898,7 +898,7 @@ def getCarObjFromName(carNameArray):
          findCar = Car.objects.filter(name=name_model, make=make)
          if len(findCar):
             carObj = findCar[0]
-            result = {'name':carObj.name, 'make':carObj.make, 'aspect_ratio':carObj.aspect_ratio, 'size':carObj.size,'id':carObj.id}
+            result = {'name':carObj.name, 'make':carObj.make, 'aspect_ratio':carObj.aspect_ratio, 'size':carObj.size,'id':carObj.id, 'car_bike':carObj.car_bike}
             res.append(result)
 
     return res
