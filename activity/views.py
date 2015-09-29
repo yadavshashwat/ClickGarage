@@ -189,7 +189,7 @@ def updateCart(user, cookie_data, action, car_id):
                                 'make':car.make,
                                 'year':car.year,
                                 'size':car.size,
-                                'car_bike':car.car_bike
+                                
                             }
 
                     # cartObj['timestamp'] = timestamp
