@@ -22,6 +22,26 @@ def index(request):
     })
     return HttpResponse(template.render(context))
 
+def blog(request):
+    # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+
+def privacy(request):
+    # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))
+    template = loader.get_template('website/privacy.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+
+def tnc(request):
+    # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))
+    template = loader.get_template('website/tnc.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+
 def order(request):
     print 'order'
     print 'd ', request.user

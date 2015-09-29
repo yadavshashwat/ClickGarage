@@ -41,5 +41,9 @@ urlpatterns = [
     url(r'^auth/', views.auth_and_login, name='auth_and_login'),
     url(r'^signup/', views.sign_up_in, name='sign_up_in'),
     # url(r'^login/(\w*)', views.social_login, name='social_login'),
-    url(r'^logout/', views.logout, name='logout')
+    url(r'^logout/', views.logout, name='logout'),
+    url(r'^privacy/', 'website.views.privacy', name='privacy'),
+    url(r'^tnc/', 'website.views.tnc', name='tnc')
+    
+
 ]
