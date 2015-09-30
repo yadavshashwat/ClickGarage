@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/',include('api.urls')),
     url('', include('social.apps.django_app.urls', namespace='social')),
+    url(r'^logout/', views.logout_to_home, name='logout_to_home'),
     url('', include('django.contrib.auth.urls', namespace='auth')),
     # url(r'', include('social_auth.urls')),
     # url(r'^index/',include('website.urls')),
@@ -41,7 +42,6 @@ urlpatterns = [
     url(r'^auth/', views.auth_and_login, name='auth_and_login'),
     url(r'^signup/', views.sign_up_in, name='sign_up_in'),
     # url(r'^login/(\w*)', views.social_login, name='social_login'),
-    url(r'^logout/', views.logout, name='logout'),
     url(r'^privacy/', 'website.views.privacy', name='privacy'),
     url(r'^tnc/', 'website.views.tnc', name='tnc')
     
