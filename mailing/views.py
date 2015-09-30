@@ -861,7 +861,7 @@ def send_booking_email(to_address,to_name,time_start,date,booking_id):
 	server = smtplib.SMTP(
 	    host = smtp_server,
 	    port = smtp_port,
-	    timeout = 10
+	    timeout = 30
 	)
 	server.set_debuglevel(10)
 	server.starttls()
