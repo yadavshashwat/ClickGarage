@@ -13,12 +13,15 @@ from api.models import ServiceDealerCat, CleaningCategoryServices, Car
 # Create your views here.
 def index(request):
     # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))
+    flag = views.get_param(request, 'logReq',False)
+
     template = loader.get_template('website/index.html')
     cars = views.fetch_all_cars(request).content
     cars = json.loads(cars)
     cars = cars['result']
     context = RequestContext(request, {
         'cars': cars,
+        'loginFlag':flag
     })
     return HttpResponse(template.render(context))
 
@@ -60,7 +63,7 @@ def order(request):
         return HttpResponse(template.render(context))
 
     else:
-        return redirect("/loginPage/")
+        return redirect("../?logReq=True")
 
 def checkout(request):
     selectCarID = request.COOKIES.get('clgacarid')
