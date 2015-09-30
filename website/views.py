@@ -64,6 +64,7 @@ def order(request):
 
 def checkout(request):
     selectCarID = request.COOKIES.get('clgacarid')
+    cookieCartData = request.COOKIES.get('clgacart')
     cartEmpty = False
     if request.user.is_authenticated():
         template = loader.get_template('website/checkout.html')
@@ -76,6 +77,31 @@ def checkout(request):
         cartDict = request.user.uc_cart
         contextDict = {}
 
+        if cookieCartData and len(cookieCartData):
+            cookieCartArray = cookieCartData.split(',')
+            for cookieItem in cookieCartArray:
+                cookieA = cookieItem.split('*')
+                ts = cookieA[0]
+                if ts not in cartDict:
+                    dealer = " ".join(cookieA[2].split('#$'))
+                    obj = {
+                        'dealer'    : dealer,
+                        'service'   : cookieA[1],
+                        'service_id': cookieA[3],
+                    }
+                    carObj = Car.objects.filter(id=selectCarID)
+                    carObj = carObj[0]
+                    obj['car'] = {
+                        'make'  :   carObj.make,
+                        'model' :   carObj.model,
+                        'year'  :   carObj.year,
+                        'name'  :   carObj.name,
+                        'size'  :   carObj.size
+                    }
+                    cartDict[ts] = obj
+
+            request.user.uc_cart = cartDict
+            request.user.save()
         for ts in cartDict:
             cartObj = cartDict[ts]
             if cartObj.has_key("car"):
