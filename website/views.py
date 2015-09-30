@@ -12,18 +12,27 @@ from api.models import ServiceDealerCat, CleaningCategoryServices, Car
 
 # Create your views here.
 def index(request):
-    # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))
-    flag = views.get_param(request, 'logReq',False)
 
-    template = loader.get_template('website/index.html')
-    cars = views.fetch_all_cars(request).content
-    cars = json.loads(cars)
-    cars = cars['result']
-    context = RequestContext(request, {
-        'cars': cars,
-        'loginFlag':flag
-    })
-    return HttpResponse(template.render(context))
+    selectedCarName = request.COOKIES.get('clgacarname')
+    selectedCarID = request.COOKIES.get('clgacarid')
+    carObj = Car.objects.filter(id=selectedCarID)
+
+    if request.user and request.user.is_authenticated() and len(carObj):
+        carObj = carObj[0]
+        return redirect("/order")
+    else:
+        # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))
+        flag = views.get_param(request, 'logReq',False)
+
+        template = loader.get_template('website/index.html')
+        cars = views.fetch_all_cars(request).content
+        cars = json.loads(cars)
+        cars = cars['result']
+        context = RequestContext(request, {
+            'cars': cars,
+            'loginFlag':flag
+        })
+        return HttpResponse(template.render(context))
 
 
 
