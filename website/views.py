@@ -13,12 +13,15 @@ from api.models import ServiceDealerCat, CleaningCategoryServices, Car
 # Create your views here.
 def index(request):
     # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))
+    flag = views.get_param(request, 'logReq',False)
+
     template = loader.get_template('website/index.html')
     cars = views.fetch_all_cars(request).content
     cars = json.loads(cars)
     cars = cars['result']
     context = RequestContext(request, {
         'cars': cars,
+        'loginFlag':flag
     })
     return HttpResponse(template.render(context))
 
@@ -60,10 +63,11 @@ def order(request):
         return HttpResponse(template.render(context))
 
     else:
-        return redirect("/loginPage/")
+        return redirect("../?logReq=True")
 
 def checkout(request):
     selectCarID = request.COOKIES.get('clgacarid')
+    cookieCartData = request.COOKIES.get('clgacart')
     cartEmpty = False
     if request.user.is_authenticated():
         template = loader.get_template('website/checkout.html')
@@ -76,6 +80,31 @@ def checkout(request):
         cartDict = request.user.uc_cart
         contextDict = {}
 
+        if cookieCartData and len(cookieCartData):
+            cookieCartArray = cookieCartData.split(',')
+            for cookieItem in cookieCartArray:
+                cookieA = cookieItem.split('*')
+                ts = cookieA[0]
+                if ts not in cartDict:
+                    dealer = " ".join(cookieA[2].split('#$'))
+                    obj = {
+                        'dealer'    : dealer,
+                        'service'   : cookieA[1],
+                        'service_id': cookieA[3],
+                    }
+                    carObj = Car.objects.filter(id=selectCarID)
+                    carObj = carObj[0]
+                    obj['car'] = {
+                        'make'  :   carObj.make,
+                        'model' :   carObj.model,
+                        'year'  :   carObj.year,
+                        'name'  :   carObj.name,
+                        'size'  :   carObj.size
+                    }
+                    cartDict[ts] = obj
+
+            request.user.uc_cart = cartDict
+            request.user.save()
         for ts in cartDict:
             cartObj = cartDict[ts]
             if cartObj.has_key("car"):
@@ -183,11 +212,39 @@ def dashboard(request):
 
 def cart(request):
     selectCar = request.COOKIES.get('clgacarid')
+    cookieCartData = request.COOKIES.get('clgacart')
     if request.user.is_authenticated():
         template = loader.get_template('website/cart.html')
+        carList = []
         cartList = []
         cartDict = request.user.uc_cart
         contextDict = {}
+
+        if cookieCartData and len(cookieCartData):
+            cookieCartArray = cookieCartData.split(',')
+            for cookieItem in cookieCartArray:
+                cookieA = cookieItem.split('*')
+                ts = cookieA[0]
+                if ts not in cartDict:
+                    dealer = " ".join(cookieA[2].split('#$'))
+                    obj = {
+                        'dealer'    : dealer,
+                        'service'   : cookieA[1],
+                        'service_id': cookieA[3],
+                    }
+                    carObj = Car.objects.filter(id=selectCar)
+                    carObj = carObj[0]
+                    obj['car'] = {
+                        'make'  :   carObj.make,
+                        'model' :   carObj.model,
+                        'year'  :   carObj.year,
+                        'name'  :   carObj.name,
+                        'size'  :   carObj.size
+                    }
+                    cartDict[ts] = obj
+
+            request.user.uc_cart = cartDict
+            request.user.save()
         for ts in cartDict:
             cartObj = cartDict[ts]
             if cartObj.has_key("car"):
@@ -230,6 +287,8 @@ def cart(request):
                     cartDict[ts]['ts'] = ts
                     if len(carCmpName):
                         contextDict[carCmpName].append(cartDict[ts])
+                        if carCmpName not in carList:
+                            carList.append(carCmpName)
             elif cartObj['service'] == 'cleaning':
                 serviceDetail = CleaningCategoryServices.objects.filter(id=service_id)
                 if len(serviceDetail):
@@ -258,9 +317,14 @@ def cart(request):
                     cartDict[ts]['ts'] = ts
                     if len(carCmpName):
                         contextDict[carCmpName].append(cartDict[ts])
-        print contextDict
+                        if carCmpName not in carList:
+                            carList.append(carCmpName)
+        # print contextDict
+        if len(carList):
+            carList = views.getCarObjFromName(carList)
         context = RequestContext(request, {
-            'cart' : contextDict
+            'cart' : contextDict,
+            'carList':carList
         })
         return HttpResponse(template.render(context))
     else:
