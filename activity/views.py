@@ -124,9 +124,9 @@ def auth_and_login(request, onsuccess='/', onfail='/loginPage/'):
     else:
         return redirect(onfail)
 
-def logout(request):
+def logout_to_home(request):
     auth_logout(request)
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('http://www.clickgarage.in/')
 
 def create_user(username, email, password):
     user = CGUser(username=username, email=email)
