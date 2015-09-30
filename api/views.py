@@ -105,114 +105,122 @@ def fetch_car(request, HTTPFlag=True):
         return obj
 
 def fetch_car_services(request):
-    car_id = get_param(request, 'c_id', None)
     obj = {}
     obj['status'] = False
     obj['result'] = []
-    car = None
-    make = None
-    if car_id:
-        carObj = Car.objects.filter(id=car_id)
-        
-        if len(carObj):
-            carObj = carObj[0]
-            car_old = carObj.name
-            make = carObj.make
-            car = make + " " + car_old
-            if car:
-                ServiceObjs = Servicing.objects.filter(carname = car, brand = make).order_by('odometer')
-                #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
-                for service in ServiceObjs:
-                    obj['result'].append({
-                        'id':service.id
-                        ,'name':service.name             
-                        ,'brand':service.brand            
-                        ,'car_name':service.carname          
-                        ,'odometer':service.odometer         
-                        ,'year':service.year             
-                        ,'regular_checks':service.regular_checks   
-                        ,'paid_free':service.paid_free        
-                        ,'parts_replaced':service.part_replacement
-                        ,'dealers_list':service.dealer} )
 
-            
-            
-    obj['status'] = True
-    obj['counter'] = 1
-    obj['msg'] = "Success"
-    return HttpResponse(json.dumps(obj), content_type='application/json')
+    if request.user and request.user.is_authenticated():
+        car_id = get_param(request, 'c_id', None)
+        car = None
+        make = None
+        if car_id:
+            carObj = Car.objects.filter(id=car_id)
+
+            if len(carObj):
+                carObj = carObj[0]
+                car_old = carObj.name
+                make = carObj.make
+                car = make + " " + car_old
+                if car:
+                    ServiceObjs = Servicing.objects.filter(carname = car, brand = make).order_by('odometer')
+                    #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
+                    for service in ServiceObjs:
+                        obj['result'].append({
+                            'id':service.id
+                            ,'name':service.name
+                            ,'brand':service.brand
+                            ,'car_name':service.carname
+                            ,'odometer':service.odometer
+                            ,'year':service.year
+                            ,'regular_checks':service.regular_checks
+                            ,'paid_free':service.paid_free
+                            ,'parts_replaced':service.part_replacement
+                            ,'dealers_list':service.dealer} )
+
+
+
+        obj['status'] = True
+        obj['counter'] = 1
+        obj['msg'] = "Success"
+        return HttpResponse(json.dumps(obj), content_type='application/json')
+    else:
+        return HttpResponse(json.dumps(obj), content_type='application/json')
 
 def fetch_car_servicedetails(request):
     service_id = get_param(request, 'service_id', None)
     obj = {}
     obj['status'] = False
     obj['result'] = []
-    car = None
-    make = None
-    odo = None
-    if service_id:
-        serviceObj = Servicing.objects.filter(id=service_id)
-        
-        if len(serviceObj):
-            serviceObj = serviceObj[0]
-            car = serviceObj.carname
-            make = serviceObj.brand
-            odo = serviceObj.odometer
-            if car:
-                ServicedetailObjs = ServiceDealerCat.objects.filter(carname = car, brand = make, odometer=odo).order_by('odometer','dealer_category')
-                for service in ServicedetailObjs:
-                    obj['result'].append({
-                        'id':service.id
-                          ,'name':service.name
-                          ,'brand':service.brand
-                          ,'car':service.carname
-                          ,'odometer':service.odometer
-                          ,'vendor':service.dealer_category
-                          ,'parts_list':service.part_replacement
-                          ,'parts_price':service.price_parts
-                          ,'labour_price':service.price_labour
-                          ,'wa_price':service.wheel_alignment
-                          ,'wb_price':service.wheel_balancing
-                          ,'wa_wb_present':service.WA_WB_Inc
-                          ,'dealer_details':service.detail_dealers      } )
-            
-            
-    obj['status'] = True
-    obj['counter'] = 1
-    obj['msg'] = "Success"
-    return HttpResponse(json.dumps(obj), content_type='application/json')
+    if request.user and request.user.is_authenticated():
+
+        car = None
+        make = None
+        odo = None
+        if service_id:
+            serviceObj = Servicing.objects.filter(id=service_id)
+
+            if len(serviceObj):
+                serviceObj = serviceObj[0]
+                car = serviceObj.carname
+                make = serviceObj.brand
+                odo = serviceObj.odometer
+                if car:
+                    ServicedetailObjs = ServiceDealerCat.objects.filter(carname = car, brand = make, odometer=odo).order_by('odometer','dealer_category')
+                    for service in ServicedetailObjs:
+                        obj['result'].append({
+                            'id':service.id
+                              ,'name':service.name
+                              ,'brand':service.brand
+                              ,'car':service.carname
+                              ,'odometer':service.odometer
+                              ,'vendor':service.dealer_category
+                              ,'parts_list':service.part_replacement
+                              ,'parts_price':service.price_parts
+                              ,'labour_price':service.price_labour
+                              ,'wa_price':service.wheel_alignment
+                              ,'wb_price':service.wheel_balancing
+                              ,'wa_wb_present':service.WA_WB_Inc
+                              ,'dealer_details':service.detail_dealers      } )
+
+
+        obj['status'] = True
+        obj['counter'] = 1
+        obj['msg'] = "Success"
+        return HttpResponse(json.dumps(obj), content_type='application/json')
+    else:
+        return HttpResponse(json.dumps(obj), content_type='application/json')
+
 
 def fetch_car_cleaning(request):
     dealers = fetch_all_cleaningdealer(request, False)
     obj = {}
     obj['status'] = False
     obj['result'] = []
-    if dealers['result'] and len(dealers['result']):
-        obj['status'] = True
-        for dealer in dealers['result']:
-            print dealer
-            CleanCatObjs = CleaningServiceCat.objects.filter(vendor = dealer['name'])
-            oneObj = {
-                'name':dealer['name'],
-                'list':[]
-                                 }
-            for service in CleanCatObjs:
-                oneObj['list'].append({
-                        'id':service.id
-                      ,'name':service.vendor
-                      ,'category':service.category
-                      ,'description':service.description
-                })
-            obj['result'].append(oneObj)
+    if request.user and request.user.is_authenticated():
+
+        if dealers['result'] and len(dealers['result']):
+            obj['status'] = True
+            for dealer in dealers['result']:
+                print dealer
+                CleanCatObjs = CleaningServiceCat.objects.filter(vendor = dealer['name'])
+                oneObj = {
+                    'name':dealer['name'],
+                    'list':[]
+                                     }
+                for service in CleanCatObjs:
+                    oneObj['list'].append({
+                            'id':service.id
+                          ,'name':service.vendor
+                          ,'category':service.category
+                          ,'description':service.description
+                    })
+                obj['result'].append(oneObj)
 
 
-    return HttpResponse(json.dumps(obj), content_type='application/json')
+        return HttpResponse(json.dumps(obj), content_type='application/json')
+    else:
+        return HttpResponse(json.dumps(obj), content_type='application/json')
 
-
-
-
-
-    return HttpResponse(json.dumps(obj), content_type='application/json')
 
 def fetch_car_vas(request):
     dealers = fetch_all_vasdealer(request, False)
