@@ -35,28 +35,28 @@ urlpatterns = [
 	
     
 
-    url(r'fetch_all_cleaning/$','api.views.fetch_all_cleaning',name='fetch_all_cleaning'),
-    url(r'fetch_clean_service/$','api.views.fetch_clean_service',name='fetch_clean_service'),
-    
-    url(r'fetch_all_cleaningdealer/$','api.views.fetch_all_cleaningdealer',name='fetch_all_cleaningdealer'),
-    url(r'fetch_dealer_cleancat/$','api.views.fetch_dealer_cleancat',name='fetch_dealer_cleancat'),
-    url(r'fetch_clean_catservice/$','api.views.fetch_clean_catservice',name='fetch_clean_catservice'),
-    url(r'fetch_all_cleaningcat/$','api.views.fetch_all_cleaningcat',name='fetch_all_cleaningcat'),
-    url(r'fetch_all_cleaningcatservices/$','api.views.fetch_all_cleaningcatservices',name='fetch_all_cleaningcatservices'),
-      
-    url(r'fetch_all_vas/$','api.views.fetch_all_vas',name='fetch_all_vas'),
-    url(r'fetch_vas_service/$','api.views.fetch_vas_service',name='fetch_vas_service'),
-    
-    url(r'fetch_all_vasdealer/$','api.views.fetch_all_vasdealer',name='fetch_all_vasdealer'),
-    url(r'fetch_dealer_vascat/$','api.views.fetch_dealer_vascat',name='fetch_dealer_vascat'),
-    url(r'fetch_vas_catservice/$','api.views.fetch_vas_catservice',name='fetch_vas_catservice'),
-    url(r'fetch_all_vascat/$','api.views.fetch_all_vascat',name='fetch_all_vascat'),
-    url(r'fetch_all_vascatservices/$','api.views.fetch_all_vascatservices',name='fetch_all_vascatservices'),
-      
-    url(r'fetch_all_windshieldcatdetails/$','api.views.fetch_all_windshieldcatdetails',name='fetch_all_windshieldcatdetails'),
-    url(r'fetch_all_windshieldservices/$','api.views.fetch_all_windshieldservices',name='fetch_all_windshieldservices'),
-    url(r'fetch_car_windshieldcatdetails/$','api.views.fetch_car_windshieldcatdetails',name='fetch_car_windshieldcatdetails'),
-    url(r'fetch_car_windshieldservices/$','api.views.fetch_car_windshieldservices',name='fetch_car_windshieldservices'),
+    #url(r'fetch_all_cleaning/$','api.views.fetch_all_cleaning',name='fetch_all_cleaning'),
+    #url(r'fetch_clean_service/$','api.views.fetch_clean_service',name='fetch_clean_service'),
+    #
+    #url(r'fetch_all_cleaningdealer/$','api.views.fetch_all_cleaningdealer',name='fetch_all_cleaningdealer'),
+    #url(r'fetch_dealer_cleancat/$','api.views.fetch_dealer_cleancat',name='fetch_dealer_cleancat'),
+    #url(r'fetch_clean_catservice/$','api.views.fetch_clean_catservice',name='fetch_clean_catservice'),
+    #url(r'fetch_all_cleaningcat/$','api.views.fetch_all_cleaningcat',name='fetch_all_cleaningcat'),
+    #url(r'fetch_all_cleaningcatservices/$','api.views.fetch_all_cleaningcatservices',name='fetch_all_cleaningcatservices'),
+    #  
+    #url(r'fetch_all_vas/$','api.views.fetch_all_vas',name='fetch_all_vas'),
+    #url(r'fetch_vas_service/$','api.views.fetch_vas_service',name='fetch_vas_service'),
+    #
+    #url(r'fetch_all_vasdealer/$','api.views.fetch_all_vasdealer',name='fetch_all_vasdealer'),
+    #url(r'fetch_dealer_vascat/$','api.views.fetch_dealer_vascat',name='fetch_dealer_vascat'),
+    #url(r'fetch_vas_catservice/$','api.views.fetch_vas_catservice',name='fetch_vas_catservice'),
+    #url(r'fetch_all_vascat/$','api.views.fetch_all_vascat',name='fetch_all_vascat'),
+    #url(r'fetch_all_vascatservices/$','api.views.fetch_all_vascatservices',name='fetch_all_vascatservices'),
+    #  
+    #url(r'fetch_all_windshieldcatdetails/$','api.views.fetch_all_windshieldcatdetails',name='fetch_all_windshieldcatdetails'),
+    #url(r'fetch_all_windshieldservices/$','api.views.fetch_all_windshieldservices',name='fetch_all_windshieldservices'),
+    #url(r'fetch_car_windshieldcatdetails/$','api.views.fetch_car_windshieldcatdetails',name='fetch_car_windshieldcatdetails'),
+    #url(r'fetch_car_windshieldservices/$','api.views.fetch_car_windshieldservices',name='fetch_car_windshieldservices'),
             
 
 
