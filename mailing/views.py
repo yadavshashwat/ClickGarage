@@ -861,7 +861,7 @@ def send_booking_email(to_address,to_name,time_start,date,booking_id):
 	server = smtplib.SMTP(
 	    host = smtp_server,
 	    port = smtp_port,
-	    timeout = 10
+	    timeout = 30
 	)
 	server.set_debuglevel(10)
 	server.starttls()
@@ -2078,7 +2078,7 @@ input[type='text'], input:not([type]), textarea {
 	server = smtplib.SMTP(
 	    host = smtp_server,
 	    port = smtp_port,
-	    timeout = 10
+	    timeout = 30
 	)
 	
 	server.set_debuglevel(10)
@@ -2127,7 +2127,7 @@ def send_booking_details(to_address,booking_id,html_script):
 	server = smtplib.SMTP(
 	    host = smtp_server,
 	    port = smtp_port,
-	    timeout = 10
+	    timeout = 30
 	)
 	
 	server.set_debuglevel(10)
@@ -2151,7 +2151,7 @@ def send_mail(server_name,port,username,password,fromadd,toadd,subject,text):
 	server = smtplib.SMTP(
 	    host = smtp_server,
 	    port = smtp_port,
-	    timeout = 10
+	    timeout = 30
 	)	
 	server.set_debuglevel(10)
 	server.starttls()
