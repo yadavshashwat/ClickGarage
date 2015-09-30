@@ -2091,13 +2091,11 @@ input[type='text'], input:not([type]), textarea {
 
 
 def send_booking_final(username,useremail,userphone,time_start,date,booking_id,html_script):
-	send_booking_details("shashwat@clickgarage.in",booking_id,html_script)
-	send_booking_details("bhuvan@clickgarage.in",booking_id,html_script)
-	send_booking_details("sanskar@clickgarage.in",booking_id,html_script)
-	send_booking_details("bookings@clickgarage.in",booking_id,html_script)
+	send_booking_details(["shashwat@clickgarage.in","bhuvan@clickgarage.in","sanskar@clickgarage.in","bookings@clickgarage.in"],booking_id,html_script)
 	send_booking_email(useremail,username,time_start,date,booking_id)
 	send_booking_sms(username, userphone, date, time_start, booking_id)
 
+#views.send_booking_sms("Rajeev", "8447021642", "29-10-2015", "10:00AM", "0001")
 def send_booking_details(to_address,booking_id,html_script):
 	me = from_address
 	you = to_address
@@ -2106,8 +2104,9 @@ def send_booking_details(to_address,booking_id,html_script):
 	msg = MIMEMultipart('alternative')
 	msg['Subject'] = "New Booking! Booking ID :" + booking_id
 	msg['From'] = me
-	msg['To'] = you
+	msg['To'] = ', '.join(you)
 
+	
 	script = MIMEText(html_script, 'html')
 	msg.attach(script)
 
