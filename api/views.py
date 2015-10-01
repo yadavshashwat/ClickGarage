@@ -5,9 +5,9 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import models
-import datetime
+import datetime, time
 
-
+from django.db.models import Max
 
 import operator
 import json
@@ -17,6 +17,8 @@ from models import *
 from dataEntry.runentry import carMakers, cleanstring
 from activity import views as ac_vi
 from mailing import views as mviews
+
+from activity.models import Transactions
 
 #login views
 def loginview(request):
@@ -1138,6 +1140,7 @@ def place_order(request):
         email = request.user.email
         name = get_param(request, 'name', None)
         number = get_param(request, 'number', None)
+        car_reg_number = get_param(request, 'reg_no', None)
         pick_obj = get_param(request, 'pick', None)
         drop_obj = get_param(request, 'drop', None)
         order_list = get_param(request, 'order_list', None)
@@ -1164,10 +1167,19 @@ def place_order(request):
             tran = Transaction.objects.all().aggregate(Max('booking_id'))
             booking_id = tran['booking_id'] + 1
 
+
+
+        tran_len = len(Transactions.objects.all())
+        if tran_len > 0:
+            tran = Transactions.objects.all().aggregate(Max('booking_id'))
+            booking_id = int(tran['booking_id__max'] + 1)
+
         html_list = []
         html_list.append('<b>Booking ID #')
         html_list.append(    booking_id)
-        html_list.append(            '</b><br><p>Hi Rajeev,<br> Your ClickGarage booking has been confirmed. Pick up time chosen by you is ')
+        html_list.append(            '</b><br><p>Hi ')
+        html_list.append(name)
+        html_list.append(',<br> Your ClickGarage booking has been confirmed. Pick up time chosen by you is ')
         html_list.append(            pick_obj['time'])
         html_list.append(            ' on ')
         html_list.append(            pick_obj['date'])
@@ -1177,11 +1189,17 @@ def place_order(request):
         # html_script = ' '.join(str(x) for x in html_list)
         html_list.append('<p>The selected services are for ')
         html_list.append(car_name)
-        html_list.append(' are:</p>')
+        html_list.append(':</p>')
+
+        transList = []
+
         for order in order_list:
             ts = order['ts']
             service = order['service']
             service_id = order['service_id']
+            listItem = {}
+            listItem['service'] = service
+            listItem['service_id'] = service_id
             if service == 'servicing':
                 serviceDetail = ServiceDealerCat.objects.filter(id=service_id)
                 if len(serviceDetail):
@@ -1209,6 +1227,7 @@ def place_order(request):
                         'year':serviceDetail.year,
                         'total_price':total_price
                     }
+                    listItem['served_data'] = item
                     html_list.append('<span> regular servicing </span>')
                     html_list.append('<span> due at : ')
                     html_list.append(item['odometer'])
@@ -1251,6 +1270,7 @@ def place_order(request):
                         # 'total_price':total_price,
                         'description':serviceDetail.description,
                     }
+                    listItem['served_data'] = item
                     html_list.append('<span> Cleaning </span>')
                     html_list.append('<span> Category : ')
                     html_list.append(item['category'])
@@ -1269,6 +1289,7 @@ def place_order(request):
                     html_list.append('</div>')
 
             ac_vi.updateCart(request.user, ts+'*', 'delete', '')
+            transList.append(listItem)
 
 
         html_list.append('<div> <span>Pickup Address : </span><span>')
@@ -1295,6 +1316,32 @@ def place_order(request):
         html_list.append(drop_obj['pincode'])
         html_list.append('</span></div>')
 
+
+        tt = Transactions(
+            booking_id       = booking_id,
+            trans_timestamp = time.time(),
+            cust_id         = request.user.id,
+            cust_name       = name,
+            cust_brand      = '',
+            cust_carname    = car_name,
+            cust_number     = number,
+            cust_carnumber  = car_reg_number,
+            cust_email      = email,
+
+            cust_pickup_add = pick_obj,
+            cust_drop_add   = drop_obj,
+
+            service_items   = transList,
+
+            price_total     = '',
+
+            date_booking    = pick_obj['date'],
+            time_booking    = pick_obj['time'],
+            amount_paid     = '',
+            status          = '',
+            comments        = ''
+        )
+        tt.save()
 
         html_script = ' '.join(str(x) for x in html_list)
         mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
