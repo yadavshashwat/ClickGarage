@@ -43,6 +43,29 @@ def privacy(request):
     })
     return HttpResponse(template.render(context))
 
+def history(request):
+    print 'history'
+    print 'd ', request.user
+    print 'tru ', request.user.is_authenticated()
+    if request.user.is_authenticated():
+        template = loader.get_template('website/history.html')
+        car_obj = views.fetch_car(request, False)
+        if(car_obj['status']):
+            car_obj = car_obj['result']
+        else:
+            car_obj = False
+
+        cars = views.fetch_all_cars(request).content
+        cars = json.loads(cars)
+        cars = cars['result']
+        context = RequestContext(request, {
+            'carSelected': car_obj,
+            'cars':cars
+        })
+        return HttpResponse(template.render(context))
+
+    else:
+        return redirect("../?logReq=True")
 def tnc(request):
     # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))
     template = loader.get_template('website/tnc.html')
@@ -352,3 +375,125 @@ def loginPage(request):
     })
     # return render_to_response('website/login.html', c)
     return HttpResponse(template.render(context))
+
+
+
+def bookings(request):
+    selectCar = request.COOKIES.get('clgacarid')
+    cookieCartData = request.COOKIES.get('clgacart')
+    if request.user.is_authenticated():
+        template = loader.get_template('website/cart.html')
+        carList = []
+        cartList = []
+        cartDict = request.user.uc_cart
+        contextDict = {}
+
+        if cookieCartData and len(cookieCartData):
+            cookieCartArray = cookieCartData.split(',')
+            for cookieItem in cookieCartArray:
+                cookieA = cookieItem.split('*')
+                ts = cookieA[0]
+                if ts not in cartDict:
+                    dealer = " ".join(cookieA[2].split('#$'))
+                    obj = {
+                        'dealer'    : dealer,
+                        'service'   : cookieA[1],
+                        'service_id': cookieA[3],
+                    }
+                    carObj = Car.objects.filter(id=selectCar)
+                    carObj = carObj[0]
+                    obj['car'] = {
+                        'make'  :   carObj.make,
+                        'model' :   carObj.model,
+                        'year'  :   carObj.year,
+                        'name'  :   carObj.name,
+                        'size'  :   carObj.size
+                    }
+                    cartDict[ts] = obj
+
+            request.user.uc_cart = cartDict
+            request.user.save()
+        for ts in cartDict:
+            cartObj = cartDict[ts]
+            if cartObj.has_key("car"):
+                carCmpName = " ".join([cartObj['car']['make'], cartObj['car']['name']])
+                if not contextDict.has_key(carCmpName):
+                    contextDict[carCmpName] = []
+            else:
+                carCmpName = ""
+            item = {}
+            service_id = cartObj['service_id']
+            if cartObj['service'] == 'servicing':
+                serviceDetail = ServiceDealerCat.objects.filter(id=service_id)
+                if len(serviceDetail):
+                    serviceDetail = serviceDetail[0]
+                    print serviceDetail.price_parts, serviceDetail.price_labour
+                    total_price = 0
+                    if len(serviceDetail.price_parts):
+                        total_price = total_price+ float(serviceDetail.price_parts)
+                    if len(serviceDetail.price_labour):
+                        total_price = total_price + float(serviceDetail.price_labour)
+                    item = {
+                        'id':serviceDetail.id,
+                        'name':serviceDetail.name,
+                        'brand':serviceDetail.brand,
+                        'car':serviceDetail.carname,
+                        'odometer':serviceDetail.odometer,
+                        'dealer_cat':serviceDetail.dealer_category,
+                        'parts_list':serviceDetail.part_replacement,
+                        'parts_price':serviceDetail.price_parts,
+                        'labour_price':serviceDetail.price_labour,
+                        'wa_price':serviceDetail.wheel_alignment,
+                        'wb_price':serviceDetail.wheel_balancing,
+                        'wa_wb_present':serviceDetail.WA_WB_Inc,
+                        'dealer_details':serviceDetail.detail_dealers,
+                        'year':serviceDetail.year,
+                        'total_price':total_price
+                    }
+                    # print total_price
+                    cartDict[ts]['service_detail'] = item
+                    cartDict[ts]['ts'] = ts
+                    if len(carCmpName):
+                        contextDict[carCmpName].append(cartDict[ts])
+                        if carCmpName not in carList:
+                            carList.append(carCmpName)
+            elif cartObj['service'] == 'cleaning':
+                serviceDetail = CleaningCategoryServices.objects.filter(id=service_id)
+                if len(serviceDetail):
+                    serviceDetail = serviceDetail[0]
+                    total_price = 0
+                    if len(serviceDetail.price_parts):
+                        total_price = total_price+ float(serviceDetail.price_parts)
+                    if len(serviceDetail.price_labour):
+                        total_price = total_price + float(serviceDetail.price_labour)
+
+                    # total_price = float(serviceDetail.price_parts) + float(serviceDetail.price_labour)
+                    item = {
+                        'id':serviceDetail.id,
+                        'category':serviceDetail.category,
+                        'car_cat':serviceDetail.car_cat,
+                        'service':serviceDetail.service,
+                        'vendor':serviceDetail.vendor,
+                        'parts_price':serviceDetail.price_parts,
+                        'labour_price':serviceDetail.price_labour,
+                        'total_price':serviceDetail.price_total,
+                        # 'total_price':total_price,
+                        'description':serviceDetail.description,
+                    }
+                    # print total_price
+                    cartDict[ts]['service_detail'] = item
+                    cartDict[ts]['ts'] = ts
+                    if len(carCmpName):
+                        contextDict[carCmpName].append(cartDict[ts])
+                        if carCmpName not in carList:
+                            carList.append(carCmpName)
+        # print contextDict
+        if len(carList):
+            carList = views.getCarObjFromName(carList)
+        context = RequestContext(request, {
+            'cart' : contextDict,
+            'carList':carList
+        })
+        return HttpResponse(template.render(context))
+    else:
+        return redirect('/loginPage/')

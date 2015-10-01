@@ -1321,7 +1321,7 @@ def place_order(request):
 
 
         tt = Transactions(
-            booking_id       = booking_id,
+            booking_id      = booking_id,
             trans_timestamp = time.time(),
             cust_id         = request.user.id,
             cust_name       = name,
@@ -1410,8 +1410,103 @@ def insert_tran(request):
 
 carTrieObj = trie(carsTrie)
   
+def fetch_car_booking(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    if request.user and request.user.is_authenticated():
+        cust_id         = request.user.id
 
+    if cust_id:
+        tranObjs = Transactions.objects.filter(cust_id=cust_id, status = '').order_by('date_booking')
+            #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
+        for trans in tranObjs:
+            obj['result'].append({
+                            'tran_id'          :trans.id
+                            ,'booking_id'       :trans.booking_id            
+                            ,'trans_timestamp'  :trans.trans_timestamp       
+                            ,'cust_id'          :trans.cust_id          
+                            ,'cust_name'        :trans.cust_name             
+                            ,'cust_brand'       :trans.cust_brand            
+                            ,'cust_carname'     :trans.cust_carname          
+                            ,'cust_carnumber'   :trans.cust_carnumber        
+                            ,'cust_number'      :trans.cust_number           
+                            ,'cust_email'       :trans.cust_email            
+                            ,'cust_pickup_add'  :trans.cust_pickup_add       
+                            ,'cust_drop_add'    :trans.cust_drop_add         
+                            ,'service_items'    :trans.service_items         
+                            ,'price_total'      :trans.price_total           
+                            ,'date_booking'     :trans.date_booking          
+                            ,'time_booking'     :trans.time_booking          
+                            ,'amount_paid'      :trans.amount_paid           
+                            ,'status'           :trans.status                
+                            ,'comments'         :trans.comments} )
+        obj['status'] = True
+        obj['counter'] = 1
+        obj['msg'] = "Success"
+        return HttpResponse(json.dumps(obj), content_type='application/json')
+    else:
+        return HttpResponse(json.dumps(obj), content_type='application/json')
 
+def fetch_car_cancelled(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    if request.user and request.user.is_authenticated():
+        cust_id         = request.user.id
 
+    if cust_id:
+        tranObjs = Transactions.objects.filter(cust_id=cust_id, status = 'Cancelled').order_by('booking_id')
+            #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
+        for trans in tranObjs:
+            obj['result'].append({
+                            'tran_id'          :trans.id
+                            ,'booking_id'       :trans.booking_id            
+                            ,'trans_timestamp'  :trans.trans_timestamp       
+                            ,'cust_id'          :trans.cust_id          
+                            ,'cust_name'        :trans.cust_name             
+                            ,'cust_brand'       :trans.cust_brand            
+                            ,'cust_carname'     :trans.cust_carname          
+                            ,'cust_carnumber'   :trans.cust_carnumber        
+                            ,'cust_number'      :trans.cust_number           
+                            ,'cust_email'       :trans.cust_email            
+                            ,'cust_pickup_add'  :trans.cust_pickup_add       
+                            ,'cust_drop_add'    :trans.cust_drop_add         
+                            ,'service_items'    :trans.service_items         
+                            ,'price_total'      :trans.price_total           
+                            ,'date_booking'     :trans.date_booking          
+                            ,'time_booking'     :trans.time_booking          
+                            ,'amount_paid'      :trans.amount_paid           
+                            ,'status'           :trans.status                
+                            ,'comments'         :trans.comments} )
+        obj['status'] = True
+        obj['counter'] = 1
+        obj['msg'] = "Success"
+        return HttpResponse(json.dumps(obj), content_type='application/json')
+    else:
+        return HttpResponse(json.dumps(obj), content_type='application/json')
+
+    
+def cancel_booking(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    if request.user and request.user.is_authenticated():
+        cust_id         = request.user.id
+        tran_id         = get_param(request,'tran_id',None)  
+
+    obj['cancelled_id'] = tran_id
+    tranObjs = Transactions.objects.filter(status = '', id =tran_id)
+    for tran in tranObjs:
+        tran.status = "Cancelled"
+        tran.save()
+        obj['result'] = {}
+        obj['result']['cancelled_id'] = tran_id
+        obj['status'] = True
+        obj['counter'] = 1
+        obj['msg'] = "Success"
+
+    return HttpResponse(json.dumps(obj), content_type='application/json')   
+    
 
 

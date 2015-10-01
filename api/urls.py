@@ -32,8 +32,11 @@ urlpatterns = [
     # params : service_id
     url(r'fetch_windshield_details/$','api.views.fetch_car_windshieldcatdetails',name='fetch_car_windshieldcatdetails'),
     # url(r'fetch_car_servicedealercat/$','api.views.fetch_car_servicedealercat',name='fetch_car_servicedealercat'),
-	
     
+    # Booking page jugad
+    url(r'fetch_car_booking/$','api.views.fetch_car_booking',name='fetch_car_booking'),
+    url(r'fetch_car_cancelled/$','api.views.fetch_car_cancelled',name='fetch_car_cancelled'),
+    url(r'cancel_booking/$','api.views.cancel_booking',name='cancel_booking'),    
 
     #url(r'fetch_all_cleaning/$','api.views.fetch_all_cleaning',name='fetch_all_cleaning'),
     #url(r'fetch_clean_service/$','api.views.fetch_clean_service',name='fetch_clean_service'),
