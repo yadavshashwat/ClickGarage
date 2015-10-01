@@ -1189,6 +1189,9 @@ def place_order(request):
         # html_script = ' '.join(str(x) for x in html_list)
         html_list.append('<p>The selected services are for ')
         html_list.append(car_name)
+        html_list.append(' (')
+        html_list.append(car_reg_number)
+        html_list.append(') ')
         html_list.append(':</p>')
 
         transList = []
@@ -1345,8 +1348,10 @@ def place_order(request):
 
         html_script = ' '.join(str(x) for x in html_list)
         mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
-
-        return HttpResponse(json.dumps(pick_obj), content_type='application/json')
+        obj = {}
+        obj['status'] = True
+        obj['result'] = pick_obj
+        return HttpResponse(json.dumps(obj), content_type='application/json')
     else:
         redirect('/loginPage/')
 
