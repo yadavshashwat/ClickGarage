@@ -76,7 +76,7 @@ def get_param(req, param, default):
     return req_param
 
 def random_req_auth(request):
-    r_id = req_param(request, 'r_id', None)
+    r_id = get_param(request, 'r_id', None)
     if r_id:
         if r_id == tempSecretKey:
             return True
