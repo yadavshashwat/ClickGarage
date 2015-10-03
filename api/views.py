@@ -12,6 +12,7 @@ from django.db.models import Max
 import operator
 import json
 import ast
+import re
 
 from models import *
 from dataEntry.runentry import carMakers, cleanstring
@@ -23,6 +24,12 @@ from activity.models import Transactions
 tempSecretKey = 'dmFydW5ndWxhdGlsaWtlc2dhbG91dGlrZWJhYg=='
 
 #login views
+
+def cleanstring(query):
+    query = query.strip()
+    query = re.sub('\s{2,}', ' ', query)
+    return query
+
 def loginview(request):
     c = {}
     c.update(csrf(request))
@@ -176,6 +183,13 @@ def fetch_car_servicedetails(request):
                 car = serviceObj.carname
                 make = serviceObj.brand
                 odo = serviceObj.odometer
+                car_2 = cleanstring(car.replace(make,""))
+                print car_2
+            carObj = Car.objects.filter(name=car_2)
+            if len(carObj):
+                carObj = carObj[0]
+                car_bike = carObj.car_bike
+
                 if car:
                     ServicedetailObjs = ServiceDealerCat.objects.filter(carname = car, brand = make, odometer=odo).order_by('odometer','dealer_category')
                     for service in ServicedetailObjs:
@@ -192,7 +206,8 @@ def fetch_car_servicedetails(request):
                               ,'wa_price':service.wheel_alignment
                               ,'wb_price':service.wheel_balancing
                               ,'wa_wb_present':service.WA_WB_Inc
-                              ,'dealer_details':service.detail_dealers      } )
+                              ,'dealer_details':service.detail_dealers
+                              , 'car_bike':car_bike} )
 
 
         obj['status'] = True
@@ -1508,6 +1523,7 @@ def cancel_booking(request):
     obj['result'] = []
     if request.user and request.user.is_authenticated():
         cust_id         = request.user.id
+        email           = request.user.email
         tran_id         = get_param(request,'tran_id',None)  
 
     obj['cancelled_id'] = tran_id
@@ -1520,6 +1536,7 @@ def cancel_booking(request):
         obj['status'] = True
         obj['counter'] = 1
         obj['msg'] = "Success"
+        #mviews.send_cancel_email(email,tran.cust_name,tran.booking_id)
 
     return HttpResponse(json.dumps(obj), content_type='application/json')   
     
