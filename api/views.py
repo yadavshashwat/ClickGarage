@@ -177,7 +177,6 @@ def fetch_car_servicedetails(request):
         odo = None
         if service_id:
             serviceObj = Servicing.objects.filter(id=service_id)
-
             if len(serviceObj):
                 serviceObj = serviceObj[0]
                 car = serviceObj.carname
