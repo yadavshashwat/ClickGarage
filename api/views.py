@@ -921,12 +921,25 @@ def getCarObjFromName(carNameArray):
     for carCompoundName in carNameArray:
          carCompoundName = cleanstring(carCompoundName)
          make = carCompoundName.split(' ')[0]
+         make2 = " ".join([carCompoundName.split(' ')[0], carCompoundName.split(' ')[1]])
          name_model = ''
-         if make not in carMakers:
+
+         if make in carMakers:
+             name_model = carCompoundName.split(' ', 1)[1]
+         elif make2 in carMakers:
+             make = make2
+             name_model = carCompoundName.split(' ', 2)[2]
+         else:
              make = ''
              name_model = carCompoundName
-         else:
-             name_model = carCompoundName.split(' ', 1)[1]
+
+
+         # if make not in carMakers:
+         #     make = ''
+         #     name_model = carCompoundName
+         # elif make2 in
+         # else:
+         #     name_model = carCompoundName.split(' ', 1)[1]
 
          # print name_model
          findCar = Car.objects.filter(name=name_model, make=make)
@@ -1136,7 +1149,6 @@ def fetch_car_autocomplete(request):
         for match in car_list:
             res = res + match[1]
         return res
-
     if len(car_query):
         words = car_query.split(' ')
         if len(words) > 1 :
