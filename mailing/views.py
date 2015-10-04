@@ -3731,8 +3731,8 @@ def send_booking_details(to_address,booking_id,html_script):
 	)
 	
 	server.set_debuglevel(10)
-	server.starttls()
 	server.ehlo()
+	server.starttls()
 	server.login(smtp_username, smtp_password)
 	server.sendmail(me, you, msg.as_string())
 	server.quit()
