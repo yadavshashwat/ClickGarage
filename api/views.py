@@ -188,7 +188,7 @@ def fetch_car_servicedetails(request):
             if len(carObj):
                 carObj = carObj[0]
                 car_bike = carObj.car_bike
-
+                print car_bike
                 if car:
                     ServicedetailObjs = ServiceDealerCat.objects.filter(carname = car, brand = make, odometer=odo).order_by('odometer','dealer_category')
                     for service in ServicedetailObjs:
@@ -206,7 +206,7 @@ def fetch_car_servicedetails(request):
                               ,'wb_price':service.wheel_balancing
                               ,'wa_wb_present':service.WA_WB_Inc
                               ,'dealer_details':service.detail_dealers
-                              , 'car_bike':car_bike} )
+                              ,'car_bike':car_bike} )
 
 
         obj['status'] = True
