@@ -131,7 +131,8 @@ def checkout(request):
                         'model' :   carObj.model,
                         'year'  :   carObj.year,
                         'name'  :   carObj.name,
-                        'size'  :   carObj.size
+                        'size'  :   carObj.size,
+                        'car_bike':carObj.car_bike
                     }
                     cartDict[ts] = obj
 
@@ -162,7 +163,7 @@ def checkout(request):
                         if len(serviceDetail.price_parts):
                             total_price = total_price+ float(serviceDetail.price_parts)
                         if len(serviceDetail.price_labour):
-                            total_price = total_price + float(serviceDetail.price_labour)
+                            total_price = int(total_price + float(serviceDetail.price_labour)*1.14 + 0)
                         item = {
                             'id':serviceDetail.id,
                             'name':serviceDetail.name,
@@ -296,7 +297,7 @@ def cart(request):
                     if len(serviceDetail.price_parts):
                         total_price = total_price+ float(serviceDetail.price_parts)
                     if len(serviceDetail.price_labour):
-                        total_price = total_price + float(serviceDetail.price_labour)
+                        total_price = int(total_price + float(serviceDetail.price_labour)*1.14)
                     item = {
                         'id':serviceDetail.id,
                         'name':serviceDetail.name,
