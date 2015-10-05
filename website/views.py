@@ -4,11 +4,13 @@ from django.http import HttpResponse
 from django.template import RequestContext, loader
 from django.conf import settings
 
+import math
 import json
 import os
 from decimal import Decimal
 from api import views
 from api.models import ServiceDealerCat, CleaningCategoryServices, Car
+
 
 # Create your views here.
 def index(request):
@@ -163,7 +165,7 @@ def checkout(request):
                         if len(serviceDetail.price_parts):
                             total_price = total_price+ float(serviceDetail.price_parts)
                         if len(serviceDetail.price_labour):
-                            total_price = int(total_price + float(serviceDetail.price_labour)*1.14 + 0)
+                            total_price = int(total_price + (math.ceil(float(serviceDetail.price_labour)*0.14)) + float(serviceDetail.price_labour)+ 0)
                         item = {
                             'id':serviceDetail.id,
                             'name':serviceDetail.name,
@@ -297,7 +299,7 @@ def cart(request):
                     if len(serviceDetail.price_parts):
                         total_price = total_price+ float(serviceDetail.price_parts)
                     if len(serviceDetail.price_labour):
-                        total_price = int(total_price + float(serviceDetail.price_labour)*1.14)
+                        total_price =  int(total_price + (math.ceil(float(serviceDetail.price_labour)*0.14)) + float(serviceDetail.price_labour)+ 0)
                     item = {
                         'id':serviceDetail.id,
                         'name':serviceDetail.name,
