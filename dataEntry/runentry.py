@@ -134,18 +134,14 @@ def loadServiceDealerCat(fileName):
             findDealer = ServiceDealerCat.objects.filter(brand = brand, carname=carname, dealer_category=dealer_category, odometer=odometer)
             if len(findDealer):
                 findDealer = findDealer[0]
-                findDealer.brand             =  brand           
-                findDealer.carname           =  carname              
-                findDealer.odometer          =  odometer         
-                findDealer.dealer_category   =  dealer_category 
                 findDealer.year              =  year    
                 findDealer.price_labour      =  price_labour
                 findDealer.wheel_alignment   =  wheel_alignment  
                 findDealer.wheel_balancing   =  wheel_balancing  
                 findDealer.WA_WB_Inc         =  WA_WB_Inc 
                 findDealer.price_parts       =  "0" 
-                findDealer.regular_checks     = regular_checks
-                findDealer.part_replacement = []
+                findDealer.regular_checks    = regular_checks
+                findDealer.part_replacement  = []
                 if (price_labour == "0"):
                     findDealer.paid_free = "Free"
                 else:
@@ -165,70 +161,14 @@ def loadServiceDealerCat(fileName):
                                         ,wheel_alignment   =  wheel_alignment 
                                         ,wheel_balancing   =  wheel_balancing
                                         ,WA_WB_Inc         =  WA_WB_Inc
-                                        ,price_parts = "0"       
+                                        ,price_parts = "0"
+                                        ,part_replacement  = []
                                         ,regular_checks = regular_checks
                                         ,paid_free =  paid_free)
                 cc.save()
 
 
-def loadWindShielddata(fileName):
-    with open(path+'/data/Windshield/'+fileName, 'rU') as csvfile:
-        wsData = csv.reader(csvfile, delimiter='\t', quotechar='|')
-        for ws in wsData:            
-            vendor          = cleanstring(ws[0]) 
-            brand           = cleanstring(ws[1]) 
-            carname         = cleanstring(ws[2]) 
-            ws_type         = cleanstring(ws[3]) 
-            ws_subtype      = cleanstring(ws[4]) 
-            price_ws        = cleanstring(ws[5]) 
-            price_sealant   = cleanstring(ws[6]) 
-            price_labour    = cleanstring(ws[7]) 
-            price_insurance = cleanstring(ws[8]) 
-            price_total     = cleanstring(ws[9])    
-            city            = cleanstring(ws[10]) 
 
-            findWS = WindShieldServiceDetails.objects.filter(vendor = vendor, brand = brand, carname=carname, ws_type = ws_type, ws_subtype = ws_subtype, city=city)
-            if len(findWS):
-                findWS= findWS[0]
-                findWS.vendor        = vendor        
-                findWS.brand         = brand         
-                findWS.carname       = carname       
-                findWS.ws_type       = ws_type       
-                findWS.ws_subtype    = ws_subtype       
-                findWS.price_ws      = price_ws      
-                findWS.price_sealant = price_sealant 
-                findWS.price_labour  = price_labour  
-                findWS.price_insurance   = price_insurance 
-                findWS.price_total = price_total
-                findWS.city     = city   
-            else:    
-                cc = WindShieldServiceDetails(vendor        = vendor      
-                                            ,brand         = brand       
-                                            ,carname       = carname     
-                                            ,ws_type       = ws_type     
-                                            ,ws_subtype    = ws_subtype    
-                                            ,price_ws      = price_ws    
-                                            ,price_sealant = price_sealant
-                                            ,price_labour  = price_labour
-                                            ,price_insurance   = price_insurance 
-                                            ,price_total = price_total
-                                            ,city=city )
-                cc.save()
-    exportWindShieldCat()
-
-def exportWindShieldCat():
-    allServices = WindShieldServiceDetails.objects.all()
-    for service in allServices:
-        windshield = WindShieldCat.objects.filter(vendor=service.vendor,brand = service.brand, carname = service.carname, ws_type = service.ws_type)
-        if len(windshield):
-            windshield = windshield[0]
-            windshield.save()
-        else:
-            cc = WindShieldCat(vendor=service.vendor,
-                                brand=service.brand,
-                                carname=service.carname,
-                                ws_type=service.ws_type)
-            cc.save()
 
 
 
@@ -249,6 +189,7 @@ def exportWindShieldCat():
             #        paid_free = "Paid"
             #    findService.paid_free = paid_free
             #    findService.save()
+
 
 def exportServicesList():
     allServices = ServiceDealerCat.objects.all()
@@ -504,6 +445,65 @@ def loadServiceDealerName(fileName):
              else:
                 cc = ServiceDealerName(name=name, make = make,  dealer_category= dealer_category, address = address, phone = phone,timing = timing)
                 cc.save()
+
+def loadWindShielddata(fileName):
+    with open(path+'/data/Windshield/'+fileName, 'rU') as csvfile:
+        wsData = csv.reader(csvfile, delimiter='\t', quotechar='|')
+        for ws in wsData:
+            vendor          = cleanstring(ws[0])
+            brand           = cleanstring(ws[1])
+            carname         = cleanstring(ws[2])
+            ws_type         = cleanstring(ws[3])
+            ws_subtype      = cleanstring(ws[4])
+            price_ws        = cleanstring(ws[5])
+            price_sealant   = cleanstring(ws[6])
+            price_labour    = cleanstring(ws[7])
+            price_insurance = cleanstring(ws[8])
+            price_total     = cleanstring(ws[9])
+            city            = cleanstring(ws[10])
+
+            findWS = WindShieldServiceDetails.objects.filter(vendor = vendor, brand = brand, carname=carname, ws_type = ws_type, ws_subtype = ws_subtype, city=city)
+            if len(findWS):
+                findWS= findWS[0]
+                findWS.vendor        = vendor
+                findWS.brand         = brand
+                findWS.carname       = carname
+                findWS.ws_type       = ws_type
+                findWS.ws_subtype    = ws_subtype
+                findWS.price_ws      = price_ws
+                findWS.price_sealant = price_sealant
+                findWS.price_labour  = price_labour
+                findWS.price_insurance   = price_insurance
+                findWS.price_total = price_total
+                findWS.city     = city
+            else:
+                cc = WindShieldServiceDetails(vendor        = vendor
+                                            ,brand         = brand
+                                            ,carname       = carname
+                                            ,ws_type       = ws_type
+                                            ,ws_subtype    = ws_subtype
+                                            ,price_ws      = price_ws
+                                            ,price_sealant = price_sealant
+                                            ,price_labour  = price_labour
+                                            ,price_insurance   = price_insurance
+                                            ,price_total = price_total
+                                            ,city=city )
+                cc.save()
+    exportWindShieldCat()
+
+def exportWindShieldCat():
+    allServices = WindShieldServiceDetails.objects.all()
+    for service in allServices:
+        windshield = WindShieldCat.objects.filter(vendor=service.vendor,brand = service.brand, carname = service.carname, ws_type = service.ws_type)
+        if len(windshield):
+            windshield = windshield[0]
+            windshield.save()
+        else:
+            cc = WindShieldCat(vendor=service.vendor,
+                                brand=service.brand,
+                                carname=service.carname,
+                                ws_type=service.ws_type)
+            cc.save()
 
 def loadWheelServices(fileName):
     with open(path+'/data/WheelServices/'+fileName, 'rU') as csvfile:
