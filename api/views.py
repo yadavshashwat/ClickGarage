@@ -1547,7 +1547,7 @@ def cancel_booking(request):
         obj['status'] = True
         obj['counter'] = 1
         obj['msg'] = "Success"
-        #mviews.send_cancel_email(email,tran.cust_name,tran.booking_id)
+        #mviews.send_cancel_email([email,"bookings@clickgarage.in"],tran.cust_name,tran.booking_id)
 
     return HttpResponse(json.dumps(obj), content_type='application/json')   
     

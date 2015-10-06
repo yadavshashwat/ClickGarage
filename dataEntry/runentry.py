@@ -139,12 +139,13 @@ def loadServiceDealerCat(fileName):
                 findDealer.odometer          =  odometer         
                 findDealer.dealer_category   =  dealer_category 
                 findDealer.year              =  year    
-                findDealer.price_labour      =  price_labour     
+                findDealer.price_labour      =  price_labour
                 findDealer.wheel_alignment   =  wheel_alignment  
                 findDealer.wheel_balancing   =  wheel_balancing  
                 findDealer.WA_WB_Inc         =  WA_WB_Inc 
                 findDealer.price_parts       =  "0" 
                 findDealer.regular_checks     = regular_checks
+                findDealer.part_replacement = []
                 if (price_labour == "0"):
                     findDealer.paid_free = "Free"
                 else:
