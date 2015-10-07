@@ -46,6 +46,7 @@ urlpatterns = [
     url(r'^tnc/', 'website.views.tnc', name='tnc'),
     url(r'^history/', 'website.views.history', name='history'),
     url(r'^history$','website.views.history',name='history'),
+    url(r'^mobile/', 'website.views.mobile', name='mobile'),
    
     
 

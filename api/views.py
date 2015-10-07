@@ -103,6 +103,9 @@ def fetch_all_cars(request):
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+
+
+
 def fetch_car(request, HTTPFlag=True):
     car_id = get_param(request, 'c_id', None)
     print car_id
@@ -1549,7 +1552,33 @@ def cancel_booking(request):
         obj['msg'] = "Success"
         #mviews.send_cancel_email([email,"bookings@clickgarage.in"],tran.cust_name,tran.booking_id)
 
-    return HttpResponse(json.dumps(obj), content_type='application/json')   
-    
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+def fetch_car_list(request):
+    car_bike_id = get_param(request, 'cb_id', None)
+    make_id = get_param(request,'m_id',None)
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+
+    car = None
+    make = None
+    car_bike = None
+    CarObjs = Car.objects.filter(car_bike = car_bike_id, make = make_id)
+    for caravan in CarObjs:
+        obj['result'].append({
+                            'id':caravan.id
+                            ,'name':caravan.name
+                            ,'make':caravan.make
+                            ,'car_bike':caravan.car_bike
+                            ,'size':caravan.size
+                                  } )
+
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
 
 

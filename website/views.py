@@ -75,6 +75,13 @@ def tnc(request):
     })
     return HttpResponse(template.render(context))
 
+def mobile(request):
+    # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))
+    template = loader.get_template('website/mobile.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+
 def order(request):
     print 'order'
     print 'd ', request.user
