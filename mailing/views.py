@@ -1680,11 +1680,12 @@ def send_cancel_email(to_address,to_name,booking_id):
 	me = from_address
 	you = to_address
 
+
 	# Create message container - the correct MIME type is multipart/alternative.
 	msg = MIMEMultipart('alternative')
 	msg['Subject'] = "Booking Cancelled! Booking ID: " + booking_id
 	msg['From'] = me
-	msg['To'] = you
+	msg['To'] = ', '.join(you)
 
 	html = """
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">

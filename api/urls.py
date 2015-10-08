@@ -7,6 +7,7 @@ from django.conf.urls import include, url
 #from access import features
 urlpatterns = [
     url(r'fetch_all_cars/$','api.views.fetch_all_cars',name='fetch_all_cars'),
+    url(r'fetch_car_list/$','api.views.fetch_car_list',name='fetch_car_list'),
     url(r'fetch_car/$','api.views.fetch_car',name='fetch_car'),
 
     url(r'fetch_car_autocomplete/$','api.views.fetch_car_autocomplete',name='fetch_car_autocomplete'),
