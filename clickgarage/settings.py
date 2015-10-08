@@ -64,6 +64,7 @@ MIDDLEWARE_CLASSES = (
 
 # STATIC_URL = BASE_DIR + '/website/static/'
 STATIC_URL = WEBSITE_PATH + '/static/'
+MOBILE_ROOT = WEBSITE_PATH + '/mobile/'
 
 print "static = ", STATIC_URL
 ROOT_URLCONF = 'clickgarage.urls'

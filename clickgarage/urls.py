@@ -13,13 +13,20 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import include, url
+# from django.conf.urls import include, url
+
+from django.conf.urls.defaults import patterns, include, url
+
 from django.contrib import admin
 from django.conf import settings
 from activity import views
 
 
-urlpatterns = [
+    # (r'^media/(?P<path>.*)$', 'django.views.static.serve',{'document_root': settings.MEDIA_ROOT }),
+
+
+urlpatterns = patterns('',
+              (r'^mobile/(?P<path>.*)$', 'django.views.static.serve',{'document_root': settings.MOBILE_ROOT }),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/',include('api.urls')),
     url('', include('social.apps.django_app.urls', namespace='social')),
@@ -34,6 +41,8 @@ urlpatterns = [
     url(r'^checkout','website.views.checkout',name='checkout'),
     url(r'^dashboard','website.views.dashboard',name='dashboard'),
     url(r'^dashboard/','website.views.dashboard',name='dashboard'),
+    url(r'^homeTest','website.views.homeTest',name='homeTest'),
+    url(r'^homeTest/','website.views.homeTest',name='homeTest'),
     url(r'^cart','website.views.cart',name='cart'),
     url(r'^cart/','website.views.cart',name='cart'),
     url(r'^loginPage','website.views.loginPage',name='loginPage'),
@@ -49,4 +58,4 @@ urlpatterns = [
    
     
 
-]
+)
