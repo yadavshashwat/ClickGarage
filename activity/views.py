@@ -12,6 +12,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from activity.models import CGUser
 
+from django.views.decorators.csrf import csrf_exempt
+
 from config import CONFIG
 
 authomatic = Authomatic(CONFIG, 'facf8eedf58febc4a32b07129785ff70')
@@ -116,6 +118,7 @@ def loginview(request):
     c.update(csrf(request))
     return render_to_response('login.html', c)
 
+@csrf_exempt
 def auth_and_login(request, onsuccess='/', onfail='/loginPage/'):
     user = authenticate(username=request.POST['email'], password=request.POST['password'])
     if user is not None:
@@ -140,13 +143,14 @@ def user_exists(email):
         return False
     return True
 
+@csrf_exempt
 def sign_up_in(request):
     post = request.POST
     if not user_exists(post['email']):
         user = create_user(username=post['email'], email=post['email'], password=post['password'])
     	return auth_and_login(request)
     else:
-    	return redirect("/login/")
+    	return redirect("/loginPage/")
 
 @login_required(login_url='/login/')
 def secured(request):
