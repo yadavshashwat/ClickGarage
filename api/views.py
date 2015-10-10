@@ -88,6 +88,9 @@ def random_req_auth(request):
         if r_id == tempSecretKey:
             return True
 
+    if ac_vi.register_by_access_token(request, 'facebook'):
+        return True
+
     return False
 
 def fetch_all_cars(request):

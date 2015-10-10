@@ -12,6 +12,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from activity.models import CGUser
 
+from social.apps.django_app.utils import psa
+
 from django.views.decorators.csrf import csrf_exempt
 
 from config import CONFIG
@@ -156,6 +158,18 @@ def sign_up_in(request):
 def secured(request):
     return render_to_response("secure.html")
 
+@psa('social:complete')
+def register_by_access_token(request, backend):
+    # This view expects an access_token GET parameter, if it's needed,
+    # request.backend and request.strategy will be loaded with the current
+    # backend and strategy.
+    token = request.GET.get('access_token')
+    user = request.backend.do_auth(request.GET.get('access_token'))
+    if user:
+        login(request, user)
+        return True
+    else:
+        return False
 
 def updateCart(user, cookie_data, action, car_id):
     item = cookie_data
