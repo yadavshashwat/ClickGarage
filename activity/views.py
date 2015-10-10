@@ -164,10 +164,13 @@ def register_by_access_token(request, backend):
     # request.backend and request.strategy will be loaded with the current
     # backend and strategy.
     token = request.GET.get('access_token')
-    user = request.backend.do_auth(request.GET.get('access_token'))
-    if user:
-        login(request, user)
-        return True
+    if token:
+        user = request.backend.do_auth(request.GET.get('access_token'))
+        if user:
+            login(request, user)
+            return True
+        else:
+            return False
     else:
         return False
 
