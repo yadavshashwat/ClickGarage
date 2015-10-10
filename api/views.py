@@ -130,6 +130,10 @@ def fetch_car_services(request):
     obj = {}
     obj['status'] = False
     obj['result'] = []
+    import re
+    regex = re.compile('^HTTP_')
+    headerDict = dict((regex.sub('', header), value) for (header, value) in request.META.items() if header.startswith('HTTP_'))
+    print headerDict
 
     if random_req_auth(request) or (request.user and request.user.is_authenticated()):
         car_id = get_param(request, 'c_id', None)
@@ -164,6 +168,7 @@ def fetch_car_services(request):
         obj['status'] = True
         obj['counter'] = 1
         obj['msg'] = "Success"
+        obj['headers'] = headerDict
         return HttpResponse(json.dumps(obj), content_type='application/json')
     else:
         return HttpResponse(json.dumps(obj), content_type='application/json')
@@ -1145,8 +1150,13 @@ def fetch_car_autocomplete(request):
     obj = {}
     obj['status'] = False
     obj['result'] =[]
+    import re
+    regex = re.compile('^HTTP_')
+    headerDict = dict((regex.sub('', header), value) for (header, value) in request.META.items() if header.startswith('HTTP_'))
+    print headerDict
 
     def getMatchList(word):
+
         res = []
         car_list = carTrieObj.items(word)
         for match in car_list:
@@ -1176,6 +1186,7 @@ def fetch_car_autocomplete(request):
     obj['result'] = getCarObjFromName(obj['result'])
     obj['counter'] = 1
     obj['msg'] = "Success"
+    obj['headers'] = headerDict
 
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
