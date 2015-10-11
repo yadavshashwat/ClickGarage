@@ -88,8 +88,10 @@ def random_req_auth(request):
         if r_id == tempSecretKey:
             return True
 
-    if ac_vi.register_by_access_token(request, 'facebook'):
-        return True
+    backend = get_param(request, 'backend', None)
+    if backend:
+        if ac_vi.register_by_access_token(request, backend):
+            return True
 
     return False
 
