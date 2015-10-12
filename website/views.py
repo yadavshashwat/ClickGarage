@@ -86,7 +86,7 @@ def order(request):
     print 'order'
     print 'd ', request.user
     print 'tru ', request.user.is_authenticated()
-    if request.user.is_authenticated():
+    if 1 or request.user.is_authenticated():
         template = loader.get_template('website/order.html')
         car_obj = views.fetch_car(request, False)
         if(car_obj['status']):
@@ -119,6 +119,7 @@ def checkout(request):
             varCarObj = varCarObj[0]
             selectCarName = " ".join([varCarObj.make, varCarObj.name])
         cartDict = request.user.uc_cart
+
         contextDict = {}
 
         if cookieCartData and len(cookieCartData):
@@ -229,8 +230,7 @@ def checkout(request):
             context = RequestContext(request, {
                 'address': [],
                 'cart':contextDict,
-                'cart_number':len(contextDict[selectCarName])
-
+                'cart_number':len(contextDict[selectCarName]),
             })
             return HttpResponse(template.render(context))
 
@@ -255,11 +255,19 @@ def dashboard(request):
 def cart(request):
     selectCar = request.COOKIES.get('clgacarid')
     cookieCartData = request.COOKIES.get('clgacart')
+    loginFlag = False
     if request.user.is_authenticated():
+        loginFlag = True
+
+    if cookieCartData or loginFlag:
         template = loader.get_template('website/cart.html')
         carList = []
         cartList = []
-        cartDict = request.user.uc_cart
+
+        cartDict = {}
+        if loginFlag:
+            cartDict = request.user.uc_cart
+
         contextDict = {}
 
         if cookieCartData and len(cookieCartData):
@@ -284,9 +292,9 @@ def cart(request):
                         'size'  :   carObj.size
                     }
                     cartDict[ts] = obj
-
-            request.user.uc_cart = cartDict
-            request.user.save()
+            if loginFlag:
+                request.user.uc_cart = cartDict
+                request.user.save()
         for ts in cartDict:
             cartObj = cartDict[ts]
             if cartObj.has_key("car"):
@@ -366,7 +374,8 @@ def cart(request):
             carList = views.getCarObjFromName(carList)
         context = RequestContext(request, {
             'cart' : contextDict,
-            'carList':carList
+            'carList':carList,
+            'login_flag':loginFlag
         })
         return HttpResponse(template.render(context))
     else:
