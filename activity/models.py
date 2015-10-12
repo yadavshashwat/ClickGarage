@@ -51,30 +51,21 @@ class Transaction(models.Model):
 class Transactions(models.Model):
     booking_id         = models.IntegerField()
     trans_timestamp    = models.CharField(max_length=200)
-
-    cust_id           = models.CharField(max_length=200)
+    cust_id            = models.CharField(max_length=200)
     cust_name          = models.CharField(max_length=200)
     cust_brand         = models.CharField(max_length=200)
     cust_carname       = models.CharField(max_length=200)
-    cust_carnumber       = models.CharField(max_length=200)
+    cust_carnumber     = models.CharField(max_length=200)
     cust_number        = models.CharField(max_length=200)
     cust_email         = models.CharField(max_length=200)
-
     cust_pickup_add    = DictField()
     cust_drop_add      = DictField()
-
-    service_items       = ListField( DictField() )
-
+    service_items      = ListField( DictField() )
     price_total        = models.CharField(max_length=200)
-
     date_booking       = models.CharField(max_length=200)
-
     time_booking       = models.CharField(max_length=200)
-
     amount_paid        = models.BooleanField()
-
     status             = models.CharField(max_length=200)
-
     comments           = models.CharField(max_length=300)
 
 

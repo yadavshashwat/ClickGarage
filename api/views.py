@@ -1244,9 +1244,12 @@ def place_order(request):
             ts = order['ts']
             service = order['service']
             service_id = order['service_id']
+
             listItem = {}
             listItem['service'] = service
             listItem['service_id'] = service_id
+            listItem['ts'] = ts
+            listItem['status'] = True
             if service == 'servicing':
                 serviceDetail = ServiceDealerCat.objects.filter(id=service_id)
                 if len(serviceDetail):
@@ -1272,7 +1275,9 @@ def place_order(request):
                         'wa_wb_present':serviceDetail.WA_WB_Inc,
                         'dealer_details':serviceDetail.detail_dealers,
                         'year':serviceDetail.year,
-                        'total_price':total_price
+                        'total_price':total_price,
+                        'status':True,
+                        'ts':ts
                     }
                     listItem['served_data'] = item
                     html_list.append('<span> regular servicing </span>')
@@ -1316,6 +1321,8 @@ def place_order(request):
                         'total_price':serviceDetail.price_total,
                         # 'total_price':total_price,
                         'description':serviceDetail.description,
+                        'status':True,
+                        'ts':ts
                     }
                     listItem['served_data'] = item
                     html_list.append('<span> Cleaning </span>')
@@ -1538,7 +1545,7 @@ def cancel_booking(request):
     if request.user and request.user.is_authenticated():
         cust_id         = request.user.id
         email           = request.user.email
-        tran_id         = get_param(request,'tran_id',None)  
+        tran_id         = get_param(request,'tran_id',None)
 
     obj['cancelled_id'] = tran_id
     tranObjs = Transactions.objects.filter(status = '', id =tran_id)
@@ -1550,9 +1557,37 @@ def cancel_booking(request):
         obj['status'] = True
         obj['counter'] = 1
         obj['msg'] = "Success"
-        #mviews.send_cancel_email([email,"bookings@clickgarage.in"],tran.cust_name,tran.booking_id)
-
     return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+   # if request.user and request.user.is_authenticated():
+   #      cust_id         = request.user.id
+   #      email           = request.user.email
+   #      tran_id         = get_param(request,'tran_id',None)
+   #      item_id         = get_param(request,'item_id',None)
+   #
+   #  obj['cancelled_id'] = tran_id
+   #  tranObjs = Transactions.objects.filter(status = '', id =tran_id)
+   #  for tran in tranObjs:
+   #      # serviceObj = tran.service_items(status = True , ts =item_id)
+   #      listy = tran.service_items
+   #      serviceObj = (item for item in tran.service_items if 'ts' in item and item['ts'] == item_id).next()
+   #      idx = tran.service_items.index(serviceObj)
+   #      serviceObj['status'] = 'Cancelled'
+   #      tran.service_items[idx] = serviceObj
+   #      tran.save()
+   #      # for service in serviceObj:
+   #      #     service.status = "Cancelled"
+   #      #     tran.save()
+   #      #     obj['result'] = {}
+   #      #     obj['result']['cancelled_id'] = tran_id
+   #      #     obj['status'] = True
+   #      #     obj['counter'] = 1
+   #      #     obj['msg'] = "Success"
+   #
+   #      #mviews.send_cancel_email([email,"bookings@clickgarage.in"],tran.cust_name,tran.booking_id)booking_id
+
+    # return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
 def fetch_car_list(request):
