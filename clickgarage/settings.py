@@ -182,6 +182,7 @@ SOCIAL_AUTH_PIPELINE = (
     'activity.backends.associate_by_email',
 
     'social.pipeline.user.get_username',
+    'social.pipeline.social_auth.associate_by_email',
     'social.pipeline.user.create_user',
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.social_auth.load_extra_data',
