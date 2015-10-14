@@ -1483,7 +1483,7 @@ def fetch_car_booking(request):
     obj = {}
     obj['status'] = False
     obj['result'] = []
-    if request.user and request.user.is_authenticated():
+    if random_req_auth(request) or (request.user and request.user.is_authenticated()):
         cust_id         = request.user.id
 
     if cust_id:
@@ -1521,7 +1521,7 @@ def fetch_car_cancelled(request):
     obj = {}
     obj['status'] = False
     obj['result'] = []
-    if request.user and request.user.is_authenticated():
+    if random_req_auth(request) or (request.user and request.user.is_authenticated()):
         cust_id         = request.user.id
 
     if cust_id:
@@ -1560,7 +1560,7 @@ def cancel_booking(request):
     obj = {}
     obj['status'] = False
     obj['result'] = []
-    if request.user and request.user.is_authenticated():
+    if random_req_auth(request) or (request.user and request.user.is_authenticated()):
         cust_id         = request.user.id
         email           = request.user.email
         tran_id         = get_param(request,'tran_id',None)

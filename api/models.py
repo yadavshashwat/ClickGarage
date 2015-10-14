@@ -80,6 +80,58 @@ class ServiceDealerName(models.Model):
     rating          = models.CharField(max_length=50)
     reviews         = ListField(models.CharField(max_length=500))
 
+#     New models
+
+class ServicingNew(models.Model):
+    name                = models.CharField(max_length=200)
+    #while uploading servicing list file
+    brand               = models.CharField(max_length=50)
+    carname             = models.CharField(max_length=50)
+    type_service        = models.IntegerField()
+    #year                = models.CharField(max_length=50)
+    regular_checks      = ListField(models.CharField(max_length=200))
+    #while uploading servicing labour
+    #paid_free           = models.CharField(max_length=50)
+    part_replacement    = ListField(models.CharField(max_length=200))
+    dealer              = ListField(models.CharField(max_length=200))
+
+class ServiceDealerCatNew(models.Model):
+    name                = models.CharField(max_length=200)
+    brand               = models.CharField(max_length=50)
+    carname             = models.CharField(max_length=50)
+    type_service        = models.IntegerField()
+    #year               = models.CharField(max_length=50)
+    dealer_category     = models.CharField(max_length=200)
+    part_replacement    = ListField(models.CharField(max_length=200))
+   #while uploading part frequency
+    price_parts         = models.CharField(max_length=50)
+    price_labour        = models.CharField(max_length=50)
+    wheel_alignment     = models.CharField(max_length=50)
+    wheel_balancing     = models.CharField(max_length=50)
+    WA_WB_Inc           = models.CharField(max_length=50)
+    detail_dealers      = ListField(DictField())
+    #paid_free           = models.CharField(max_length=50)
+    regular_checks      = ListField(models.CharField(max_length=200))
+    discount            = models.CharField(max_length=50)
+
+class ServiceDealerNameNew(models.Model):
+    name            = models.CharField(max_length=200)
+    make            = models.CharField(max_length=200)
+    dealer_category = models.CharField(max_length=200)
+    address         = models.CharField(max_length=200)
+    timing          = models.CharField(max_length=200)
+    day_opening     = models.CharField(max_length=200)
+    website         = models.CharField(max_length=200)
+    email           = models.CharField(max_length=200)
+    telephone       = models.CharField(max_length=200)
+    mobile          = models.CharField(max_length=200)
+    latitude        = models.CharField(max_length=200)
+    longitude       = models.CharField(max_length=200)
+    region          = models.CharField(max_length=200)
+    rating          = models.CharField(max_length=50)
+    reviews         = ListField(models.CharField(max_length=500))
+
+
 class CleaningDealerName(models.Model):
     vendor  = models.CharField(max_length=50)
     rating = models.CharField(max_length=50)
