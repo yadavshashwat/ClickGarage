@@ -54,5 +54,5 @@ urlpatterns = patterns('',
     url(r'^history/', 'website.views.history', name='history'),
     url(r'^history$','website.views.history',name='history'),
     url(r'^mobile/', 'website.views.mobile', name='mobile'),
-    url(r'^drivers/', 'website.views.drivers', name='drivers'),
+    url(r'^driver1/', 'website.views.drivers', name='drivers'),
 )
