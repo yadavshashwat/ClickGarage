@@ -600,3 +600,217 @@ def loadTyreSale(fileName):
 
 
 #lloadAspectRatio('aspect_ratio.csv')
+
+############################# Servicing New ##############################
+
+
+def loadServiceDealerCatNew(fileName):
+    with open(path+'/data/ServicingNew/'+fileName, 'rU') as csvfile:
+         dealerData = csv.reader(csvfile, delimiter='\t', quotechar='|')
+         for dealerz in dealerData:
+            brand              = cleanstring(dealerz[0])
+            carname            = cleanstring(dealerz[1])
+            type_service       = cleanstring(dealerz[2])
+            #year              = cleanstring(dealerz[3])
+            dealer_category    = cleanstring(dealerz[3])
+            price_labour       = cleanstring(dealerz[4])
+            wheel_alignment    = cleanstring(dealerz[5])
+            wheel_balancing    = cleanstring(dealerz[6])
+            WA_WB_Inc          = dealerz[7]
+            discount           = dealerz[8]
+            priority           = dealerz[9]
+            regular_checks     = cleanstring(dealerz[10]).split("$")
+
+            findDealer = ServiceDealerCatNew.objects.filter(brand = brand, carname=carname, dealer_category=dealer_category, type_service=type_service)
+            if len(findDealer):
+                findDealer = findDealer[0]
+                findDealer.year              =  year
+                findDealer.price_labour      =  price_labour
+                findDealer.wheel_alignment   =  wheel_alignment
+                findDealer.wheel_balancing   =  wheel_balancing
+                findDealer.WA_WB_Inc         =  WA_WB_Inc
+                findDealer.price_parts       =  "0"
+                findDealer.regular_checks    = regular_checks
+                findDealer.discount    = discount
+                findDealer.priority    = priority
+                findDealer.part_replacement  = []
+
+
+                # if (price_labour == "0"):
+                #     findDealer.paid_free = "Free"
+                # else:
+                #     findDealer.paid_free = "Paid"
+                findDealer.save()
+            else:
+                # if (price_labour == "0"):
+                #     paid_free = "Free"
+                # else:
+                #     paid_free = "Paid"
+                cc = ServiceDealerCatNew(brand                =  brand
+                                        ,carname           =  carname
+                                        ,type_service      =  type_service
+                                        ,dealer_category   =  dealer_category
+                                        #,year              =  year
+                                        ,price_labour      =  price_labour
+                                        ,wheel_alignment   =  wheel_alignment
+                                        ,wheel_balancing   =  wheel_balancing
+                                        ,WA_WB_Inc         =  WA_WB_Inc
+                                        ,price_parts = "0"
+                                        ,part_replacement  = []
+                                        ,regular_checks = regular_checks
+                                        ,discount    = discount
+                                        ,priority    = priority
+                                        # ,paid_free =  paid_free
+                                      )
+                cc.save()
+
+
+            #Concatenating adding list of dealer to service data as well as paid/Free info - Shashwat
+
+            #findService = Servicing.objects.filter(brand=brand, carname=carname, odometer=odometer)
+            #if len(findService):
+            #    findService = findService[0]
+            #    dealers = findService.dealer
+            #    dealers.append(dealer_category)
+            #    findService.dealer = dealers
+#
+            #    paid_free = findService.paid_free
+            #    if price_labour == "0":
+            #        paid_free = "Free"
+            #    else:
+            #        paid_free = "Paid"
+            #    findService.paid_free = paid_free
+            #    findService.save()
+
+def exportServicesListNew():
+    allServices = ServiceDealerCatNew.objects.all()
+    # p_f = ""
+    for service in allServices:
+        findDealer = ServicingNew.objects.filter(brand = service.brand, carname=service.carname, type_service=service.type_service)
+        if len(findDealer):
+            findDealer = findDealer[0]
+            dealerz = findDealer.dealer
+            dealerz.append(service.dealer_category)
+            findDealer.dealer = dealerz
+            # if service.dealer_category == "Authorized":
+            #     p_f = service.paid_free
+            # findDealer.paid_free = p_f
+            findDealer.save()
+        else:
+            # if service.dealer_category == "Authorized":
+            #     p_f = service.paid_free
+
+            cc = ServicingNew(brand             = service.brand
+                              ,carname          = service.carname
+                              ,type_service     =service.type_service
+                              ,year             = service.year
+                              ,regular_checks   = service.regular_checks
+                              # ,paid_free        = p_f
+                              ,dealer           = [service.dealer_category])
+            cc.save()
+
+
+
+def loadPriceFreqNew(fileName):
+    with open(path+'/data/ServicingNew/'+fileName, 'rU') as csvfile:
+         partData = csv.reader(csvfile, delimiter='\t', quotechar='|')
+         count = 0
+         for prt in partData:
+            count = count + 1
+            print count
+            brand            = cleanstring(prt[0])
+            carname          = cleanstring(prt[1])
+            part             = cleanstring(prt[2])
+            minor            = int(cleanstring(prt[3]))
+            major            = int(cleanstring(prt[4]))
+            #second_occ      = int(cleanstring(prt[5]))
+            dealer_category  = cleanstring(prt[5])
+            unit             = cleanstring(prt[6])
+            unit_price       = cleanstring(prt[7])
+            minor_price      = float(cleanstring(prt[8]))
+            major_price      = float(cleanstring(prt[9]))
+
+            service_1 = ""
+            service_2 = ""
+            service_3 = ""
+
+            if (minor == 1):
+                service_1 = "Minor Servicing"
+                service_3 = "Not Defined"
+            if (major == 1):
+                service_2 ="Major Servicing"
+
+
+
+            #print prt
+
+            findDealer = ServiceDealerCatNew.objects.filter(brand = brand, carname=carname, dealer_category=dealer_category, type_service=service_1)
+            if len(findDealer):
+                findDealer = findDealer[0]
+                parts      = findDealer.part_replacement
+                parts.append(part)
+                findDealer.part_replacement = parts
+
+                price_s = findDealer.price_parts
+                price = float(price_s)
+                price = price + minor_price
+                findDealer.price_parts = str(price)
+                findDealer.save()
+
+            findDealer = ServiceDealerCatNew.objects.filter(brand = brand, carname=carname, dealer_category=dealer_category, type_service=service_2)
+
+            if len(findDealer):
+                findDealer = findDealer[0]
+                parts = findDealer.part_replacement
+                parts.append(part)
+                findDealer.part_replacement = parts
+                price_s = findDealer.price_parts
+                price = float(price_s)
+                price = price + major_price
+                findDealer.price_parts = str(price)
+                findDealer.save()
+
+            findDealer = ServiceDealerCatNew.objects.filter(brand = brand, carname=carname, dealer_category=dealer_category, type_service=service_3)
+
+            if len(findDealer):
+                findDealer = findDealer[0]
+                parts = findDealer.part_replacement
+                parts.append(part)
+                findDealer.part_replacement = parts
+                price_s = findDealer.price_parts
+                price = float(price_s)
+                price = price + minor_price
+                findDealer.price_parts = str(price)
+                findDealer.save()
+
+            # odo = 0
+            # odo = second_occ + freq
+
+            # while (odo < 190000):
+            #     findDealer = ServiceDealerCat.objects.filter(brand = brand, carname=carname, dealer_category=dealer_category, odometer=str(odo))
+            #     if len(findDealer):
+            #         findDealer = findDealer[0]
+            #         parts = findDealer.part_replacement
+            #         parts.append(part)
+            #         findDealer.part_replacement = parts
+            #         price_s = findDealer.price_parts
+            #         price = float(price_s)
+            #         price = price + net_price
+            #         findDealer.price_parts = str(price)
+            #         findDealer.save()
+            #     odo = odo + freq
+
+    exportPartsListNew()
+
+def exportPartsListNew():
+    allServices = ServicingNew.objects.all()
+    for service in allServices:
+        findDealer = ServiceDealerCatNew.objects.filter(brand = service.brand, carname=service.carname, type_service=service.type_service)
+        if len(findDealer):
+            findDealer = findDealer[0]
+            #print findDealer.part_replacement
+            if findDealer.part_replacement == []:
+                findDealer.part_replacement = ["No part replaced"]
+                findDealer.save()
+            service.part_replacement = findDealer.part_replacement
+            service.save()

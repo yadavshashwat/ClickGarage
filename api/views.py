@@ -1488,7 +1488,7 @@ def fetch_car_booking(request):
         cust_id = request.user.id
 
     if cust_id:
-        tranObjs = Transactions.objects.filter(cust_id=cust_id, status = '').order_by('date_booking')
+        tranObjs = Transactions.objects.filter(cust_id=cust_id, status = '').order_by('-booking_id')
             #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
         for trans in tranObjs:
             obj['result'].append({
@@ -1528,7 +1528,7 @@ def fetch_car_cancelled(request):
         cust_id         = request.user.id
 
     if cust_id:
-        tranObjs = Transactions.objects.filter(cust_id=cust_id, status = 'Cancelled').order_by('booking_id')
+        tranObjs = Transactions.objects.filter(cust_id=cust_id, status = 'Cancelled').order_by('-booking_id')
             #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
         for trans in tranObjs:
             obj['result'].append({
@@ -1579,6 +1579,45 @@ def cancel_booking(request):
         obj['counter'] = 1
         obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def fetch_all_booking(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    cust_id = None
+    # if random_req_auth(request) or (request.user and request.user.is_authenticated()):
+    #     cust_id = request.user.id
+
+
+    tranObjs = Transactions.objects.all()
+            #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
+    for trans in tranObjs:
+        obj['result'].append({
+                            'tran_id'          :trans.id
+                            ,'booking_id'       :trans.booking_id
+                            ,'trans_timestamp'  :trans.trans_timestamp
+                            ,'cust_id'          :trans.cust_id
+                            ,'cust_name'        :trans.cust_name
+                            ,'cust_brand'       :trans.cust_brand
+                            ,'cust_carname'     :trans.cust_carname
+                            ,'cust_carnumber'   :trans.cust_carnumber
+                            ,'cust_number'      :trans.cust_number
+                            ,'cust_email'       :trans.cust_email
+                            ,'cust_pickup_add'  :trans.cust_pickup_add
+                            ,'cust_drop_add'    :trans.cust_drop_add
+                            ,'service_items'    :trans.service_items
+                            ,'price_total'      :trans.price_total
+                            ,'date_booking'     :trans.date_booking
+                            ,'time_booking'     :trans.time_booking
+                            ,'amount_paid'      :trans.amount_paid
+                            ,'status'           :trans.status
+                            ,'comments'         :trans.comments} )
+        obj['status'] = True
+        obj['counter'] = 1
+        obj['msg'] = "Success"
+        return HttpResponse(json.dumps(obj), content_type='application/json')
+    else:
+        return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
    # if request.user and request.user.is_authenticated():
@@ -1636,5 +1675,110 @@ def fetch_car_list(request):
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+############################ New Servicing api's #################################
+
+def fetch_car_services_new(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    import re
+    regex = re.compile('^HTTP_')
+    headerDict = dict((regex.sub('', header), value) for (header, value) in request.META.items() if header.startswith('HTTP_'))
+    print headerDict
+
+    if 1 or random_req_auth(request) or (request.user and request.user.is_authenticated()):
+        car_id = get_param(request, 'c_id', None)
+        car = None
+        make = None
+        if car_id:
+            carObj = Car.objects.filter(id=car_id)
+
+            if len(carObj):
+                carObj = carObj[0]
+                car_old = carObj.name
+                make = carObj.make
+                car = make + " " + car_old
+                if car:
+                    ServiceObjs = ServicingNew.objects.filter(carname = car, brand = make)
+                    #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
+                    for service in ServiceObjs:
+                        obj['result'].append({
+                            'id':service.id
+                            ,'name':service.name
+                            ,'brand':service.brand
+                            ,'car_name':service.carname
+                            ,'type_service':service.type_service
+                            # ,'year':service.year
+                            ,'regular_checks':service.regular_checks
+                            # ,'paid_free':service.paid_free
+                            ,'parts_replaced':service.part_replacement
+                            ,'dealers_list':service.dealer} )
+
+
+
+        obj['status'] = True
+        obj['counter'] = 1
+        obj['msg'] = "Success"
+        obj['headers'] = headerDict
+        return HttpResponse(json.dumps(obj), content_type='application/json')
+    else:
+        return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def fetch_car_servicedetails_new(request):
+    service_id = get_param(request, 'service_id', None)
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    print '-----'
+    print request.user
+    if 1 or random_req_auth(request) or (request.user and request.user.is_authenticated()):
+
+        car = None
+        make = None
+        odo = None
+        if service_id:
+            serviceObj = ServicingNew.objects.filter(id=service_id)
+            if len(serviceObj):
+                serviceObj = serviceObj[0]
+                car = serviceObj.carname
+                make = serviceObj.brand
+                type_service = serviceObj.type_service
+                car_2 = cleanstring(car.replace(make,""))
+                print car_2
+            carObj = Car.objects.filter(name=car_2)
+
+            if len(carObj):
+                carObj = carObj[0]
+                car_bike = carObj.car_bike
+                print car_bike
+                if car:
+                    ServicedetailObjs = ServiceDealerCatNew.objects.filter(carname = car, brand = make, type_service = type_service).order_by('priority')
+                    for service in ServicedetailObjs:
+                        obj['result'].append({
+                            'id':service.id
+                              ,'name':service.name
+                              ,'brand':service.brand
+                              ,'car':service.carname
+                              ,'type_service':service.type_service
+                              ,'vendor':service.dealer_category
+                              ,'parts_list':service.part_replacement
+                              ,'parts_price':service.price_parts
+                              ,'labour_price':service.price_labour
+                              ,'wa_price':service.wheel_alignment
+                              ,'wb_price':service.wheel_balancing
+                              ,'wa_wb_present':service.WA_WB_Inc
+                              ,'dealer_details':service.detail_dealers
+                              ,'discount':service.discount
+                              ,'priority':service.priority
+                              ,'car_bike':car_bike}
+                        )
+
+
+        obj['status'] = True
+        obj['counter'] = 1
+        obj['msg'] = "Success"
+        return HttpResponse(json.dumps(obj), content_type='application/json')
+    else:
+        return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
