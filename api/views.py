@@ -1207,6 +1207,7 @@ def place_order(request):
         drop_obj = get_param(request, 'drop', None)
         order_list = get_param(request, 'order_list', None)
         car_name = get_param(request, 'car_name', None)
+        android_flag = get_param(request, 'android', None)
         # car_id = get_param(request, 'car_id', None)
 
         # obj_pick = json.loads(pick_obj)
@@ -1359,8 +1360,8 @@ def place_order(request):
                     html_list.append('</span>')
 
                     html_list.append('</div>')
-
-            ac_vi.updateCart(request.user, ts+'*', 'delete', '')
+            if not android_flag:
+                ac_vi.updateCart(request.user, ts+'*', 'delete', '')
             transList.append(listItem)
 
 
