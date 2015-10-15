@@ -1484,8 +1484,9 @@ def fetch_car_booking(request):
     obj = {}
     obj['status'] = False
     obj['result'] = []
+    cust_id = None
     if random_req_auth(request) or (request.user and request.user.is_authenticated()):
-        cust_id         = request.user.id
+        cust_id = request.user.id
 
     if cust_id:
         tranObjs = Transactions.objects.filter(cust_id=cust_id, status = '').order_by('date_booking')
@@ -1522,6 +1523,8 @@ def fetch_car_cancelled(request):
     obj = {}
     obj['status'] = False
     obj['result'] = []
+    cust_id = None
+
     if random_req_auth(request) or (request.user and request.user.is_authenticated()):
         cust_id         = request.user.id
 
