@@ -1197,6 +1197,7 @@ def fetch_car_autocomplete(request):
 
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+@csrf_exempt
 def place_order(request):
     if request.user and request.user.is_authenticated():
         email = request.user.email
