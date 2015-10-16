@@ -1226,6 +1226,10 @@ def place_order(request):
         # print json.loads(drop_obj)
         order_list = json.loads(order_list)
 
+        print order_list
+        print pick_obj
+        print drop_obj
+
         tran_len = len(Transaction.objects.all())
         booking_id = 1
         if tran_len > 0:
@@ -1262,6 +1266,7 @@ def place_order(request):
         transList = []
 
         for order in order_list:
+            print order
             ts = order['ts']
             service = order['service']
             service_id = order['service_id']
