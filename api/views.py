@@ -1200,7 +1200,7 @@ def fetch_car_autocomplete(request):
 
 @csrf_exempt
 def place_order(request):
-    if request.user and request.user.is_authenticated():
+    if random_req_auth(request) or (request.user and request.user.is_authenticated()):
         email = request.user.email
         name = get_param(request, 'name', None)
         number = get_param(request, 'number', None)
