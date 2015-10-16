@@ -13,6 +13,7 @@ import operator
 import json
 import ast
 import re
+from django.views.decorators.csrf import csrf_exempt
 
 from models import *
 from dataEntry.runentry import carMakers, cleanstring
