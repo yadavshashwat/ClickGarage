@@ -80,7 +80,7 @@ class ServiceDealerName(models.Model):
     rating          = models.CharField(max_length=50)
     reviews         = ListField(models.CharField(max_length=500))
 
-#     New models
+###########################   New Servicing models ############################
 
 class ServicingNew(models.Model):
     name                = models.CharField(max_length=200)
@@ -113,6 +113,8 @@ class ServiceDealerCatNew(models.Model):
     #paid_free           = models.CharField(max_length=50)
     regular_checks      = ListField(models.CharField(max_length=200))
     discount            = models.CharField(max_length=50)
+    priority            = models.CharField(max_length=50)
+
 
 class ServiceDealerNameNew(models.Model):
     name            = models.CharField(max_length=200)

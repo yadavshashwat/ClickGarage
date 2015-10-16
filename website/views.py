@@ -516,3 +516,10 @@ def bookings(request):
         return HttpResponse(template.render(context))
     else:
         return redirect('/loginPage/')
+
+def drivers(request):
+    # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))
+    template = loader.get_template('website/drivers.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
