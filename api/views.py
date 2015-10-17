@@ -13,6 +13,7 @@ import operator
 import json
 import ast
 import re
+from django.views.decorators.csrf import csrf_exempt
 
 from models import *
 from dataEntry.runentry import carMakers, cleanstring
@@ -1201,8 +1202,10 @@ def fetch_car_autocomplete(request):
 
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+@csrf_exempt
 def place_order(request):
-    if request.user and request.user.is_authenticated():
+    print 'p'
+    if (request.user and request.user.is_authenticated()) or random_req_auth(request):
         email = request.user.email
         name = get_param(request, 'name', None)
         number = get_param(request, 'number', None)
@@ -1227,6 +1230,10 @@ def place_order(request):
         #     print key
         # print json.loads(drop_obj)
         order_list = json.loads(order_list)
+
+        print order_list
+        print pick_obj
+        print drop_obj
 
         tran_len = len(Transaction.objects.all())
         booking_id = 1
@@ -1264,6 +1271,7 @@ def place_order(request):
         transList = []
 
         for order in order_list:
+            print order
             ts = order['ts']
             service = order['service']
             service_id = order['service_id']
