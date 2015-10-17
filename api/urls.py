@@ -20,6 +20,12 @@ urlpatterns = [
     url(r'fetch_car_servicing/$','api.views.fetch_car_services',name='fetch_car_services'),
     # params : service_id
     url(r'fetch_servicing_details/$','api.views.fetch_car_servicedetails',name='fetch_car_servicedetails'),
+
+    # params : c_id,
+    url(r'fetch_car_servicing_new/$','api.views.fetch_car_services_new',name='fetch_car_services'),
+    # params : service_id
+    url(r'fetch_servicing_details_new/$','api.views.fetch_car_servicedetails_new',name='fetch_car_servicedetails'),
+
     # params : none
     url(r'fetch_car_cleaning/$','api.views.fetch_all_cleaning',name='fetch_all_cleaning'),
     # params : service_id, c_id
@@ -69,7 +75,7 @@ urlpatterns = [
 
 
     url(r'fetch_all_services/$','api.views.fetch_all_services',name='fetch_all_services'),
-     #url(r'fetch_all_servicedealercat/$','api.views.fetch_all_servicedealercat',name='fetch_all_servicedealercat'),
+    url(r'fetch_all_servicedealercat/$','api.views.fetch_all_servicedealercat',name='fetch_all_servicedealercat'),
     url(r'fetch_all_servicedealername/$','api.views.fetch_all_servicedealername',name='fetch_all_servicedealername'),
     
 	url(r'fetch_car_tyres/$','api.views.fetch_car_tyres',name='fetch_car_tyres'),

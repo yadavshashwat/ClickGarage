@@ -7,13 +7,21 @@ from api.models import *
 #runentry.loadCars('aspect_ratio.csv')
 #runentry.loadCarTrieFile()
 
-##Loading Services
+##Loading Services old
 
 #ServiceDealerCat.objects.all().delete()
-runentry.loadServiceDealerCat('Servicing_Labour.txt')
-Servicing.objects.all().delete()
-runentry.exportServicesList()
-runentry.loadPriceFreq('Servicing_Parts.txt')
+#runentry.loadServiceDealerCat('Servicing_Labour.txt')
+#Servicing.objects.all().delete()
+#runentry.exportServicesList()
+#runentry.loadPriceFreq('Servicing_Parts.txt')
+
+##Loading Services New
+
+ServiceDealerCatNew.objects.all().delete()
+runentry.loadServiceDealerCatNew('Servicing_Labour.txt')
+ServicingNew.objects.all().delete()
+runentry.exportServicesListNew()
+runentry.loadPriceFreqNew('Servicing_Parts.txt')
 
 #Loading cleaning and value added services
 #CleaningDealerName.objects.all().delete()
@@ -23,7 +31,7 @@ runentry.loadPriceFreq('Servicing_Parts.txt')
 #VASServiceCat.objects.all().delete()
 #VASCategoryServices.objects.all().delete()
 
-runentry.loadCleaning('Cleaning_VAS_all.txt')
+#runentry.loadCleaning('Cleaning_VAS_all.txt')
 
 ##Loading windshield
 #WindShieldCat.objects.#all().delete()

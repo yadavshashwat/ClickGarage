@@ -646,11 +646,11 @@ def loadServiceDealerCatNew(fileName):
                 #     paid_free = "Free"
                 # else:
                 #     paid_free = "Paid"
-                cc = ServiceDealerCatNew(brand                =  brand
+                cc = ServiceDealerCatNew(brand             =  brand
                                         ,carname           =  carname
                                         ,type_service      =  type_service
                                         ,dealer_category   =  dealer_category
-                                        #,year              =  year
+                                        #,year             =  year
                                         ,price_labour      =  price_labour
                                         ,wheel_alignment   =  wheel_alignment
                                         ,wheel_balancing   =  wheel_balancing
@@ -703,7 +703,7 @@ def exportServicesListNew():
             cc = ServicingNew(brand             = service.brand
                               ,carname          = service.carname
                               ,type_service     =service.type_service
-                              ,year             = service.year
+                             # ,year             = service.year
                               ,regular_checks   = service.regular_checks
                               # ,paid_free        = p_f
                               ,dealer           = [service.dealer_category])
@@ -727,8 +727,10 @@ def loadPriceFreqNew(fileName):
             dealer_category  = cleanstring(prt[5])
             unit             = cleanstring(prt[6])
             unit_price       = cleanstring(prt[7])
-            minor_price      = float(cleanstring(prt[8]))
-            major_price      = float(cleanstring(prt[9]))
+            minor_qty      = cleanstring(prt[8])
+            major_qty      = cleanstring(prt[9])
+            minor_price      = float(cleanstring(prt[10]))
+            major_price      = float(cleanstring(prt[11]))
 
             service_1 = ""
             service_2 = ""
@@ -737,10 +739,9 @@ def loadPriceFreqNew(fileName):
             if (minor == 1):
                 service_1 = "Minor Servicing"
                 service_3 = "Not Defined"
+                service_4 = "Regular Servicing"
             if (major == 1):
                 service_2 ="Major Servicing"
-
-
 
             #print prt
 
@@ -755,6 +756,14 @@ def loadPriceFreqNew(fileName):
                 price = float(price_s)
                 price = price + minor_price
                 findDealer.price_parts = str(price)
+
+                obj = {}
+                obj['part']= part
+                obj['price']= minor_price
+
+                obj_list = findDealer.part_dic
+                obj_list.append(obj)
+
                 findDealer.save()
 
             findDealer = ServiceDealerCatNew.objects.filter(brand = brand, carname=carname, dealer_category=dealer_category, type_service=service_2)
@@ -768,6 +777,15 @@ def loadPriceFreqNew(fileName):
                 price = float(price_s)
                 price = price + major_price
                 findDealer.price_parts = str(price)
+
+                obj = {}
+                obj['part_name']= part
+                obj['part_price']= major_price
+
+                obj_list = findDealer.part_dic
+                obj_list.append(obj)
+                findDealer.part_dic = obj_list
+
                 findDealer.save()
 
             findDealer = ServiceDealerCatNew.objects.filter(brand = brand, carname=carname, dealer_category=dealer_category, type_service=service_3)
@@ -781,6 +799,36 @@ def loadPriceFreqNew(fileName):
                 price = float(price_s)
                 price = price + minor_price
                 findDealer.price_parts = str(price)
+
+                obj = {}
+                obj['part']= part
+                obj['price']= minor_price
+
+                obj_list = findDealer.part_dic
+                obj_list.append(obj)
+                findDealer.part_dic = obj_list
+                findDealer.save()
+
+
+            findDealer = ServiceDealerCatNew.objects.filter(brand = brand, carname=carname, dealer_category=dealer_category, type_service=service_4)
+
+            if len(findDealer):
+                findDealer = findDealer[0]
+                parts = findDealer.part_replacement
+                parts.append(part)
+                findDealer.part_replacement = parts
+                price_s = findDealer.price_parts
+                price = float(price_s)
+                price = price + minor_price
+                findDealer.price_parts = str(price)
+
+                obj = {}
+                obj['part_name']= part
+                obj['part_price']= minor_price
+
+                obj_list = findDealer.part_dic
+                obj_list.append(obj)
+                findDealer.part_dic = obj_list
                 findDealer.save()
 
             # odo = 0

@@ -87,7 +87,7 @@ class ServicingNew(models.Model):
     #while uploading servicing list file
     brand               = models.CharField(max_length=50)
     carname             = models.CharField(max_length=50)
-    type_service        = models.IntegerField()
+    type_service        = models.CharField(max_length=200)
     #year                = models.CharField(max_length=50)
     regular_checks      = ListField(models.CharField(max_length=200))
     #while uploading servicing labour
@@ -99,11 +99,12 @@ class ServiceDealerCatNew(models.Model):
     name                = models.CharField(max_length=200)
     brand               = models.CharField(max_length=50)
     carname             = models.CharField(max_length=50)
-    type_service        = models.IntegerField()
+    type_service        = models.CharField(max_length=200)
     #year               = models.CharField(max_length=50)
     dealer_category     = models.CharField(max_length=200)
+    part_dic = ListField(DictField())
     part_replacement    = ListField(models.CharField(max_length=200))
-   #while uploading part frequency
+   # while uploading part frequency
     price_parts         = models.CharField(max_length=50)
     price_labour        = models.CharField(max_length=50)
     wheel_alignment     = models.CharField(max_length=50)
@@ -133,6 +134,7 @@ class ServiceDealerNameNew(models.Model):
     rating          = models.CharField(max_length=50)
     reviews         = ListField(models.CharField(max_length=500))
 
+##########################################################################################
 
 class CleaningDealerName(models.Model):
     vendor  = models.CharField(max_length=50)
