@@ -9,7 +9,7 @@ import json
 import os
 from decimal import Decimal
 from api import views
-from api.models import ServiceDealerCat, CleaningCategoryServices, Car
+from api.models import ServiceDealerCat,ServiceDealerCatNew, CleaningCategoryServices, Car
 
 
 # Create your views here.
@@ -166,6 +166,8 @@ def checkout(request):
 
                 if cartObj['service'] == 'servicing':
                     serviceDetail = ServiceDealerCat.objects.filter(id=service_id)
+                    serviceDetailNew = ServiceDealerCatNew.objects.filter(id=service_id)
+
                     if len(serviceDetail):
                         serviceDetail = serviceDetail[0]
                         print serviceDetail.price_parts, serviceDetail.price_labour
@@ -189,6 +191,34 @@ def checkout(request):
                             'wa_wb_present':serviceDetail.WA_WB_Inc,
                             'dealer_details':serviceDetail.detail_dealers,
                             'year':serviceDetail.year,
+                            'total_price':total_price
+                        }
+                        cartDict[ts]['service_detail'] = item
+                        cartDict[ts]['ts'] = ts
+
+                    elif len(serviceDetailNew):
+                        serviceDetail = serviceDetailNew[0]
+                        print serviceDetail.price_parts, serviceDetail.price_labour
+                        total_price = 0
+                        if len(serviceDetail.price_parts):
+                            total_price = total_price+ float(serviceDetail.price_parts)
+                        if len(serviceDetail.price_labour):
+                            total_price = int(total_price + (math.ceil(float(serviceDetail.price_labour)*0.14)) + float(serviceDetail.price_labour)+ 0)
+                        item = {
+                            'id':serviceDetail.id,
+                            'name':serviceDetail.name,
+                            'brand':serviceDetail.brand,
+                            'car':serviceDetail.carname,
+                            'type_service':serviceDetail.type_service,
+                            'dealer_cat':serviceDetail.dealer_category,
+                            'parts_list':serviceDetail.part_replacement,
+                            'parts_price':serviceDetail.price_parts,
+                            'labour_price':serviceDetail.price_labour,
+                            'wa_price':serviceDetail.wheel_alignment,
+                            'wb_price':serviceDetail.wheel_balancing,
+                            'wa_wb_present':serviceDetail.WA_WB_Inc,
+                            'dealer_details':serviceDetail.detail_dealers,
+                            # 'year':serviceDetail.year,
                             'total_price':total_price
                         }
                         # print total_price
@@ -307,6 +337,7 @@ def cart(request):
             service_id = cartObj['service_id']
             if cartObj['service'] == 'servicing':
                 serviceDetail = ServiceDealerCat.objects.filter(id=service_id)
+                serviceDetailNew = ServiceDealerCatNew.objects.filter(id=service_id)
                 if len(serviceDetail):
                     serviceDetail = serviceDetail[0]
                     print serviceDetail.price_parts, serviceDetail.price_labour
@@ -339,6 +370,40 @@ def cart(request):
                         contextDict[carCmpName].append(cartDict[ts])
                         if carCmpName not in carList:
                             carList.append(carCmpName)
+                elif len(serviceDetailNew):
+                    serviceDetail = serviceDetailNew[0]
+                    print serviceDetail.price_parts, serviceDetail.price_labour
+                    total_price = 0
+                    if len(serviceDetail.price_parts):
+                        total_price = total_price+ float(serviceDetail.price_parts)
+                    if len(serviceDetail.price_labour):
+                        total_price =  int(total_price + (math.ceil(float(serviceDetail.price_labour)*0.14)) + float(serviceDetail.price_labour)+ 0)
+                    item = {
+                        'id':serviceDetail.id,
+                        'name':serviceDetail.name,
+                        'brand':serviceDetail.brand,
+                        'car':serviceDetail.carname,
+                        'type_service':serviceDetail.type_service,
+                        'dealer_cat':serviceDetail.dealer_category,
+                        'parts_list':serviceDetail.part_replacement,
+                        'parts_price':serviceDetail.price_parts,
+                        'labour_price':serviceDetail.price_labour,
+                        'wa_price':serviceDetail.wheel_alignment,
+                        'wb_price':serviceDetail.wheel_balancing,
+                        'wa_wb_present':serviceDetail.WA_WB_Inc,
+                        'dealer_details':serviceDetail.detail_dealers,
+                        # 'year':serviceDetail.year,
+
+                        'total_price':total_price
+                    }
+                    # print total_price
+                    cartDict[ts]['service_detail'] = item
+                    cartDict[ts]['ts'] = ts
+                    if len(carCmpName):
+                        contextDict[carCmpName].append(cartDict[ts])
+                        if carCmpName not in carList:
+                            carList.append(carCmpName)
+
             elif cartObj['service'] == 'cleaning':
                 serviceDetail = CleaningCategoryServices.objects.filter(id=service_id)
                 if len(serviceDetail):
@@ -444,6 +509,7 @@ def bookings(request):
             service_id = cartObj['service_id']
             if cartObj['service'] == 'servicing':
                 serviceDetail = ServiceDealerCat.objects.filter(id=service_id)
+                serviceDetailNew = ServiceDealerCatNew.objects.filter(id=service_id)
                 if len(serviceDetail):
                     serviceDetail = serviceDetail[0]
                     print serviceDetail.price_parts, serviceDetail.price_labour
@@ -467,6 +533,31 @@ def bookings(request):
                         'wa_wb_present':serviceDetail.WA_WB_Inc,
                         'dealer_details':serviceDetail.detail_dealers,
                         'year':serviceDetail.year,
+                        'total_price':total_price
+                    }
+                elif len(serviceDetailNew):
+                    serviceDetail = serviceDetailNew[0]
+                    print serviceDetail.price_parts, serviceDetail.price_labour
+                    total_price = 0
+                    if len(serviceDetail.price_parts):
+                        total_price = total_price+ float(serviceDetail.price_parts)
+                    if len(serviceDetail.price_labour):
+                        total_price = total_price + float(serviceDetail.price_labour)
+                    item = {
+                        'id':serviceDetail.id,
+                        'name':serviceDetail.name,
+                        'brand':serviceDetail.brand,
+                        'car':serviceDetail.carname,
+                        'odometer':serviceDetail.type_service,
+                        'dealer_cat':serviceDetail.dealer_category,
+                        'parts_list':serviceDetail.part_replacement,
+                        'parts_price':serviceDetail.price_parts,
+                        'labour_price':serviceDetail.price_labour,
+                        'wa_price':serviceDetail.wheel_alignment,
+                        'wb_price':serviceDetail.wheel_balancing,
+                        'wa_wb_present':serviceDetail.WA_WB_Inc,
+                        'dealer_details':serviceDetail.detail_dealers,
+                        # 'year':serviceDetail.year,
                         'total_price':total_price
                     }
                     # print total_price
