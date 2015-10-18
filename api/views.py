@@ -1276,6 +1276,7 @@ def place_order(request):
             print order
             ts = order['ts']
             service = order['service']
+            service = service.lower()
             service_id = order['service_id']
 
             listItem = {}
