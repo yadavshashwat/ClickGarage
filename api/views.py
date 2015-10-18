@@ -20,7 +20,7 @@ from dataEntry.runentry import carMakers, cleanstring
 from activity import views as ac_vi
 from mailing import views as mviews
 
-from activity.models import Transactions
+from activity.models import Transactions, CGUser
 
 tempSecretKey = 'dmFydW5ndWxhdGlsaWtlc2dhbG91dGlrZWJhYg=='
 
@@ -1623,14 +1623,20 @@ def cancel_booking(request):
     obj = {}
     obj['status'] = False
     obj['result'] = []
+    useremail = None
+    username = None
+    booking_id = None
     if random_req_auth(request) or (request.user and request.user.is_authenticated()):
-        cust_id         = request.user.id
-        email           = request.user.email
+        # cust_id         = request.user.id
+        # email           = request.user.email
         tran_id         = get_param(request,'tran_id',None)
 
     obj['cancelled_id'] = tran_id
     tranObjs = Transactions.objects.filter(status = '', id =tran_id)
     for tran in tranObjs:
+        useremail = tran.cust_email
+        username  = tran.cust_name
+        booking_id = tran.booking_id
         tran.status = "Cancelled"
         tran.save()
         obj['result'] = {}
@@ -1638,7 +1644,15 @@ def cancel_booking(request):
         obj['status'] = True
         obj['counter'] = 1
         obj['msg'] = "Success"
+#    mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
+    mviews.send_cancel_final(username,useremail,booking_id)
     return HttpResponse(json.dumps(obj), content_type='application/json')
+
+        # useremail = tran.cust_email
+        # username  = tran.cust_name
+        # booking_id = tran.booking_id
+        # mviews.send_cancel_final(username,useremail,booking_id)
+
 
 # def fetch_all_booking(request):
 #     obj = {}
@@ -1852,5 +1866,73 @@ def fetch_car_servicedetails_new(request):
         return HttpResponse(json.dumps(obj), content_type='application/json')
     else:
         return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+def fetch_all_booking(request):
+    r_id = get_param(request, 'r_id', None)
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    tranObjs =[]
+    # cust_id = None
+    # if random_req_auth(request) or (request.user and request.user.is_authenticated()):
+    #     cust_id = request.user.id
+
+    # if cust_id:
+    if (r_id == tempSecretKey):
+        tranObjs = Transactions.objects.all().order_by('-booking_id')
+            #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
+    for trans in tranObjs:
+            obj['result'].append({
+                            'tran_id'          :trans.id
+                            ,'booking_id'       :trans.booking_id
+                            ,'trans_timestamp'  :trans.trans_timestamp
+                            ,'cust_id'          :trans.cust_id
+                            ,'cust_name'        :trans.cust_name
+                            ,'cust_brand'       :trans.cust_brand
+                            ,'cust_carname'     :trans.cust_carname
+                            ,'cust_carnumber'   :trans.cust_carnumber
+                            ,'cust_number'      :trans.cust_number
+                            ,'cust_email'       :trans.cust_email
+                            ,'cust_pickup_add'  :trans.cust_pickup_add
+                            ,'cust_drop_add'    :trans.cust_drop_add
+                            ,'service_items'    :trans.service_items
+                            ,'price_total'      :trans.price_total
+                            ,'date_booking'     :trans.date_booking
+                            ,'time_booking'     :trans.time_booking
+                            ,'amount_paid'      :trans.amount_paid
+                            ,'status'           :trans.status
+                            ,'comments'         :trans.comments} )
+            obj['status'] = True
+            obj['counter'] = 1
+            obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def fetch_all_users(request):
+    r_id = get_param(request, 'r_id', None)
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    tranObjs =[]
+    # cust_id = None
+    # if random_req_auth(request) or (request.user and request.user.is_authenticated()):
+    #     cust_id = request.user.id
+
+    # if cust_id:
+    if (r_id == tempSecretKey):
+        tranObjs = CGUser.objects.all()
+            #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
+    for trans in tranObjs:
+            obj['result'].append({
+                            'id'          :trans.id
+                           ,'email':trans.email
+                            # ,'name':trans.name
+
+            } )
+            obj['status'] = True
+            obj['counter'] = 1
+            obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
 
 
