@@ -93,7 +93,8 @@ class ServicingNew(models.Model):
     #while uploading servicing labour
     #paid_free           = models.CharField(max_length=50)
     part_replacement    = ListField(models.CharField(max_length=200))
-    dealer              = ListField(models.CharField(max_length=200))
+    dealer       = ListField(models.CharField(max_length=200))
+    priority_service           = models.CharField(max_length=50)
 
 class ServiceDealerCatNew(models.Model):
     name                = models.CharField(max_length=200)
@@ -111,10 +112,11 @@ class ServiceDealerCatNew(models.Model):
     wheel_balancing     = models.CharField(max_length=50)
     WA_WB_Inc           = models.CharField(max_length=50)
     detail_dealers      = ListField(DictField())
-    #paid_free           = models.CharField(max_length=50)
+    #paid_free          = models.CharField(max_length=50)
     regular_checks      = ListField(models.CharField(max_length=200))
     discount            = models.CharField(max_length=50)
     priority            = models.CharField(max_length=50)
+    priority_service           = models.CharField(max_length=50)
 
 
 class ServiceDealerNameNew(models.Model):

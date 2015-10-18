@@ -904,7 +904,9 @@ def addItemToCart(request):
     obj['status'] = False
     obj['result'] =[]
 
-    print request
+    # print request
+    if remove:
+        print 'remove this'
     if request.user.is_authenticated():
         if cookie_data:
             if remove:
@@ -1283,6 +1285,7 @@ def place_order(request):
             listItem['status'] = True
             if service == 'servicing':
                 serviceDetail = ServiceDealerCat.objects.filter(id=service_id)
+                serviceDetailNew = ServiceDealerCatNew.objects.filter(id=service_id)
                 if len(serviceDetail):
                     serviceDetail = serviceDetail[0]
                     total_price = 0
@@ -1316,6 +1319,49 @@ def place_order(request):
                     html_list.append(item['odometer'])
                     html_list.append(' / ')
                     html_list.append(item['year'])
+                    html_list.append('</span>')
+
+                    html_list.append('<span> dealer : ')
+                    html_list.append(item['dealer_cat'])
+                    html_list.append('</span>')
+
+                    html_list.append('<span> price : ')
+                    html_list.append(total_price)
+                    html_list.append('</span>')
+
+                    html_list.append('</div>')
+
+                elif len(serviceDetailNew):
+                    serviceDetail = serviceDetailNew[0]
+                    total_price = 0
+                    if len(serviceDetail.price_parts):
+                        total_price = total_price+ float(serviceDetail.price_parts)
+                    if len(serviceDetail.price_labour):
+                        total_price = total_price + float(serviceDetail.price_labour)
+                    html_list.append('<div>')
+                    item = {
+                        'id':serviceDetail.id,
+                        'name':serviceDetail.name,
+                        'brand':serviceDetail.brand,
+                        'car':serviceDetail.carname,
+                        'type_service':serviceDetail.type_service,
+                        'dealer_cat':serviceDetail.dealer_category,
+                        'parts_list':serviceDetail.part_replacement,
+                        'parts_price':serviceDetail.price_parts,
+                        'labour_price':serviceDetail.price_labour,
+                        'wa_price':serviceDetail.wheel_alignment,
+                        'wb_price':serviceDetail.wheel_balancing,
+                        'wa_wb_present':serviceDetail.WA_WB_Inc,
+                        'dealer_details':serviceDetail.detail_dealers,
+                        # 'year':serviceDetail.year,
+                        'total_price':total_price,
+                        'status':True,
+                        'ts':ts
+                    }
+                    listItem['served_data'] = item
+                    html_list.append('<span> regular servicing </span>')
+                    html_list.append('<span> type of servicing : ')
+                    html_list.append(item['type_service'])
                     html_list.append('</span>')
 
                     html_list.append('<span> dealer : ')
@@ -1709,23 +1755,32 @@ def fetch_car_services_new(request):
             if len(carObj):
                 carObj = carObj[0]
                 car_old = carObj.name
+                car_bike = carObj.car_bike
                 make = carObj.make
                 car = make + " " + car_old
                 if car:
-                    ServiceObjs = ServicingNew.objects.filter(carname = car, brand = make)
+                    ServiceObjs = ServicingNew.objects.filter(carname = car, brand = make).order_by('priority_service')
                     #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
                     for service in ServiceObjs:
                         obj['result'].append({
-                            'id':service.id,
-                        'name' : service.name
-                        ,'brand' : service.brand
-                        ,'car_name' : service.carname
-                        ,'type_service' : service.type_service
-                        #,'time_reading' : service.year
+                             'id':service.id
+                            ,'name':service.name
+                            ,'brand':service.brand
+                            ,'car_name':service.carname
+                            ,'type_service' : service.type_service
+                            ,'regular_checks':service.regular_checks
+
+                            ,'parts_replaced':service.part_replacement
+                            ,'dealers_list':service.dealer
+                    #,'time_reading' : service.year
                         ,'checks_done' : service.regular_checks
                         #,'paid_free' : service.paid_free
                         ,'parts_replaced' : service.part_replacement
-                        ,'dealer_category' : service.dealer} )
+                        ,'dealer_category' : service.dealer
+                        ,'car_bike':car_bike
+                        } )
+
+
 
 
 
@@ -1769,25 +1824,24 @@ def fetch_car_servicedetails_new(request):
                     for service in ServicedetailObjs:
                         obj['result'].append({
                             'id':service.id
-                        ,'name':service.name
-                        ,'brand_name':service.brand
-                        ,'car_name':service.carname
+                              ,'name':service.name
+                              ,'brand':service.brand
+                              ,'car':service.carname
+                              ,'vendor':service.dealer_category
+                              ,'parts_list':service.part_replacement
+                              ,'parts_price':service.price_parts
+                              ,'labour_price':service.price_labour
+                              ,'wa_price':service.wheel_alignment
+                              ,'wb_price':service.wheel_balancing
+                              ,'wa_wb_present':service.WA_WB_Inc
+                              ,'dealer_details':service.detail_dealers
+                              ,'car_bike':car_bike
                         ,'type_service':service.type_service
-#                        ,'year':service.year
-                        ,'dealer_category':service.dealer_category
                         ,'part_dic':service.part_dic
-                        ,'parts_replaced':service.part_replacement
-                        ,'parts_price':service.price_parts
                         ,'labour_price':service.price_labour
-                        ,'wheel_alignment_price':service.wheel_alignment
-                        ,'wheel_balancing_price':service.wheel_balancing
-                        ,'WA_WB?':service.WA_WB_Inc
-                        ,'dealer_details':service.detail_dealers
-                        #,'paid_free?':service.paid_free
-                        ,'regular_checks':service.regular_checks
-                        ,'discount':service.discount
+                        ,'discosunt':service.discount
                         ,'priority':service.priority
-                              ,'car_bike':car_bike}
+                     }
                         )
 
 

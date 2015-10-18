@@ -30,6 +30,13 @@ urlpatterns = [
     url(r'fetch_car_cleaning/$','api.views.fetch_all_cleaning',name='fetch_all_cleaning'),
     # params : service_id, c_id
     url(r'fetch_cleaning_details/$','api.views.fetch_clean_service',name='fetch_clean_service'),
+        # params : none
+    url(r'fetch_car_cleaning_new/$','api.views.fetch_all_cleaning',name='fetch_all_cleaning'),
+    # params : service_id, c_id
+    url(r'fetch_cleaning_details_new/$','api.views.fetch_clean_service',name='fetch_clean_service'),
+
+
+
     # params : none
     url(r'fetch_car_vas/$','api.views.fetch_all_vas',name='fetch_all_vas'),
     # params : service_id, c_id

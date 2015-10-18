@@ -617,9 +617,10 @@ def loadServiceDealerCatNew(fileName):
             wheel_alignment    = cleanstring(dealerz[5])
             wheel_balancing    = cleanstring(dealerz[6])
             WA_WB_Inc          = dealerz[7]
-            discount           = dealerz[8]
-            priority           = dealerz[9]
+            priority           = dealerz[8]
+            discount           = dealerz[9]
             regular_checks     = cleanstring(dealerz[10]).split("$")
+            priority_service   = dealerz[11]
 
             findDealer = ServiceDealerCatNew.objects.filter(brand = brand, carname=carname, dealer_category=dealer_category, type_service=type_service)
             if len(findDealer):
@@ -633,6 +634,7 @@ def loadServiceDealerCatNew(fileName):
                 findDealer.regular_checks    = regular_checks
                 findDealer.discount    = discount
                 findDealer.priority    = priority
+                findDealer.priority_service = priority_service
                 findDealer.part_replacement  = []
 
 
@@ -661,6 +663,7 @@ def loadServiceDealerCatNew(fileName):
                                         ,discount    = discount
                                         ,priority    = priority
                                         # ,paid_free =  paid_free
+                                        ,priority_service = priority_service
                                       )
                 cc.save()
 
@@ -703,6 +706,7 @@ def exportServicesListNew():
             cc = ServicingNew(brand             = service.brand
                               ,carname          = service.carname
                               ,type_service     =service.type_service
+                              ,priority_service =service.priority_service
                              # ,year             = service.year
                               ,regular_checks   = service.regular_checks
                               # ,paid_free        = p_f
@@ -735,6 +739,7 @@ def loadPriceFreqNew(fileName):
             service_1 = ""
             service_2 = ""
             service_3 = ""
+            service_4 = ""
 
             if (minor == 1):
                 service_1 = "Minor Servicing"
