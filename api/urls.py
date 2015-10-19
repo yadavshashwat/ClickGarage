@@ -52,6 +52,8 @@ urlpatterns = [
     url(r'fetch_all_booking/$','api.views.fetch_all_booking',name='fetch_all_booking'),
     url(r'fetch_car_cancelled/$','api.views.fetch_car_cancelled',name='fetch_car_cancelled'),
     url(r'cancel_booking/$','api.views.cancel_booking',name='cancel_booking'),
+    url(r'order_complete/$','api.views.order_complete',name='order_complete'),
+    url(r'cancel_booking_new/$','api.views.cancel_booking_new',name='cancel_booking_new'),
     url(r'fetch_all_users/$','api.views.fetch_all_users',name='fetch_all_users'),
 
     #url(r'fetch_all_cleaning/$','api.views.fetch_all_cleaning',name='fetch_all_cleaning'),
