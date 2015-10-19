@@ -1548,15 +1548,15 @@ def fetch_car_booking(request):
         cust_id = request.user.id
 
     if cust_id:
-        tranObjs = Transactions.objects.filter(cust_id=cust_id, status = '').order_by('-booking_id')
+        tranObjs = Transactions.objects.filter(cust_id=cust_id).exclude(status='Cancelled').order_by('-booking_id')
             #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
         for trans in tranObjs:
             obj['result'].append({
                             'tran_id'          :trans.id
-                            ,'booking_id'       :trans.booking_id            
-                            ,'trans_timestamp'  :trans.trans_timestamp       
-                            ,'cust_id'          :trans.cust_id          
-                            ,'cust_name'        :trans.cust_name             
+                            ,'booking_id'       :trans.booking_id
+                            ,'trans_timestamp'  :trans.trans_timestamp
+                            ,'cust_id'          :trans.cust_id
+                            ,'cust_name'        :trans.cust_name
                             ,'cust_brand'       :trans.cust_brand            
                             ,'cust_carname'     :trans.cust_carname          
                             ,'cust_carnumber'   :trans.cust_carnumber        
@@ -1631,21 +1631,21 @@ def cancel_booking(request):
         # email           = request.user.email
         tran_id         = get_param(request,'tran_id',None)
 
-    obj['cancelled_id'] = tran_id
-    tranObjs = Transactions.objects.filter(status = '', id =tran_id)
-    for tran in tranObjs:
-        useremail = tran.cust_email
-        username  = tran.cust_name
-        booking_id = tran.booking_id
-        tran.status = "Cancelled"
-        tran.save()
-        obj['result'] = {}
-        obj['result']['cancelled_id'] = tran_id
-        obj['status'] = True
-        obj['counter'] = 1
-        obj['msg'] = "Success"
+        obj['cancelled_id'] = tran_id
+        tranObjs = Transactions.objects.filter(id =tran_id).exclude(status="Cancelled")
+        for tran in tranObjs:
+            useremail = tran.cust_email
+            username  = tran.cust_name
+            booking_id = tran.booking_id
+            tran.status = "Cancelled"
+            tran.save()
+            obj['result'] = {}
+            obj['result']['cancelled_id'] = tran_id
+            obj['status'] = True
+            obj['counter'] = 1
+            obj['msg'] = "Success"
 #    mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
-    mviews.send_cancel_final(username,useremail,booking_id)
+        mviews.send_cancel_final(username,useremail,booking_id)
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
         # useremail = tran.cust_email
@@ -1933,6 +1933,76 @@ def fetch_all_users(request):
             obj['counter'] = 1
             obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def cancel_booking_new(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    useremail = None
+    username = None
+    booking_id = None
+    if random_req_auth(request) or (request.user and request.user.is_authenticated()):
+        # cust_id         = request.user.id
+        # email           = request.user.email
+        tran_id         = get_param(request,'tran_id',None)
+        service_ts      = get_param(request,'ts',None)
+        obj['cancelled_id'] = tran_id
+        tranObjs = Transactions.objects.filter(id =tran_id)
+        print len(tranObjs)
+        if len(tranObjs):
+            tranObj = tranObjs[0]
+            useremail = tranObj.cust_email
+            username  = tranObj.cust_name
+            booking_id = tranObj.booking_id
+
+            try:
+                itemCancel = (item for item in tranObj.service_items if 'ts' in item and item['ts'] == service_ts).next()
+                idx = tranObj.service_items.index(itemCancel)
+                itemCancel['status'] = False
+                print itemCancel
+                print idx
+                tranObj.service_items[idx] = itemCancel
+                tranObj.status = "Modified"
+                tranObj.save()
+                obj['result'] = {}
+                obj['result']['cancelled_id'] = tran_id
+                obj['status'] = True
+                obj['counter'] = 1
+                obj['msg'] = "Success"
+                mviews.send_cancel_final(username,useremail,booking_id)
+            except ValueError:
+                print "p"
+        return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def order_complete(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    useremail = None
+    username = None
+    booking_id = None
+    if random_req_auth(request) or (request.user and request.user.is_authenticated()):
+        # cust_id         = request.user.id
+        # email           = request.user.email
+        tran_id           = get_param(request,'tran_id',None)
+        obj['cancelled_id'] = tran_id
+        tranObjs = Transactions.objects.filter(id =tran_id).exclude(status="Cancelled").exclude(status="Complete")
+        for tran in tranObjs:
+            useremail = tran.cust_email
+            username  = tran.cust_name
+            booking_id = tran.booking_id
+            userphone =tran.cust_number
+            tran.status = "Complete"
+            tran.save()
+            obj['result'] = {}
+            obj['result']['complete_id'] = tran_id
+            obj['status'] = True
+            obj['counter'] = 1
+            obj['msg'] = "Success"
+#    mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
+        mviews.send_order_complete(username,userphone,useremail,booking_id)
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
 
 
 
