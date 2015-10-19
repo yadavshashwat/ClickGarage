@@ -2,8 +2,8 @@
 # from django.shortcuts import render
 
 from django.http import HttpResponse, HttpResponseRedirect
-from authomatic import Authomatic
-from authomatic.adapters import DjangoAdapter
+#from authomatic import Authomatic
+#from authomatic.adapters import DjangoAdapter
 
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response, redirect
@@ -16,104 +16,105 @@ from social.apps.django_app.utils import psa
 
 from django.views.decorators.csrf import csrf_exempt
 
-from config import CONFIG
+#from config import CONFIG
 
-authomatic = Authomatic(CONFIG, 'facf8eedf58febc4a32b07129785ff70')
+#authomatic = Authomatic(CONFIG, 'facf8eedf58febc4a32b07129785ff70')
 
 from api.models import Car
 
-def social_login(request, provider_name):
-    response = HttpResponse()
-    print request
-    if provider_name == 'fb':
-        result = authomatic.login(DjangoAdapter(request, response), provider_name)
-        if result:
-            response.write('<a href="..">Home</a>')
-            if result.error:
-                response.write('<h2>Damn that error: {0}</h2>'.format(result.error.message))
-            elif result.user:
-                if not (result.user.name and result.user.id):
-                    result.user.update()
-                    response.write(u'<h1>Hi {0}</h1>'.format(result.user.name))
-                    response.write(u'<h2>Your id is: {0}</h2>'.format(result.user.id))
-                    response.write(u'<h2>Your email is: {0}</h2>'.format(result.user.email))
-                    if result.user.email:
-                        if user_exists(result.user.email):
-                            pw = User.objects.filter(username=result.user.email)
-                            pw = pw[0].password
-                            user = authenticate(username=result.user.email, password=pw)
-                            if user is not None:
-                                login(request, user)
-                                response.write('user logged in')
-                                # return redirect('/')
-                            else:
-                                response.write('user not logged in')
-                                # return redirect('/')
+#def social_login(request, provider_name):
+#    response = HttpResponse()
+#    print request
+#    if provider_name == 'fb':
+#        result = authomatic.login(DjangoAdapter(request, response), provider_name)
+#        if result:
+#            response.write('<a href="..">Home</a>')
+#            if result.error:
+#                response.write('<h2>Damn that error: {0}</h2>'.format(result.error.message))
+#            elif result.user:
+#                if not (result.user.name and result.user.id):
+#                    result.user.update()
+#                    response.write(u'<h1>Hi {0}</h1>'.format(result.user.name))
+#                    response.write(u'<h2>Your id is: {0}</h2>'.format(result.user.id))
+#                    response.write(u'<h2>Your email is: {0}</h2>'.format(result.user.email))
+#                    if result.user.email:
+#                        if user_exists(result.user.email):
+#                            pw = User.objects.filter(username=result.user.email)
+#                            pw = pw[0].password
+#                            user = authenticate(username=result.user.email, password=pw)
+#                            if user is not None:
+#                                login(request, user)
+#                                response.write('user logged in')
+#                                # return redirect('/')
+#                            else:
+#                                response.write('user not logged in')
+#                                # return redirect('/')
+#
+#                    if result.user.credentials:
+#                        if result.provider.name == 'fb':
+#                            response.write('Your are logged in with Facebook.<br />')
+#                            url = 'https://graph.facebook.com/{0}?fields=id,name,email'
+#                            # url = 'https://graph.facebook.com/v2.0/?fields=id,name,email'
+#                            url = url.format(result.user.id)
+#                            access_response = result.provider.access(url)
+#                            print access_response.status
+#                            if access_response.status == 200:
+#                            # Parse response.
+#                                print access_response.data
+#    #                            statuses = access_response.data.get('feed').get('data')
+#                                error = access_response.data.get('error')
+#                                response.write(access_response.data)
+#                                if error:
+#                                    response.write(u'Damn that error: {0}!'.format(error))
+#                                # elif statuses:
+#                                #     response.write('Your 5 most recent statuses:<br />')
+#     #                               for message in statuses:
+#
+#      #                                  text = message.get('message')
+#       #                                 date = message.get('created_time')
+#
+#    #                                    response.write(u'<h3>{0}</h3>'.format(text))
+#     #                                   response.write(u'Posted on: {0}'.format(date))
+#                                else:
+#                                    response.write('barely functional')
+#
+#                            else:
+#                                response.write('Damn that unknown error!<br />')
+#                                # response.write(u'Status: {0}'.format(response.status))
+#
+#                        if result.provider.name == 'tw':
+#                            response.write('Your are logged in with Twitter.<br />')
+#
+#                            # We will get the user's 5 most recent tweets.
+#                            url = 'https://api.twitter.com/1.1/statuses/user_timeline.json'
+#
+#                            # You can pass a dictionary of querystring parameters.
+#                            access_response = result.provider.access(url, {'count': 5})
+#
+#                            # Parse response.
+#                            if access_response.status == 200:
+#                                if type(access_response.data) is list:
+#                                    # Twitter returns the tweets as a JSON list.
+#                                    response.write('Your 5 most recent tweets:')
+#                                    for tweet in access_response.data:
+#                                        text = tweet.get('text')
+#                                        date = tweet.get('created_at')
+#
+#                                        response.write(u'<h3>{0}</h3>'.format(text))
+#                                        response.write(u'Tweeted on: {0}'.format(date))
+#
+#                                elif response.data.get('errors'):
+#                                    response.write(u'Damn that error: {0}!'.\
+#                                                        format(response.data.get('errors')))
+#                            else:
+#                                response.write('Damn that unknown error!<br />')
+#                                response.write(u'Status: {0}'.format(response.status))
+#    elif provider_name == 'cg':
+#        return auth_and_login(request)
+#
+#
+#    return response
 
-                    if result.user.credentials:
-                        if result.provider.name == 'fb':
-                            response.write('Your are logged in with Facebook.<br />')
-                            url = 'https://graph.facebook.com/{0}?fields=id,name,email'
-                            # url = 'https://graph.facebook.com/v2.0/?fields=id,name,email'
-                            url = url.format(result.user.id)
-                            access_response = result.provider.access(url)
-                            print access_response.status
-                            if access_response.status == 200:
-                            # Parse response.
-                                print access_response.data
-    #                            statuses = access_response.data.get('feed').get('data')
-                                error = access_response.data.get('error')
-                                response.write(access_response.data)
-                                if error:
-                                    response.write(u'Damn that error: {0}!'.format(error))
-                                # elif statuses:
-                                #     response.write('Your 5 most recent statuses:<br />')
-     #                               for message in statuses:
-
-      #                                  text = message.get('message')
-       #                                 date = message.get('created_time')
-
-    #                                    response.write(u'<h3>{0}</h3>'.format(text))
-     #                                   response.write(u'Posted on: {0}'.format(date))
-                                else:
-                                    response.write('barely functional')
-
-                            else:
-                                response.write('Damn that unknown error!<br />')
-                                # response.write(u'Status: {0}'.format(response.status))
-
-                        if result.provider.name == 'tw':
-                            response.write('Your are logged in with Twitter.<br />')
-
-                            # We will get the user's 5 most recent tweets.
-                            url = 'https://api.twitter.com/1.1/statuses/user_timeline.json'
-
-                            # You can pass a dictionary of querystring parameters.
-                            access_response = result.provider.access(url, {'count': 5})
-
-                            # Parse response.
-                            if access_response.status == 200:
-                                if type(access_response.data) is list:
-                                    # Twitter returns the tweets as a JSON list.
-                                    response.write('Your 5 most recent tweets:')
-                                    for tweet in access_response.data:
-                                        text = tweet.get('text')
-                                        date = tweet.get('created_at')
-
-                                        response.write(u'<h3>{0}</h3>'.format(text))
-                                        response.write(u'Tweeted on: {0}'.format(date))
-
-                                elif response.data.get('errors'):
-                                    response.write(u'Damn that error: {0}!'.\
-                                                        format(response.data.get('errors')))
-                            else:
-                                response.write('Damn that unknown error!<br />')
-                                response.write(u'Status: {0}'.format(response.status))
-    elif provider_name == 'cg':
-        return auth_and_login(request)
-
-
-    return response
 
 def loginview(request):
     c = {}
