@@ -1981,10 +1981,9 @@ def order_complete(request):
     useremail = None
     username = None
     booking_id = None
-    if random_req_auth(request) or (request.user and request.user.is_authenticated()):
-        # cust_id         = request.user.id
-        # email           = request.user.email
-        tran_id           = get_param(request,'tran_id',None)
+    tran_id   = get_param(request,'tran_id',None)
+    r_id = get_param(request, 'r_id', None)
+    if (r_id == tempSecretKey):
         obj['cancelled_id'] = tran_id
         tranObjs = Transactions.objects.filter(id =tran_id).exclude(status="Cancelled").exclude(status="Complete")
         for tran in tranObjs:
