@@ -867,3 +867,42 @@ def exportPartsListNew():
                 findDealer.save()
             service.part_replacement = findDealer.part_replacement
             service.save()
+
+def loadDealerListNew(fileName):
+    with open(path+'/data/ServicingNew/'+fileName, 'rU') as csvfile:
+         dealerData = csv.reader(csvfile, delimiter='\t', quotechar='|')
+         count = 0
+         for dlr in dealerData:
+            count = count + 1
+            print count
+            brand            = cleanstring(dlr[0])
+            name             = cleanstring(dlr[1])
+            city             = cleanstring(dlr[2])
+            region           = cleanstring(dlr[3])
+            offday           = cleanstring(dlr[4]).split("$")
+            address          = cleanstring(dlr[5])
+            landline         = cleanstring(dlr[6])
+            mobile           = cleanstring(dlr[7])
+            car_bike         = cleanstring(dlr[8])
+
+            findCar = Car.objects.filter(make=brand, car_bike=car_bike)
+            for crz in findCar:
+                carname = crz.name
+                carfinal = brand + " " + carname
+                findService = ServiceDealerCatNew.objects.filter(carname=carfinal)
+                for service in findService:
+                    obj = {}
+                    obj['name']= name
+                    obj['city']= city
+                    obj['region']= region
+                    obj['offday']= offday
+                    obj['address']= address
+                    obj['landline']= landline
+                    obj['mobile']= mobile
+                    obj_list = service.detail_dealers
+                    obj_list.append(obj)
+                    service.save()
+
+
+
+

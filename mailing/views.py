@@ -5420,9 +5420,7 @@ def send_order_complete(username,userphone,useremail,booking_id):
 	send_feedback(useremail,username,booking_id)
 
 #send_order_complete("Bhuvan","9953008804","bhuvan.batra@gmail.com","001")
-
-
-	# _sms("Rajeev", "8447021642", "29-10-2015", "10:00AM", "0001")
+# _sms("Rajeev", "8447021642", "29-10-2015", "10:00AM", "0001")
 def send_booking_details(to_address,booking_id,html_script):
 	me = from_address
 	you = to_address
