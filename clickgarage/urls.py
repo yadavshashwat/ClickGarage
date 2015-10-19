@@ -53,6 +53,7 @@ urlpatterns = patterns('',
     url(r'^tnc/', 'website.views.tnc', name='tnc'),
     url(r'^history/', 'website.views.history', name='history'),
     url(r'^history$','website.views.history',name='history'),
+    url(r'^adminpanel$','website.views.adminpanel',name='adminpanel'),	
     url(r'^mobile/', 'website.views.mobile', name='mobile'),
     url(r'^driver1/', 'website.views.drivers', name='drivers'),
 )
