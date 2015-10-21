@@ -705,7 +705,7 @@ def send_booking_email(to_address,to_name,time_start,date,booking_id):
                             <td class="mcnImageContent" valign="top" style="padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0; text-align:center;">
                                 
                                     
-                                        <img align="center" alt="" src="https://gallery.mailchimp.com/2cf3731a4f89990fe68c1bf2a/images/6ace5c77-891c-4c69-80df-caf10f403b24.png" width="564" style="max-width:1440px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage">
+                                        <img align="center" alt="" src="https://gallery.mailchimp.com/2cf3731a4f89990fe68c1bf2a/images/8b0df50f-a54b-4a7b-9ef6-c31d66aff1f1.jpg" width="564" style="max-width:1440px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage">
                                     
                                 
                             </td>
@@ -2642,7 +2642,7 @@ def send_cancel_email(to_address,to_name,booking_id_1):
 									<td class="mcnImageContent" valign="top" style="padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0; text-align:center;">
 
 
-												<img align="center" alt="" src="http://blog.clickgarage.in/wp-content/uploads/2015/09/ClickGarage_Final-e1443311969815.png" width="300" style="max-width:300px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage">
+												<img align="center" alt="" src="https://gallery.mailchimp.com/2cf3731a4f89990fe68c1bf2a/images/97fa2077-7dc3-4c2e-92c9-4c5012d536b4.jpg" width="300" style="max-width:1440px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage">
 
 
 									</td>
@@ -5420,7 +5420,9 @@ def send_order_complete(username,userphone,useremail,booking_id):
 	send_feedback(useremail,username,booking_id)
 
 #send_order_complete("Bhuvan","9953008804","bhuvan.batra@gmail.com","001")
-# _sms("Rajeev", "8447021642", "29-10-2015", "10:00AM", "0001")
+
+
+	# _sms("Rajeev", "8447021642", "29-10-2015", "10:00AM", "0001")
 def send_booking_details(to_address,booking_id,html_script):
 	me = from_address
 	you = to_address
