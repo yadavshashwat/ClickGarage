@@ -625,7 +625,7 @@ def loadServiceDealerCatNew(fileName):
             findDealer = ServiceDealerCatNew.objects.filter(brand = brand, carname=carname, dealer_category=dealer_category, type_service=type_service)
             if len(findDealer):
                 findDealer = findDealer[0]
-                findDealer.year              =  year
+                # findDealer.year              =  year
                 findDealer.price_labour      =  price_labour
                 findDealer.wheel_alignment   =  wheel_alignment
                 findDealer.wheel_balancing   =  wheel_balancing
@@ -636,6 +636,7 @@ def loadServiceDealerCatNew(fileName):
                 findDealer.priority    = priority
                 findDealer.priority_service = priority_service
                 findDealer.part_replacement  = []
+                findDealer.part_dic =[]
 
 
                 # if (price_labour == "0"):
@@ -660,6 +661,7 @@ def loadServiceDealerCatNew(fileName):
                                         ,price_parts = "0"
                                         ,part_replacement  = []
                                         ,regular_checks = regular_checks
+                                        ,part_dic = []
                                         ,discount    = discount
                                         ,priority    = priority
                                         # ,paid_free =  paid_free
@@ -735,6 +737,8 @@ def loadPriceFreqNew(fileName):
             major_qty      = cleanstring(prt[9])
             minor_price      = float(cleanstring(prt[10]))
             major_price      = float(cleanstring(prt[11]))
+            to_add      =  cleanstring(prt[12])
+
 
             service_1 = ""
             service_2 = ""
@@ -759,7 +763,8 @@ def loadPriceFreqNew(fileName):
 
                 price_s = findDealer.price_parts
                 price = float(price_s)
-                price = price + minor_price
+                if (to_add=="1"):
+                    price = price + minor_price
                 findDealer.price_parts = str(price)
 
                 obj = {}
@@ -780,7 +785,8 @@ def loadPriceFreqNew(fileName):
                 findDealer.part_replacement = parts
                 price_s = findDealer.price_parts
                 price = float(price_s)
-                price = price + major_price
+                if (to_add=="1"):
+                    price = price + major_price
                 findDealer.price_parts = str(price)
 
                 obj = {}
@@ -802,7 +808,8 @@ def loadPriceFreqNew(fileName):
                 findDealer.part_replacement = parts
                 price_s = findDealer.price_parts
                 price = float(price_s)
-                price = price + minor_price
+                if (to_add=="1"):
+                    price = price + minor_price
                 findDealer.price_parts = str(price)
 
                 obj = {}
@@ -824,7 +831,9 @@ def loadPriceFreqNew(fileName):
                 findDealer.part_replacement = parts
                 price_s = findDealer.price_parts
                 price = float(price_s)
-                price = price + minor_price
+                if (to_add=="1"):
+                    price = price + minor_price
+
                 findDealer.price_parts = str(price)
 
                 obj = {}

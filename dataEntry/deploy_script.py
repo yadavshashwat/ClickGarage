@@ -23,6 +23,8 @@ ServicingNew.objects.all().delete()
 runentry.exportServicesListNew()
 runentry.loadPriceFreqNew('Servicing_Parts.txt')
 
+#runentry.loadDealerListNew('Servicing_Dealer.txt')
+
 #Loading cleaning and value added services
 #CleaningDealerName.objects.all().delete()
 #CleaningServiceCat.objects.all().delete()
@@ -31,7 +33,7 @@ runentry.loadPriceFreqNew('Servicing_Parts.txt')
 #VASServiceCat.objects.all().delete()
 #VASCategoryServices.objects.all().delete()
 
-runentry.loadCleaning('Cleaning_VAS_all.txt')
+#runentry.loadCleaning('Cleaning_VAS_all.txt')
 
 ##Loading windshield
 #WindShieldCat.objects.#all().delete()
