@@ -246,6 +246,7 @@ def checkout(request):
                             total_price = total_price + float(serviceDetail.price_labour)
 
                         # total_price = float(serviceDetail.price_parts) + float(serviceDetail.price_labour)
+                        total_price = int(float(serviceDetail.price_total)*(1-float(serviceDetail.discount)))
                         item = {
                             'id':serviceDetail.id,
                             'category':serviceDetail.category,
@@ -254,7 +255,7 @@ def checkout(request):
                             'vendor':serviceDetail.vendor,
                             'parts_price':serviceDetail.price_parts,
                             'labour_price':serviceDetail.price_labour,
-                            'total_price':serviceDetail.price_total,
+                            'total_price':total_price,
                             # 'total_price':total_price,
                             'description':serviceDetail.description,
                         }
@@ -423,6 +424,8 @@ def cart(request):
                     if len(serviceDetail.price_labour):
                         total_price = total_price + float(serviceDetail.price_labour)
 
+                    total_price = int(float(serviceDetail.price_total)*(1-float(serviceDetail.discount)))
+
                     # total_price = float(serviceDetail.price_parts) + float(serviceDetail.price_labour)
                     item = {
                         'id':serviceDetail.id,
@@ -432,7 +435,7 @@ def cart(request):
                         'vendor':serviceDetail.vendor,
                         'parts_price':serviceDetail.price_parts,
                         'labour_price':serviceDetail.price_labour,
-                        'total_price':serviceDetail.price_total,
+                        'total_price':total_price,
                         # 'total_price':total_price,
                         'description':serviceDetail.description,
                     }
