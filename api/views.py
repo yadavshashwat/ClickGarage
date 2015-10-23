@@ -693,11 +693,12 @@ def fetch_car_windshieldcatdetails(request):
     obj = {}
     obj['status'] = False
     obj['result'] = []
-    car = None
-    make = None
-    odo = None
-
-  
+    vendor  = None
+    brand   = None
+    carname = None
+    ws_type = None
+    
+    
     if catg_id:
         wsObj = WindShieldCat.objects.filter(id=catg_id)
         
