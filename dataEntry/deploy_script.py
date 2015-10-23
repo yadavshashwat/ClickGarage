@@ -18,12 +18,11 @@ from api.models import *
 ##Loading Services New
 
 # ServiceDealerCatNew.objects.all().delete()
-#runentry.loadServiceDealerCatNew('Servicing_Labour.txt')
-#ServicingNew.objects.all().delete()
-#runentry.exportServicesListNew()
-#runentry.loadPriceFreqNew('Servicing_Parts.txt')
-
-#runentry.loadDealerListNew('Servicing_Dealer.txt')
+# runentry.loadServiceDealerCatNew('Servicing_Labour.txt')
+# ServicingNew.objects.all().delete()
+# runentry.exportServicesLi#stNew()
+# runentry.loadPriceFreqNew('Servicing_Parts.txt')
+# runentry.loadDealrListNew('Servicing_Dealer.txt')
 
 #Loading cleaning and value added services
 #CleaningDealerName.objects.all().delete()

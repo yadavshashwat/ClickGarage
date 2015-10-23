@@ -18,6 +18,7 @@ print path
 def cleanstring(query):
     query = query.strip()
     query = re.sub('\s{2,}', ' ', query)
+    query = re.sub(r'^"|"$', '', query)
     return query
 
 def loadAspectRatio(fileName):
@@ -467,7 +468,7 @@ def loadWindShielddata(fileName):
             price_total     = cleanstring(ws[9])
             city            = cleanstring(ws[10])
             price_insurance = cleanstring(ws[11])
-            findWS = WindShieldServiceDetails.objects.filter(vendor = vendor, brand = brand, carname=carname, ws_type = ws_type, ws_subtype = ws_subtype, city=city)
+            findWS = WindShieldServiceDetails.objects.filter(vendor = vendor, brand = brand, carname=carname, ws_type = ws_type, ws_subtype = ws_subtype, colour=colour, city=city)
             if len(findWS):
                 findWS= findWS[0]
                 findWS.vendor        = vendor
@@ -896,10 +897,15 @@ def loadDealerListNew(fileName):
             city             = cleanstring(dlr[2])
             region           = cleanstring(dlr[3])
             offday           = cleanstring(dlr[4]).split("$")
-            address          = cleanstring(dlr[5])
+            locality          = cleanstring(dlr[5])
             landline         = cleanstring(dlr[6])
             mobile           = cleanstring(dlr[7])
             car_bike         = cleanstring(dlr[8])
+            spc_address      = cleanstring(dlr[9])
+            landmark         = cleanstring(dlr[10])
+            pincode          = cleanstring(dlr[11])
+            contact_prs      = cleanstring(dlr[12])
+            status           = cleanstring(dlr[13])
 
             findCar = Car.objects.filter(make=brand, car_bike=car_bike)
             for crz in findCar:
@@ -913,6 +919,12 @@ def loadDealerListNew(fileName):
                     obj['region']= region
                     obj['offday']= offday
                     obj['address']= address
+                    obj['locality'] = locality
+                    obj['spc_address'] = spc_address
+                    obj['landmark'] = landmark
+                    obj['pincode'] = pincode
+                    obj['cnt_prs'] = contact_prs
+                    obj['status'] = status
                     obj['landline']= landline
                     obj['mobile']= mobile
                     obj_list = service.detail_dealers
