@@ -58,7 +58,7 @@ def send_predrop(to_name,to, amount,booking_id):
 	send_sms("TRANS",to,message)
 
 def send_postdrop(to_name,to,booking_id):
-	message = "Hi "+to_name+", your vehicle was dropped by our driver. It was a pleasure serving you. Kindly share your valuable feedback by replying to the email which you'll receive shortly."
+	message = "Hi "+to_name+", Thank you for using ClickGarage. Kindly share your valuable feedback by replying to the email which you'll receive shortly."
 	message = message.replace(" ","+")
 	send_sms("TRANS",to,message)
 

@@ -768,7 +768,7 @@ def loadPriceFreqNew(fileName):
                 findDealer.price_parts = str(price)
 
                 obj = {}
-                obj['part']= part
+                obj['part']= partS
                 obj['price']= minor_price
 
                 obj_list = findDealer.part_dic
