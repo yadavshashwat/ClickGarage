@@ -310,7 +310,8 @@ def loadCleaning(fileName):
             price_total      = cleanstring(service_name[7])
             description      = cleanstring(service_name[8])
             doorstep         = cleanstring(service_name[9])
-            car_bike         = cleanstring(service_name[10])
+            discount         = cleanstring(service_name[10])
+            car_bike         = cleanstring(service_name[11])
 
             if sup_cat == "Cleaning":
                 findVendor = CleaningDealerName.objects.filter(vendor=vendor)
@@ -351,7 +352,8 @@ def loadCleaning(fileName):
                     findService.price_parts      = price_parts     
                     findService.price_total      = price_total     
                     findService.description      = description   
-                    findService.doorstep         = doorstep  
+                    findService.doorstep         = doorstep
+                    findService.discount         = discount
                     findService.save()
                 else:
                     clcase = CleaningCategoryServices(vendor           = vendor        
@@ -363,6 +365,7 @@ def loadCleaning(fileName):
                                                      ,price_total      = price_total   
                                                      ,description      = description
                                                      ,doorstep         = doorstep
+                                                     ,discount         = discount
                                                      ,car_bike = car_bike   )
                     clcase.save()
 
@@ -407,7 +410,8 @@ def loadCleaning(fileName):
                     findService.price_parts      = price_parts     
                     findService.price_total      = price_total     
                     findService.description      = description 
-                    findService.doorstep   = doorstep    
+                    findService.doorstep         = doorstep
+                    findService.discount         = discount
                     findService.save()
                 else:
                     vacase = VASCategoryServices(vendor           = vendor        
@@ -418,7 +422,8 @@ def loadCleaning(fileName):
                                                      ,price_parts      = price_parts   
                                                      ,price_total      = price_total   
                                                      ,description      = description
-                                                     ,doorstep = doorstep 
+                                                     ,doorstep = doorstep
+                                                    ,discount         = discount
                                                      ,car_bike = car_bike )
                     vacase.save()
 
@@ -455,13 +460,13 @@ def loadWindShielddata(fileName):
             carname         = cleanstring(ws[2])
             ws_type         = cleanstring(ws[3])
             ws_subtype      = cleanstring(ws[4])
-            price_ws        = cleanstring(ws[5])
-            price_sealant   = cleanstring(ws[6])
-            price_labour    = cleanstring(ws[7])
-            price_insurance = cleanstring(ws[8])
+            colour          = cleanstring(ws[5])
+            price_ws        = cleanstring(ws[6])
+            price_sealant   = cleanstring(ws[7])
+            price_labour    = cleanstring(ws[8])
             price_total     = cleanstring(ws[9])
             city            = cleanstring(ws[10])
-
+            price_insurance = cleanstring(ws[11])
             findWS = WindShieldServiceDetails.objects.filter(vendor = vendor, brand = brand, carname=carname, ws_type = ws_type, ws_subtype = ws_subtype, city=city)
             if len(findWS):
                 findWS= findWS[0]
@@ -470,6 +475,7 @@ def loadWindShielddata(fileName):
                 findWS.carname       = carname
                 findWS.ws_type       = ws_type
                 findWS.ws_subtype    = ws_subtype
+                findWS.colour  =colour
                 findWS.price_ws      = price_ws
                 findWS.price_sealant = price_sealant
                 findWS.price_labour  = price_labour
@@ -482,6 +488,7 @@ def loadWindShielddata(fileName):
                                             ,carname       = carname
                                             ,ws_type       = ws_type
                                             ,ws_subtype    = ws_subtype
+                                            ,colour=colour
                                             ,price_ws      = price_ws
                                             ,price_sealant = price_sealant
                                             ,price_labour  = price_labour
@@ -625,7 +632,7 @@ def loadServiceDealerCatNew(fileName):
             findDealer = ServiceDealerCatNew.objects.filter(brand = brand, carname=carname, dealer_category=dealer_category, type_service=type_service)
             if len(findDealer):
                 findDealer = findDealer[0]
-                findDealer.year              =  year
+                # findDealer.year              =  year
                 findDealer.price_labour      =  price_labour
                 findDealer.wheel_alignment   =  wheel_alignment
                 findDealer.wheel_balancing   =  wheel_balancing
@@ -636,6 +643,7 @@ def loadServiceDealerCatNew(fileName):
                 findDealer.priority    = priority
                 findDealer.priority_service = priority_service
                 findDealer.part_replacement  = []
+                findDealer.part_dic =[]
 
 
                 # if (price_labour == "0"):
@@ -660,6 +668,7 @@ def loadServiceDealerCatNew(fileName):
                                         ,price_parts = "0"
                                         ,part_replacement  = []
                                         ,regular_checks = regular_checks
+                                        ,part_dic = []
                                         ,discount    = discount
                                         ,priority    = priority
                                         # ,paid_free =  paid_free
@@ -735,6 +744,8 @@ def loadPriceFreqNew(fileName):
             major_qty      = cleanstring(prt[9])
             minor_price      = float(cleanstring(prt[10]))
             major_price      = float(cleanstring(prt[11]))
+            to_add      =  cleanstring(prt[12])
+
 
             service_1 = ""
             service_2 = ""
@@ -759,11 +770,12 @@ def loadPriceFreqNew(fileName):
 
                 price_s = findDealer.price_parts
                 price = float(price_s)
-                price = price + minor_price
+                if (to_add=="1"):
+                    price = price + minor_price
                 findDealer.price_parts = str(price)
 
                 obj = {}
-                obj['part']= part
+                obj['part']= partS
                 obj['price']= minor_price
 
                 obj_list = findDealer.part_dic
@@ -780,7 +792,8 @@ def loadPriceFreqNew(fileName):
                 findDealer.part_replacement = parts
                 price_s = findDealer.price_parts
                 price = float(price_s)
-                price = price + major_price
+                if (to_add=="1"):
+                    price = price + major_price
                 findDealer.price_parts = str(price)
 
                 obj = {}
@@ -802,7 +815,8 @@ def loadPriceFreqNew(fileName):
                 findDealer.part_replacement = parts
                 price_s = findDealer.price_parts
                 price = float(price_s)
-                price = price + minor_price
+                if (to_add=="1"):
+                    price = price + minor_price
                 findDealer.price_parts = str(price)
 
                 obj = {}
@@ -824,7 +838,9 @@ def loadPriceFreqNew(fileName):
                 findDealer.part_replacement = parts
                 price_s = findDealer.price_parts
                 price = float(price_s)
-                price = price + minor_price
+                if (to_add=="1"):
+                    price = price + minor_price
+
                 findDealer.price_parts = str(price)
 
                 obj = {}
@@ -867,3 +883,42 @@ def exportPartsListNew():
                 findDealer.save()
             service.part_replacement = findDealer.part_replacement
             service.save()
+
+def loadDealerListNew(fileName):
+    with open(path+'/data/ServicingNew/'+fileName, 'rU') as csvfile:
+         dealerData = csv.reader(csvfile, delimiter='\t', quotechar='|')
+         count = 0
+         for dlr in dealerData:
+            count = count + 1
+            print count
+            brand            = cleanstring(dlr[0])
+            name             = cleanstring(dlr[1])
+            city             = cleanstring(dlr[2])
+            region           = cleanstring(dlr[3])
+            offday           = cleanstring(dlr[4]).split("$")
+            address          = cleanstring(dlr[5])
+            landline         = cleanstring(dlr[6])
+            mobile           = cleanstring(dlr[7])
+            car_bike         = cleanstring(dlr[8])
+
+            findCar = Car.objects.filter(make=brand, car_bike=car_bike)
+            for crz in findCar:
+                carname = crz.name
+                carfinal = brand + " " + carname
+                findService = ServiceDealerCatNew.objects.filter(carname=carfinal)
+                for service in findService:
+                    obj = {}
+                    obj['name']= name
+                    obj['city']= city
+                    obj['region']= region
+                    obj['offday']= offday
+                    obj['address']= address
+                    obj['landline']= landline
+                    obj['mobile']= mobile
+                    obj_list = service.detail_dealers
+                    obj_list.append(obj)
+                    service.save()
+
+
+
+

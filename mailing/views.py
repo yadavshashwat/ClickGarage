@@ -58,7 +58,7 @@ def send_predrop(to_name,to, amount,booking_id):
 	send_sms("TRANS",to,message)
 
 def send_postdrop(to_name,to,booking_id):
-	message = "Hi "+to_name+", your vehicle was dropped by our driver. It was a pleasure serving you. Kindly share your valuable feedback by replying to the email which you'll receive shortly."
+	message = "Hi "+to_name+", Thank you for using ClickGarage. Kindly share your valuable feedback by replying to the email which you'll receive shortly."
 	message = message.replace(" ","+")
 	send_sms("TRANS",to,message)
 
@@ -705,7 +705,7 @@ def send_booking_email(to_address,to_name,time_start,date,booking_id):
                             <td class="mcnImageContent" valign="top" style="padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0; text-align:center;">
                                 
                                     
-                                        <img align="center" alt="" src="https://gallery.mailchimp.com/2cf3731a4f89990fe68c1bf2a/images/6ace5c77-891c-4c69-80df-caf10f403b24.png" width="564" style="max-width:1440px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage">
+                                        <img align="center" alt="" src="https://gallery.mailchimp.com/2cf3731a4f89990fe68c1bf2a/images/8b0df50f-a54b-4a7b-9ef6-c31d66aff1f1.jpg" width="564" style="max-width:1440px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage">
                                     
                                 
                             </td>
@@ -2642,7 +2642,7 @@ def send_cancel_email(to_address,to_name,booking_id_1):
 									<td class="mcnImageContent" valign="top" style="padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0; text-align:center;">
 
 
-												<img align="center" alt="" src="http://blog.clickgarage.in/wp-content/uploads/2015/09/ClickGarage_Final-e1443311969815.png" width="300" style="max-width:300px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage">
+												<img align="center" alt="" src="https://gallery.mailchimp.com/2cf3731a4f89990fe68c1bf2a/images/97fa2077-7dc3-4c2e-92c9-4c5012d536b4.jpg" width="300" style="max-width:1440px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage">
 
 
 									</td>
