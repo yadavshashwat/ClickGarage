@@ -29,6 +29,7 @@ tempSecretKey = 'dmFydW5ndWxhdGlsaWtlc2dhbG91dGlrZWJhYg=='
 def cleanstring(query):
     query = query.strip()
     query = re.sub('\s{2,}', ' ', query)
+    query = re.sub(r'^"|"$', '', query)
     return query
 
 def loginview(request):
@@ -720,6 +721,7 @@ def fetch_car_windshieldcatdetails(request):
                                     ,'vendor':service.vendor
                                     ,'brand':service.brand
                                     ,'carname':service.carname
+                                    ,'colour':service.colour
                                     ,'ws_type':service.ws_type
                                     ,'ws_subtype':service.ws_subtype
                                     ,'price_ws':service.price_ws
