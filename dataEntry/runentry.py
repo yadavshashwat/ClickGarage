@@ -310,7 +310,8 @@ def loadCleaning(fileName):
             price_total      = cleanstring(service_name[7])
             description      = cleanstring(service_name[8])
             doorstep         = cleanstring(service_name[9])
-            car_bike         = cleanstring(service_name[10])
+            discount         = cleanstring(service_name[10])
+            car_bike         = cleanstring(service_name[11])
 
             if sup_cat == "Cleaning":
                 findVendor = CleaningDealerName.objects.filter(vendor=vendor)
@@ -351,7 +352,8 @@ def loadCleaning(fileName):
                     findService.price_parts      = price_parts     
                     findService.price_total      = price_total     
                     findService.description      = description   
-                    findService.doorstep         = doorstep  
+                    findService.doorstep         = doorstep
+                    findService.discount         = discount
                     findService.save()
                 else:
                     clcase = CleaningCategoryServices(vendor           = vendor        
@@ -363,6 +365,7 @@ def loadCleaning(fileName):
                                                      ,price_total      = price_total   
                                                      ,description      = description
                                                      ,doorstep         = doorstep
+                                                     ,discount         = discount
                                                      ,car_bike = car_bike   )
                     clcase.save()
 
@@ -407,7 +410,8 @@ def loadCleaning(fileName):
                     findService.price_parts      = price_parts     
                     findService.price_total      = price_total     
                     findService.description      = description 
-                    findService.doorstep   = doorstep    
+                    findService.doorstep         = doorstep
+                    findService.discount         = discount
                     findService.save()
                 else:
                     vacase = VASCategoryServices(vendor           = vendor        
@@ -418,7 +422,8 @@ def loadCleaning(fileName):
                                                      ,price_parts      = price_parts   
                                                      ,price_total      = price_total   
                                                      ,description      = description
-                                                     ,doorstep = doorstep 
+                                                     ,doorstep = doorstep
+                                                    ,discount         = discount
                                                      ,car_bike = car_bike )
                     vacase.save()
 
@@ -455,13 +460,13 @@ def loadWindShielddata(fileName):
             carname         = cleanstring(ws[2])
             ws_type         = cleanstring(ws[3])
             ws_subtype      = cleanstring(ws[4])
-            price_ws        = cleanstring(ws[5])
-            price_sealant   = cleanstring(ws[6])
-            price_labour    = cleanstring(ws[7])
-            price_insurance = cleanstring(ws[8])
+            colour          = cleanstring(ws[5])
+            price_ws        = cleanstring(ws[6])
+            price_sealant   = cleanstring(ws[7])
+            price_labour    = cleanstring(ws[8])
             price_total     = cleanstring(ws[9])
             city            = cleanstring(ws[10])
-
+            price_insurance = cleanstring(ws[11])
             findWS = WindShieldServiceDetails.objects.filter(vendor = vendor, brand = brand, carname=carname, ws_type = ws_type, ws_subtype = ws_subtype, city=city)
             if len(findWS):
                 findWS= findWS[0]
@@ -470,6 +475,7 @@ def loadWindShielddata(fileName):
                 findWS.carname       = carname
                 findWS.ws_type       = ws_type
                 findWS.ws_subtype    = ws_subtype
+                findWS.colour  =colour
                 findWS.price_ws      = price_ws
                 findWS.price_sealant = price_sealant
                 findWS.price_labour  = price_labour
@@ -482,6 +488,7 @@ def loadWindShielddata(fileName):
                                             ,carname       = carname
                                             ,ws_type       = ws_type
                                             ,ws_subtype    = ws_subtype
+                                            ,colour=colour
                                             ,price_ws      = price_ws
                                             ,price_sealant = price_sealant
                                             ,price_labour  = price_labour

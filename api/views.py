@@ -468,7 +468,8 @@ def fetch_clean_catservice(request):
                         ,'price_labour':service.price_labour
                         ,'price_parts':service.price_parts     
                         ,'total_price':service.price_total     
-                        ,'description':service.description     
+                        ,'description':service.description
+                        ,'discount':service.discount
                         ,'rating':service.rating          
                         ,'reviews':service.reviews                        
                               } )
@@ -509,7 +510,8 @@ def fetch_all_cleaningcatservices(request):
             ,'service':service.service        
             ,'price_labour':service.price_labour   
             ,'price_parts':service.price_parts    
-            ,'price_total':service.price_total    
+            ,'price_total':service.price_total
+            ,'discount':service.discount
             ,'service_description':service.description    
             ,'rating':service.rating         
             ,'reviews':service.reviews        } )
@@ -609,7 +611,8 @@ def fetch_vas_catservice(request):
                         ,'price_labour':service.price_labour    
                         ,'price_parts':service.price_parts     
                         ,'total_price':service.price_total     
-                        ,'description':service.description 
+                        ,'description':service.description
+                        ,'discount':service.discount
                         ,'doorstep':service.doorstep     
                         ,'rating':service.rating          
                         ,'reviews':service.reviews                        
@@ -648,7 +651,8 @@ def fetch_all_vascatservices(request):
             ,'service':service.service        
             ,'price_labour':service.price_labour   
             ,'price_parts':service.price_parts    
-            ,'price_total':service.price_total    
+            ,'price_total':service.price_total
+            ,'discount':service.discount
             ,'service_description':service.description   
             ,'doorstep':service.doorstep 
             ,'rating':service.rating         
@@ -679,7 +683,7 @@ def fetch_car_windshieldservices(request):
                 for service in ServiceObjs:
                     obj['result'].append({'id':service.id,
                                         'vendor': service.vendor
-                                        , 'brand  ' :service.brand
+                                        , 'brand' :service.brand
                                         , 'carname' :service.carname
                                         , 'ws_type' :service.ws_type } )
     obj['status'] = True
@@ -713,33 +717,26 @@ def fetch_car_windshieldcatdetails(request):
         wsTypeObjs = WindShieldServiceDetails.objects.filter(city=city,vendor = vendor, ws_type = ws_type, carname = carname, brand=brand)
         for service in wsTypeObjs:
             obj['result'].append({'id':service.id
-                                    ,'vendor         ':service.vendor           
-                                    ,'brand          ':service.brand            
-                                    ,'carname        ':service.carname          
-                                    ,'ws_type        ':service.ws_type          
-                                    ,'ws_subtype     ':service.ws_subtype       
-                                    ,'price_ws       ':service.price_ws         
-                                    ,'price_sealant  ':service.price_sealant    
-                                    ,'price_labour   ':service.price_labour     
+                                    ,'vendor':service.vendor
+                                    ,'brand':service.brand
+                                    ,'carname':service.carname
+                                    ,'ws_type':service.ws_type
+                                    ,'ws_subtype':service.ws_subtype
+                                    ,'price_ws':service.price_ws
+                                    ,'price_sealant':service.price_sealant
+                                    ,'price_labour':service.price_labour
                                     ,'price_insurance':service.price_insurance 
                                     ,'price_total'    :service.price_total
                                     ,'city'           :service.city
-                                    ,'description    ':service.description      
-                                    ,'rating         ':service.rating           
-                                    ,'reviews        ':service.reviews                           
+                                    ,'description':service.description
+                                    ,'rating':service.rating
+                                    ,'reviews':service.reviews
                               } )
                       
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
-
-
-
-
-
-
-
 
 def fetch_all_windshieldservices(request):
     obj = {}
@@ -749,7 +746,7 @@ def fetch_all_windshieldservices(request):
 
         result.append({'id':service.id
             ,'vendor': service.vendor
-            , 'brand  ' :service.brand
+            , 'brand' :service.brand
             , 'carname' :service.carname
             , 'ws_type' :service.ws_type } )
     obj['result'] = result
@@ -1050,6 +1047,7 @@ def fetch_clean_service(request):
                             ,'price_labour':service.price_labour
                             ,'price_parts':service.price_parts
                             ,'total_price':service.price_total
+                            ,'discount':service.discount
                             ,'description':service.description
                             ,'doorstep':service.doorstep
                             ,'rating':service.rating
