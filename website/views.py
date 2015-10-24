@@ -121,12 +121,14 @@ def checkout(request):
     cartEmpty = False
     if request.user.is_authenticated():
         template = loader.get_template('website/checkout.html')
+        carInfo = {}
         varCarObj = Car.objects.filter(id=selectCarID)
 
         selectCarName = False
         if len(varCarObj):
             varCarObj = varCarObj[0]
             selectCarName = " ".join([varCarObj.make, varCarObj.name])
+            carInfo['car_bike'] = varCarObj.car_bike
         cartDict = request.user.uc_cart
 
         contextDict = {}
@@ -155,8 +157,8 @@ def checkout(request):
                     }
                     cartDict[ts] = obj
 
-            request.user.uc_cart = cartDict
-            request.user.save()
+            # request.user.uc_cart = cartDict
+            # request.user.save()
         for ts in cartDict:
             cartObj = cartDict[ts]
             if cartObj.has_key("car"):
@@ -271,6 +273,7 @@ def checkout(request):
                 'address': [],
                 'cart':contextDict,
                 'cart_number':len(contextDict[selectCarName]),
+                'car_info':carInfo
             })
             return HttpResponse(template.render(context))
 
@@ -332,9 +335,9 @@ def cart(request):
                         'size'  :   carObj.size
                     }
                     cartDict[ts] = obj
-            if loginFlag:
-                request.user.uc_cart = cartDict
-                request.user.save()
+            # if loginFlag:
+                # request.user.uc_cart = cartDict
+                # request.user.save()
         for ts in cartDict:
             cartObj = cartDict[ts]
             if cartObj.has_key("car"):
@@ -507,8 +510,8 @@ def bookings(request):
                     }
                     cartDict[ts] = obj
 
-            request.user.uc_cart = cartDict
-            request.user.save()
+            # request.user.uc_cart = cartDict
+            # request.user.save()
         for ts in cartDict:
             cartObj = cartDict[ts]
             if cartObj.has_key("car"):
