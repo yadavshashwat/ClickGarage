@@ -32,7 +32,7 @@ runentry.loadDealerListNew('Servicing_Dealers.txt')
 #VASServiceCat.objects.all().delete()
 #VASCategoryServices.objects.all().delete()
 
-#runentry.loadCleaning('Cleaning_VAS_all.txt')
+runentry.loadCleaning('Cleaning_VAS_all.txt')
 
 ##Loading windshield
 # WindShieldCat.objects.all().delete()
