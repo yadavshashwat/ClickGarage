@@ -1897,6 +1897,18 @@ def fetch_car_servicedetails_new(request):
     else:
         return HttpResponse(json.dumps(obj), content_type='application/json')
 
+def fetch_additional_details(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = {}
+    if random_req_auth(request) or (request.user and request.user.is_authenticated()):
+        user = request.user
+        cart = request.user.uc_cart
+        obj['result'] = cart
+        obj['status'] = True
+
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
 
 def fetch_all_booking(request):
     r_id = get_param(request, 'r_id', None)
