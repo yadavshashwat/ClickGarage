@@ -427,8 +427,14 @@ def cart(request):
                     if len(serviceDetail.price_labour):
                         total_price = total_price + float(serviceDetail.price_labour)
 
-                    total_price = int(float(serviceDetail.price_total)*(1-float(serviceDetail.discount)))
-
+                    total_price = float(serviceDetail.price_total)
+                    disc = 0
+                    if (serviceDetail.discount) and len(serviceDetail.discount):
+                        try:
+                            disc = float(serviceDetail.discount)
+                        except ValueError: 
+                            disc = 0
+                    total_price = int(total_price*(1-disc))
                     # total_price = float(serviceDetail.price_parts) + float(serviceDetail.price_labour)
                     item = {
                         'id':serviceDetail.id,
