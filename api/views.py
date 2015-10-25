@@ -896,10 +896,12 @@ def fetch_car_tyres(request):
 
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+@csrf_exempt
 def addItemToCart(request):
     cookie_data = get_param(request, 'cookie',None)
     car_id = get_param(request, 'car_id',None)
     remove = get_param(request, 'delete',False)
+    additional_info = get_param(request, 'additional', None)
     obj = {}
     obj['status'] = False
     obj['result'] =[]
@@ -910,9 +912,9 @@ def addItemToCart(request):
     if request.user.is_authenticated():
         if cookie_data:
             if remove:
-                resp = ac_vi.updateCart(request.user, cookie_data, 'delete', car_id)
+                resp = ac_vi.updateCart(request.user, cookie_data, 'delete', car_id, None)
             else:
-                resp = ac_vi.updateCart(request.user, cookie_data, 'add', car_id)
+                resp = ac_vi.updateCart(request.user, cookie_data, 'add', car_id, additional_info)
 
 
     obj['counter'] = 1
@@ -1207,7 +1209,7 @@ def fetch_car_autocomplete(request):
 
 @csrf_exempt
 def place_order(request):
-    print 'p'
+    # print 'p'
     if (request.user and request.user.is_authenticated()) or random_req_auth(request):
         email = request.user.email
         name = get_param(request, 'name', None)
@@ -1315,6 +1317,8 @@ def place_order(request):
                         'status':True,
                         'ts':ts
                     }
+
+
                     listItem['served_data'] = item
                     html_list.append('<span> regular servicing </span>')
                     html_list.append('<span> due at : ')
@@ -1372,7 +1376,33 @@ def place_order(request):
 
                     html_list.append('<span> price : ')
                     html_list.append(total_price)
-                    html_list.append('</span>')
+                    html_list.append('</span><br/>')
+
+                    additional = None
+                    if ts in request.user.uc_cart:
+                        this_order = request.user.uc_cart[ts]
+                        if 'additional_data' in this_order:
+                            additional = this_order['additional_data']
+                    if additional:
+                        addStr = '<span> Additional Features : '
+                        custAddStr = ''
+                        for feat, status in additional.iteritems():
+                            print status
+                            if status:
+                                if feat == 'Custom Requests':
+                                    custAddStr = '<br/><span> Custom Requests : %s </span>' %(status)
+                                elif feat == 'Selected Authorized':
+                                    d_name = ''
+                                    d_address = ''
+                                    if 'name' in status:
+                                        d_name = status['name']
+                                    if 'address' in status:
+                                        d_address = status['address']
+                                    custAddStr = '<br/><span> Authorized Dealer Selected : %s (%s) </span>' %(d_name,d_address)
+                                else:
+                                    addStr = '%s [%s] - ' %(addStr,feat)
+                        addStr = addStr + '</span>' + custAddStr
+                        html_list.append(addStr)
 
                     html_list.append('</div>')
 
@@ -1421,7 +1451,7 @@ def place_order(request):
 
                     html_list.append('</div>')
             if not android_flag:
-                ac_vi.updateCart(request.user, ts+'*', 'delete', '')
+                ac_vi.updateCart(request.user, ts+'*', 'delete', '', None)
             transList.append(listItem)
 
 
@@ -1820,6 +1850,8 @@ def fetch_car_servicedetails_new(request):
         car = None
         make = None
         odo = None
+        car_2 = None
+        type_service = None
         if service_id:
             serviceObj = ServicingNew.objects.filter(id=service_id)
             if len(serviceObj):
@@ -1867,6 +1899,18 @@ def fetch_car_servicedetails_new(request):
         return HttpResponse(json.dumps(obj), content_type='application/json')
     else:
         return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def fetch_additional_details(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = {}
+    if random_req_auth(request) or (request.user and request.user.is_authenticated()):
+        user = request.user
+        cart = request.user.uc_cart
+        obj['result'] = cart
+        obj['status'] = True
+
+    return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
 def fetch_all_booking(request):

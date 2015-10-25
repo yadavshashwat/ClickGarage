@@ -20,9 +20,9 @@ from api.models import *
 # ServiceDealerCatNew.objects.all().delete()
 # runentry.loadServiceDealerCatNew('Servicing_Labour.txt')
 # ServicingNew.objects.all().delete()
-# runentry.exportServicesLi#stNew()
+# runentry.exportServicesListNew()
 # runentry.loadPriceFreqNew('Servicing_Parts.txt')
-# runentry.loadDealrListNew('Servicing_Dealer.txt')
+# runentry.loadDealerListNew('Servicing_Dealers.txt')
 
 #Loading cleaning and value added services
 #CleaningDealerName.objects.all().delete()
@@ -32,7 +32,7 @@ from api.models import *
 #VASServiceCat.objects.all().delete()
 #VASCategoryServices.objects.all().delete()
 
-#runentry.loadCleaning('Cleaning_VAS_all.txt')
+runentry.loadCleaning('Cleaning_VAS_all.txt')
 
 ##Loading windshield
 WindShieldCat.objects.all().delete()

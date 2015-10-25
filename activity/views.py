@@ -19,7 +19,7 @@ from django.views.decorators.csrf import csrf_exempt
 #from config import CONFIG
 
 #authomatic = Authomatic(CONFIG, 'facf8eedf58febc4a32b07129785ff70')
-
+import json
 from api.models import Car
 
 #def social_login(request, provider_name):
@@ -175,7 +175,7 @@ def register_by_access_token(request, backend):
     else:
         return False
 
-def updateCart(user, cookie_data, action, car_id):
+def updateCart(user, cookie_data, action, car_id, additional):
     item = cookie_data
     iuser = user
     cartItems = iuser.uc_cart
@@ -211,13 +211,14 @@ def updateCart(user, cookie_data, action, car_id):
                                 'make':car.make,
                                 'year':car.year,
                                 'size':car.size,
-                                
                             }
 
                     # cartObj['timestamp'] = timestamp
                     cartObj['service'] = i.split('*')[1]
                     cartObj['dealer'] = i.split('*')[2]
                     cartObj['service_id'] = i.split('*')[3]
+                    if additional:
+                        cartObj['additional_data'] = json.loads(additional)
                     cartItems[timestamp] = cartObj
 
             iuser.uc_cart = cartItems

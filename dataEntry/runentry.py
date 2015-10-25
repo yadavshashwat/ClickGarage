@@ -645,6 +645,7 @@ def loadServiceDealerCatNew(fileName):
                 findDealer.priority_service = priority_service
                 findDealer.part_replacement  = []
                 findDealer.part_dic =[]
+                findDealer.detail_dealers = []
 
 
                 # if (price_labour == "0"):
@@ -670,6 +671,7 @@ def loadServiceDealerCatNew(fileName):
                                         ,part_replacement  = []
                                         ,regular_checks = regular_checks
                                         ,part_dic = []
+                                        ,detail_dealers = []
                                         ,discount    = discount
                                         ,priority    = priority
                                         # ,paid_free =  paid_free
@@ -776,8 +778,8 @@ def loadPriceFreqNew(fileName):
                 findDealer.price_parts = str(price)
 
                 obj = {}
-                obj['part']= partS
-                obj['price']= minor_price
+                obj['part_name']= part
+                obj['part_price']= minor_price
 
                 obj_list = findDealer.part_dic
                 obj_list.append(obj)
@@ -821,8 +823,8 @@ def loadPriceFreqNew(fileName):
                 findDealer.price_parts = str(price)
 
                 obj = {}
-                obj['part']= part
-                obj['price']= minor_price
+                obj['part_name']= part
+                obj['part_price']= minor_price
 
                 obj_list = findDealer.part_dic
                 obj_list.append(obj)
@@ -901,11 +903,12 @@ def loadDealerListNew(fileName):
             landline         = cleanstring(dlr[6])
             mobile           = cleanstring(dlr[7])
             car_bike         = cleanstring(dlr[8])
-            spc_address      = cleanstring(dlr[9])
-            landmark         = cleanstring(dlr[10])
-            pincode          = cleanstring(dlr[11])
-            contact_prs      = cleanstring(dlr[12])
-            status           = cleanstring(dlr[13])
+            address          = cleanstring(dlr[9])
+            spc_address      = cleanstring(dlr[10])
+            landmark         = cleanstring(dlr[11])
+            pincode          = cleanstring(dlr[12])
+            contact_prs      = cleanstring(dlr[13])
+            status           = cleanstring(dlr[14])
 
             findCar = Car.objects.filter(make=brand, car_bike=car_bike)
             for crz in findCar:
