@@ -1849,6 +1849,8 @@ def fetch_car_servicedetails_new(request):
         car = None
         make = None
         odo = None
+        car_2 = None
+        type_service = None
         if service_id:
             serviceObj = ServicingNew.objects.filter(id=service_id)
             if len(serviceObj):
