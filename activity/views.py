@@ -183,6 +183,9 @@ def updateCart(user, cookie_data, action, car_id, additional):
         items = item.split(",")
         for i in items:
             timestamp = i.split('*')[0]
+            service = ''
+            if len(i.split('*')) > 1:
+                service = i.split('*')[1]
             # cartObj['dealer_id'] = i.split('*')[3]
             # present = False
             # for io in cartItems:
@@ -199,6 +202,11 @@ def updateCart(user, cookie_data, action, car_id, additional):
                 if action == 'delete':
                     del cartItems[timestamp]
             else:
+                if service in cartItems:
+                    if action == 'delete':
+                        if timestamp in cartItems[service]:
+                            del cartItems[service][timestamp]
+
                 if action == 'add':
                     cartObj = {}
                     if car_id:
@@ -214,12 +222,26 @@ def updateCart(user, cookie_data, action, car_id, additional):
                             }
 
                     # cartObj['timestamp'] = timestamp
-                    cartObj['service'] = i.split('*')[1]
-                    cartObj['dealer'] = i.split('*')[2]
-                    cartObj['service_id'] = i.split('*')[3]
-                    if additional:
-                        cartObj['additional_data'] = json.loads(additional)
-                    cartItems[timestamp] = cartObj
+                    service = i.split('*')[1]
+                    service = service.lower()
+                    if service == 'emergency':
+                        if service not in cartItems:
+                            cartItems[service] = {}
+
+                        cartObj['service_id'] = i.split('*')[3]
+                        cartItems[service][timestamp] = cartObj
+                    else:
+                        if service in ['servicing','cleaning', 'vas', 'windshield'] :
+                            cartObj['service'] = i.split('*')[1]
+                            cartObj['dealer'] = i.split('*')[2]
+                            cartObj['service_id'] = i.split('*')[3]
+                        elif service == 'repair':
+                            cartObj['service'] = service
+                            cartObj['service_id'] = i.split('*')[3]
+
+                        if additional:
+                            cartObj['additional_data'] = json.loads(additional)
+                        cartItems[timestamp] = cartObj
 
             iuser.uc_cart = cartItems
             iuser.save()

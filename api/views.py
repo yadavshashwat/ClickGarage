@@ -929,7 +929,7 @@ def getUserDetails(request):
     obj['result'] ={}
 
     print request.user
-    if request.user.is_authenticated():
+    if request.user.is_authenticated() or random_req_auth(request) :
         res = {}
         res['userid'] = request.user.id
         res['u_cart'] = request.user.unchecked_cart
@@ -1493,6 +1493,143 @@ def place_order(request):
 
             cust_pickup_add = pick_obj,
             cust_drop_add   = drop_obj,
+
+            service_items   = transList,
+
+            price_total     = '',
+
+            date_booking    = pick_obj['date'],
+            time_booking    = pick_obj['time'],
+            amount_paid     = '',
+            status          = '',
+            comments        = ''
+        )
+        tt.save()
+
+        html_script = ' '.join(str(x) for x in html_list)
+        mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
+        obj = {}
+        obj['status'] = True
+        obj['result'] = pick_obj
+        return HttpResponse(json.dumps(obj), content_type='application/json')
+    else:
+        redirect('/loginPage/')
+
+
+@csrf_exempt
+def place_emergency_order(request):
+    # print 'p'
+    if (request.user and request.user.is_authenticated()) or random_req_auth(request):
+        email = request.user.email
+        name = get_param(request, 'name', None)
+        number = get_param(request, 'number', None)
+        car_reg_number = get_param(request, 'reg_no', None)
+        pick_obj = get_param(request, 'pick', None)
+        # drop_obj = get_param(request, 'drop', None)
+        order_list = get_param(request, 'order_list', None)
+        car_name = get_param(request, 'car_name', None)
+        android_flag = get_param(request, 'android', None)
+        # car_id = get_param(request, 'car_id', None)
+
+        # obj_pick = json.loads(pick_obj)
+        pick_obj = ast.literal_eval(pick_obj)
+        # drop_obj = ast.literal_eval(drop_obj)
+        # pick_obj = ast.literal_eval(pick_obj)
+        # print pick_obj
+        # pick_obj = json.loads(pick_obj)
+
+        # print pick_obj
+
+        # for key in pick_obj.keys():
+        #     print key
+        # print json.loads(drop_obj)
+        order_list = json.loads(order_list)
+
+        print order_list
+        print pick_obj
+        # print drop_obj
+
+        tran_len = len(Transaction.objects.all())
+        booking_id = 1
+        if tran_len > 0:
+            tran = Transaction.objects.all().aggregate(Max('booking_id'))
+            booking_id = tran['booking_id'] + 1
+
+
+
+        tran_len = len(Transactions.objects.all())
+        if tran_len > 0:
+            tran = Transactions.objects.all().aggregate(Max('booking_id'))
+            booking_id = int(tran['booking_id__max'] + 1)
+
+        html_list = []
+        html_list.append('<b>Booking ID #')
+        html_list.append(    booking_id)
+        html_list.append(            '</b><br><p>Hi ')
+        html_list.append(name)
+        html_list.append(',<br> Your ClickGarage emergency service booking has been confirmed.  ')
+        html_list.append(            '. If further assistance is needed, please contact us on 09717353148 and quote your booking confirmation number #')
+        html_list.append(            booking_id)
+        html_list.append(            '.</p>')
+        # html_script = ' '.join(str(x) for x in html_list)
+        html_list.append('<p>The selected services are for ')
+        html_list.append(car_name)
+        html_list.append(' (')
+        html_list.append(car_reg_number)
+        html_list.append(') ')
+        html_list.append(':</p>')
+
+        transList = []
+
+        for order in order_list:
+            print order
+            ts = order['ts']
+            service = 'emergency'
+            service = service.lower()
+            service_id = order['service_id']
+
+            listItem = {}
+            listItem['service'] = service
+            listItem['service_id'] = service_id
+            listItem['ts'] = ts
+            listItem['status'] = True
+            html_list.append('<div> <span>')
+            html_list.append(service_id)
+            html_list.append('</span></div>')
+
+            if not android_flag:
+                ac_vi.updateCart(request.user, ts+'*emergency', 'delete', '', None)
+            transList.append(listItem)
+
+
+        html_list.append('<div> <span>Pickup Address : </span><span>')
+        html_list.append(pick_obj['street'])
+        html_list.append('</span><span> Landmark : ')
+        html_list.append(pick_obj['landmark'])
+        html_list.append('</span><span> City : ')
+        html_list.append(pick_obj['city'])
+        html_list.append('</span><span> Pincode : ')
+        html_list.append(pick_obj['pincode'])
+        html_list.append('</span></div>')
+
+        html_list.append('<div><span> Contact No. : ')
+        html_list.append(str(number))
+        html_list.append('</span></div>')
+
+
+        tt = Transactions(
+            booking_id      = booking_id,
+            trans_timestamp = time.time(),
+            cust_id         = request.user.id,
+            cust_name       = name,
+            cust_brand      = '',
+            cust_carname    = car_name,
+            cust_number     = number,
+            cust_carnumber  = car_reg_number,
+            cust_email      = email,
+
+            cust_pickup_add = pick_obj,
+            cust_drop_add   = {},
 
             service_items   = transList,
 

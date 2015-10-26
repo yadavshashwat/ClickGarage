@@ -133,6 +133,8 @@ def checkout(request):
 
         contextDict = {}
 
+        emergFlag = False
+
         if cookieCartData and len(cookieCartData):
             cookieCartArray = cookieCartData.split(',')
             for cookieItem in cookieCartArray:
@@ -159,126 +161,175 @@ def checkout(request):
 
             # request.user.uc_cart = cartDict
             # request.user.save()
-        for ts in cartDict:
-            cartObj = cartDict[ts]
-            if cartObj.has_key("car"):
-                carCmpName = " ".join([cartObj['car']['make'], cartObj['car']['name']])
-            else:
-                carCmpName = ""
+        if ('emergency' in cartDict) and len(cartDict['emergency'].keys()):
+            template = loader.get_template('website/emergency-checkout.html')
 
-            item = {}
-            if not selectCarName:
-                selectCarName = carCmpName
+            emergFlag = True
+            for ts in cartDict['emergency']:
+                cartObj = cartDict['emergency'][ts]
+                if cartObj.has_key("car"):
+                    carCmpName = " ".join([cartObj['car']['make'], cartObj['car']['name']])
+                else:
+                    carCmpName = ""
 
-            service_id = cartObj['service_id']
-            if (carCmpName == selectCarName.strip()) and len(carCmpName):
+                item = {}
+
+                if not selectCarName:
+                    selectCarName = carCmpName
+
+                newDict = cartObj
+                newDict['ts'] = ts
                 if not contextDict.has_key(carCmpName):
                     contextDict[carCmpName] = []
 
-                if cartObj['service'] == 'servicing':
-                    serviceDetail = ServiceDealerCat.objects.filter(id=service_id)
-                    serviceDetailNew = ServiceDealerCatNew.objects.filter(id=service_id)
+                contextDict[carCmpName].append(newDict)
 
-                    if len(serviceDetail):
-                        serviceDetail = serviceDetail[0]
-                        print serviceDetail.price_parts, serviceDetail.price_labour
-                        total_price = 0
-                        if len(serviceDetail.price_parts):
-                            total_price = total_price+ float(serviceDetail.price_parts)
-                        if len(serviceDetail.price_labour):
-                            total_price = int(total_price + (math.ceil(float(serviceDetail.price_labour)*0.14)) + float(serviceDetail.price_labour)+ 0)
-                        item = {
-                            'id':serviceDetail.id,
-                            'name':serviceDetail.name,
-                            'brand':serviceDetail.brand,
-                            'car':serviceDetail.carname,
-                            'odometer':serviceDetail.odometer,
-                            'dealer_cat':serviceDetail.dealer_category,
-                            'parts_list':serviceDetail.part_replacement,
-                            'parts_price':serviceDetail.price_parts,
-                            'labour_price':serviceDetail.price_labour,
-                            'wa_price':serviceDetail.wheel_alignment,
-                            'wb_price':serviceDetail.wheel_balancing,
-                            'wa_wb_present':serviceDetail.WA_WB_Inc,
-                            'dealer_details':serviceDetail.detail_dealers,
-                            'year':serviceDetail.year,
-                            'total_price':total_price
-                        }
-                        cartDict[ts]['service_detail'] = item
-                        cartDict[ts]['ts'] = ts
+            if contextDict.has_key(selectCarName):
+                context = RequestContext(request, {
+                    'address': [],
+                    'cart':contextDict,
+                    'cart_number':len(contextDict[selectCarName]),
+                    'car_info':carInfo,
+                    'emergFlag':emergFlag
+                })
+                return HttpResponse(template.render(context))
+                # return HttpResponse(json.dumps({
+                #     'address': [],
+                #     'cart':contextDict,
+                #     'cart_number':len(contextDict[selectCarName]),
+                #     'car_info':carInfo
+                # }), content_type='application/json')
 
-                    elif len(serviceDetailNew):
-                        serviceDetail = serviceDetailNew[0]
-                        print serviceDetail.price_parts, serviceDetail.price_labour
-                        total_price = 0
-                        if len(serviceDetail.price_parts):
-                            total_price = total_price+ float(serviceDetail.price_parts)
-                        if len(serviceDetail.price_labour):
-                            total_price = int(total_price + (math.ceil(float(serviceDetail.price_labour)*0.14)) + float(serviceDetail.price_labour)+ 0)
-                        item = {
-                            'id':serviceDetail.id,
-                            'name':serviceDetail.name,
-                            'brand':serviceDetail.brand,
-                            'car':serviceDetail.carname,
-                            'type_service':serviceDetail.type_service,
-                            'dealer_cat':serviceDetail.dealer_category,
-                            'parts_list':serviceDetail.part_replacement,
-                            'parts_price':serviceDetail.price_parts,
-                            'labour_price':serviceDetail.price_labour,
-                            'wa_price':serviceDetail.wheel_alignment,
-                            'wb_price':serviceDetail.wheel_balancing,
-                            'wa_wb_present':serviceDetail.WA_WB_Inc,
-                            'dealer_details':serviceDetail.detail_dealers,
-                            # 'year':serviceDetail.year,
-                            'total_price':total_price
-                        }
-                        # print total_price
-                        cartDict[ts]['service_detail'] = item
-                        cartDict[ts]['ts'] = ts
-
-                        contextDict[carCmpName].append(cartDict[ts])
-                elif cartObj['service'] == 'cleaning':
-                    serviceDetail = CleaningCategoryServices.objects.filter(id=service_id)
-                    if len(serviceDetail):
-                        serviceDetail = serviceDetail[0]
-                        total_price = 0
-                        if len(serviceDetail.price_parts):
-                            total_price = total_price+ float(serviceDetail.price_parts)
-                        if len(serviceDetail.price_labour):
-                            total_price = total_price + float(serviceDetail.price_labour)
-
-                        # total_price = float(serviceDetail.price_parts) + float(serviceDetail.price_labour)
-                        total_price = int(float(serviceDetail.price_total)*(1-float(serviceDetail.discount)))
-                        item = {
-                            'id':serviceDetail.id,
-                            'category':serviceDetail.category,
-                            'car_cat':serviceDetail.car_cat,
-                            'service':serviceDetail.service,
-                            'vendor':serviceDetail.vendor,
-                            'parts_price':serviceDetail.price_parts,
-                            'labour_price':serviceDetail.price_labour,
-                            'total_price':total_price,
-                            # 'total_price':total_price,
-                            'description':serviceDetail.description,
-                        }
-                        # print total_price
-                        cartDict[ts]['service_detail'] = item
-                        cartDict[ts]['ts'] = ts
-
-                        contextDict[carCmpName].append(cartDict[ts])
-
-        print contextDict
-        if contextDict.has_key(selectCarName):
-            context = RequestContext(request, {
-                'address': [],
-                'cart':contextDict,
-                'cart_number':len(contextDict[selectCarName]),
-                'car_info':carInfo
-            })
-            return HttpResponse(template.render(context))
+            else:
+                return redirect('/loginPage/')
 
         else:
-            return redirect('/loginPage/')
+            for ts in cartDict:
+                print ts
+                if ts == 'emergency':
+                    continue
+                print ts
+
+                cartObj = cartDict[ts]
+                if cartObj.has_key("car"):
+                    carCmpName = " ".join([cartObj['car']['make'], cartObj['car']['name']])
+                else:
+                    carCmpName = ""
+
+                item = {}
+                if not selectCarName:
+                    selectCarName = carCmpName
+
+                service_id = cartObj['service_id']
+                if (carCmpName == selectCarName.strip()) and len(carCmpName):
+                    if not contextDict.has_key(carCmpName):
+                        contextDict[carCmpName] = []
+
+                    if cartObj['service'] == 'servicing':
+                        serviceDetail = ServiceDealerCat.objects.filter(id=service_id)
+                        serviceDetailNew = ServiceDealerCatNew.objects.filter(id=service_id)
+
+                        if len(serviceDetail):
+                            serviceDetail = serviceDetail[0]
+                            print serviceDetail.price_parts, serviceDetail.price_labour
+                            total_price = 0
+                            if len(serviceDetail.price_parts):
+                                total_price = total_price+ float(serviceDetail.price_parts)
+                            if len(serviceDetail.price_labour):
+                                total_price = int(total_price + (math.ceil(float(serviceDetail.price_labour)*0.14)) + float(serviceDetail.price_labour)+ 0)
+                            item = {
+                                'id':serviceDetail.id,
+                                'name':serviceDetail.name,
+                                'brand':serviceDetail.brand,
+                                'car':serviceDetail.carname,
+                                'odometer':serviceDetail.odometer,
+                                'dealer_cat':serviceDetail.dealer_category,
+                                'parts_list':serviceDetail.part_replacement,
+                                'parts_price':serviceDetail.price_parts,
+                                'labour_price':serviceDetail.price_labour,
+                                'wa_price':serviceDetail.wheel_alignment,
+                                'wb_price':serviceDetail.wheel_balancing,
+                                'wa_wb_present':serviceDetail.WA_WB_Inc,
+                                'dealer_details':serviceDetail.detail_dealers,
+                                'year':serviceDetail.year,
+                                'total_price':total_price
+                            }
+                            cartDict[ts]['service_detail'] = item
+                            cartDict[ts]['ts'] = ts
+
+                        elif len(serviceDetailNew):
+                            serviceDetail = serviceDetailNew[0]
+                            print serviceDetail.price_parts, serviceDetail.price_labour
+                            total_price = 0
+                            if len(serviceDetail.price_parts):
+                                total_price = total_price+ float(serviceDetail.price_parts)
+                            if len(serviceDetail.price_labour):
+                                total_price = int(total_price + (math.ceil(float(serviceDetail.price_labour)*0.14)) + float(serviceDetail.price_labour)+ 0)
+                            item = {
+                                'id':serviceDetail.id,
+                                'name':serviceDetail.name,
+                                'brand':serviceDetail.brand,
+                                'car':serviceDetail.carname,
+                                'type_service':serviceDetail.type_service,
+                                'dealer_cat':serviceDetail.dealer_category,
+                                'parts_list':serviceDetail.part_replacement,
+                                'parts_price':serviceDetail.price_parts,
+                                'labour_price':serviceDetail.price_labour,
+                                'wa_price':serviceDetail.wheel_alignment,
+                                'wb_price':serviceDetail.wheel_balancing,
+                                'wa_wb_present':serviceDetail.WA_WB_Inc,
+                                'dealer_details':serviceDetail.detail_dealers,
+                                # 'year':serviceDetail.year,
+                                'total_price':total_price
+                            }
+                            # print total_price
+                            cartDict[ts]['service_detail'] = item
+                            cartDict[ts]['ts'] = ts
+
+                            contextDict[carCmpName].append(cartDict[ts])
+                    elif cartObj['service'] == 'cleaning':
+                        serviceDetail = CleaningCategoryServices.objects.filter(id=service_id)
+                        if len(serviceDetail):
+                            serviceDetail = serviceDetail[0]
+                            total_price = 0
+                            if len(serviceDetail.price_parts):
+                                total_price = total_price+ float(serviceDetail.price_parts)
+                            if len(serviceDetail.price_labour):
+                                total_price = total_price + float(serviceDetail.price_labour)
+
+                            # total_price = float(serviceDetail.price_parts) + float(serviceDetail.price_labour)
+                            total_price = int(float(serviceDetail.price_total)*(1-float(serviceDetail.discount)))
+                            item = {
+                                'id':serviceDetail.id,
+                                'category':serviceDetail.category,
+                                'car_cat':serviceDetail.car_cat,
+                                'service':serviceDetail.service,
+                                'vendor':serviceDetail.vendor,
+                                'parts_price':serviceDetail.price_parts,
+                                'labour_price':serviceDetail.price_labour,
+                                'total_price':total_price,
+                                # 'total_price':total_price,
+                                'description':serviceDetail.description,
+                            }
+                            # print total_price
+                            cartDict[ts]['service_detail'] = item
+                            cartDict[ts]['ts'] = ts
+
+                            contextDict[carCmpName].append(cartDict[ts])
+
+            print contextDict
+            if contextDict.has_key(selectCarName):
+                context = RequestContext(request, {
+                    'address': [],
+                    'cart':contextDict,
+                    'cart_number':len(contextDict[selectCarName]),
+                    'car_info':carInfo,
+                    'emergFlag':emergFlag
+                })
+                return HttpResponse(template.render(context))
+
+            else:
+                return redirect('/loginPage/')
 
             # address : request.user.saved_address
     else:
