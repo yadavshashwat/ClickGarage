@@ -390,6 +390,9 @@ def cart(request):
                 # request.user.uc_cart = cartDict
                 # request.user.save()
         for ts in cartDict:
+            if ts == 'emergency':
+                continue
+
             cartObj = cartDict[ts]
             if cartObj.has_key("car"):
                 carCmpName = " ".join([cartObj['car']['make'], cartObj['car']['name']])
