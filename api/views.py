@@ -192,6 +192,7 @@ def fetch_car_servicedetails(request):
         car = None
         make = None
         odo = None
+        car_2 = None
         if service_id:
             serviceObj = Servicing.objects.filter(id=service_id)
             if len(serviceObj):
@@ -1143,7 +1144,8 @@ def fetch_vas_service(request):
                         ,'price_parts':service.price_parts     
                         ,'total_price':service.price_total     
                         ,'description':service.description  
-                        ,'doorstep':service.doorstep    
+                        ,'doorstep':service.doorstep
+                        ,'discount':service.discount
                         ,'rating':service.rating          
                         ,'reviews':service.reviews   
                         ,'car_bike': service.car_bike                  

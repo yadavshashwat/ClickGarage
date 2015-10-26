@@ -197,6 +197,7 @@ class VASCategoryServices(models.Model):
     price_total     = models.CharField(max_length=50)
     description     = models.CharField(max_length=500)
     doorstep        = models.CharField(max_length=50)
+    discount        = models.CharField(max_length=50)
     rating          = ListField(models.CharField(max_length=50))
     reviews         = ListField(models.CharField(max_length=500))
     car_bike = models.CharField(max_length=50)
