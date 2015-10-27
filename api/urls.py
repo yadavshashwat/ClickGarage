@@ -82,7 +82,7 @@ urlpatterns = [
             
 
 
-
+    url(r'fetch_location/$','api.views.fetch_location',name='fetch_location'),
 
 
     url(r'fetch_all_services/$','api.views.fetch_all_services',name='fetch_all_services'),

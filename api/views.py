@@ -13,6 +13,7 @@ import operator
 import json
 import ast
 import re
+import requests
 from django.views.decorators.csrf import csrf_exempt
 
 from models import *
@@ -21,6 +22,8 @@ from activity import views as ac_vi
 from mailing import views as mviews
 
 from activity.models import Transactions, CGUser
+# from lxml import html
+
 
 tempSecretKey = 'dmFydW5ndWxhdGlsaWtlc2dhbG91dGlrZWJhYg=='
 
@@ -2049,6 +2052,39 @@ def order_complete(request):
 #    mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
         mviews.send_order_complete(username,userphone,useremail,booking_id)
     return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+
+# general_url = 'https://www.facebook.com/search/results/?q='
+# email1 = 'drsnehyadav@gmail.com'
+#
+# def fetch_location(request):
+#     obj = {}
+#     obj['status'] = False
+#     obj['result'] = {}
+#     if random_req_auth(request) or (request.user and request.user.is_authenticated()):
+#         location = get_const_list(email1)
+#         # print email1
+#         obj['result'] = location
+#         obj['status'] = True
+#     return HttpResponse(json.dumps(obj), content_type='application/json')
+#
+#
+#
+#
+# def get_const_list(email):
+#     url = general_url + email
+#     req = requests.get(url)
+#     doc = html.fromstring(req.text)
+#     print url
+#     print doc
+#     print req
+#     options = doc.xpath("//div[@class='_5d-5']/text()")
+#     print options
+#     return options
+
+
+
 
 
 
