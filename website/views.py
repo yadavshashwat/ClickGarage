@@ -9,7 +9,7 @@ import json
 import os
 from decimal import Decimal
 from api import views
-from api.models import ServiceDealerCat,ServiceDealerCatNew, CleaningCategoryServices, Car
+from api.models import ServiceDealerCat,ServiceDealerCatNew, CleaningCategoryServices, VASCategoryServices, Car
 
 
 # Create your views here.
@@ -316,6 +316,35 @@ def checkout(request):
                             cartDict[ts]['ts'] = ts
 
                             contextDict[carCmpName].append(cartDict[ts])
+                    elif cartObj['service'] == 'vas':
+                        serviceDetail = VASCategoryServices.objects.filter(id=service_id)
+                        if len(serviceDetail):
+                            serviceDetail = serviceDetail[0]
+                            total_price = 0
+                            if len(serviceDetail.price_parts):
+                                total_price = total_price+ float(serviceDetail.price_parts)
+                            if len(serviceDetail.price_labour):
+                                total_price = total_price + float(serviceDetail.price_labour)
+
+                            # total_price = float(serviceDetail.price_parts) + float(serviceDetail.price_labour)
+                            total_price = int(float(serviceDetail.price_total)*(1-float(serviceDetail.discount)))
+                            item = {
+                                'id':serviceDetail.id,
+                                'category':serviceDetail.category,
+                                'car_cat':serviceDetail.car_cat,
+                                'service':serviceDetail.service,
+                                'vendor':serviceDetail.vendor,
+                                'parts_price':serviceDetail.price_parts,
+                                'labour_price':serviceDetail.price_labour,
+                                'total_price':total_price,
+                                # 'total_price':total_price,
+                                'description':serviceDetail.description,
+                            }
+                            # print total_price
+                            cartDict[ts]['service_detail'] = item
+                            cartDict[ts]['ts'] = ts
+
+                            contextDict[carCmpName].append(cartDict[ts])
 
             print contextDict
             if contextDict.has_key(selectCarName):
@@ -509,6 +538,45 @@ def cart(request):
                         contextDict[carCmpName].append(cartDict[ts])
                         if carCmpName not in carList:
                             carList.append(carCmpName)
+
+            elif cartObj['service'] == 'vas':
+                serviceDetail = VASCategoryServices.objects.filter(id=service_id)
+                if len(serviceDetail):
+                    serviceDetail = serviceDetail[0]
+                    total_price = 0
+                    if len(serviceDetail.price_parts):
+                        total_price = total_price+ float(serviceDetail.price_parts)
+                    if len(serviceDetail.price_labour):
+                        total_price = total_price + float(serviceDetail.price_labour)
+
+                    total_price = float(serviceDetail.price_total)
+                    disc = 0
+                    if (serviceDetail.discount) and len(serviceDetail.discount):
+                        try:
+                            disc = float(serviceDetail.discount)
+                        except ValueError:
+                            disc = 0
+                    total_price = int(total_price*(1-disc))
+                    # total_price = float(serviceDetail.price_parts) + float(serviceDetail.price_labour)
+                    item = {
+                        'id':serviceDetail.id,
+                        'category':serviceDetail.category,
+                        'car_cat':serviceDetail.car_cat,
+                        'service':serviceDetail.service,
+                        'vendor':serviceDetail.vendor,
+                        'parts_price':serviceDetail.price_parts,
+                        'labour_price':serviceDetail.price_labour,
+                        'total_price':total_price,
+                        # 'total_price':total_price,
+                        'description':serviceDetail.description,
+                    }
+                    # print total_price
+                    cartDict[ts]['service_detail'] = item
+                    cartDict[ts]['ts'] = ts
+                    if len(carCmpName):
+                        contextDict[carCmpName].append(cartDict[ts])
+                        if carCmpName not in carList:
+                            carList.append(carCmpName)
         # print contextDict
         if len(carList):
             carList = views.getCarObjFromName(carList)
@@ -644,6 +712,36 @@ def bookings(request):
                             carList.append(carCmpName)
             elif cartObj['service'] == 'cleaning':
                 serviceDetail = CleaningCategoryServices.objects.filter(id=service_id)
+                if len(serviceDetail):
+                    serviceDetail = serviceDetail[0]
+                    total_price = 0
+                    if len(serviceDetail.price_parts):
+                        total_price = total_price+ float(serviceDetail.price_parts)
+                    if len(serviceDetail.price_labour):
+                        total_price = total_price + float(serviceDetail.price_labour)
+
+                    # total_price = float(serviceDetail.price_parts) + float(serviceDetail.price_labour)
+                    item = {
+                        'id':serviceDetail.id,
+                        'category':serviceDetail.category,
+                        'car_cat':serviceDetail.car_cat,
+                        'service':serviceDetail.service,
+                        'vendor':serviceDetail.vendor,
+                        'parts_price':serviceDetail.price_parts,
+                        'labour_price':serviceDetail.price_labour,
+                        'total_price':serviceDetail.price_total,
+                        # 'total_price':total_price,
+                        'description':serviceDetail.description,
+                    }
+                    # print total_price
+                    cartDict[ts]['service_detail'] = item
+                    cartDict[ts]['ts'] = ts
+                    if len(carCmpName):
+                        contextDict[carCmpName].append(cartDict[ts])
+                        if carCmpName not in carList:
+                            carList.append(carCmpName)
+            elif cartObj['service'] == 'vas':
+                serviceDetail = VASCategoryServices.objects.filter(id=service_id)
                 if len(serviceDetail):
                     serviceDetail = serviceDetail[0]
                     total_price = 0

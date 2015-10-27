@@ -35,9 +35,9 @@ from api.models import *
 runentry.loadCleaning('Cleaning_VAS_all.txt')
 
 ##Loading windshield
-WindShieldCat.objects.all().delete()
-WindShieldServiceDetails.objects.all().delete()
-runentry.loadWindShielddata('wsdata.txt')
+# WindShieldCat.objects.all().delete()
+# WindShieldServiceDetails.objects.all().delete()
+# runentry.loadWindShielddata('wsdata.txt')
 
 #runentry.loadServicing('Servicing_List.txt')#
 #runentry.loadWheelServices('WheelServices.txt')
