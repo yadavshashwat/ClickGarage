@@ -1455,6 +1455,50 @@ def place_order(request):
                     html_list.append('</span>')
 
                     html_list.append('</div>')
+            elif service == 'vas':
+                serviceDetail = VASCategoryServices.objects.filter(id=service_id)
+                if len(serviceDetail):
+                    serviceDetail = serviceDetail[0]
+                    total_price = 0
+                    if len(serviceDetail.price_parts):
+                        total_price = total_price+ float(serviceDetail.price_parts)
+                    if len(serviceDetail.price_labour):
+                        total_price = total_price + float(serviceDetail.price_labour)
+
+                    # total_price = float(serviceDetail.price_parts) + float(serviceDetail.price_labour)
+                    html_list.append('<div>')
+
+                    item = {
+                        'id':serviceDetail.id,
+                        'category':serviceDetail.category,
+                        'car_cat':serviceDetail.car_cat,
+                        'service':serviceDetail.service,
+                        'vendor':serviceDetail.vendor,
+                        'parts_price':serviceDetail.price_parts,
+                        'labour_price':serviceDetail.price_labour,
+                        'total_price':serviceDetail.price_total,
+                        # 'total_price':total_price,
+                        'description':serviceDetail.description,
+                        'status':True,
+                        'ts':ts
+                    }
+                    listItem['served_data'] = item
+                    html_list.append('<span> Vas </span>')
+                    html_list.append('<span> Category : ')
+                    html_list.append(item['category'])
+                    html_list.append('</span>')
+
+                    html_list.append('<span>')
+                    html_list.append(item['vendor'])
+                    html_list.append(' - ')
+                    html_list.append(item['service'])
+                    html_list.append('</span>')
+
+                    html_list.append('<span> price : ')
+                    html_list.append(total_price)
+                    html_list.append('</span>')
+
+                    html_list.append('</div>')
             if not android_flag:
                 ac_vi.updateCart(request.user, ts+'*', 'delete', '', None)
             transList.append(listItem)
