@@ -1499,6 +1499,60 @@ def place_order(request):
                     html_list.append('</span>')
 
                     html_list.append('</div>')
+
+            elif service == 'windshield':
+                serviceDetail = WindShieldServiceDetails.objects.filter(id=service_id)
+                if len(serviceDetail):
+                    serviceDetail = serviceDetail[0]
+                    total_price = 0
+                    # if len(serviceDetail.price_parts):
+                    #     total_price = total_price+ float(serviceDetail.price_parts)
+                    # if len(serviceDetail.price_labour):
+                    #     total_price = total_price + float(serviceDetail.price_labour)
+
+                    # total_price = float(serviceDetail.price_parts) + float(serviceDetail.price_labour)
+                    html_list.append('<div>')
+
+                    item = {
+                        'id':serviceDetail.id
+                                ,'vendor'         :serviceDetail.vendor
+                                ,'brand'          :serviceDetail.brand
+                                ,'carname'        :serviceDetail.carname
+                                ,'ws_type'        :serviceDetail.ws_type
+                                ,'ws_subtype'     :serviceDetail.ws_subtype
+                                ,'colour'         :serviceDetail.colour
+                                ,'price_ws'       :serviceDetail.price_ws
+                                ,'price_sealant'  :serviceDetail.price_sealant
+                                ,'price_labour'   :serviceDetail.price_labour
+                                ,'price_insurance':serviceDetail.price_insurance
+                                ,'price_total'   :serviceDetail.price_total
+                                ,'city'           :serviceDetail.city
+                                ,'description':serviceDetail.description
+                                ,'status':True
+                                ,'ts':ts
+                    }
+                    listItem['served_data'] = item
+                    html_list.append('<span> Windshield </span>')
+                    html_list.append('<span> Category : ')
+                    html_list.append(item['ws_subtype'])
+                    html_list.append('&nbsp;(')
+                    html_list.append(item['ws_type'])
+                    html_list.append('&nbsp;)')
+                    html_list.append('</span>')
+
+                    html_list.append('<span>')
+                    html_list.append(item['vendor'])
+                    html_list.append(' - ')
+                    html_list.append(item['colour'])
+                    html_list.append('</span>')
+
+                    html_list.append('<span> price : ')
+                    html_list.append(item['price_total'])
+                    html_list.append('</span>')
+
+                    html_list.append('</div>')
+
+
             if not android_flag:
                 ac_vi.updateCart(request.user, ts+'*', 'delete', '', None)
             transList.append(listItem)
