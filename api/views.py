@@ -27,6 +27,12 @@ from activity.models import Transactions, CGUser
 
 tempSecretKey = 'dmFydW5ndWxhdGlsaWtlc2dhbG91dGlrZWJhYg=='
 
+repair_map = {
+    'diagnostics':{'name':'Diagnostics','detail':"I don't know what is wrong with my car"},
+    'dent-paint':{'name':'Denting / Painting','detail':""},
+    'custom':{'name':'Custom Repair Request','detail':""}
+}
+
 #login views
 
 def cleanstring(query):
@@ -1551,7 +1557,43 @@ def place_order(request):
                     html_list.append('</span>')
 
                     html_list.append('</div>')
+            elif service == 'repair':
 
+                if len(service_id) and (service_id in repair_map):
+                    html_list.append('<div>')
+                    html_list.append('<span> Repairs </span>')
+                    html_list.append('<span> Category : ')
+                    html_list.append(repair_map[service_id]['name'])
+                    html_list.append('</span>')
+
+                    additional = None
+                    if ts in request.user.uc_cart:
+                        this_order = request.user.uc_cart[ts]
+                        if 'additional_data' in this_order:
+                            additional = this_order['additional_data']
+                    if additional:
+                        addStr = '<span> Repair Queries : '
+                        custAddStr = ''
+                        for feat, status in additional.iteritems():
+                            if status:
+                                if feat == 'Custom Requests':
+                                    custAddStr = '<br/><span> Custom Requests : %s </span>' %(status)
+                                elif feat == 'Damage Type':
+                                    custAddStr = '<br/><span> Damage Type : %s </span>' %(status)
+                                # elif feat == 'Selected Authorized':
+                                #     d_name = ''
+                                #     d_address = ''
+                                #     if 'name' in status:
+                                #         d_name = status['name']
+                                #     if 'address' in status:
+                                #         d_address = status['address']
+                                #     custAddStr = '<br/><span> Authorized Dealer Selected : %s (%s) </span>' %(d_name,d_address)
+                                else:
+                                    addStr = '%s [%s] - ' %(addStr,feat)
+                        addStr = addStr + '</span>' + custAddStr
+                        html_list.append(addStr)
+
+                    html_list.append('</div>')
 
             if not android_flag:
                 ac_vi.updateCart(request.user, ts+'*', 'delete', '', None)

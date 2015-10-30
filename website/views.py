@@ -12,6 +12,12 @@ from api import views
 from api.models import ServiceDealerCat,ServiceDealerCatNew, CleaningCategoryServices, VASCategoryServices, WindShieldServiceDetails, Car
 
 
+repair_map = {
+    'diagnostics':{'name':'Diagnostics','detail':"I don't know what is wrong with my car"},
+    'dent-paint':{'name':'Denting / Painting','detail':""},
+    'custom':{'name':'Custom Repair Request','detail':""}
+}
+
 # Create your views here.
 def index(request):
 
@@ -379,6 +385,18 @@ def checkout(request):
                             cartDict[ts]['ts'] = ts
 
                             contextDict[carCmpName].append(cartDict[ts])
+                    elif cartObj['service'] == 'repair':
+                        s_id = cartObj['service_id']
+                        if len(s_id) and (s_id in repair_map):
+                            item = {
+                                'category':repair_map[s_id]['name']
+                            }
+                        else:
+                            item = {}
+
+                        cartDict[ts]['service_detail'] = item
+                        cartDict[ts]['ts'] = ts
+                        contextDict[carCmpName].append(cartDict[ts])
 
             print contextDict
             if contextDict.has_key(selectCarName):
@@ -656,6 +674,22 @@ def cart(request):
                         contextDict[carCmpName].append(cartDict[ts])
                         if carCmpName not in carList:
                             carList.append(carCmpName)
+            elif cartObj['service'] == 'repair':
+                s_id = cartObj['service_id']
+                if len(s_id) and (s_id in repair_map):
+                    item = {
+                        'category':repair_map[s_id]['name']
+                    }
+                else:
+                    item = {}
+
+                cartDict[ts]['service_detail'] = item
+                cartDict[ts]['ts'] = ts
+                if len(carCmpName):
+                    contextDict[carCmpName].append(cartDict[ts])
+                    if carCmpName not in carList:
+                        carList.append(carCmpName)
+
         # print contextDict
         if len(carList):
             carList = views.getCarObjFromName(carList)
