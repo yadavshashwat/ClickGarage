@@ -5,7 +5,7 @@ from django.template import RequestContext, loader
 from django.conf import settings
 
 import math
-import json
+import json, urllib
 import os
 from decimal import Decimal
 from api import views
@@ -124,6 +124,7 @@ def order(request):
 def checkout(request):
     selectCarID = request.COOKIES.get('clgacarid')
     cookieCartData = request.COOKIES.get('clgacart')
+    ccdAdditional = request.COOKIES.get('clgacartaddi')
     cartEmpty = False
     if request.user.is_authenticated():
         template = loader.get_template('website/checkout.html')
@@ -164,6 +165,8 @@ def checkout(request):
                         'car_bike':carObj.car_bike
                     }
                     cartDict[ts] = obj
+
+                #do something
 
             # request.user.uc_cart = cartDict
             # request.user.save()
@@ -430,6 +433,7 @@ def dashboard(request):
 def cart(request):
     selectCar = request.COOKIES.get('clgacarid')
     cookieCartData = request.COOKIES.get('clgacart')
+    ccdAdditional = request.COOKIES.get('clgacartaddi')
     loginFlag = False
     if request.user.is_authenticated():
         loginFlag = True
@@ -467,9 +471,26 @@ def cart(request):
                         'size'  :   carObj.size
                     }
                     cartDict[ts] = obj
-            # if loginFlag:
-                # request.user.uc_cart = cartDict
-                # request.user.save()
+            if loginFlag:
+                request.user.uc_cart = cartDict
+                request.user.save()
+        if ccdAdditional and len(ccdAdditional):
+            try:
+                ccdaObj = json.loads( urllib.unquote(ccdAdditional) )
+                # for ts in ccdaObj:
+                    # if ts in cartDict:
+                    #     obj = cartDict[ccdaObj]
+                for ts in ccdaObj:
+                    print ts
+                    print (ts in cartDict)
+                    # print ('additional_data' not in cartDict[ts])
+                    if (ts in cartDict) and ('additional_data' not in cartDict[ts]):
+                        cartDict[ts]['additional_data'] = ccdaObj[ts]
+            except ValueError:
+                print 'error'
+            if loginFlag:
+                request.user.uc_cart = cartDict
+                request.user.save()
         for ts in cartDict:
             if ts == 'emergency':
                 continue

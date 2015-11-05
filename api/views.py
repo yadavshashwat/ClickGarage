@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import models
 import datetime, time
+import urllib
 
 from django.db.models import Max
 
@@ -2183,6 +2184,9 @@ def fetch_car_servicedetails_new(request):
         return HttpResponse(json.dumps(obj), content_type='application/json')
 
 def fetch_additional_details(request):
+    ccdAdditional = request.COOKIES.get('clgacartaddi')
+    # print request.COOKIES
+    # print ccdAdditional
     obj = {}
     obj['status'] = False
     obj['result'] = {}
@@ -2191,6 +2195,23 @@ def fetch_additional_details(request):
         cart = request.user.uc_cart
         obj['result'] = cart
         obj['status'] = True
+    elif ccdAdditional and len(ccdAdditional):
+            try:
+                ccdaObj = json.loads( urllib.unquote(ccdAdditional) )
+                # for ts in ccdaObj:
+                    # if ts in cartDict:
+                    #     obj = cartDict[ccdaObj]
+                for ts in ccdaObj:
+                    print ts
+                    oppy = {}
+                    oppy['additional_data'] = ccdaObj[ts]
+                    obj['result'][ts] = oppy
+                obj['status'] = True
+
+            except ValueError:
+                obj['result'] = None
+                obj['status'] = False
+                #do something
 
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
