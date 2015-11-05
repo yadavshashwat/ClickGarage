@@ -1,251 +1,1 @@
-Toyota Altis Petrol,125R13,Large,Car
-Toyota Altis Diesel,125R13,Large,Car
-Toyota Innova Diesel,125R13,Large,Car
-Toyota Corolla Petrol,125R13,Large,Car
-Toyota Etios Petrol,125R13,Medium,Car
-Toyota Etios Liva Diesel,125R13,Medium,Car
-Toyota Camry Petrol New,125R13,Extra Large,Car
-Toyota Fortuner Diesel,125R13,Extra Large,Car
-Honda Brio Petrol,125R13,Small,Car
-Honda Mobilio Petrol,125R13,Large,Car
-Honda Mobilio Diesel,125R13,Large,Car
-Honda Amaze Petrol,125R13,Medium,Car
-Honda Jazz Petrol,125R13,Medium,Car
-Honda Amaze Diesel,125R13,Medium,Car
-Honda City Petrol Old,125R13,Medium,Car
-Honda City Petrol New,125R13,Medium,Car
-Honda City Diesel New,125R13,Medium,Car
-Honda Civic Petrol,125R13,Large,Car
-Honda Accord Petrol,125R13,Extra Large,Car
-Honda CRV Petrol,125R13,Extra Large,Car
-Maruti Suzuki Alto 800 Petrol,125R13,Small,Car
-Maruti Suzuki Alto K10 Petrol,125R13,Small,Car
-Maruti Suzuki A-Star Petrol,125R13,Small,Car
-Maruti Suzuki Zen Estilo Petrol,125R13,Small,Car
-Maruti Suzuki Wagon-R Petrol New,125R13,Small,Car
-Maruti Suzuki Ritz Petrol,125R13,Medium,Car
-Maruti Suzuki Ritz Diesel,125R13,Medium,Car
-Maruti Suzuki Swift Petrol,125R13,Medium,Car
-Maruti Suzuki Swift Diesel,125R13,Medium,Car
-Maruti Suzuki Dzire Petrol,125R13,Medium,Car
-Maruti Suzuki Dzire Diesel,125R13,Medium,Car
-Maruti Suzuki Ertiga Petrol,125R13,Large,Car
-Maruti Suzuki Ertiga Diesel,125R13,Large,Car
-Maruti Suzuki SX4 Petrol,125R13,Medium,Car
-Maruti Suzuki Omni Petrol,125R13,Medium,Car
-Maruti Suzuki Wagon-R Petrol Old,125R13,Small,Car
-Maruti Suzuki Ciaz Petrol,125R13,Medium,Car
-Maruti Suzuki Celerio Petrol,125R13,Medium,Car
-Maruti Suzuki SX4 Diesel,125R13,Medium,Car
-Maruti Suzuki Wagon-R (Stingray) Petrol,125R13,Small,Car
-Maruti Suzuki Eeco Petrol,125R13,Medium,Car
-Maruti Suzuki Ciaz Diesel,125R13,Medium,Car
-Tata Aria,125R13,Large,Car
-Tata Indica Vista Diesel TDI,125R13,Medium,Car
-Tata Indica Vista Diesel Quadrajet,125R13,Medium,Car
-Tata Safari Storme,125R13,Extra Large,Car
-Tata Safari Dicor,125R13,Extra Large,Car
-Tata Indigo Manza Diesel,125R13,Medium,Car
-Tata Indica Vista Petrol,125R13,Medium,Car
-Tata Bolt Petrol,125R13,Medium,Car
-Tata Bolt Diesel,125R13,Medium,Car
-Tata Zest Petrol,125R13,Medium,Car
-Tata Zest Diesel,125R13,Medium,Car
-Tata Indica eV2 Diesel,125R13,Medium,Car
-Tata Indigo eCS Petrol,125R13,Medium,Car
-Tata Indigo eCS Diesel,125R13,Medium,Car
-Tata Indica eV2 Petrol,125R13,Medium,Car
-Tata Safari Storme New,125R13,Extra Large,Car
-Tata Indigo Manza Petrol,125R13,Medium,Car
-Tata Nano,125R13,Small,Car
-Renault Duster Diesel,125R13,Large,Car
-Renault Duster Petrol,125R13,Large,Car
-Renault Fluence Diesel,125R13,Large,Car
-Renault Koleos Diesel,125R13,Large,Car
-Renault Lodgy Diesel,125R13,Extra Large,Car
-Renault Pulse Diesel,125R13,Medium,Car
-Renault Pulse Petrol,125R13,Medium,Car
-Renault Scala Diesel,125R13,Medium,Car
-Renault Scala Petrol,125R13,Medium,Car
-Fiat Punto Diesel,125R13,Medium,Car
-Fiat Avventura Diesel,125R13,Medium,Car
-Fiat Linea Diesel,125R13,Medium,Car
-Fiat Palio Diesel,125R13,Medium,Car
-Fiat Punto Petrol,125R13,Medium,Car
-Fiat Avventura Petrol,125R13,Medium,Car
-Fiat Linea Petrol,125R13,Medium,Car
-Fiat Linea Classic Diesel,125R13,Medium,Car
-Fiat Linea Classic Petrol,125R13,Medium,Car
-Fiat Palio Petrol,125R13,Medium,Car
-Nissan Evalia Diesel,125R13,Extra Large,Car
-Datsun Go Petrol,125R13,Small,Car
-Datsun Go Plus Petrol,125R13,Medium,Car
-Nissan Micra Active Petrol,125R13,Medium,Car
-Nissan Micra Diesel,125R13,Medium,Car
-Nissan Micra Petrol,125R13,Medium,Car
-Nissan Sunny Diesel,125R13,Medium,Car
-Nissan Sunny Petrol,125R13,Medium,Car
-Nissan Teana Petrol,125R13,Extra Large,Car
-Nissan Terrano Diesel,125R13,Large,Car
-Nissan Terrano Petrol,125R13,Large,Car
-Chevrolet Spark Petrol,125R13,Small,Car
-Chevrolet Beat Petrol,125R13,Small,Car
-Chevrolet Beat Diesel,125R13,Small,Car
-Chevrolet Sail Diesel,125R13,Medium,Car
-Chevrolet Sail Petrol,125R13,Medium,Car
-Chevrolet Cruze Diesel,125R13,Large,Car
-Chevrolet Captiva Diesel,125R13,Extra Large,Car
-Chevrolet Sail Hatchback Diesel,125R13,Medium,Car
-Chevrolet Sail Hatchback Petrol,125R13,Medium,Car
-Ford Classic Diesel,125R13,Medium,Car
-Ford Classic Petrol,125R13,Medium,Car
-Ford Ecosport Diesel,125R13,Medium,Car
-Ford Ecosport Petrol,125R13,Medium,Car
-Ford Figo Diesel,125R13,Medium,Car
-Ford Figo Petrol,125R13,Medium,Car
-Ford Fusion Diesel,125R13,Medium,Car
-Ford Fusion Petrol,125R13,Medium,Car
-Ford Ikon Diesel,125R13,Medium,Car
-Ford Ikon Petrol,125R13,Medium,Car
-Ford Endeavour Diesel New,125R13,Extra Large,Car
-Ford Fiesta Diesel,125R13,Medium,Car
-Ford Fiesta Petrol,125R13,Medium,Car
-Ford Endeavour Diesel Old,125R13,Extra Large,Car
-Skoda Fabia Diesel,125R13,Medium,Car
-Skoda Fabia Petrol,125R13,Medium,Car
-Skoda Laura Petrol,125R13,Large,Car
-Skoda Laura Diesel Automatic,125R13,Large,Car
-Skoda Laura Diesel Manual,125R13,Large,Car
-Skoda Octavia Petrol,125R13,Large,Car
-Skoda Octavia Diesel Automatic,125R13,Large,Car
-Skoda Rapid Petrol Automatic,125R13,Medium,Car
-Skoda Rapid Petrol Manual,125R13,Medium,Car
-Skoda Rapid Diesel,125R13,Medium,Car
-Skoda Superb Petrol New Automatic,125R13,Large,Car
-Skoda Superb Petrol Old Automatic,125R13,Large,Car
-Skoda Superb Petrol New Manual,125R13,Large,Car
-Skoda Superb Petrol Old Manual,125R13,Large,Car
-Skoda Superb Diesel,125R13,Large,Car
-Skoda Yeti Diesel Old,125R13,Large,Car
-Skoda Yeti Diesel New,125R13,Large,Car
-Skoda Octavia Diesel Manual,125R13,Large,Car
-Hyundai Elantra Diesel,125R13,Large,Car
-Hyundai Elantra Petrol,125R13,Large,Car
-Hyundai EON Petrol,125R13,Small,Car
-Hyundai Grand i10 Diesel,125R13,Medium,Car
-Hyundai Grand i10 Petrol,125R13,Medium,Car
-Hyundai i10 Petrol,125R13,Small,Car
-Hyundai i20 Diesel,125R13,Medium,Car
-Hyundai i20 Petrol,125R13,Medium,Car
-Hyundai Santro Petrol,125R13,Small,Car
-Hyundai Sonata Petrol,125R13,Extra Large,Car
-Hyundai Verna / Fludic 4S Petrol,125R13,Medium,Car
-Hyundai Verna / Fluidic 4S Diesel,125R13,Medium,Car
-Volkswagen Polo Petrol,125R13,Medium,Car
-Volkswagen Polo Diesel,125R13,Medium,Car
-Volkswagen Vento Diesel,125R13,Medium,Car
-Volkswagen Vento Petrol,125R13,Medium,Car
-Volkswagen Cross Polo Diesel,125R13,Medium,Car
-Volkswagen Jetta Diesel,125R13,Large,Car
-Volkswagen Jetta Petrol,125R13,Large,Car
-Mahindra XUV 500,125R13,Large,Car
-Mahindra Xylo,125R13,Large,Car
-Mahindra Scorpio,125R13,Large,Car
-Mahindra Bolero Diesel,125R13,Large,Car
-Mahindra Quanto Diesel,125R13,Large,Car
-Mahindra Thar Diesel,125R13,Large,Car
-Hero Achiever,125R13,Small,Bike
-Hero Xtreme Sports,125R13,Small,Bike
-Hero Pleasure,125R13,Small,Bike
-Hero Xtreme,125R13,Small,Bike
-Hero Super Splendor,125R13,Small,Bike
-Hero Splendor Pro J-1,125R13,Small,Bike
-Hero Splendor Pro Classic,125R13,Small,Bike
-Hero Splendor Pro,125R13,Small,Bike
-Hero Splendor Plus,125R13,Small,Bike
-Hero Splendor iSmart,125R13,Small,Bike
-Hero Passion XPRO,125R13,Small,Bike
-Hero Passion Pro TR,125R13,Small,Bike
-Hero Passion Pro,125R13,Small,Bike
-Hero Maestro,125R13,Small,Bike
-Hero Karizma ZMR,125R13,Small,Bike
-Hero Karizma,125R13,Small,Bike
-Hero Impulse,125R13,Small,Bike
-Hero Ignitor,125R13,Small,Bike
-Hero Hunk,125R13,Small,Bike
-Hero HF Deluxe Eco,125R13,Small,Bike
-Hero HF Deluxe,125R13,Small,Bike
-Hero HF Dawn,125R13,Small,Bike
-Hero Glamour Programmed FI,125R13,Small,Bike
-Hero Glamour,125R13,Small,Bike
-Yamaha Alpha,125R13,Small,Bike
-Yamaha Ray-Z,125R13,Small,Bike
-Yamaha Ray,125R13,Small,Bike
-Yamaha R15,125R13,Small,Bike
-Yamaha Fazer FI,125R13,Small,Bike
-Yamaha Fazer,125R13,Small,Bike
-Yamaha FZS FI,125R13,Small,Bike
-Yamaha FZS,125R13,Small,Bike
-Yamaha FZ FI,125R13,Small,Bike
-Yamaha FZ,125R13,Small,Bike
-Yamaha SZ RR Blue Core,125R13,Small,Bike
-Yamaha SZ RR,125R13,Small,Bike
-Yamaha SZ S,125R13,Small,Bike
-Yamaha Saluto,125R13,Small,Bike
-Yamaha SS125,125R13,Small,Bike
-Yamaha YBR125,125R13,Small,Bike
-Yamaha YBR110,125R13,Small,Bike
-Yamaha Crux,125R13,Small,Bike
-Bajaj Avenger DTS-i 200,125R13,Small,Bike
-Bajaj Avenger DTS-i 220,125R13,Small,Bike
-Bajaj Pulsar 220 DTS-i,125R13,Small,Bike
-Bajaj Pulsar 220 DTS-Fi,125R13,Small,Bike
-Bajaj Pulsar 200 DTS-i,125R13,Small,Bike
-Bajaj Pulsar 150 UG IV,125R13,Small,Bike
-Bajaj Pulsar 135 LS,125R13,Small,Bike
-Bajaj Pulsar 200 NS,125R13,Small,Bike
-Bajaj Platina,125R13,Small,Bike
-Bajaj Platina 125,125R13,Small,Bike
-Bajaj Discover 100,125R13,Small,Bike
-Bajaj Discover 150,125R13,Small,Bike
-Bajaj Discover 125,125R13,Small,Bike
-Bajaj Discover 125 ST,125R13,Small,Bike
-TVS Apache RTR160,125R13,Small,Bike
-TVS Apache RTR180,125R13,Small,Bike
-TVS Apache RTR160-FI,125R13,Small,Bike
-TVS Flame DS125,125R13,Small,Bike
-TVS Flame SR125,125R13,Small,Bike
-TVS Star,125R13,Small,Bike
-TVS Star City,125R13,Small,Bike
-TVS Star Sport,125R13,Small,Bike
-TVS Jive,125R13,Small,Bike
-TVS Scooty Streak,125R13,Small,Bike
-TVS Scooty Teenz,125R13,Small,Bike
-TVS Wego,125R13,Small,Bike
-TVS XL Super,125R13,Small,Bike
-Suzuki Hayate,125R13,Small,Bike
-Suzuki GS150R,125R13,Small,Bike
-Suzuki Slingshot Plus,125R13,Small,Bike
-Suzuki Gixxer,125R13,Small,Bike
-Suzuki Gixxer SF,125R13,Small,Bike
-Suzuki Access,125R13,Small,Bike
-Suzuki Let's,125R13,Small,Bike
-Suzuki Swish,125R13,Small,Bike
-Honda Activa 3G,125R13,Small,Bike
-Honda Activa 125,125R13,Small,Bike
-Honda CB Shine,125R13,Small,Bike
-Honda CB Unicorn,125R13,Small,Bike
-Honda CBR 150,125R13,Small,Bike
-KTM RC200,125R13,Small,Bike
-KTM RC390,125R13,Small,Bike
-KTM 390Duke,125R13,Small,Bike
-KTM 200Duke,125R13,Small,Bike
-Royal Enfield Continental GT,125R13,Small,Bike
-Royal Enfield Bullet 500,125R13,Small,Bike
-Royal Enfield Thunderbird 350,125R13,Small,Bike
-Royal Enfield Bullet 350,125R13,Small,Bike
-Royal Enfield Classic 350,125R13,Small,Bike
-Royal Enfield Classic 500,125R13,Small,Bike
-Royal Enfield Thunderbird 500,125R13,Small,Bike
-Honda Livo,125R13,Small,Bike
-Honda CBR 250,125R13,Small,Bike
+Toyota Altis Petrol,125R13,Large,CarToyota Altis Diesel,125R13,Large,CarToyota Innova Diesel,125R13,Large,CarToyota Corolla Petrol,125R13,Large,CarToyota Etios Petrol,125R13,Medium,CarToyota Etios Liva Diesel,125R13,Medium,CarToyota Camry Petrol New,125R13,Extra Large,CarToyota Fortuner Diesel,125R13,Extra Large,CarHonda Brio Petrol,125R13,Small,CarHonda Mobilio Petrol,125R13,Large,CarHonda Mobilio Diesel,125R13,Large,CarHonda Amaze Petrol,125R13,Medium,CarHonda Jazz Petrol,125R13,Medium,CarHonda Amaze Diesel,125R13,Medium,CarHonda City Petrol Old,125R13,Medium,CarHonda City Petrol New,125R13,Medium,CarHonda City Diesel New,125R13,Medium,CarHonda Civic Petrol,125R13,Large,CarHonda Accord Petrol,125R13,Extra Large,CarHonda CRV Petrol,125R13,Extra Large,CarMaruti Suzuki Alto 800 Petrol,125R13,Small,CarMaruti Suzuki Alto K10 Petrol,125R13,Small,CarMaruti Suzuki A-Star Petrol,125R13,Small,CarMaruti Suzuki Zen Estilo Petrol,125R13,Small,CarMaruti Suzuki Wagon-R Petrol New,125R13,Small,CarMaruti Suzuki Ritz Petrol,125R13,Medium,CarMaruti Suzuki Ritz Diesel,125R13,Medium,CarMaruti Suzuki Swift Petrol,125R13,Medium,CarMaruti Suzuki Swift Diesel,125R13,Medium,CarMaruti Suzuki Dzire Petrol,125R13,Medium,CarMaruti Suzuki Dzire Diesel,125R13,Medium,CarMaruti Suzuki Ertiga Petrol,125R13,Large,CarMaruti Suzuki Ertiga Diesel,125R13,Large,CarMaruti Suzuki SX4 Petrol,125R13,Medium,CarMaruti Suzuki Omni Petrol,125R13,Medium,CarMaruti Suzuki Wagon-R Petrol Old,125R13,Small,CarMaruti Suzuki Ciaz Petrol,125R13,Medium,CarMaruti Suzuki Celerio Petrol,125R13,Medium,CarMaruti Suzuki SX4 Diesel,125R13,Medium,CarMaruti Suzuki Wagon-R (Stingray) Petrol,125R13,Small,CarMaruti Suzuki Eeco Petrol,125R13,Medium,CarMaruti Suzuki Ciaz Diesel,125R13,Medium,CarTata Aria,125R13,Large,CarTata Indica Vista Diesel TDI,125R13,Medium,CarTata Indica Vista Diesel Quadrajet,125R13,Medium,CarTata Safari Storme,125R13,Extra Large,CarTata Safari Dicor,125R13,Extra Large,CarTata Indigo Manza Diesel,125R13,Medium,CarTata Indica Vista Petrol,125R13,Medium,CarTata Bolt Petrol,125R13,Medium,CarTata Bolt Diesel,125R13,Medium,CarTata Zest Petrol,125R13,Medium,CarTata Zest Diesel,125R13,Medium,CarTata Indica eV2 Diesel,125R13,Medium,CarTata Indigo eCS Petrol,125R13,Medium,CarTata Indigo eCS Diesel,125R13,Medium,CarTata Indica eV2 Petrol,125R13,Medium,CarTata Safari Storme New,125R13,Extra Large,CarTata Indigo Manza Petrol,125R13,Medium,CarTata Nano,125R13,Small,CarRenault Duster Diesel,125R13,Large,CarRenault Duster Petrol,125R13,Large,CarRenault Fluence Diesel,125R13,Large,CarRenault Koleos Diesel,125R13,Large,CarRenault Lodgy Diesel,125R13,Extra Large,CarRenault Pulse Diesel,125R13,Medium,CarRenault Pulse Petrol,125R13,Medium,CarRenault Scala Diesel,125R13,Medium,CarRenault Scala Petrol,125R13,Medium,CarFiat Punto Diesel,125R13,Medium,CarFiat Avventura Diesel,125R13,Medium,CarFiat Linea Diesel,125R13,Medium,CarFiat Palio Diesel,125R13,Medium,CarFiat Punto Petrol,125R13,Medium,CarFiat Avventura Petrol,125R13,Medium,CarFiat Linea Petrol,125R13,Medium,CarFiat Linea Classic Diesel,125R13,Medium,CarFiat Linea Classic Petrol,125R13,Medium,CarFiat Palio Petrol,125R13,Medium,CarNissan Evalia Diesel,125R13,Extra Large,CarDatsun Go Petrol,125R13,Small,CarDatsun Go Plus Petrol,125R13,Medium,CarNissan Micra Active Petrol,125R13,Medium,CarNissan Micra Diesel,125R13,Medium,CarNissan Micra Petrol,125R13,Medium,CarNissan Sunny Diesel,125R13,Medium,CarNissan Sunny Petrol,125R13,Medium,CarNissan Teana Petrol,125R13,Extra Large,CarNissan Terrano Diesel,125R13,Large,CarNissan Terrano Petrol,125R13,Large,CarChevrolet Spark Petrol,125R13,Small,CarChevrolet Beat Petrol,125R13,Small,CarChevrolet Beat Diesel,125R13,Small,CarChevrolet Sail Diesel,125R13,Medium,CarChevrolet Sail Petrol,125R13,Medium,CarChevrolet Cruze Diesel,125R13,Large,CarChevrolet Captiva Diesel,125R13,Extra Large,CarChevrolet Sail Hatchback Diesel,125R13,Medium,CarChevrolet Sail Hatchback Petrol,125R13,Medium,CarFord Classic Diesel,125R13,Medium,CarFord Classic Petrol,125R13,Medium,CarFord Ecosport Diesel,125R13,Medium,CarFord Ecosport Petrol,125R13,Medium,CarFord Figo Diesel,125R13,Medium,CarFord Figo Petrol,125R13,Medium,CarFord Fusion Diesel,125R13,Medium,CarFord Fusion Petrol,125R13,Medium,CarFord Ikon Diesel,125R13,Medium,CarFord Ikon Petrol,125R13,Medium,CarFord Endeavour Diesel New,125R13,Extra Large,CarFord Fiesta Diesel,125R13,Medium,CarFord Fiesta Petrol,125R13,Medium,CarFord Endeavour Diesel Old,125R13,Extra Large,CarSkoda Fabia Diesel,125R13,Medium,CarSkoda Fabia Petrol,125R13,Medium,CarSkoda Laura Petrol,125R13,Large,CarSkoda Laura Diesel Automatic,125R13,Large,CarSkoda Laura Diesel Manual,125R13,Large,CarSkoda Octavia Petrol,125R13,Large,CarSkoda Octavia Diesel Automatic,125R13,Large,CarSkoda Rapid Petrol Automatic,125R13,Medium,CarSkoda Rapid Petrol Manual,125R13,Medium,CarSkoda Rapid Diesel,125R13,Medium,CarSkoda Superb Petrol New Automatic,125R13,Large,CarSkoda Superb Petrol Old Automatic,125R13,Large,CarSkoda Superb Petrol New Manual,125R13,Large,CarSkoda Superb Petrol Old Manual,125R13,Large,CarSkoda Superb Diesel,125R13,Large,CarSkoda Yeti Diesel Old,125R13,Large,CarSkoda Yeti Diesel New,125R13,Large,CarSkoda Octavia Diesel Manual,125R13,Large,CarHyundai Elantra Diesel,125R13,Large,CarHyundai Elantra Petrol,125R13,Large,CarHyundai EON Petrol,125R13,Small,CarHyundai Grand i10 Diesel,125R13,Medium,CarHyundai Grand i10 Petrol,125R13,Medium,CarHyundai i10 Petrol,125R13,Small,CarHyundai i20 Diesel,125R13,Medium,CarHyundai i20 Petrol,125R13,Medium,CarHyundai Santro Petrol,125R13,Small,CarHyundai Sonata Petrol,125R13,Extra Large,CarHyundai Verna / Fludic 4S Petrol,125R13,Medium,CarHyundai Verna / Fluidic 4S Diesel,125R13,Medium,CarVolkswagen Polo Petrol,125R13,Medium,CarVolkswagen Polo Diesel,125R13,Medium,CarVolkswagen Vento Diesel,125R13,Medium,CarVolkswagen Vento Petrol,125R13,Medium,CarVolkswagen Cross Polo Diesel,125R13,Medium,CarVolkswagen Jetta Diesel,125R13,Large,CarVolkswagen Jetta Petrol,125R13,Large,CarMahindra XUV 500,125R13,Large,CarMahindra Xylo,125R13,Large,CarMahindra Scorpio,125R13,Large,CarMahindra Bolero Diesel,125R13,Large,CarMahindra Quanto Diesel,125R13,Large,CarMahindra Thar Diesel,125R13,Large,CarHero Achiever,125R13,Small,BikeHero Xtreme Sports,125R13,Small,BikeHero Pleasure,125R13,Small,BikeHero Xtreme,125R13,Small,BikeHero Super Splendor,125R13,Small,BikeHero Splendor Pro J-1,125R13,Small,BikeHero Splendor Pro Classic,125R13,Small,BikeHero Splendor Pro,125R13,Small,BikeHero Splendor Plus,125R13,Small,BikeHero Splendor iSmart,125R13,Small,BikeHero Passion XPRO,125R13,Small,BikeHero Passion Pro TR,125R13,Small,BikeHero Passion Pro,125R13,Small,BikeHero Maestro,125R13,Small,BikeHero Karizma ZMR,125R13,Small,BikeHero Karizma,125R13,Small,BikeHero Impulse,125R13,Small,BikeHero Ignitor,125R13,Small,BikeHero Hunk,125R13,Small,BikeHero HF Deluxe Eco,125R13,Small,BikeHero HF Deluxe,125R13,Small,BikeHero HF Dawn,125R13,Small,BikeHero Glamour Programmed FI,125R13,Small,BikeHero Glamour,125R13,Small,BikeYamaha Alpha,125R13,Small,BikeYamaha Ray-Z,125R13,Small,BikeYamaha Ray,125R13,Small,BikeYamaha R15,125R13,Small,BikeYamaha Fazer FI,125R13,Small,BikeYamaha Fazer,125R13,Small,BikeYamaha FZS FI,125R13,Small,BikeYamaha FZS,125R13,Small,BikeYamaha FZ FI,125R13,Small,BikeYamaha FZ,125R13,Small,BikeYamaha SZ RR Blue Core,125R13,Small,BikeYamaha SZ RR,125R13,Small,BikeYamaha SZ S,125R13,Small,BikeYamaha Saluto,125R13,Small,BikeYamaha SS125,125R13,Small,BikeYamaha YBR125,125R13,Small,BikeYamaha YBR110,125R13,Small,BikeYamaha Crux,125R13,Small,BikeBajaj Avenger DTS-i 200,125R13,Small,BikeBajaj Avenger DTS-i 220,125R13,Small,BikeBajaj Pulsar 220 DTS-i,125R13,Small,BikeBajaj Pulsar 220 DTS-Fi,125R13,Small,BikeBajaj Pulsar 200 DTS-i,125R13,Small,BikeBajaj Pulsar 150 UG IV,125R13,Small,BikeBajaj Pulsar 135 LS,125R13,Small,BikeBajaj Pulsar 200 NS,125R13,Small,BikeBajaj Platina,125R13,Small,BikeBajaj Platina 125,125R13,Small,BikeBajaj Discover 100,125R13,Small,BikeBajaj Discover 150,125R13,Small,BikeBajaj Discover 125,125R13,Small,BikeBajaj Discover 125 ST,125R13,Small,BikeTVS Apache RTR160,125R13,Small,BikeTVS Apache RTR180,125R13,Small,BikeTVS Apache RTR160-FI,125R13,Small,BikeTVS Flame DS125,125R13,Small,BikeTVS Flame SR125,125R13,Small,BikeTVS Star,125R13,Small,BikeTVS Star City,125R13,Small,BikeTVS Star Sport,125R13,Small,BikeTVS Jive,125R13,Small,BikeTVS Scooty Streak,125R13,Small,BikeTVS Scooty Teenz,125R13,Small,BikeTVS Wego,125R13,Small,BikeTVS XL Super,125R13,Small,BikeSuzuki Hayate,125R13,Small,BikeSuzuki GS150R,125R13,Small,BikeSuzuki Slingshot Plus,125R13,Small,BikeSuzuki Gixxer,125R13,Small,BikeSuzuki Gixxer SF,125R13,Small,BikeSuzuki Access,125R13,Small,BikeSuzuki Let's,125R13,Small,BikeSuzuki Swish,125R13,Small,BikeHonda Activa 3G,125R13,Small,BikeHonda Activa 125,125R13,Small,BikeHonda CB Shine,125R13,Small,BikeHonda CB Unicorn,125R13,Small,BikeHonda CBR 150,125R13,Small,BikeKTM RC200,125R13,Small,BikeKTM RC390,125R13,Small,BikeKTM 390Duke,125R13,Small,BikeKTM 200Duke,125R13,Small,BikeRoyal Enfield Continental GT,125R13,Small,BikeRoyal Enfield Bullet 500,125R13,Small,BikeRoyal Enfield Thunderbird 350,125R13,Small,BikeRoyal Enfield Bullet 350,125R13,Small,BikeRoyal Enfield Classic 350,125R13,Small,BikeRoyal Enfield Classic 500,125R13,Small,BikeRoyal Enfield Thunderbird 500,125R13,Small,BikeHonda Livo,125R13,Small,BikeHonda CBR 250,125R13,Small,BikeAudi A3,125R13,Extra Large,CarAudi A3 Cabriolet,125R13,Extra Large,CarAudi A4,125R13,Extra Large,CarAudi A6,125R13,Extra Large,CarAudi A8 L,125R13,Extra Large,CarAudi Q3,125R13,Extra Large,CarAudi Q5,125R13,Extra Large,CarAudi Q7,125R13,Extra Large,CarAudi R8,125R13,Extra Large,CarAudi RS5,125R13,Extra Large,CarAudi RS6,125R13,Extra Large,CarAudi RS7 Sportback,125R13,Extra Large,CarAudi S6,125R13,Extra Large,CarAudi TT,125R13,Extra Large,CarSsangyong Rexton,125R13,Extra Large,CarPorsche 911,125R13,Extra Large,CarPorsche Boxster,125R13,Extra Large,CarPorsche Cayenne,125R13,Extra Large,CarPorsche Cayman,125R13,Extra Large,CarPorsche Macan,125R13,Extra Large,CarPorsche Panamera,125R13,Extra Large,CarMercedes-Benz A-Class,125R13,Extra Large,CarMercedes-Benz B-Class,125R13,Extra Large,CarMercedes-Benz C-Class,125R13,Extra Large,CarMercedes-Benz CLA Class,125R13,Extra Large,CarMercedes-Benz CLS,125R13,Extra Large,CarMercedes-Benz E-Class,125R13,Extra Large,CarMercedes-Benz GL,125R13,Extra Large,CarMercedes-Benz GL63 AMG,125R13,Extra Large,CarMercedes-Benz GLA,125R13,Extra Large,CarMercedes-Benz M-Class,125R13,Extra Large,CarMercedes-Benz ML 63AMG,125R13,Extra Large,CarMercedes-Benz S-Class,125R13,Extra Large,CarMercedes-Benz SLK-Class,125R13,Extra Large,CarRolls-Royce Drophead Coupe,125R13,Extra Large,CarRolls-Royce Ghost,125R13,Extra Large,CarRolls-Royce Ghost Series II,125R13,Extra Large,CarRolls-Royce Phantom,125R13,Extra Large,CarRolls-Royce Phantom Coupe,125R13,Extra Large,CarIsuzu MU7,125R13,Extra Large,CarLand Rover Discovery,125R13,Extra Large,CarLand Rover Freelander 2,125R13,Extra Large,CarLand Rover Range Rover Evoque,125R13,Extra Large,CarLand Rover Range Rover LWB,125R13,Extra Large,CarLand Rover Range Rover Sport,125R13,Extra Large,CarBMW 1 Series,125R13,Extra Large,CarBMW 3 Series,125R13,Extra Large,CarBMW 3 Series GT,125R13,Extra Large,CarBMW 4 Series,125R13,Extra Large,CarBMW 5 Series,125R13,Extra Large,CarBMW 6 Series,125R13,Extra Large,CarBMW 7 Series,125R13,Extra Large,CarBMW i8,125R13,Extra Large,CarBMW X1,125R13,Extra Large,CarBMW X3,125R13,Extra Large,CarBMW X5,125R13,Extra Large,CarBMW Z4,125R13,Extra Large,CarLamborghini Aventador,125R13,Extra Large,CarLamborghini Huracan,125R13,Extra Large,CarJaguar F-Type,125R13,Extra Large,CarJaguar XF,125R13,Extra Large,CarJaguar XJ L,125R13,Extra Large,CarVolvo S60,125R13,Extra Large,CarVolvo S80,125R13,Extra Large,CarVolvo V40 Cross Country,125R13,Extra Large,CarVolvo XC60,125R13,Extra Large,CarVolvo XC90,125R13,Extra Large,CarFerrari 458 Italia,125R13,Extra Large,CarFerrari 599 GTB Fiorano,125R13,Extra Large,CarFerrari California,125R13,Extra Large,CarFerrari FF,125R13,Extra Large,CarMini Cooper,125R13,Large,CarMini Cooper Convertible,125R13,Large,CarMini Cooper Countryman,125R13,Large,CarMini Cooper S,125R13,Large,CarBentley Continental Flying Spur,125R13,Extra Large,CarBentley Continental GT,125R13,Extra Large,CarBentley Continental GTC,125R13,Extra Large,CarBentley Mulsanne,125R13,Extra Large,CarBugatti Veyron,125R13,Extra Large,Car

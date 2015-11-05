@@ -4,8 +4,8 @@ from api.models import *
 
 #Car loading
 #Car.objects.all().delete()
-#runentry.loadCars('aspect_ratio.csv')
-#runentry.loadCarTrieFile()
+runentry.loadCars('aspect_ratio.csv')
+runentry.loadCarTrieFile()
 
 ##Loading Services old
 
@@ -18,10 +18,10 @@ from api.models import *
 ##Loading Services New
 
 # ServiceDealerCatNew.objects.all().delete()
-# runentry.loadServiceDealerCatNew('Servicing_Labour.txt')
-# ServicingNew.objects.all().delete()
-# runentry.exportServicesListNew()
-# runentry.loadPriceFreqNew('Servicing_Parts.txt')
+runentry.loadServiceDealerCatNew('Servicing_Labour.txt')
+ServicingNew.objects.all().delete()
+runentry.exportServicesListNew()
+runentry.loadPriceFreqNew('Servicing_Parts.txt')
 runentry.loadDealerListNew('Servicing_Dealers.txt')
 
 #Loading cleaning and value added services
@@ -35,9 +35,9 @@ runentry.loadDealerListNew('Servicing_Dealers.txt')
 runentry.loadCleaning('Cleaning_VAS_all.txt')
 
 ##Loading windshield
-WindShieldCat.objects.all().delete()
-WindShieldServiceDetails.objects.all().delete()
-runentry.loadWindShielddata('wsdata.txt')
+# WindShieldCat.objects.all().delete()
+# WindShieldServiceDetails.objects.all().delete()
+# runentry.loadWindShielddata('wsdata.txt')
 
 #runentry.loadServicing('Servicing_List.txt')#
 #runentry.loadWheelServices('WheelServices.txt')
