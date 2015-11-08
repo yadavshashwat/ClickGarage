@@ -34,6 +34,10 @@ repair_map = {
     'custom':{'name':'Custom Repair Request','detail':""}
 }
 
+additionalFeatures = {
+       car : ['Clutch Overhaul', 'Interior Dry-cleaning', 'Brake Repair', 'Wheel Balancing', 'Wheel Alignment', 'AC Servicing', 'Injector Cleaning'],
+       bike : ['Front Brake Repair',  'Rear Brake repair', 'Wheel Balancing', 'Wheel Alignment']
+}
 #login views
 
 def cleanstring(query):
@@ -120,6 +124,20 @@ def fetch_all_cars(request):
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+def fetch_additional_features(request):
+    car_bike = get_param(request,'cb_id', None)
+    obj = {}
+    obj['status'] = False
+    result = []
+
+    if (car_bike == 'car') or (car_bike == 'bike'):
+        result=additionalFeatures[car_bike]
+        obj['status'] = True
+
+    obj['result'] = result
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
 
