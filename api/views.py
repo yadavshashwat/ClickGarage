@@ -2405,7 +2405,7 @@ def fetch_user_cart(request):
     obj['message'] = 'Access Denied'
     obj['result'] = []
     
-    if request.user.username in ['y.shashwat@gmail.com', 'bhuvan.batra@gmail.com' , 'sanskar@clickgarage.in']:
+    if request.user.username in ['y.shashwat@gmail.com', 'bhuvan.batra@gmail.com', 'sanskar@clickgarage.in', 'v.rajeev92@gmail.com', 'RajeevVempuluru']:
         userObjs = CGUser.objects.all()
             #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
         for user1 in userObjs:
