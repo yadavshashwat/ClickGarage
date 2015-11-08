@@ -743,7 +743,6 @@ def loginPage(request):
     # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))
     template = loader.get_template('website/login.html')
     context = RequestContext(request, {
-        'csrf_token': csrf_token
     })
     # return render_to_response('website/login.html', c)
     return HttpResponse(template.render(context))
