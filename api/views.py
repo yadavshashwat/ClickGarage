@@ -2399,6 +2399,29 @@ def order_complete(request):
 #     print options
 #     return options
 
+def fetch_user_cart(request):
+    obj = {}
+    obj['status'] = False
+    obj['message'] = 'Access Denied'
+    obj['result'] = []
+    
+    if request.user.username in ['y.shashwat@gmail.com', 'bhuvan.batra@gmail.com' , 'sanskar@clickgarage.in']:
+        userObjs = CGUser.objects.all()
+            #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
+        for user1 in userObjs:
+                obj['result'].append({
+                                'id'          : user1.id,
+                                'email'       : user1.email,
+                                'cart'        : user1.uc_cart
+                                # ,'name':trans.name
+
+                } )
+        obj['status'] = True
+        obj['counter'] = 1
+        obj['msg'] = "Success"
+        return HttpResponse(json.dumps(obj), content_type='application/json')
+    else:
+        return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
 
