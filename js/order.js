@@ -549,7 +549,6 @@ var Global = {
     },
     generateServiceDetailForm : function(serviceObj){
         var _this = this;
-
         var modalCarContent = '<div class="form-wrapper" id="dealer-pick-form">' +
                 '<div><center>Servicing Details</center></div>'+
             '<div class="form-row additional">' +
@@ -560,13 +559,13 @@ var Global = {
                 '<div class="form-row additional">' +
                     '<div class="form-col label-col"><div class="label-div">Custom Requests</div></div>' +
                     '<div class="form-col inp-col-double"><div class="clean-inp-wrapper"><textarea class="clean-inp-tabox cust-req" type="" rows="3"></textarea></div></div>' +
-                '</div>'+
-            '<div class="form-row ">' +
+                '</div>';
+        if(serviceObj.dealer == 'Authorized'){
+            modalCarContent+= '<div class="form-row ">' +
                 '<div class="form-col label-col"><div class>Select dealer:</div></div>'+
                 '<div class="form-col inp-col-1"><div class="clean-inp-wrapper"><input type="radio" name="dealer-group-by" value="region">By Region</div></div>' +
                 '<div class="form-col inp-col-2"><div class="clean-inp-wrapper"><input type="radio" name="dealer-group-by" value="dealer">By Dealer</div></div>' +
                 '</div>';
-        if(serviceObj.dealer == 'Authorized'){
            modalCarContent+= '<div class="separator"></div>'+
                 '<div class="form-row dealer-grouped">' +
                     '<div class="form-col">' +
@@ -806,6 +805,7 @@ var Global = {
             });
             $('#dealer-pick-form').find('select.dealer-name').trigger('change');
             $('#dealer-pick-form').find('select.dealer-city').trigger('change');
+            $('#dealer-pick-form').find('input[name="dealer-group-by"]').eq(0).prop('checked',true).trigger('change');
         }
     },
     genericModal : function(popupHTML, closeFlag){

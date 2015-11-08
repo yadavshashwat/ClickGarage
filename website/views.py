@@ -7,7 +7,7 @@ from django.middleware.csrf import get_token
 
 from ajaxuploader.views import AjaxFileUploader
 
-
+import datetime
 import math
 import json, urllib
 import os
@@ -497,6 +497,12 @@ def cart(request):
                 request.user.save()
         for ts in cartDict:
             if ts == 'emergency':
+                contextDict['emergency'] = []
+                for ts2 in cartDict['emergency']:
+                    emergObj = cartDict['emergency'][ts2]
+                    emergObj['ts'] = ts2
+                    emergObj['datetime'] = datetime.datetime.fromtimestamp(int(ts2)/1000)
+                    contextDict['emergency'].append(emergObj)
                 continue
 
             cartObj = cartDict[ts]
@@ -737,6 +743,7 @@ def loginPage(request):
     # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))
     template = loader.get_template('website/login.html')
     context = RequestContext(request, {
+        'csrf_token': csrf_token
     })
     # return render_to_response('website/login.html', c)
     return HttpResponse(template.render(context))
@@ -952,6 +959,13 @@ def bookings(request):
         return HttpResponse(template.render(context))
     else:
         return redirect('/loginPage/')
+
+def upload_test(request):
+    csrf_token = get_token(request)
+    template = loader.get_template('website/upload_test.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
 
 def drivers(request):
     # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))
