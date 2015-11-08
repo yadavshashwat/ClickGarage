@@ -3,6 +3,10 @@ from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 from django.conf import settings
+from django.middleware.csrf import get_token
+
+from ajaxuploader.views import AjaxFileUploader
+
 
 import math
 import json, urllib
@@ -955,3 +959,10 @@ def drivers(request):
     context = RequestContext(request, {
     })
     return HttpResponse(template.render(context))
+
+def start(request):
+    csrf_token = get_token(request)
+    return render_to_response('import.html',
+        {'csrf_token': csrf_token}, context_instance = RequestContext(request))
+
+import_uploader = AjaxFileUploader()

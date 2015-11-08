@@ -13,11 +13,11 @@ runentry.loadCarTrieFile()
 #runentry.loadServiceDealerCat('Servicing_Labour.txt')
 #Servicing.objects.all().delete()
 #runentry.exportServicesList()
-#runentry.loadPriceFreq('Servicing_Parts.txt')
+#runentry.loadPri#ceFreq('Servicing_Parts.txt')
 
 ##Loading Services New
 
-# ServiceDealerCatNew.objects.all().delete()
+# ServiceDealerCatNew.objects.ll().delete()
 runentry.loadServiceDealerCatNew('Servicing_Labour.txt')
 ServicingNew.objects.all().delete()
 runentry.exportServicesListNew()

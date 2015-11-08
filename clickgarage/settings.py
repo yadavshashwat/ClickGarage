@@ -26,6 +26,10 @@ WEBSITE_PATH = os.path.join(PROJECT_PATH, 'website')
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '(33s3+te*%e-h=*u%zh3b13gz7phh-talbz=+dut3_p03y_b-s'
 
+AWS_UPLOAD_BUCKET_NAME = "dentingbucket"
+AWS_UPLOAD_CLIENT_KEY = "AKIAICT2M5M5LIRAHWXQ"
+AWS_UPLOAD_CLIENT_SECRET_KEY = "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"
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -47,7 +51,8 @@ INSTALLED_APPS = (
     'activity',
     'dataEntry',
     'website',
-    'mailing')
+    'mailing'
+    ,'ajaxuploader',)
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
