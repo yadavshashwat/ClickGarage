@@ -56,6 +56,7 @@ urlpatterns = [
     url(r'order_complete/$','api.views.order_complete',name='order_complete'),
     url(r'cancel_booking_new/$','api.views.cancel_booking_new',name='cancel_booking_new'),
     url(r'fetch_all_users/$','api.views.fetch_all_users',name='fetch_all_users'),
+    url(r'fetch_user_cart/$','api.views.fetch_user_cart',name='fetch_user_cart'),
     url(r'fetch_additional_details/$','api.views.fetch_additional_details',name='fetch_additional_details'),
 
     #url(r'fetch_all_cleaning/$','api.views.fetch_all_cleaning',name='fetch_all_cleaning'),
