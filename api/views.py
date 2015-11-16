@@ -1958,7 +1958,8 @@ def cancel_booking(request):
     useremail = None
     username = None
     booking_id = None
-    if random_req_auth(request) or (request.user and request.user.is_authenticated()):
+    r_id = get_param(request, 'r_id', None)
+    if (r_id == tempSecretKey) or random_req_auth(request) or (request.user and request.user.is_authenticated()):
         # cust_id         = request.user.id
         # email           = request.user.email
         tran_id         = get_param(request,'tran_id',None)
@@ -2245,7 +2246,7 @@ def fetch_all_booking(request):
     #     cust_id = request.user.id
 
     # if cust_id:
-    if (r_id == tempSecretKey):
+    if request.user.username in ['y.shashwat@gmail.com', 'shashwat@clickgarage.in','bhuvan.batra@gmail.com' , 'sanskar@clickgarage.in']:
         tranObjs = Transactions.objects.all().order_by('-booking_id')
             #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
     for trans in tranObjs:

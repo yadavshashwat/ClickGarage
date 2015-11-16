@@ -5416,7 +5416,7 @@ def send_cancel_final(username,useremail,booking_id):
 	send_booking_details(["shashwat@clickgarage.in","bhuvan@clickgarage.in","sanskar@clickgarage.in","bookings@clickgarage.in"],booking_id,"Booking Cancelled")
 
 def send_order_complete(username,userphone,useremail,booking_id):
-	send_postdrop(username,userphone,booking_id)
+	# send_postdrop(username,userphone,booking_id)
 	send_feedback(useremail,username,booking_id)
 
 #send_order_complete("Bhuvan","9953008804","bhuvan.batra@gmail.com","001")
