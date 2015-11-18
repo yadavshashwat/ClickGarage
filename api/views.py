@@ -487,7 +487,7 @@ def fetch_clean_catservice(request):
     if vendor:
         if category:
             if size:
-             CleanCatObjs = CleaningCategoryServices.objects.filter(vendor = vendor, category = category,car_cat = size)
+             CleanCatObjs = CleaningCategoryServices.objects.filter(vendor = vendor, category = category,car_cat = size).order_by('priority')
              for service in CleanCatObjs:
                 obj['result'].append({
                         'id':service.id
@@ -501,7 +501,8 @@ def fetch_clean_catservice(request):
                         ,'description':service.description
                         ,'discount':service.discount
                         ,'rating':service.rating          
-                        ,'reviews':service.reviews                        
+                        ,'reviews':service.reviews
+                        ,'priority':service.priority
                               } )
                       
     obj['status'] = True
@@ -544,7 +545,8 @@ def fetch_all_cleaningcatservices(request):
             ,'discount':service.discount
             ,'service_description':service.description    
             ,'rating':service.rating         
-            ,'reviews':service.reviews        } )
+            ,'reviews':service.reviews
+            ,'priority':service.priority       } )
     obj['result'] = result
     obj['counter'] = 1
     obj['status'] = True
@@ -630,7 +632,7 @@ def fetch_vas_catservice(request):
     if vendor:
         if category:
             if size:
-             VASCatObjs = VASCategoryServices.objects.filter(vendor = vendor, category = category,car_cat = size)
+             VASCatObjs = VASCategoryServices.objects.filter(vendor = vendor, category = category,car_cat = size).order_by('priority')
              for service in VASCatObjs:
                 obj['result'].append({
                         'id':service.id
@@ -645,7 +647,8 @@ def fetch_vas_catservice(request):
                         ,'discount':service.discount
                         ,'doorstep':service.doorstep     
                         ,'rating':service.rating          
-                        ,'reviews':service.reviews                        
+                        ,'reviews':service.reviews
+                        ,'priority':service.priority
                               } )
                       
     obj['status'] = True
@@ -1070,7 +1073,7 @@ def fetch_clean_service(request):
 
         if category:
             if size:
-                CleanCatObjs = CleaningCategoryServices.objects.filter(category = category,car_cat = size, car_bike = car_bike)
+                CleanCatObjs = CleaningCategoryServices.objects.filter(category = category,car_cat = size, car_bike = car_bike).order_by('priority')
                 for service in CleanCatObjs:
                     obj['result'].append({
                             'id':service.id
@@ -1087,6 +1090,7 @@ def fetch_clean_service(request):
                             ,'rating':service.rating
                             ,'reviews':service.reviews
                             ,'car_bike': service.car_bike
+                            ,'priority':service.priority
                                   } )
 
         obj['status'] = True
@@ -1160,7 +1164,7 @@ def fetch_vas_service(request):
     
     if category:
         if size:
-            CleanCatObjs = VASCategoryServices.objects.filter(category = category,car_cat = size, car_bike = car_bike)
+            CleanCatObjs = VASCategoryServices.objects.filter(category = category,car_cat = size, car_bike = car_bike).order_by('priority')
             for service in CleanCatObjs:
                 obj['result'].append({
                         'id':service.id
@@ -1176,7 +1180,8 @@ def fetch_vas_service(request):
                         ,'discount':service.discount
                         ,'rating':service.rating          
                         ,'reviews':service.reviews   
-                        ,'car_bike': service.car_bike                  
+                        ,'car_bike': service.car_bike
+                        ,'priority':service.priority
                               } )
                       
     obj['status'] = True

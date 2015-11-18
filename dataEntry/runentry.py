@@ -313,6 +313,7 @@ def loadCleaning(fileName):
             doorstep         = cleanstring(service_name[9])
             discount         = cleanstring(service_name[10])
             car_bike         = cleanstring(service_name[11])
+            priority         = cleanstring(service_name[12])
 
             if sup_cat == "Cleaning":
                 findVendor = CleaningDealerName.objects.filter(vendor=vendor)
@@ -355,6 +356,7 @@ def loadCleaning(fileName):
                     findService.description      = description   
                     findService.doorstep         = doorstep
                     findService.discount         = discount
+                    findService.priority        = priority
                     findService.save()
                 else:
                     clcase = CleaningCategoryServices(vendor           = vendor        
@@ -367,6 +369,7 @@ def loadCleaning(fileName):
                                                      ,description      = description
                                                      ,doorstep         = doorstep
                                                      ,discount         = discount
+                                                     ,priority        = priority
                                                      ,car_bike = car_bike   )
                     clcase.save()
 
@@ -413,6 +416,7 @@ def loadCleaning(fileName):
                     findService.description      = description 
                     findService.doorstep         = doorstep
                     findService.discount         = discount
+                    findService.priority        = priority
                     findService.save()
                 else:
                     vacase = VASCategoryServices(vendor           = vendor        
@@ -425,7 +429,8 @@ def loadCleaning(fileName):
                                                      ,description      = description
                                                      ,doorstep = doorstep
                                                     ,discount         = discount
-                                                     ,car_bike = car_bike )
+                                                     ,car_bike = car_bike
+                                                 ,priority        = priority )
                     vacase.save()
 
 def loadServiceDealerName(fileName):
