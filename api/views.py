@@ -1636,6 +1636,17 @@ def place_order(request):
         html_list.append(pick_obj['pincode'])
         html_list.append('</span></div>')
 
+        if coupon_data and len(coupon_data):
+            coupon_json = json.loads(coupon_data)
+            if isinstance(coupon_json, dict):
+                html_list.append('<div><span> Coupons. : ')
+                for coupon in coupon_json.keys():
+                    html_list.append(coupon)
+                    html_list.append(' [')
+                    html_list.append(coupon_json[coupon])
+                    html_list.append('] ')
+                html_list.append('</span></div>')
+
         html_list.append('<div><span> Contact No. : ')
         html_list.append(str(number))
         html_list.append('</span></div>')
