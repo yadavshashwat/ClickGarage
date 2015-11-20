@@ -939,6 +939,38 @@ def loadDealerListNew(fileName):
                     obj_list.append(obj)
                     service.save()
 
+def loadCoupon(fileName):
+    with open(path+'/data/'+fileName, 'rU') as csvfile:
+         couponData = csv.reader(csvfile, delimiter='\t', quotechar='|')
+         for coupon in couponData:
+            coupon_code      = cleanstring(coupon[0])
+            date_issue       = cleanstring(coupon[1])
+            valid_till_date  = cleanstring(coupon[2])
+            discount         = cleanstring(coupon[3])
+            cashback         = cleanstring(coupon[4])
+            message          = cleanstring(coupon[5])
+            valid            = cleanstring(coupon[6])
 
-
+            findCoupon     = Coupon.objects.filter(coupon_code=coupon_code)
+            if len(findCoupon):
+                findCoupon = findCoupon[0]
+                findCoupon.coupon_code      = coupon_code
+                findCoupon.date_issue       = date_issue
+                findCoupon.valid_till_date  = valid_till_date
+                findCoupon.discount         = discount
+                findCoupon.cashback         = cashback
+                findCoupon.message          = message
+                findCoupon.valid            = valid
+                findCoupon.save()
+            else:
+                cc = Coupon(
+                      coupon_code       =  coupon_code
+                      ,date_issue       =  date_issue
+                      ,valid_till_date  =  valid_till_date
+                      ,discount         =  discount
+                      ,cashback         =  cashback
+                      ,message          =  message
+                      ,valid            =  valid
+)
+                cc.save()
 

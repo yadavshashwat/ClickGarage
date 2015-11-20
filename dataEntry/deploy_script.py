@@ -32,7 +32,7 @@ from api.models import *
 #VASServiceCat.objects.all().delete()
 #VASCategoryServices.objects.all().delete()
 
-runentry.loadCleaning('Cleaning_VAS_all.txt')
+# runentry.loadCleaning('Cleaning_VAS_all.txt')
 
 ##Loading windshield
 # WindShieldCat.objects.all().delete()
@@ -43,3 +43,5 @@ runentry.loadCleaning('Cleaning_VAS_all.txt')
 #runentry.loadWheelServices('WheelServices.txt')
 #runentry.loadWheelServiceProvider('WheelServices_provider.txt')
 #runentry.loadTyreSale('TyreSales.txt')
+
+runentry.loadCoupon('Coupon.txt')

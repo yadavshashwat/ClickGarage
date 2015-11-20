@@ -1255,6 +1255,8 @@ def place_order(request):
         order_list = get_param(request, 'order_list', None)
         car_name = get_param(request, 'car_name', None)
         android_flag = get_param(request, 'android', None)
+        coupon_data = get_param(request, 'global_coupon', None)
+        print coupon_data
         # car_id = get_param(request, 'car_id', None)
 
         # obj_pick = json.loads(pick_obj)
@@ -2429,6 +2431,43 @@ def fetch_user_cart(request):
     else:
         return HttpResponse(json.dumps(obj), content_type='application/json')
 
+def apply_coupon(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = {}
+    obj['msg'] = "Invalid Coupon"
+    cpn_cd       = get_param(request,'c_cd',None)
+    obj['code'] = cpn_cd
+    cpnObjs = Coupon.objects.filter(coupon_code=cpn_cd).exclude(valid="0")
+    for cpn in cpnObjs:
+        # useremail = tran.cust_email
+        # username  = tran.cust_name
+        # booking_id = tran.booking_id
+        # tran.status = "Cancelled"
+        # tran.save()
+        obj['result']= {
+            'coupon_code'       :    cpn.coupon_code
+            ,'date_issue'       :    cpn.date_issue
+            ,'valid_till_date'  :    cpn.valid_till_date
+            ,'discount'         :    cpn.discount
+            ,'cashback'         :    cpn.cashback
+            ,'message'          :    cpn.message
+            ,'valid'            :    cpn.valid
+            ,'status'           :    True
+        }
+        # obj['result']['cancell = tran_id
+    if len(cpnObjs):
+        obj['status'] = True
+        obj['counter'] = 1
+        obj['msg'] = "Success"
+    else:
+        obj['result'] = {
+            'status'         :   False
+            ,'message'      :   'Not a coupon'
+        }
+#    mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
+#         mviews.send_cancel_final(username,useremail,booking_id)
+    return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
 
