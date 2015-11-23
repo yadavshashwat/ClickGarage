@@ -60,7 +60,7 @@ def auth_and_login(request, onsuccess='/', onfail='/login/'):
         return redirect(onfail)
 
 def create_user(username, email, password):
-    user = User(username=username, email=email)
+    user = CGUser(username=username, email=email)
     user.set_password(password)
     user.save()
     return user
@@ -2264,8 +2264,9 @@ def fetch_all_booking(request):
     #     cust_id = request.user.id
 
     # if cust_id:
-    if request.user.email in ['bhuvan.batra@gmail.com', 'shashwat@clickgarage.in', 'y.shashwat@gmail.com', 'bhuvan@clickgarage.in', 'sanskar@clickgarage.in']:
-        tranObjs = Transactions.objects.all().order_by('-booking_id')
+
+    # if request.user.email in ['bhuvan.batra@gmail.com', 'shashwat@clickgarage.in', 'y.shashwat@gmail.com', 'bhuvan@clickgarage.in', 'sanskar@clickgarage.in']:
+    tranObjs = Transactions.objects.all().order_by('-booking_id')
             #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
     for trans in tranObjs:
             obj['result'].append({
@@ -2484,18 +2485,20 @@ def add_guest_transaction(request):
     # print 'p'
      if request.user.email in ['y.shashwat@gmail.com', 'bhuvan.batra@gmail.com', 'sanskar@clickgarage.in', 'v.rajeev92@gmail.com', 'RajeevVempuluru']:
         # To handle
-        email = get_param(request, 'email', None)
-        name = get_param(request, 'name', None)
-        number = get_param(request, 'number', None)
+        email          = get_param(request, 'email', None)
+        name           = get_param(request, 'name', None)
+        number         = get_param(request, 'number', None)
         car_reg_number = get_param(request, 'reg_no', None)
-        pick_obj = get_param(request, 'pick', None)
-        drop_obj = get_param(request, 'drop', None)
-        order_list = get_param(request, 'order_list', None)
-        car_name = get_param(request, 'car_name', None)
-        android_flag = get_param(request, 'android', None)
-        coupon_data = get_param(request, 'global_coupon', None)
+        pick_obj       = get_param(request, 'pick', None)
+        drop_obj       = get_param(request, 'drop', None)
+        order_list     = get_param(request, 'order_list', None)
+        car_name       = get_param(request, 'car_name', None)
+        android_flag   = get_param(request, 'android', None)
+        coupon_data    = get_param(request, 'global_coupon', None)
         # print coupon_data
         # car_id = get_param(request, 'car_id', None)
+
+
 
         # obj_pick = json.loads(pick_obj)
         pick_obj = ast.literal_eval(pick_obj)
@@ -2515,6 +2518,7 @@ def add_guest_transaction(request):
         print order_list
         print pick_obj
         print drop_obj
+        print car_reg_number
 
         tran_len = len(Transaction.objects.all())
         booking_id = 1
@@ -2760,7 +2764,6 @@ def add_guest_transaction(request):
                     html_list.append('<span> Category : ')
                     html_list.append(item['category'])
                     html_list.append('</span>')
-
                     html_list.append('<span>')
                     html_list.append(item['vendor'])
                     html_list.append(' - ')
@@ -2862,8 +2865,8 @@ def add_guest_transaction(request):
 
                     html_list.append('</div>')
 
-            if not android_flag:
-                ac_vi.updateCart(request.user, ts+'*', 'delete', '', None)
+            # if not android_flag:
+            #     ac_vi.updateCart(request.user, ts+'*', 'delete', '', None)
             transList.append(listItem)
 
 
@@ -2902,11 +2905,13 @@ def add_guest_transaction(request):
         html_list.append(drop_obj['pincode'])
         html_list.append('</span></div>')
 
+        # create_guest_user(name,email);
+
 
         tt = Transactions(
             booking_id      = booking_id,
             trans_timestamp = time.time(),
-            cust_id         = request.user.id,
+            cust_id         = create_guest_user(name,email),
             cust_name       = name,
             cust_brand      = '',
             cust_carname    = car_name,
@@ -2928,7 +2933,6 @@ def add_guest_transaction(request):
             comments        = ''
         )
         tt.save()
-
         html_script = ' '.join(str(x) for x in html_list)
         mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
         obj = {}
@@ -2938,6 +2942,19 @@ def add_guest_transaction(request):
      else:
         redirect('/loginPage/')
 
-
+def create_guest_user(name,email):
+    email = email.lower()
+    users = CGUser.objects.filter(email=email)
+    if len(users):
+        return users[0].id
+    else:
+        create_user(name,email,"")
+        users2 = CGUser.objects.filter(email=email)
+        return users2[0].id
+    # def create_user(username, email, password):
+    # user = User(username=username, email=email)
+    # user.set_password(password)
+    # user.save()
+    # return user
 
 

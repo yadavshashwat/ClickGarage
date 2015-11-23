@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'fetch_user_details/$','api.views.getUserDetails',name='getUserDetails'),
     url(r'add_to_cart/$','api.views.addItemToCart',name='addItemToCart'),
     url(r'place_order/$','api.views.place_order',name='place_order'),
+    url(r'add_guest_transaction/$','api.views.add_guest_transaction',name='add_guest_transaction'),
     url(r'place_emergency_order/$','api.views.place_emergency_order',name='place_emergency_order'),
     #car_<servicename>, <servicename>_details
     # params : c_id,
