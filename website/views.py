@@ -87,6 +87,13 @@ def adminpanel(request):
     return HttpResponse(template.render(context))
 
 
+def sitemap(request):
+    template = loader.get_template('website/sitemap.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+
+
 def tnc(request):
     # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))
     template = loader.get_template('website/tnc.html')
