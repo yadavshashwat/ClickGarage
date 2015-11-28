@@ -314,7 +314,7 @@ def loadCleaning(fileName):
             discount         = cleanstring(service_name[10])
             car_bike         = cleanstring(service_name[11])
             priority         = cleanstring(service_name[12])
-
+            # print priority
             if sup_cat == "Cleaning":
                 findVendor = CleaningDealerName.objects.filter(vendor=vendor)
                 if len(findVendor):
@@ -357,6 +357,7 @@ def loadCleaning(fileName):
                     findService.doorstep         = doorstep
                     findService.discount         = discount
                     findService.priority        = priority
+                    # print findService.priority
                     findService.save()
                 else:
                     clcase = CleaningCategoryServices(vendor           = vendor        
