@@ -306,5 +306,13 @@ class Transaction(models.Model):
     status          = models.CharField(max_length=200)
     comments        = models.CharField(max_length=200)
 
+class Coupon(models.Model):
+    coupon_code     = models.CharField(max_length=50)
+    date_issue      = models.CharField(max_length=50)
+    valid_till_date = models.CharField(max_length=50)
+    discount        = models.CharField(max_length=50)
+    cashback        = models.CharField(max_length=50)
+    message         = models.CharField(max_length=500)
+    valid           = models.CharField(max_length=50)
 
 
