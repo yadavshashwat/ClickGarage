@@ -56,4 +56,5 @@ urlpatterns = patterns('',
     url(r'^adminpanel$','website.views.adminpanel',name='adminpanel'),	
     url(r'^mobile/', 'website.views.mobile', name='mobile'),
     url(r'^driver1/', 'website.views.drivers', name='drivers'),
+    url(r'^sitemap/', 'website.views.sitemap', name='sitemap'),
 )
