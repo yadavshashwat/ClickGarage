@@ -2642,7 +2642,7 @@ def send_cancel_email(to_address,to_name,booking_id_1):
 									<td class="mcnImageContent" valign="top" style="padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0; text-align:center;">
 
 
-												<img align="center" alt="" src="https://gallery.mailchimp.com/2cf3731a4f89990fe68c1bf2a/images/97fa2077-7dc3-4c2e-92c9-4c5012d536b4.jpg" width="300" style="max-width:1440px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage">
+												<img align="center" alt="" src="https://gallery.mailchimp.com/2cf3731a4f89990fe68c1bf2a/images/97fa2077-7dc3-4c2e-92c9-4c5012d536b4.jpg" width="564" style="max-width:1440px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage">
 
 
 									</td>

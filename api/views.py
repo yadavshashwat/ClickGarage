@@ -116,7 +116,7 @@ def fetch_all_cars(request):
     result = []
     allCars = Car.objects.all()
     for car in allCars:
-        result.append({'name':car.name, 'make':car.make, 'aspect_ratio':car.aspect_ratio,'size':car.size,'car_bike':car.car_bike,'id':car.id})
+        result.append({'name':car.name, 'make':car.make, 'aspect_ratio':car.aspect_ratio,'size':car.size,'car_bike':car.car_bike,'id':car.id,'cleaning_cat':car.cleaning_cat})
 
     obj['result'] = result
     obj['counter'] = 1
@@ -474,6 +474,7 @@ def fetch_clean_catservice(request):
         if len(carObj):
             carObj = carObj[0]
             size = carObj.size
+            cleaning_cat = carObj.cleaning_cat
 
     if catg_id:
         cleanObj = CleaningServiceCat.objects.filter(id=catg_id)
@@ -1061,6 +1062,7 @@ def fetch_clean_service(request):
                 carObj = carObj[0]
                 size = carObj.size
                 car_bike = carObj.car_bike
+                cleaning_cat = carObj.cleaning_cat
                 print size
         if catg_id:
             cleanObj = CleaningCatName.objects.filter(id=catg_id)
@@ -1068,13 +1070,34 @@ def fetch_clean_service(request):
             if len(cleanObj):
                 cleanObj = cleanObj[0]
                 category = cleanObj.category
+
                 print category
 
 
         if category:
             if size:
-                CleanCatObjs = CleaningCategoryServices.objects.filter(category = category,car_cat = size, car_bike = car_bike).order_by('priority')
-                for service in CleanCatObjs:
+                CleanCatObjs2 = CleaningCategoryServices.objects.filter(category = category,car_cat = cleaning_cat , car_bike = car_bike).order_by('priority')
+                CleanCatObjs1 = CleaningCategoryServices.objects.filter(category = category,car_cat = size, car_bike = car_bike).order_by('priority')
+                # CleanCatObjs =
+                for service in CleanCatObjs2:
+                    obj['result'].append({
+                            'id':service.id
+                            ,'vendor':service.vendor
+                            ,'category':service.category
+                            ,'car_cat':service.car_cat
+                            ,'service':service.service
+                            ,'price_labour':service.price_labour
+                            ,'price_parts':service.price_parts
+                            ,'total_price':service.price_total
+                            ,'discount':service.discount
+                            ,'description':service.description
+                            ,'doorstep':service.doorstep
+                            ,'rating':service.rating
+                            ,'reviews':service.reviews
+                            ,'car_bike': service.car_bike
+                            ,'priority':service.priority
+                                  } )
+                for service in CleanCatObjs1:
                     obj['result'].append({
                             'id':service.id
                             ,'vendor':service.vendor
@@ -2145,11 +2168,6 @@ def fetch_car_services_new(request):
                         ,'dealer_category' : service.dealer
                         ,'car_bike':car_bike
                         } )
-
-
-
-
-
         obj['status'] = True
         obj['counter'] = 1
         obj['msg'] = "Success"

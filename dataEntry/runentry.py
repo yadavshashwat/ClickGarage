@@ -70,8 +70,9 @@ def loadCars(fileName):
                  length = length+1
 
              aspectRatio = car[1]
-             size = car[2]
-             car_bike = car[3]
+             size = car[4]
+             car_bike = car[2]
+             cleaning_cat = car[3]
              # make = carCompoundName.split(' ')[0]
              # if make not in carMakers:
              #     make = ''
@@ -85,9 +86,10 @@ def loadCars(fileName):
                  findCar.aspect_ratio = aspectRatio
                  findCar.size = size
                  findCar.car_bike = car_bike
+                 findCar.cleaning_cat = cleaning_cat
                  findCar.save()
              else:
-                cc = Car(make=make, name=name_model, year=0, aspect_ratio=aspectRatio, size = size, car_bike=car_bike)
+                cc = Car(make=make, name=name_model, year=0, aspect_ratio=aspectRatio, size = size, car_bike=car_bike, cleaning_cat = cleaning_cat)
                 cc.save()
 
 def loadServicing(fileName):
