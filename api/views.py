@@ -1418,7 +1418,7 @@ def place_order(request):
         coupon_data = get_param(request, 'global_coupon', None)
         print coupon_data
         # car_id = get_param(request, 'car_id', None)
-
+        doorstep_counter = 0
         # obj_pick = json.loads(pick_obj)
         pick_obj = ast.literal_eval(pick_obj)
         drop_obj = ast.literal_eval(drop_obj)
@@ -1485,6 +1485,7 @@ def place_order(request):
             listItem['ts'] = ts
             listItem['status'] = True
             if service == 'servicing':
+                doorstep_counter = 2
                 serviceDetail = ServiceDealerCat.objects.filter(id=service_id)
                 serviceDetailNew = ServiceDealerCatNew.objects.filter(id=service_id)
                 if len(serviceDetail):
@@ -1605,6 +1606,8 @@ def place_order(request):
 
             elif service == 'cleaning':
                 serviceDetail = CleaningCategoryServices.objects.filter(id=service_id)
+                if (doorstep_counter<2):
+                    doorstep_counter = 1
                 if len(serviceDetail):
                     serviceDetail = serviceDetail[0]
                     total_price = 0
@@ -1849,7 +1852,11 @@ def place_order(request):
         tt.save()
 
         html_script = ' '.join(str(x) for x in html_list)
-        mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
+
+        if (doorstep_counter==1):
+            mviews.send_booking_final_doorstep(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
+        else:
+            mviews.send_booking_final_pick(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
         obj = {}
         obj['status'] = True
         obj['result'] = pick_obj
