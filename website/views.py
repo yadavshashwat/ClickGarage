@@ -28,8 +28,11 @@ def index(request):
     selectedCarName = request.COOKIES.get('clgacarname')
     selectedCarID = request.COOKIES.get('clgacarid')
     carObj = Car.objects.filter(id=selectedCarID)
+    source = views.get_param(request, 'source', None)
 
-    if request.user and request.user.is_authenticated() and len(carObj):
+    redir = (source == 'logo')
+
+    if (not redir) and request.user and request.user.is_authenticated() and len(carObj):
         carObj = carObj[0]
         return redirect("/order")
     else:
