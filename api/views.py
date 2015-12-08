@@ -2220,6 +2220,7 @@ def fetch_car_servicedetails_new(request):
                               ,'name':service.name
                               ,'brand':service.brand
                               ,'car':service.carname
+                              ,'car_bike':service.car_bike
                               ,'vendor':service.dealer_category
                               ,'parts_list':service.part_replacement
                               ,'parts_price':service.price_parts
@@ -2228,7 +2229,7 @@ def fetch_car_servicedetails_new(request):
                               ,'wb_price':service.wheel_balancing
                               ,'wa_wb_present':service.WA_WB_Inc
                               ,'dealer_details':service.detail_dealers
-                              ,'car_bike':car_bike
+                              # ,'car_bike':car_bike
                         ,'type_service':service.type_service
                         ,'part_dic':service.part_dic
                         ,'labour_price':service.price_labour
