@@ -637,6 +637,7 @@ def loadServiceDealerCatNew(fileName):
             discount           = dealerz[9]
             regular_checks     = cleanstring(dealerz[10]).split("$")
             priority_service   = dealerz[11]
+            car_bike           = cleanstring(dealerz[12])
 
             findDealer = ServiceDealerCatNew.objects.filter(brand = brand, carname=carname, dealer_category=dealer_category, type_service=type_service)
             if len(findDealer):
@@ -651,6 +652,7 @@ def loadServiceDealerCatNew(fileName):
                 findDealer.discount    = discount
                 findDealer.priority    = priority
                 findDealer.priority_service = priority_service
+                findDealer.car_bike     = car_bike
                 findDealer.part_replacement  = []
                 findDealer.part_dic =[]
                 findDealer.detail_dealers = []
@@ -682,6 +684,7 @@ def loadServiceDealerCatNew(fileName):
                                         ,detail_dealers = []
                                         ,discount    = discount
                                         ,priority    = priority
+                                        ,car_bike = car_bike
                                         # ,paid_free =  paid_free
                                         ,priority_service = priority_service
                                       )
@@ -953,6 +956,9 @@ def loadCoupon(fileName):
             cashback         = cleanstring(coupon[4])
             message          = cleanstring(coupon[5])
             valid            = cleanstring(coupon[6])
+            category         = cleanstring(coupon[7])
+            car_bike         = cleanstring(coupon[8])
+            vendor           = cleanstring(coupon[9])
 
             findCoupon     = Coupon.objects.filter(coupon_code=coupon_code)
             if len(findCoupon):
@@ -964,6 +970,12 @@ def loadCoupon(fileName):
                 findCoupon.cashback         = cashback
                 findCoupon.message          = message
                 findCoupon.valid            = valid
+                findCoupon.category  = category
+                findCoupon.car_bike  = car_bike
+                findCoupon.vendor    = vendor
+
+
+
                 findCoupon.save()
             else:
                 cc = Coupon(
@@ -974,6 +986,9 @@ def loadCoupon(fileName):
                       ,cashback         =  cashback
                       ,message          =  message
                       ,valid            =  valid
+                      ,category  = category
+                      ,car_bike  = car_bike
+                      ,vendor    = vendor
 )
                 cc.save()
 

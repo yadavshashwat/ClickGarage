@@ -258,12 +258,14 @@ def checkout(request):
                             total_price = 0
                             if len(serviceDetail.price_parts):
                                 total_price = total_price+ float(serviceDetail.price_parts)
+                            # if serviceDe
                             if len(serviceDetail.price_labour):
                                 total_price = int(total_price + (math.ceil(float(serviceDetail.price_labour)*0.14)) + float(serviceDetail.price_labour)+ 0)
                             item = {
                                 'id':serviceDetail.id,
                                 'name':serviceDetail.name,
                                 'brand':serviceDetail.brand,
+                                'car_bike':serviceDetail.car_bike,
                                 'car':serviceDetail.carname,
                                 'odometer':serviceDetail.odometer,
                                 'dealer_cat':serviceDetail.dealer_category,
@@ -286,12 +288,15 @@ def checkout(request):
                             total_price = 0
                             if len(serviceDetail.price_parts):
                                 total_price = total_price+ float(serviceDetail.price_parts)
+                            if (serviceDetail.car_bike =="Bike"):
+                                total_price = total_price+ float(150)
                             if len(serviceDetail.price_labour):
                                 total_price = int(total_price + (math.ceil(float(serviceDetail.price_labour)*0.14)) + float(serviceDetail.price_labour)+ 0)
                             item = {
                                 'id':serviceDetail.id,
                                 'name':serviceDetail.name,
                                 'brand':serviceDetail.brand,
+                                'car_bike':serviceDetail.car_bike,
                                 'car':serviceDetail.carname,
                                 'type_service':serviceDetail.type_service,
                                 'dealer_cat':serviceDetail.dealer_category,
@@ -540,6 +545,7 @@ def cart(request):
                         'name':serviceDetail.name,
                         'brand':serviceDetail.brand,
                         'car':serviceDetail.carname,
+                        'car_bike':serviceDetail.car_bike,
                         'odometer':serviceDetail.odometer,
                         'dealer_cat':serviceDetail.dealer_category,
                         'parts_list':serviceDetail.part_replacement,
@@ -572,6 +578,7 @@ def cart(request):
                         'name':serviceDetail.name,
                         'brand':serviceDetail.brand,
                         'car':serviceDetail.carname,
+                        'car_bike':serviceDetail.car_bike,
                         'type_service':serviceDetail.type_service,
                         'dealer_cat':serviceDetail.dealer_category,
                         'parts_list':serviceDetail.part_replacement,

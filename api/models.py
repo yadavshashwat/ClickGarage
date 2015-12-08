@@ -118,6 +118,7 @@ class ServiceDealerCatNew(models.Model):
     discount            = models.CharField(max_length=50)
     priority            = models.CharField(max_length=50)
     priority_service           = models.CharField(max_length=50)
+    car_bike = models.CharField(max_length=50)
 
 
 class ServiceDealerNameNew(models.Model):
@@ -315,5 +316,10 @@ class Coupon(models.Model):
     cashback        = models.CharField(max_length=50)
     message         = models.CharField(max_length=500)
     valid           = models.CharField(max_length=50)
+    category        = models.CharField(max_length=50)
+    car_bike        = models.CharField(max_length=50)
+    vendor          = models.CharField(max_length=50)
+
+
 
 
