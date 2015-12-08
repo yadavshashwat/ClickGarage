@@ -973,6 +973,43 @@ def bookings(request):
     else:
         return redirect('/loginPage/')
 
+def orderParse(request, carName, city):
+    obj = {}
+    obj['car'] = carName
+    obj['city'] = city
+    template = loader.get_template('website/order.html')
+    car_obj = False
+    if not (city and (city in ["Delhi", "Gurgaon", "Noida"]) ):
+        city = False
+
+    title = ''
+    if carName:
+        carName = " ".join(carName.split('-'))
+        car_obj = views.getCarObjFromName([carName])
+        if len(car_obj):
+            car_obj = car_obj[0]
+            title = carName + ' - ClickGarage - On Demand Car and Bike Services'
+        else:
+            car_obj = False
+    else:
+        car_obj = views.fetch_car(request, False)
+        if(car_obj['status']):
+            car_obj = car_obj['result']
+        else:
+            car_obj = False
+
+    cars = views.fetch_all_cars(request).content
+    cars = json.loads(cars)
+    cars = cars['result']
+    context = RequestContext(request, {
+        'carSelected': car_obj,
+        'cars':cars,
+        'city':city,
+        'title':title
+    })
+    return HttpResponse(template.render(context))
+
+
 def upload_test(request):
     csrf_token = get_token(request)
     template = loader.get_template('website/upload_test.html')
