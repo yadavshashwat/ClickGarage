@@ -17,7 +17,7 @@ runentry.loadCarTrieFile()
 
 ##Loading Services New
 
-# ServiceDealerCatNew.objects.all().delete()
+ServiceDealerCatNew.objects.all().delete()
 runentry.loadServiceDealerCatNew('Servicing_Labour.txt')
 ServicingNew.objects.all().delete()
 runentry.exportServicesListNew()
