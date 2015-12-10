@@ -1796,7 +1796,8 @@ def place_order(request):
         html_list.append('</span><span> City : ')
         html_list.append(pick_obj['city'])
         html_list.append('</span><span> Pincode : ')
-        html_list.append(pick_obj['pincode'])
+        if 'pincode' in pick_obj:
+            html_list.append(pick_obj['pincode'])
         html_list.append('</span></div>')
 
         if coupon_data and len(coupon_data):
@@ -1821,7 +1822,8 @@ def place_order(request):
         html_list.append('</span><span> City : ')
         html_list.append(drop_obj['city'])
         html_list.append('</span><span> Pincode : ')
-        html_list.append(drop_obj['pincode'])
+        if 'pincode' in drop_obj:
+            html_list.append(drop_obj['pincode'])
         html_list.append('</span></div>')
 
 
