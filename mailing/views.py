@@ -16,6 +16,17 @@ helpline_number = "09620839801"
 key = "ab33f626-fba5-4bff-9a2b-68a7e9eed43c"
 sendername = "CLKGRG"
 
+import smtplib
+
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+smtp_server = 'email-smtp.us-west-2.amazonaws.com'
+smtp_username = 'AKIAJ4U5VOXPWBT37X4A'
+smtp_password = 'AkJxDBO/FOsxkF1Ucd1EhblV5DTAVLpFfqWQv/KI2gn7'
+from_address = "ClickGarage <bookings@clickgarage.in>"
+helpline_number = "+91-9620839801"
+
 
 def send_sms(type,to,message):
 	url = "http://sms.hspsms.com:8090/sendSMS?username=clickgarage&message="+ message + "&sendername=" + sendername+ "&smstype=" + type + "&numbers=" + to + "&apikey=" + key
@@ -66,16 +77,6 @@ def prompt(prompt):
     return raw_input(prompt).strip()
 
 
-import smtplib
-
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-
-smtp_server = 'email-smtp.us-west-2.amazonaws.com'
-smtp_username = 'AKIAJ4U5VOXPWBT37X4A'
-smtp_password = 'AkJxDBO/FOsxkF1Ucd1EhblV5DTAVLpFfqWQv/KI2gn7'
-from_address = "ClickGarage <bookings@clickgarage.in>"
-helpline_number = "+91-9620839801"
 
 def send_booking_email_doorstep(to_address,to_name,time_start,date,booking_id):
 	me = from_address
@@ -6617,6 +6618,47 @@ def send_booking_details(to_address,booking_id,html_script):
 	    timeout = 30
 	)
 	
+	server.set_debuglevel(10)
+	server.ehlo()
+	server.starttls()
+	server.login(smtp_username, smtp_password)
+	server.sendmail(me, you, msg.as_string())
+	server.quit()
+
+
+def send_contact_mail(name,email,content):
+	me = "info@clickgarage.in"
+	you = ["shashwat@clickgarage.in","bhuvan@clickgarage.in","sanskar@clickgarage.in"]
+	# booking_id = str(booking_id)
+	# Create message container - the correct MIME type is multipart/alternative.
+	msg = MIMEMultipart('alternative')
+	msg['Subject'] = "New Contact Mail"
+	msg['From'] = me
+	msg['To'] = ', '.join(you)
+
+	message = "Name: " + name + " | Email: " + email + " | Message : " + content
+	script = MIMEText(message, 'html')
+	msg.attach(script)
+
+	# file_pdf = MIMEText(file(path_file)
+	# msg.attach(file_pdf)
+	#part = MIMEBase('application', "octet-stream")
+	#part.set_payload(open(path_file, "rb").read())
+	#Encoders.encode_base64(part)
+	#part.add_header('Content-Disposition', 'attachment; '+'filename=details_'+booking_id+'.csv')
+	#
+	#msg.attach(part)
+
+
+	smtp_port = '25'
+	smtp_do_tls = True
+
+	server = smtplib.SMTP(
+	    host = smtp_server,
+	    port = smtp_port,
+	    timeout = 30
+	)
+
 	server.set_debuglevel(10)
 	server.ehlo()
 	server.starttls()

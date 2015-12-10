@@ -2983,4 +2983,46 @@ def create_guest_user(name,email):
     # user.save()
     # return user
 
+def send_contact(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = {}
+    # obj['msg'] = "Invalid Coupon"
+    name       = get_param(request,'name',None)
+    email      = get_param(request,'email',None)
+    message      = get_param(request,'message',None)
+
+    # obj['code'] = cpn_cd
+    # cpnObjs = Coupon.objects.filter(coupon_code=cpn_cd).exclude(valid="0")
+    # for cpn in cpnObjs:
+    #     # useremail = tran.cust_email
+    #     # username  = tran.cust_name
+    #     # booking_id = tran.booking_id
+    #     # tran.status = "Cancelled"
+        # tran.save()
+        # obj['result']= {
+        #     'coupon_code'       :    cpn.coupon_code
+        #     ,'date_issue'       :    cpn.date_issue
+        #     ,'valid_till_date'  :    cpn.valid_till_date
+        #     ,'discount'         :    cpn.discount
+        #     ,'cashback'         :    cpn.cashback
+        #     ,'message'          :    cpn.message
+        #     ,'valid'            :    cpn.valid
+        #     ,'status'           :    True
+        # }
+        # obj['result']['cancell = tran_id
+    # if len(cpnObjs):
+    mviews.send_contact_mail(name,email,message)
+    obj['staus'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    # else:
+    #     obj['result'] = {
+    #         'status'         :   False
+    #         ,'message'      :   'Not a coupon'
+    #     }
+#    mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
+#         mviews.send_cancel_final(username,useremail,booking_id)
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
 
