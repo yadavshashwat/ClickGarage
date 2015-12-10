@@ -25,12 +25,12 @@ runentry.loadCarTrieFile()
 # runentry.loadDealerListNew('Servicing_Dealers.txt')
 #
 # #Loading cleaning and value added services
-# CleaningDealerName.objects.all().delete()
-# CleaningServiceCat.objects.all().delete()
-# CleaningCategoryServices.objects.all().delete()
-# VASDealerName.objects.all().delete()
-# VASServiceCat.objects.all().delete()
-# VASCategoryServices.objects.all().delete()
+CleaningDealerName.objects.all().delete()
+CleaningServiceCat.objects.all().delete()
+CleaningCategoryServices.objects.all().delete()
+VASDealerName.objects.all().delete()
+VASServiceCat.objects.all().delete()
+VASCategoryServices.objects.all().delete()
 #
 runentry.loadCleaning('Cleaning_VAS_all.txt')
 
