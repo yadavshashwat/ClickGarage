@@ -357,13 +357,15 @@ def checkout(request):
                         if len(serviceDetail):
                             serviceDetail = serviceDetail[0]
                             total_price = 0
-                            if len(serviceDetail.price_parts):
-                                total_price = total_price+ float(serviceDetail.price_parts)
-                            if len(serviceDetail.price_labour):
-                                total_price = total_price + float(serviceDetail.price_labour)
+                            # if len(serviceDetail.price_parts):
+                            #     total_price = total_price+ float(serviceDetail.price_parts)
+                            # if len(serviceDetail.price_labour):
+                            #     total_price = total_price + float(serviceDetail.price_labour)
 
-                            # total_price = float(serviceDetail.price_parts) + float(serviceDetail.price_labour)
-                            total_price = int(float(serviceDetail.price_total)*(1-float(serviceDetail.discount)))
+                            try:
+                                total_price = float(serviceDetail.price_total)
+                            except ValueError:
+                                total_price = serviceDetail.price_total
                             item = {
                                 'id':serviceDetail.id,
                                 'category':serviceDetail.category,
@@ -653,18 +655,22 @@ def cart(request):
                     serviceDetail = serviceDetail[0]
                     total_price = 0
                     if len(serviceDetail.price_parts):
-                        total_price = total_price+ float(serviceDetail.price_parts)
+                        total_price = total_price + float(serviceDetail.price_parts)
                     if len(serviceDetail.price_labour):
                         total_price = total_price + float(serviceDetail.price_labour)
 
-                    total_price = float(serviceDetail.price_total)
-                    disc = 0
-                    if (serviceDetail.discount) and len(serviceDetail.discount):
-                        try:
-                            disc = float(serviceDetail.discount)
-                        except ValueError:
-                            disc = 0
-                    total_price = int(total_price*(1-disc))
+                    try:
+                        total_price = float(serviceDetail.price_total)
+                    except ValueError:
+                        total_price = serviceDetail.price_total
+
+                    # disc = 0
+                    # if (serviceDetail.discount) and len(serviceDetail.discount):
+                    #     try:
+                    #         disc = float(serviceDetail.discount)
+                    #     except ValueError:
+                    #         disc = 0
+                    # total_price = int(total_price*(1-disc))
                     # total_price = float(serviceDetail.price_parts) + float(serviceDetail.price_labour)
                     item = {
                         'id':serviceDetail.id,
