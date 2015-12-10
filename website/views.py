@@ -553,7 +553,7 @@ def cart(request):
                         'name':serviceDetail.name,
                         'brand':serviceDetail.brand,
                         'car':serviceDetail.carname,
-                        'car_bike':serviceDetail.car_bike,
+                        # 'car_bike':serviceDetail.car_bike,
                         'odometer':serviceDetail.odometer,
                         'dealer_cat':serviceDetail.dealer_category,
                         'parts_list':serviceDetail.part_replacement,
