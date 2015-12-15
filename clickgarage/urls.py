@@ -61,4 +61,6 @@ urlpatterns = patterns('',
     url(r'^driver1/', 'website.views.drivers', name='drivers'),
     url(r'^sitemap/', 'website.views.sitemap', name='sitemap'),
     url(r'^contact/', 'website.views.contact', name='contact'),
+#    url(r'^service-schedule/', 'website.views.serviceSchedule', name='serviceSchedule'),
+    url(r'^service-schedule/(?P<carName>[a-zA-Z\-]*)/','website.views.serviceSchedule',name='serviceSchedule'),                   
 )

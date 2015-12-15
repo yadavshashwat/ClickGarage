@@ -112,6 +112,13 @@ def tnc(request):
     })
     return HttpResponse(template.render(context))
 
+#def serviceSchedule(request):
+#    # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))
+#    template = loader.get_template('website/service-schedule.html')
+#    context = RequestContext(request, {
+#    })
+#    return HttpResponse(template.render(context))
+
 def mobile(request):
     # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))
     template = loader.get_template('website/mobile.html')
@@ -1022,6 +1029,37 @@ def orderParse(request, carName, city):
         'carSelected': car_obj,
         'cars':cars,
         'city':city,
+        'title':title
+    })
+    return HttpResponse(template.render(context))
+
+
+def serviceSchedule(request, carName):
+    obj = {}
+    obj['car'] = carName
+    template = loader.get_template('website/service-schedule.html')
+    car_obj = False
+    title = ''
+    if carName:
+        carName = " ".join(carName.split('-'))
+        car_obj = views.getCarObjFromName([carName])
+        if len(car_obj):
+            car_obj = car_obj[0]
+            title = carName + ' Service Schedule - ClickGarage'
+        else:
+            car_obj = False
+    else:
+        car_obj = views.fetch_car(request, False)
+        if(car_obj['status']):
+            car_obj = car_obj['result']
+        else:
+            car_obj = False
+    cars = views.fetch_all_cars(request).content
+    cars = json.loads(cars)
+    cars = cars['result']
+    context = RequestContext(request, {
+        'carSelected': car_obj,
+        'cars':cars,
         'title':title
     })
     return HttpResponse(template.render(context))
