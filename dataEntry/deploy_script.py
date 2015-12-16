@@ -3,9 +3,9 @@ from api.models import *
 
 
 #Car loading
-#Car.objects.all().delete()
-runentry.loadCars('aspect_ratio.csv')
-runentry.loadCarTrieFile()
+# Car.objects.all().delete()
+# runentry.loadCars('aspect_ratio.csv')
+# runentry.loadCarTrieFile()
 
 ##Loading Services old
 
@@ -43,5 +43,5 @@ runentry.loadCarTrieFile()
 #runentry.loadWheelServices('WheelServices.txt')
 #runentry.loadWheelServiceProvider('WheelServices_provider.txt')
 #runentry.loadTyreSale('TyreSales.txt')
-Coupon.objects.all().delete()
-runentry.loadCoupon('Coupon.txt')
+# Coupon.objects.all().delete()
+# runentry.loadCoupon('Coupon.txt')

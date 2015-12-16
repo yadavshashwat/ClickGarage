@@ -2119,7 +2119,7 @@ def fetch_car_list(request):
     car = None
     make = None
     car_bike = None
-    CarObjs = Car.objects.filter(car_bike = car_bike_id, make = make_id)
+    CarObjs = Car.objects.filter(car_bike = car_bike_id, make = make_id).order_by('name')
     for caravan in CarObjs:
         obj['result'].append({
                             'id':caravan.id
