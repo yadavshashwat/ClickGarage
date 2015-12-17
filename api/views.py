@@ -2995,7 +2995,7 @@ def send_contact(request):
     obj['result'] = {}
     # obj['msg'] = "Invalid Coupon"
     name       = get_param(request,'name',None)
-    email      = get_param(request,'email',None)
+    phone      = get_param(request,'phone',None)
     message      = get_param(request,'message',None)
 
     # obj['code'] = cpn_cd
@@ -3018,7 +3018,7 @@ def send_contact(request):
         # }
         # obj['result']['cancell = tran_id
     # if len(cpnObjs):
-    mviews.send_contact_mail(name,email,message)
+    mviews.send_contact_mail(name,phone,message)
     obj['staus'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"

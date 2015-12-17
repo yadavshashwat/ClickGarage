@@ -6626,7 +6626,7 @@ def send_booking_details(to_address,booking_id,html_script):
 	server.quit()
 
 
-def send_contact_mail(name,email,content):
+def send_contact_mail(name,phone,content):
 	me = "info@clickgarage.in"
 	you = ["shashwat@clickgarage.in","bhuvan@clickgarage.in","sanskar@clickgarage.in"]
 	# booking_id = str(booking_id)
@@ -6636,7 +6636,7 @@ def send_contact_mail(name,email,content):
 	msg['From'] = me
 	msg['To'] = ', '.join(you)
 
-	message = "Name: " + name + " | Email: " + email + " | Message : " + content
+	message = "Name: " + name + " | Phone: " + phone + " | Message : " + content
 	script = MIMEText(message, 'html')
 	msg.attach(script)
 
