@@ -43,5 +43,5 @@ from api.models import *
 #runentry.loadWheelServices('WheelServices.txt')
 #runentry.loadWheelServiceProvider('WheelServices_provider.txt')
 #runentry.loadTyreSale('TyreSales.txt')
-# Coupon.objects.all().delete()
-# runentry.loadCoupon('Coupon.txt')
+Coupon.objects.all().delete()
+runentry.loadCoupon('Coupon.txt')
