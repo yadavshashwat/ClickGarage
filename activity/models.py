@@ -18,6 +18,11 @@ class CGUser(AbstractUser):
     unchecked_cart = ListField(models.CharField(max_length=200))
     # unchecked_cart = ListField(models.DictField)
     uc_cart = DictField()
+    active = models.BooleanField(default=True)
+    #takes values : True, False
+    contact_no = models.CharField(max_length=10, default='')
+    user_type = models.CharField(max_length=20, default='User')
+    #takes values : User, Guest, Staff
     saved_address = ListField(DictField())
     address_trnsaction = ListField(models.CharField(max_length=200))
     past_transaction = ListField(models.CharField(max_length=200))
@@ -59,6 +64,7 @@ class Transactions(models.Model):
     cust_number        = models.CharField(max_length=200)
     cust_email         = models.CharField(max_length=200)
     cust_pickup_add    = DictField()
+    is_guest           = models.BooleanField(default=False)
     cust_drop_add      = DictField()
     service_items      = ListField( DictField() )
     price_total        = models.CharField(max_length=200)
