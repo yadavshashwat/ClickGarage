@@ -1585,6 +1585,9 @@ def place_order(request):
                             this_order = request.user.uc_cart[ts]
                             if 'additional_data' in this_order:
                                 additional = this_order['additional_data']
+                    if (loc == 'mobile') or android_flag:
+                        if 'additional_data' in order:
+                            additional = order['additional_data']
                     if additional:
                         addStr = '<span> Additional Features : '
                         custAddStr = ''
@@ -1760,10 +1763,14 @@ def place_order(request):
                     html_list.append('</span>')
 
                     additional = None
-                    if ts in request.user.uc_cart:
-                        this_order = request.user.uc_cart[ts]
-                        if 'additional_data' in this_order:
-                            additional = this_order['additional_data']
+                    if request.user and request.user.is_authenticated():
+                        if ts in request.user.uc_cart:
+                            this_order = request.user.uc_cart[ts]
+                            if 'additional_data' in this_order:
+                                additional = this_order['additional_data']
+                    if (loc == 'mobile') or android_flag:
+                        if 'additional_data' in order:
+                            additional = order['additional_data']
                     if additional:
                         addStr = '<span> Repair Queries : '
                         custAddStr = ''
