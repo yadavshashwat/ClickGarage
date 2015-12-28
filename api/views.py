@@ -63,6 +63,7 @@ def auth_and_login(request, onsuccess='/', onfail='/login/'):
 def create_user(username, email, password):
     user = CGUser(username=username, email=email)
     user.set_password(password)
+    user.user_type = 'User'
     user.save()
     return user
 
@@ -1407,8 +1408,10 @@ def place_emergency_order(request):
 @csrf_exempt
 def place_order(request):
     # print 'p'
-    if (request.user and request.user.is_authenticated()) or random_req_auth(request):
-        email = request.user.email
+    android_flag = get_param(request, 'android', None)
+    loc = get_param(request, 'loc', None)
+
+    if (request.user and request.user.is_authenticated()) or random_req_auth(request) or (loc == 'mobile'):
         name = get_param(request, 'name', None)
         number = get_param(request, 'number', None)
         car_reg_number = get_param(request, 'reg_no', None)
@@ -1416,7 +1419,6 @@ def place_order(request):
         drop_obj = get_param(request, 'drop', None)
         order_list = get_param(request, 'order_list', None)
         car_name = get_param(request, 'car_name', None)
-        android_flag = get_param(request, 'android', None)
         coupon_data = get_param(request, 'global_coupon', None)
         print coupon_data
         # car_id = get_param(request, 'car_id', None)
@@ -1579,10 +1581,11 @@ def place_order(request):
                     html_list.append('</span><br/>')
 
                     additional = None
-                    if ts in request.user.uc_cart:
-                        this_order = request.user.uc_cart[ts]
-                        if 'additional_data' in this_order:
-                            additional = this_order['additional_data']
+                    if request.user and request.user.is_authenticated():
+                        if ts in request.user.uc_cart:
+                            this_order = request.user.uc_cart[ts]
+                            if 'additional_data' in this_order:
+                                additional = this_order['additional_data']
                     if additional:
                         addStr = '<span> Additional Features : '
                         custAddStr = ''
@@ -1786,7 +1789,7 @@ def place_order(request):
 
                     html_list.append('</div>')
 
-            if not android_flag:
+            if (not android_flag) and (request.user and request.user.is_authenticated()):
                 ac_vi.updateCart(request.user, ts+'*', 'delete', '', None)
             transList.append(listItem)
 
@@ -1830,42 +1833,63 @@ def place_order(request):
         html_list.append('</span></div>')
 
 
-        tt = Transactions(
-            booking_id      = booking_id,
-            trans_timestamp = time.time(),
-            cust_id         = request.user.id,
-            cust_name       = name,
-            cust_brand      = '',
-            cust_carname    = car_name,
-            cust_number     = number,
-            cust_carnumber  = car_reg_number,
-            cust_email      = email,
-
-            cust_pickup_add = pick_obj,
-            cust_drop_add   = drop_obj,
-
-            service_items   = transList,
-
-            price_total     = '',
-
-            date_booking    = pick_obj['date'],
-            time_booking    = pick_obj['time'],
-            amount_paid     = '',
-            status          = '',
-            comments        = ''
-        )
-        tt.save()
-
-        html_script = ' '.join(str(x) for x in html_list)
-
-        if (doorstep_counter==1):
-            mviews.send_booking_final_doorstep(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
+        userID = None
+        email = None
+        is_guest = False
+        if request.user.is_authenticated():
+            userID = request.user.id
+            email = request.user.email
         else:
-            mviews.send_booking_final_pick(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
-        obj = {}
-        obj['status'] = True
-        obj['result'] = pick_obj
-        return HttpResponse(json.dumps(obj), content_type='application/json')
+            usr = CGUser.objects.filter(is_staff=True)
+            email = get_param(request, 'email', None)
+            if len(usr):
+                usr = usr[0]
+                userID = usr.id
+                is_guest = True
+                if not email:
+                    email = usr.email
+        if userID:
+            tt = Transactions(
+                booking_id      = booking_id,
+                trans_timestamp = time.time(),
+                cust_id         = userID,
+                cust_name       = name,
+                cust_brand      = '',
+                cust_carname    = car_name,
+                cust_number     = number,
+                cust_carnumber  = car_reg_number,
+                cust_email      = email,
+
+                cust_pickup_add = pick_obj,
+                cust_drop_add   = drop_obj,
+
+                service_items   = transList,
+                is_guest        = is_guest,
+                price_total     = '',
+
+                date_booking    = pick_obj['date'],
+                time_booking    = pick_obj['time'],
+                amount_paid     = '',
+                status          = '',
+                comments        = ''
+            )
+            tt.save()
+
+            html_script = ' '.join(str(x) for x in html_list)
+
+            if (doorstep_counter==1):
+                mviews.send_booking_final_doorstep(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
+            else:
+                mviews.send_booking_final_pick(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
+            obj = {}
+            obj['status'] = True
+            obj['result'] = pick_obj
+            return HttpResponse(json.dumps(obj), content_type='application/json')
+        else:
+            obj = {}
+            obj['status'] = True
+            obj['result'] = 'Failed to find a staff user. Guest transaction failed'
+            return HttpResponse(json.dumps(obj), content_type='application/json')
     else:
         redirect('/loginPage/')
 
@@ -2984,7 +3008,11 @@ def create_guest_user(name,email):
     else:
         create_user(name,email,"")
         users2 = CGUser.objects.filter(email=email)
-        return users2[0].id
+        user2 = users2[0]
+        user2.active = False
+        user2.user_type = 'Guest'
+        user2.save()
+        return user2.id
     # def create_user(username, email, password):
     # user = User(username=username, email=email)
     # user.set_password(password)
