@@ -3,9 +3,9 @@ from api.models import *
 
 
 #Car loading
-# Car.objects.all().delete()
-# runentry.loadCars('aspect_ratio.csv')
-# runentry.loadCarTrieFile()
+Car.objects.all().delete()
+runentry.loadCars('aspect_ratio.csv')
+runentry.loadCarTrieFile()
 
 ##Loading Services old
 
@@ -17,12 +17,12 @@ from api.models import *
 
 ##Loading Services New
 
-# ServiceDealerCatNew.objects.all().delete()
-# runentry.loadServiceDealerCatNew('Servicing_Labour.txt')
-# ServicingNew.objects.all().delete()
-# runentry.exportServicesListNew()
-# runentry.loadPriceFreqNew('Servicing_Parts.txt')
-# runentry.loadDealerListNew('Servicing_Dealers.txt')
+ServiceDealerCatNew.objects.all().delete()
+runentry.loadServiceDealerCatNew('Servicing_Labour.txt')
+ServicingNew.objects.all().delete()
+runentry.exportServicesListNew()
+runentry.loadPriceFreqNew('Servicing_Parts.txt')
+runentry.loadDealerListNew('Servicing_Dealers.txt')
 #
 # #Loading cleaning and value added services
 # CleaningDealerName.objects.all().delete()
@@ -43,5 +43,5 @@ from api.models import *
 #runentry.loadWheelServices('WheelServices.txt')
 #runentry.loadWheelServiceProvider('WheelServices_provider.txt')
 #runentry.loadTyreSale('TyreSales.txt')
-Coupon.objects.all().delete()
-runentry.loadCoupon('Coupon.txt')
+# Coupon.objects.all().delete()
+# runentry.loadCoupon('Coupon.txt')

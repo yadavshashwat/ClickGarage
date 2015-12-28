@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.db import models
 import datetime, time
 import urllib
+import random
 
 from django.db.models import Max
 
@@ -2176,6 +2177,7 @@ def fetch_car_services_new(request):
                         ,'checks_done' : service.regular_checks
                         #,'paid_free' : service.paid_free
                         ,'parts_replaced' : service.part_replacement
+                        ,'part_dic':service.part_dic
                         ,'dealer_category' : service.dealer
                         ,'car_bike':car_bike
                         } )
@@ -3019,7 +3021,7 @@ def send_contact(request):
         # obj['result']['cancell = tran_id
     # if len(cpnObjs):
     mviews.send_contact_mail(name,phone,message)
-    obj['staus'] = True
+    obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
     # else:
@@ -3029,6 +3031,67 @@ def send_contact(request):
     #     }
 #    mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
 #         mviews.send_cancel_final(username,useremail,booking_id)
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+def send_otp(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = {}
+
+    # phone = phone1
+    phn = get_param(request,'phone',None)
+    otp = random.randint(100000, 999999)
+    message = "Your ClickGarage one time password is " + str(otp) + ". Please enter the same to complete your mobile verification."
+    message = message.replace(" ","+")
+    # print message
+    findOtp     = Otp.objects.filter(mobile=phn)
+    if len(findOtp ):
+        findOtp = findOtp[0]
+        findOtp.otp      = otp
+        findOtp.save()
+    else:
+        cc = Otp(
+            mobile = phn,
+            otp = otp)
+        cc.save()
+
+    mviews.send_otp(phn,message)
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def fetch_all_otp(request):
+    obj = {}
+    result = []
+    allOtp = Otp.objects.all()
+    for otp in allOtp:
+        result.append({
+            'mobile':otp.mobile,
+            'otp':otp.otp
+        })
+
+    obj['result'] = result
+    obj['counter'] = 1
+    obj['status'] = True
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def create_otp_user(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = {}
+
+    # phone = phone1
+    phn = get_param(request,'phone',None)
+    onetp = get_param(request,'otp',None)
+    findOtp     = Otp.objects.filter(mobile=phn)
+    if (onetp==findOtp[0].otp):
+        obj['status'] = True
+        obj['counter'] = 1
+        obj['msg'] = "Success"
+
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 

@@ -32,6 +32,9 @@ def send_sms(type,to,message):
 	url = "http://sms.hspsms.com:8090/sendSMS?username=clickgarage&message="+ message + "&sendername=" + sendername+ "&smstype=" + type + "&numbers=" + to + "&apikey=" + key
 	r = urllib2.urlopen(url)
 
+def send_otp(to,message):
+	send_sms("TRANS",to,message)
+
 def send_booking_sms(to_name, to, date, pick_time_start, booking_id):
 	message = "Hi "+ to_name +"! Your ClickGarage appointment has been confirmed. Appointment date: " +date + ", Time: "  + pick_time_start  + ". For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + booking_id + "."
 	message = message.replace(" ","+")
