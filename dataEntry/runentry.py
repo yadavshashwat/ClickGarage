@@ -758,7 +758,9 @@ def loadPriceFreqNew(fileName):
             major_qty      = cleanstring(prt[9])
             minor_price      = float(cleanstring(prt[10]))
             major_price      = float(cleanstring(prt[11]))
-            to_add      =  cleanstring(prt[12])
+            minor_action     = cleanstring(prt[12])
+            major_action     = cleanstring(prt[13])
+            to_add      =  cleanstring(prt[14])
 
 
             service_1 = ""
@@ -791,6 +793,7 @@ def loadPriceFreqNew(fileName):
                 obj = {}
                 obj['part_name']= part
                 obj['part_price']= minor_price
+                obj['part_action'] = minor_action
 
                 obj_list = findDealer.part_dic
                 obj_list.append(obj)
@@ -813,6 +816,7 @@ def loadPriceFreqNew(fileName):
                 obj = {}
                 obj['part_name']= part
                 obj['part_price']= major_price
+                obj['part_action'] = major_action
 
                 obj_list = findDealer.part_dic
                 obj_list.append(obj)
@@ -836,6 +840,7 @@ def loadPriceFreqNew(fileName):
                 obj = {}
                 obj['part_name']= part
                 obj['part_price']= minor_price
+                obj['part_action'] = minor_action
 
                 obj_list = findDealer.part_dic
                 obj_list.append(obj)
@@ -860,6 +865,7 @@ def loadPriceFreqNew(fileName):
                 obj = {}
                 obj['part_name']= part
                 obj['part_price']= minor_price
+                obj['part_action'] = minor_action
 
                 obj_list = findDealer.part_dic
                 obj_list.append(obj)
@@ -896,6 +902,10 @@ def exportPartsListNew():
                 findDealer.part_replacement = ["No part replaced"]
                 findDealer.save()
             service.part_replacement = findDealer.part_replacement
+            # if findDealer.part_dic == []:
+            #     findDealer.part_dic = ["No part replaced"]
+            #     findDealer.save()
+            service.part_dic = findDealer.part_dic
             service.save()
 
 def loadDealerListNew(fileName):

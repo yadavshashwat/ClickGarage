@@ -94,6 +94,7 @@ class ServicingNew(models.Model):
     #while uploading servicing labour
     #paid_free           = models.CharField(max_length=50)
     part_replacement    = ListField(models.CharField(max_length=200))
+    part_dic = ListField(DictField())
     dealer       = ListField(models.CharField(max_length=200))
     priority_service           = models.CharField(max_length=50)
 
@@ -320,6 +321,10 @@ class Coupon(models.Model):
     car_bike        = models.CharField(max_length=50)
     vendor          = models.CharField(max_length=50)
 
+
+class Otp(models.Model):
+    mobile = models.CharField(max_length=50)
+    otp = models.CharField(max_length=50)
 
 
 

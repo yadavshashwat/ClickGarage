@@ -52,10 +52,14 @@ urlpatterns = [
     
     # Booking page jugad
     url(r'fetch_car_booking/$','api.views.fetch_car_booking',name='fetch_car_booking'),
+    url(r'fetch_car_complete/$','api.views.fetch_car_complete',name='fetch_car_complete'),
     url(r'fetch_all_booking/$','api.views.fetch_all_booking',name='fetch_all_booking'),
     url(r'fetch_car_cancelled/$','api.views.fetch_car_cancelled',name='fetch_car_cancelled'),
     url(r'cancel_booking/$','api.views.cancel_booking',name='cancel_booking'),
     url(r'apply_coupon/$','api.views.apply_coupon',name='apply_coupon'),
+    url(r'send_otp/$','api.views.send_otp',name='send_otp'),
+    url(r'fetch_all_otp/$','api.views.fetch_all_otp',name='fetch_all_otp'),
+    url(r'create_otp_user/$','api.views.create_otp_user',name='create_otp_user'),
     url(r'order_complete/$','api.views.order_complete',name='order_complete'),
     url(r'cancel_booking_new/$','api.views.cancel_booking_new',name='cancel_booking_new'),
     url(r'fetch_all_users/$','api.views.fetch_all_users',name='fetch_all_users'),
