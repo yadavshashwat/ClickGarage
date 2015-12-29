@@ -20,7 +20,7 @@ class CGUser(AbstractUser):
     uc_cart = DictField()
     active = models.BooleanField(default=True)
     #takes values : True, False
-    contact_no = models.CharField(max_length=10, default='')
+    contact_no = models.CharField(max_length=10, default=None, null=True)
     user_type = models.CharField(max_length=20, default='User')
     #takes values : User, Guest, Staff
     saved_address = ListField(DictField())

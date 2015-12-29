@@ -1987,6 +1987,48 @@ def fetch_car_booking(request):
     else:
         return HttpResponse(json.dumps(obj), content_type='application/json')
 
+def fetch_car_complete(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    cust_id = None
+
+    if random_req_auth(request) or (request.user and request.user.is_authenticated()):
+        cust_id         = request.user.id
+
+    if cust_id:
+        tranObjs = Transactions.objects.filter(cust_id=cust_id, status = 'Complete').order_by('-booking_id')
+            #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
+        for trans in tranObjs:
+            obj['result'].append({
+                            'tran_id'          :trans.id
+                            ,'booking_id'       :trans.booking_id
+                            ,'trans_timestamp'  :trans.trans_timestamp
+                            ,'cust_id'          :trans.cust_id
+                            ,'cust_name'        :trans.cust_name
+                            ,'cust_brand'       :trans.cust_brand
+                            ,'cust_carname'     :trans.cust_carname
+                            ,'cust_carnumber'   :trans.cust_carnumber
+                            ,'cust_number'      :trans.cust_number
+                            ,'cust_email'       :trans.cust_email
+                            ,'cust_pickup_add'  :trans.cust_pickup_add
+                            ,'cust_drop_add'    :trans.cust_drop_add
+                            ,'service_items'    :trans.service_items
+                            ,'price_total'      :trans.price_total
+                            ,'date_booking'     :trans.date_booking
+                            ,'time_booking'     :trans.time_booking
+                            ,'amount_paid'      :trans.amount_paid
+                            ,'status'           :trans.status
+                            ,'comments'         :trans.comments} )
+        obj['status'] = True
+        obj['counter'] = 1
+        obj['msg'] = "Success"
+        return HttpResponse(json.dumps(obj), content_type='application/json')
+    else:
+        return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+
 def fetch_car_cancelled(request):
     obj = {}
     obj['status'] = False
@@ -2366,8 +2408,9 @@ def fetch_all_users(request):
             #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
     for trans in tranObjs:
             obj['result'].append({
-                            'id'          :trans.id
+                            'id'   :trans.id
                            ,'email':trans.email
+                        ,'phone':trans.contact_no
                             # ,'name':trans.name
 
             } )
@@ -2540,6 +2583,7 @@ def apply_coupon(request):
 def add_guest_transaction(request):
     # print 'p'
      if request.user.email in ['y.shashwat@gmail.com', 'bhuvan.batra@gmail.com', 'sanskar@clickgarage.in', 'v.rajeev92@gmail.com', 'RajeevVempuluru']:
+        print "user"
         # To handle
         email          = get_param(request, 'email', None)
         name           = get_param(request, 'name', None)
@@ -2969,7 +3013,7 @@ def add_guest_transaction(request):
         tt = Transactions(
             booking_id      = booking_id,
             trans_timestamp = time.time(),
-            cust_id         = create_guest_user(name,email),
+            cust_id         = create_guest_user(name,email).id,
             cust_name       = name,
             cust_brand      = '',
             cust_carname    = car_name,
@@ -2998,21 +3042,55 @@ def add_guest_transaction(request):
         obj['result'] = pick_obj
         return HttpResponse(json.dumps(obj), content_type='application/json')
      else:
-        redirect('/loginPage/')
 
-def create_guest_user(name,email):
-    email = email.lower()
-    users = CGUser.objects.filter(email=email)
-    if len(users):
-        return users[0].id
-    else:
-        create_user(name,email,"")
-        users2 = CGUser.objects.filter(email=email)
-        user2 = users2[0]
-        user2.active = False
-        user2.user_type = 'Guest'
-        user2.save()
-        return user2.id
+        print "no user"
+        obj = {}
+        obj['status'] = False
+        if request.user and request.user.is_authenticated():
+            obj['result'] = {
+                'username':request.user.username,
+                'id':request.user.id,
+                'contact':request.user.email,
+                'email':request.user.contact_no
+            }
+        return HttpResponse(json.dumps(obj), content_type='application/json')
+
+        # redirect('/loginPage/')
+
+def create_guest_user(name,email='',number=None):
+    if number:
+        if not name:
+            name = number
+        users = CGUser.objects.filter(contact_no=number)
+        if len(users):
+            return users[0]
+        else:
+            # create_user(name,email)
+            user_new = CGUser(username=name,email=email,contact_no=number)
+            # users2 = CGUser.objects.filter(email=email)
+            # user2 = users2[0]
+            # user2.active = False
+            # user2.user_type = 'Guest'
+            user_new.save()
+            return user_new
+
+    elif email:
+        email = email.lower()
+        if not name:
+            name = email
+        users = CGUser.objects.filter(email=email)
+        if len(users):
+            return users[0]
+        else:
+            # create_user(name,email,"")
+            # users2 = CGUser.objects.filter(email=email)
+            user_new = CGUser(username=name,email=email)
+            # user2 = users2[0]
+            # user2.active = False
+            # user2.user_type = 'Guest'
+            # user2.save()
+            user_new.save()
+            return user_new
     # def create_user(username, email, password):
     # user = User(username=username, email=email)
     # user.set_password(password)
@@ -3112,6 +3190,7 @@ def create_otp_user(request):
     obj['result'] = {}
 
     # phone = phone1
+    name = get_param(request,'name',None)
     phn = get_param(request,'phone',None)
     onetp = get_param(request,'otp',None)
     findOtp     = Otp.objects.filter(mobile=phn)
@@ -3119,6 +3198,11 @@ def create_otp_user(request):
         obj['status'] = True
         obj['counter'] = 1
         obj['msg'] = "Success"
+        user = create_guest_user(name,'',phn)
+        if not request.user or request.user.is_anonymous():
+            # logout(request)
+            login(request, user)
+        obj['result']= user.id
 
     return HttpResponse(json.dumps(obj), content_type='application/json')
 

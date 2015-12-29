@@ -52,6 +52,7 @@ urlpatterns = [
     
     # Booking page jugad
     url(r'fetch_car_booking/$','api.views.fetch_car_booking',name='fetch_car_booking'),
+    url(r'fetch_car_complete/$','api.views.fetch_car_complete',name='fetch_car_complete'),
     url(r'fetch_all_booking/$','api.views.fetch_all_booking',name='fetch_all_booking'),
     url(r'fetch_car_cancelled/$','api.views.fetch_car_cancelled',name='fetch_car_cancelled'),
     url(r'cancel_booking/$','api.views.cancel_booking',name='cancel_booking'),
