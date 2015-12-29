@@ -1589,6 +1589,8 @@ def place_order(request):
                     if (loc == 'mobile') or android_flag:
                         if 'additional_data' in order:
                             additional = order['additional_data']
+                            additional = json.loads(additional)
+
                     if additional:
                         addStr = '<span> Additional Features : '
                         custAddStr = ''
