@@ -1270,8 +1270,12 @@ def fetch_car_autocomplete(request):
 @csrf_exempt
 def place_emergency_order(request):
     # print 'p'
-    if (request.user and request.user.is_authenticated()) or random_req_auth(request):
-        email = request.user.email
+    android_flag = get_param(request, 'android', None)
+    loc = get_param(request, 'loc', None)
+
+
+    if (request.user and request.user.is_authenticated()) or random_req_auth(request) or (loc == 'mobile'):
+        # email = request.user.email
         name = get_param(request, 'name', None)
         number = get_param(request, 'number', None)
         car_reg_number = get_param(request, 'reg_no', None)
@@ -1279,7 +1283,6 @@ def place_emergency_order(request):
         # drop_obj = get_param(request, 'drop', None)
         order_list = get_param(request, 'order_list', None)
         car_name = get_param(request, 'car_name', None)
-        android_flag = get_param(request, 'android', None)
         # car_id = get_param(request, 'car_id', None)
 
         # obj_pick = json.loads(pick_obj)
@@ -1348,15 +1351,16 @@ def place_emergency_order(request):
             html_list.append(service_id)
             html_list.append('</span></div>')
 
-            if not android_flag:
+            if not android_flag and (request.user and request.user.is_authenticated()):
                 ac_vi.updateCart(request.user, ts+'*emergency', 'delete', '', None)
             transList.append(listItem)
 
 
         html_list.append('<div> <span>Pickup Address : </span><span>')
         html_list.append(pick_obj['street'])
-        html_list.append('</span><span> Landmark : ')
-        html_list.append(pick_obj['landmark'])
+        if 'landmark' in pick_obj:
+            html_list.append('</span><span> Landmark : ')
+            html_list.append(pick_obj['landmark'])
         html_list.append('</span><span> City : ')
         html_list.append(pick_obj['city'])
         if 'pincode' in pick_obj:
@@ -1368,39 +1372,61 @@ def place_emergency_order(request):
         html_list.append(str(number))
         html_list.append('</span></div>')
 
+        userID = None
+        email = None
+        is_guest = False
+        if request.user.is_authenticated():
+            userID = request.user.id
+            email = request.user.email
+        else:
+            usr = CGUser.objects.filter(is_staff=True)
+            email = get_param(request, 'email', None)
+            if len(usr):
+                usr = usr[0]
+                userID = usr.id
+                is_guest = True
+                if not email:
+                    email = usr.email
 
-        tt = Transactions(
-            booking_id      = booking_id,
-            trans_timestamp = time.time(),
-            cust_id         = request.user.id,
-            cust_name       = name,
-            cust_brand      = '',
-            cust_carname    = car_name,
-            cust_number     = number,
-            cust_carnumber  = car_reg_number,
-            cust_email      = email,
+        if userID:
+            tt = Transactions(
+                booking_id      = booking_id,
+                trans_timestamp = time.time(),
+                cust_id         = userID,
+                cust_name       = name,
+                cust_brand      = '',
+                cust_carname    = car_name,
+                cust_number     = number,
+                cust_carnumber  = car_reg_number,
+                cust_email      = email,
 
-            cust_pickup_add = pick_obj,
-            cust_drop_add   = {},
+                cust_pickup_add = pick_obj,
+                cust_drop_add   = {},
 
-            service_items   = transList,
+                service_items   = transList,
 
-            price_total     = '',
+                price_total     = '',
 
-            date_booking    = pick_obj['date'],
-            time_booking    = pick_obj['time'],
-            amount_paid     = '',
-            status          = '',
-            comments        = ''
-        )
-        tt.save()
+                date_booking    = pick_obj['date'],
+                time_booking    = pick_obj['time'],
+                amount_paid     = '',
+                status          = '',
+                comments        = ''
+            )
+            tt.save()
 
-        html_script = ' '.join(str(x) for x in html_list)
-        mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
-        obj = {}
-        obj['status'] = True
-        obj['result'] = pick_obj
-        return HttpResponse(json.dumps(obj), content_type='application/json')
+            html_script = ' '.join(str(x) for x in html_list)
+            mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
+            obj = {}
+            obj['status'] = True
+            obj['result'] = pick_obj
+            return HttpResponse(json.dumps(obj), content_type='application/json')
+        else:
+            obj = {}
+            obj['status'] = True
+            obj['result'] = 'Failed to find a staff user. Guest transaction failed'
+            return HttpResponse(json.dumps(obj), content_type='application/json')
+
     else:
         redirect('/loginPage/')
 
