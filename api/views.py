@@ -960,10 +960,9 @@ def addItemToCart(request):
 
 def getUserDetails(request):
     obj = {}
-    obj['status'] = False
+    obj['status'] = True
     obj['result'] ={}
 
-    print request.user
     if request.user.is_authenticated() or random_req_auth(request) :
         res = {}
         res['userid'] = request.user.id
@@ -971,6 +970,23 @@ def getUserDetails(request):
         res['uc_cart'] = request.user.uc_cart
         res['saved_addresses'] = request.user.saved_address
         obj['result'] = res
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def fetch_user_login(request):
+    obj = {}
+    obj['status'] = True
+    obj['result'] ={}
+    res = {}
+
+    if request.user.is_authenticated() or random_req_auth(request):
+        res['userid'] = request.user.id
+        res['username'] = request.user.first_name
+        res['email'] = request.user.email
+        res['auth'] = True
+    else:
+        res['auth'] = False
+
+    obj['result'] = res
 
     return HttpResponse(json.dumps(obj), content_type='application/json')
 

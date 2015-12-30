@@ -132,6 +132,14 @@ def auth_and_login(request, onsuccess='/', onfail='/loginPage/'):
 
 def logout_to_home(request):
     auth_logout(request)
+    q_dict = request.GET
+    if 'loc' in q_dict:
+        if q_dict['loc'] == 'mobile':
+            obj = {}
+            obj['status'] = True
+            obj['result'] ={}
+            obj['result']['auth'] = False
+            return HttpResponse(json.dumps(obj), content_type='application/json')
     return HttpResponseRedirect('http://www.clickgarage.in/')
 
 def create_user(username, email, password):

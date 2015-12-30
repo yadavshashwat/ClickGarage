@@ -12,6 +12,7 @@ urlpatterns = [
 
     url(r'fetch_car_autocomplete/$','api.views.fetch_car_autocomplete',name='fetch_car_autocomplete'),
 
+    url(r'fetch_user_login/$','api.views.fetch_user_login',name='fetch_user_login'),
     url(r'fetch_user_details/$','api.views.getUserDetails',name='getUserDetails'),
     url(r'add_to_cart/$','api.views.addItemToCart',name='addItemToCart'),
     url(r'place_order/$','api.views.place_order',name='place_order'),
@@ -103,6 +104,5 @@ urlpatterns = [
     url(r'fetch_all_wheelservices/$','api.views.fetch_all_wheelservices',name='fetch_all_wheelservices'),
     url(r'fetch_all_wheelserviceprovider/$','api.views.fetch_all_wheelserviceprovider',name='fetch_all_wheelserviceprovider'),
     url(r'fetch_all_tyresales/$','api.views.fetch_all_tyresales',name='fetch_all_tyresales')
-	
-	
+
     ]
