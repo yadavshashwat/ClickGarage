@@ -2003,35 +2003,71 @@ carTrieObj = trie(carsTrie)
 def fetch_car_booking(request):
     obj = {}
     obj['status'] = False
-    obj['result'] = []
+    obj['result'] = {}
     cust_id = None
-    if random_req_auth(request) or (request.user and request.user.is_authenticated()):
-        cust_id = request.user.id
+    stype = get_param(request,'type','confirmed')
 
-    if cust_id:
-        tranObjs = Transactions.objects.filter(cust_id=cust_id).exclude(status='Cancelled').order_by('-booking_id')
-            #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
-        for trans in tranObjs:
-            obj['result'].append({
+    def pushObjToList(mongoArray):
+        arry = []
+        for trans in mongoArray:
+            arry.append({
                             'tran_id'          :trans.id
                             ,'booking_id'       :trans.booking_id
                             ,'trans_timestamp'  :trans.trans_timestamp
                             ,'cust_id'          :trans.cust_id
                             ,'cust_name'        :trans.cust_name
-                            ,'cust_brand'       :trans.cust_brand            
-                            ,'cust_carname'     :trans.cust_carname          
-                            ,'cust_carnumber'   :trans.cust_carnumber        
-                            ,'cust_number'      :trans.cust_number           
-                            ,'cust_email'       :trans.cust_email            
-                            ,'cust_pickup_add'  :trans.cust_pickup_add       
-                            ,'cust_drop_add'    :trans.cust_drop_add         
-                            ,'service_items'    :trans.service_items         
-                            ,'price_total'      :trans.price_total           
-                            ,'date_booking'     :trans.date_booking          
-                            ,'time_booking'     :trans.time_booking          
-                            ,'amount_paid'      :trans.amount_paid           
-                            ,'status'           :trans.status                
-                            ,'comments'         :trans.comments} )
+                            ,'cust_brand'       :trans.cust_brand
+                            ,'cust_carname'     :trans.cust_carname
+                            ,'cust_carnumber'   :trans.cust_carnumber
+                            ,'cust_number'      :trans.cust_number
+                            ,'cust_email'       :trans.cust_email
+                            ,'cust_pickup_add'  :trans.cust_pickup_add
+                            ,'cust_drop_add'    :trans.cust_drop_add
+                            ,'service_items'    :trans.service_items
+                            ,'price_total'      :trans.price_total
+                            ,'date_booking'     :trans.date_booking
+                            ,'time_booking'     :trans.time_booking
+                            ,'amount_paid'      :trans.amount_paid
+                            ,'status'           :trans.status
+                            ,'comments'         :trans.comments})
+        return arry
+
+    if random_req_auth(request) or (request.user and request.user.is_authenticated()):
+        cust_id = request.user.id
+
+    if cust_id:
+        if (stype == 'confirmed') or (stype == 'all'):
+            tranObjs = Transactions.objects.filter(cust_id=cust_id).exclude(status='Cancelled').exclude(status='Complete').order_by('-booking_id')
+            obj['result']['confirmed'] = pushObjToList(tranObjs)
+        if (stype == 'cancelled') or (stype == 'all'):
+            tranObjs = Transactions.objects.filter(cust_id=cust_id, status='Cancelled').order_by('-booking_id')
+            obj['result']['cancelled'] = pushObjToList(tranObjs)
+        if (stype == 'completed') or (stype == 'all'):
+            tranObjs = Transactions.objects.filter(cust_id=cust_id, status='Complete').order_by('-booking_id')
+            obj['result']['completed'] = pushObjToList(tranObjs)
+
+
+        # for trans in tranObjs:
+        #     obj['result']['confirmed'].append({
+        #                     'tran_id'          :trans.id
+        #                     ,'booking_id'       :trans.booking_id
+        #                     ,'trans_timestamp'  :trans.trans_timestamp
+        #                     ,'cust_id'          :trans.cust_id
+        #                     ,'cust_name'        :trans.cust_name
+        #                     ,'cust_brand'       :trans.cust_brand
+        #                     ,'cust_carname'     :trans.cust_carname
+        #                     ,'cust_carnumber'   :trans.cust_carnumber
+        #                     ,'cust_number'      :trans.cust_number
+        #                     ,'cust_email'       :trans.cust_email
+        #                     ,'cust_pickup_add'  :trans.cust_pickup_add
+        #                     ,'cust_drop_add'    :trans.cust_drop_add
+        #                     ,'service_items'    :trans.service_items
+        #                     ,'price_total'      :trans.price_total
+        #                     ,'date_booking'     :trans.date_booking
+        #                     ,'time_booking'     :trans.time_booking
+        #                     ,'amount_paid'      :trans.amount_paid
+        #                     ,'status'           :trans.status
+        #                     ,'comments'         :trans.comments})
         obj['status'] = True
         obj['counter'] = 1
         obj['msg'] = "Success"
@@ -2415,7 +2451,7 @@ def fetch_all_booking(request):
 
     # if cust_id:
 
-    if request.user.email in ['bhuvan.batra@gmail.com', 'shashwat@clickgarage.in', 'y.shashwat@gmail.com', 'bhuvan@clickgarage.in', 'sanskar@clickgarage.in']:
+    if request.user.email in ['bhuvan.batra@gmail.com', 'shashwat@clickgarage.in', 'y.shashwat@gmail.com', 'bhuvan@clickgarage.in', 'sanskar@clickgarage.in', 'v.rajeev92@gmail.com']:
         tranObjs = Transactions.objects.all().order_by('-booking_id')
             #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
     for trans in tranObjs:
