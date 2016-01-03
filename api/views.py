@@ -1636,6 +1636,7 @@ def place_order(request):
                     if additional:
                         addStr = '<span> Additional Features : '
                         custAddStr = ''
+                        listItem['served_data']['additional'] = additional
                         for feat, status in additional.iteritems():
                             print status
                             if status:
@@ -1820,6 +1821,8 @@ def place_order(request):
                     if additional:
                         addStr = '<span> Repair Queries : '
                         custAddStr = ''
+                        listItem['served_data'] = {}
+                        listItem['served_data']['additional'] = additional
                         for feat, status in additional.iteritems():
                             if status:
                                 if feat == 'Custom Requests':
@@ -2500,7 +2503,9 @@ def fetch_all_users(request):
             obj['result'].append({
                             'id'   :trans.id
                            ,'email':trans.email
-                        ,'phone':trans.contact_no
+                        ,'phone':trans.contact_no,
+                        'uname':trans.username,
+                'name':trans.first_name
                             # ,'name':trans.name
 
             } )
