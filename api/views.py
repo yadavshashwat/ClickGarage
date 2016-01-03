@@ -960,10 +960,9 @@ def addItemToCart(request):
 
 def getUserDetails(request):
     obj = {}
-    obj['status'] = False
+    obj['status'] = True
     obj['result'] ={}
 
-    print request.user
     if request.user.is_authenticated() or random_req_auth(request) :
         res = {}
         res['userid'] = request.user.id
@@ -971,6 +970,23 @@ def getUserDetails(request):
         res['uc_cart'] = request.user.uc_cart
         res['saved_addresses'] = request.user.saved_address
         obj['result'] = res
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def fetch_user_login(request):
+    obj = {}
+    obj['status'] = True
+    obj['result'] ={}
+    res = {}
+
+    if request.user.is_authenticated() or random_req_auth(request):
+        res['userid'] = request.user.id
+        res['username'] = request.user.first_name
+        res['email'] = request.user.email
+        res['auth'] = True
+    else:
+        res['auth'] = False
+
+    obj['result'] = res
 
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
@@ -1270,8 +1286,12 @@ def fetch_car_autocomplete(request):
 @csrf_exempt
 def place_emergency_order(request):
     # print 'p'
-    if (request.user and request.user.is_authenticated()) or random_req_auth(request):
-        email = request.user.email
+    android_flag = get_param(request, 'android', None)
+    loc = get_param(request, 'loc', None)
+
+
+    if (request.user and request.user.is_authenticated()) or random_req_auth(request) or (loc == 'mobile'):
+        # email = request.user.email
         name = get_param(request, 'name', None)
         number = get_param(request, 'number', None)
         car_reg_number = get_param(request, 'reg_no', None)
@@ -1279,7 +1299,6 @@ def place_emergency_order(request):
         # drop_obj = get_param(request, 'drop', None)
         order_list = get_param(request, 'order_list', None)
         car_name = get_param(request, 'car_name', None)
-        android_flag = get_param(request, 'android', None)
         # car_id = get_param(request, 'car_id', None)
 
         # obj_pick = json.loads(pick_obj)
@@ -1348,7 +1367,7 @@ def place_emergency_order(request):
             html_list.append(service_id)
             html_list.append('</span></div>')
 
-            if not android_flag:
+            if not android_flag and (request.user and request.user.is_authenticated()):
                 ac_vi.updateCart(request.user, ts+'*emergency', 'delete', '', None)
             transList.append(listItem)
 
@@ -1356,7 +1375,6 @@ def place_emergency_order(request):
         html_list.append('<div> <span>Pickup Address : </span><span>')
         html_list.append(pick_obj['street'])
         if 'landmark' in pick_obj:
-
             html_list.append('</span><span> Landmark : ')
             html_list.append(pick_obj['landmark'])
         html_list.append('</span><span> City : ')
@@ -1370,39 +1388,61 @@ def place_emergency_order(request):
         html_list.append(str(number))
         html_list.append('</span></div>')
 
+        userID = None
+        email = None
+        is_guest = False
+        if request.user.is_authenticated():
+            userID = request.user.id
+            email = request.user.email
+        else:
+            usr = CGUser.objects.filter(is_staff=True)
+            email = get_param(request, 'email', None)
+            if len(usr):
+                usr = usr[0]
+                userID = usr.id
+                is_guest = True
+                if not email:
+                    email = usr.email
 
-        tt = Transactions(
-            booking_id      = booking_id,
-            trans_timestamp = time.time(),
-            cust_id         = request.user.id,
-            cust_name       = name,
-            cust_brand      = '',
-            cust_carname    = car_name,
-            cust_number     = number,
-            cust_carnumber  = car_reg_number,
-            cust_email      = email,
+        if userID:
+            tt = Transactions(
+                booking_id      = booking_id,
+                trans_timestamp = time.time(),
+                cust_id         = userID,
+                cust_name       = name,
+                cust_brand      = '',
+                cust_carname    = car_name,
+                cust_number     = number,
+                cust_carnumber  = car_reg_number,
+                cust_email      = email,
 
-            cust_pickup_add = pick_obj,
-            cust_drop_add   = {},
+                cust_pickup_add = pick_obj,
+                cust_drop_add   = {},
 
-            service_items   = transList,
+                service_items   = transList,
 
-            price_total     = '',
+                price_total     = '',
 
-            date_booking    = pick_obj['date'],
-            time_booking    = pick_obj['time'],
-            amount_paid     = '',
-            status          = '',
-            comments        = ''
-        )
-        tt.save()
+                date_booking    = pick_obj['date'],
+                time_booking    = pick_obj['time'],
+                amount_paid     = '',
+                status          = '',
+                comments        = ''
+            )
+            tt.save()
 
-        html_script = ' '.join(str(x) for x in html_list)
-        mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
-        obj = {}
-        obj['status'] = True
-        obj['result'] = pick_obj
-        return HttpResponse(json.dumps(obj), content_type='application/json')
+            html_script = ' '.join(str(x) for x in html_list)
+            mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
+            obj = {}
+            obj['status'] = True
+            obj['result'] = pick_obj
+            return HttpResponse(json.dumps(obj), content_type='application/json')
+        else:
+            obj = {}
+            obj['status'] = True
+            obj['result'] = 'Failed to find a staff user. Guest transaction failed'
+            return HttpResponse(json.dumps(obj), content_type='application/json')
+
     else:
         redirect('/loginPage/')
 
@@ -1588,6 +1628,11 @@ def place_order(request):
                             this_order = request.user.uc_cart[ts]
                             if 'additional_data' in this_order:
                                 additional = this_order['additional_data']
+                    if (loc == 'mobile') or android_flag:
+                        if 'additional_data' in order:
+                            additional = order['additional_data']
+                            additional = json.loads(additional)
+
                     if additional:
                         addStr = '<span> Additional Features : '
                         custAddStr = ''
@@ -1763,10 +1808,15 @@ def place_order(request):
                     html_list.append('</span>')
 
                     additional = None
-                    if ts in request.user.uc_cart:
-                        this_order = request.user.uc_cart[ts]
-                        if 'additional_data' in this_order:
-                            additional = this_order['additional_data']
+                    if request.user and request.user.is_authenticated():
+                        if ts in request.user.uc_cart:
+                            this_order = request.user.uc_cart[ts]
+                            if 'additional_data' in this_order:
+                                additional = this_order['additional_data']
+                    if (loc == 'mobile') or android_flag:
+                        if 'additional_data' in order:
+                            additional = order['additional_data']
+                            additional = json.loads(additional)
                     if additional:
                         addStr = '<span> Repair Queries : '
                         custAddStr = ''
@@ -1955,35 +2005,71 @@ carTrieObj = trie(carsTrie)
 def fetch_car_booking(request):
     obj = {}
     obj['status'] = False
-    obj['result'] = []
+    obj['result'] = {}
     cust_id = None
-    if random_req_auth(request) or (request.user and request.user.is_authenticated()):
-        cust_id = request.user.id
+    stype = get_param(request,'type','confirmed')
 
-    if cust_id:
-        tranObjs = Transactions.objects.filter(cust_id=cust_id).exclude(status='Cancelled').order_by('-booking_id')
-            #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
-        for trans in tranObjs:
-            obj['result'].append({
+    def pushObjToList(mongoArray):
+        arry = []
+        for trans in mongoArray:
+            arry.append({
                             'tran_id'          :trans.id
                             ,'booking_id'       :trans.booking_id
                             ,'trans_timestamp'  :trans.trans_timestamp
                             ,'cust_id'          :trans.cust_id
                             ,'cust_name'        :trans.cust_name
-                            ,'cust_brand'       :trans.cust_brand            
-                            ,'cust_carname'     :trans.cust_carname          
-                            ,'cust_carnumber'   :trans.cust_carnumber        
-                            ,'cust_number'      :trans.cust_number           
-                            ,'cust_email'       :trans.cust_email            
-                            ,'cust_pickup_add'  :trans.cust_pickup_add       
-                            ,'cust_drop_add'    :trans.cust_drop_add         
-                            ,'service_items'    :trans.service_items         
-                            ,'price_total'      :trans.price_total           
-                            ,'date_booking'     :trans.date_booking          
-                            ,'time_booking'     :trans.time_booking          
-                            ,'amount_paid'      :trans.amount_paid           
-                            ,'status'           :trans.status                
-                            ,'comments'         :trans.comments} )
+                            ,'cust_brand'       :trans.cust_brand
+                            ,'cust_carname'     :trans.cust_carname
+                            ,'cust_carnumber'   :trans.cust_carnumber
+                            ,'cust_number'      :trans.cust_number
+                            ,'cust_email'       :trans.cust_email
+                            ,'cust_pickup_add'  :trans.cust_pickup_add
+                            ,'cust_drop_add'    :trans.cust_drop_add
+                            ,'service_items'    :trans.service_items
+                            ,'price_total'      :trans.price_total
+                            ,'date_booking'     :trans.date_booking
+                            ,'time_booking'     :trans.time_booking
+                            ,'amount_paid'      :trans.amount_paid
+                            ,'status'           :trans.status
+                            ,'comments'         :trans.comments})
+        return arry
+
+    if random_req_auth(request) or (request.user and request.user.is_authenticated()):
+        cust_id = request.user.id
+
+    if cust_id:
+        if (stype == 'confirmed') or (stype == 'all'):
+            tranObjs = Transactions.objects.filter(cust_id=cust_id).exclude(status='Cancelled').exclude(status='Complete').order_by('-booking_id')
+            obj['result']['confirmed'] = pushObjToList(tranObjs)
+        if (stype == 'cancelled') or (stype == 'all'):
+            tranObjs = Transactions.objects.filter(cust_id=cust_id, status='Cancelled').order_by('-booking_id')
+            obj['result']['cancelled'] = pushObjToList(tranObjs)
+        if (stype == 'completed') or (stype == 'all'):
+            tranObjs = Transactions.objects.filter(cust_id=cust_id, status='Complete').order_by('-booking_id')
+            obj['result']['completed'] = pushObjToList(tranObjs)
+
+
+        # for trans in tranObjs:
+        #     obj['result']['confirmed'].append({
+        #                     'tran_id'          :trans.id
+        #                     ,'booking_id'       :trans.booking_id
+        #                     ,'trans_timestamp'  :trans.trans_timestamp
+        #                     ,'cust_id'          :trans.cust_id
+        #                     ,'cust_name'        :trans.cust_name
+        #                     ,'cust_brand'       :trans.cust_brand
+        #                     ,'cust_carname'     :trans.cust_carname
+        #                     ,'cust_carnumber'   :trans.cust_carnumber
+        #                     ,'cust_number'      :trans.cust_number
+        #                     ,'cust_email'       :trans.cust_email
+        #                     ,'cust_pickup_add'  :trans.cust_pickup_add
+        #                     ,'cust_drop_add'    :trans.cust_drop_add
+        #                     ,'service_items'    :trans.service_items
+        #                     ,'price_total'      :trans.price_total
+        #                     ,'date_booking'     :trans.date_booking
+        #                     ,'time_booking'     :trans.time_booking
+        #                     ,'amount_paid'      :trans.amount_paid
+        #                     ,'status'           :trans.status
+        #                     ,'comments'         :trans.comments})
         obj['status'] = True
         obj['counter'] = 1
         obj['msg'] = "Success"
@@ -2367,7 +2453,7 @@ def fetch_all_booking(request):
 
     # if cust_id:
 
-    if request.user.email in ['bhuvan.batra@gmail.com', 'shashwat@clickgarage.in', 'y.shashwat@gmail.com', 'bhuvan@clickgarage.in', 'sanskar@clickgarage.in']:
+    if request.user.email in ['bhuvan.batra@gmail.com', 'shashwat@clickgarage.in', 'y.shashwat@gmail.com', 'bhuvan@clickgarage.in', 'sanskar@clickgarage.in', 'v.rajeev92@gmail.com']:
         tranObjs = Transactions.objects.all().order_by('-booking_id')
             #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
     for trans in tranObjs:
