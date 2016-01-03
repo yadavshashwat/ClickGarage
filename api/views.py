@@ -1355,8 +1355,10 @@ def place_emergency_order(request):
 
         html_list.append('<div> <span>Pickup Address : </span><span>')
         html_list.append(pick_obj['street'])
-        html_list.append('</span><span> Landmark : ')
-        html_list.append(pick_obj['landmark'])
+        if 'landmark' in pick_obj:
+
+            html_list.append('</span><span> Landmark : ')
+            html_list.append(pick_obj['landmark'])
         html_list.append('</span><span> City : ')
         html_list.append(pick_obj['city'])
         if 'pincode' in pick_obj:
@@ -1796,8 +1798,9 @@ def place_order(request):
 
         html_list.append('<div> <span>Pickup Address : </span><span>')
         html_list.append(pick_obj['street'])
-        html_list.append('</span><span> Landmark : ')
-        html_list.append(pick_obj['landmark'])
+        if 'landmark' in pick_obj:
+            html_list.append('</span><span> Landmark : ')
+            html_list.append(pick_obj['landmark'])
         html_list.append('</span><span> City : ')
         html_list.append(pick_obj['city'])
         if 'pincode' in pick_obj:
@@ -1822,8 +1825,9 @@ def place_order(request):
 
         html_list.append('<div> <span>Drop Address : </span><span>')
         html_list.append(drop_obj['street'])
-        html_list.append('</span><span> Landmark : ')
-        html_list.append(drop_obj['landmark'])
+        if 'landmark' in pick_obj:
+            html_list.append('</span><span> Landmark : ')
+            html_list.append(drop_obj['landmark'])
         html_list.append('</span><span> City : ')
         html_list.append(drop_obj['city'])
 
@@ -2972,8 +2976,9 @@ def add_guest_transaction(request):
 
         html_list.append('<div> <span>Pickup Address : </span><span>')
         html_list.append(pick_obj['street'])
-        html_list.append('</span><span> Landmark : ')
-        html_list.append(pick_obj['landmark'])
+        if 'landmark' in pick_obj:
+            html_list.append('</span><span> Landmark : ')
+            html_list.append(pick_obj['landmark'])
         html_list.append('</span><span> City : ')
         html_list.append(pick_obj['city'])
         if 'pincode' in pick_obj:
@@ -2998,8 +3003,9 @@ def add_guest_transaction(request):
 
         html_list.append('<div> <span>Drop Address : </span><span>')
         html_list.append(drop_obj['street'])
-        html_list.append('</span><span> Landmark : ')
-        html_list.append(drop_obj['landmark'])
+        if 'landmark' in pick_obj:
+            html_list.append('</span><span> Landmark : ')
+            html_list.append(drop_obj['landmark'])
         html_list.append('</span><span> City : ')
         html_list.append(drop_obj['city'])
         if 'pincode' in drop_obj:
