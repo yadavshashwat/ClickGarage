@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import models
-import datetime, time
+import datetime, time, calendar
 import urllib
 import random
 
@@ -980,7 +980,11 @@ def fetch_user_login(request):
 
     if request.user.is_authenticated() or random_req_auth(request):
         res['userid'] = request.user.id
-        res['username'] = request.user.first_name
+        if request.user.first_name and len(request.user.first_name):
+            res['username'] = request.user.first_name
+        else:
+            res['username'] = request.user.username
+        # res['username'] = request.user.first_name
         res['email'] = request.user.email
         res['auth'] = True
     else:
@@ -1845,7 +1849,7 @@ def place_order(request):
                     html_list.append('</div>')
 
             if (not android_flag) and (request.user and request.user.is_authenticated()):
-                ac_vi.updateCart(request.user, ts+'*', 'delete', '', None)
+                ac_vi.updateCart(request.user, str(ts)+'*', 'delete', '', None)
             transList.append(listItem)
 
 
@@ -3156,18 +3160,23 @@ def add_guest_transaction(request):
 
 def create_guest_user(name,email='',number=None):
     if number:
-        if not name:
-            name = number
+        # if not name:
+        #     name = number
         users = CGUser.objects.filter(contact_no=number)
         if len(users):
             return users[0]
         else:
             # create_user(name,email)
-            user_new = CGUser(username=name,email=email,contact_no=number)
+            user_new = CGUser(username=number,email=email,contact_no=number)
             # users2 = CGUser.objects.filter(email=email)
             # user2 = users2[0]
             # user2.active = False
             # user2.user_type = 'Guest'
+            if name:
+                name = name.split(' ')
+                user_new.first_name = name[0]
+                if len(name) > 1:
+                    user_new.last_name = name[1]
             user_new.save()
             return user_new
 
@@ -3245,24 +3254,34 @@ def send_otp(request):
     # phone = phone1
     phn = get_param(request,'phone',None)
     otp = random.randint(100000, 999999)
+    otpdatetime = datetime.datetime.now()
     message = "Your ClickGarage one time password is " + str(otp) + ". Please enter the same to complete your mobile verification."
     message = message.replace(" ","+")
+    newFlag = False
+    username = None
     # print message
     findOtp     = Otp.objects.filter(mobile=phn)
     if len(findOtp ):
         findOtp = findOtp[0]
+        obj['result']['username'] = findOtp.username
         findOtp.otp      = otp
+        findOtp.updated  = otpdatetime
         findOtp.save()
+
     else:
+        newFlag = True
         cc = Otp(
             mobile = phn,
-            otp = otp)
+            otp = otp,
+            created = otpdatetime,
+            updated = otpdatetime)
         cc.save()
 
     mviews.send_otp(phn,message)
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
+    obj['result']['new_user'] = newFlag
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 def fetch_all_otp(request):
@@ -3281,26 +3300,76 @@ def fetch_all_otp(request):
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+def checkOTP(onetp, mobile, name):
+    check = False
+    msg = ''
+    curr_time = datetime.datetime.now()
+    curr_ts = calendar.timegm(curr_time.timetuple())
+    findOtp     = Otp.objects.filter(mobile=mobile)
+    if len(findOtp) and findOtp[0].otp:
+        findOtp = findOtp[0]
+        otp_ts = calendar.timegm(findOtp.updated.timetuple())
+        if (curr_ts - otp_ts) > 3600:
+            msg = 'expired otp'
+            findOtp.otp = ''
+            findOtp.updated = curr_time
+            findOtp.save()
+        elif onetp == findOtp.otp:
+            msg = 'success'
+            check = True
+            findOtp.otp = ''
+            if name:
+                findOtp.username = name
+            findOtp.updated = curr_time
+            findOtp.save()
+        else:
+            msg = 'wrong otp'
+    else:
+        msg = 'no active otp'
+
+    return {'msg': msg, 'status': check}
+
 def create_otp_user(request):
-    obj = {}
-    obj['status'] = False
-    obj['result'] = {}
+    # obj = {}
+    # obj['status'] = False
+    # obj['result'] = {}
 
     # phone = phone1
     name = get_param(request,'name',None)
     phn = get_param(request,'phone',None)
     onetp = get_param(request,'otp',None)
-    findOtp     = Otp.objects.filter(mobile=phn)
-    if (onetp==findOtp[0].otp):
-        obj['status'] = True
-        obj['counter'] = 1
-        obj['msg'] = "Success"
+
+    obj = checkOTP(onetp,phn,name)
+    if obj['status']:
         user = create_guest_user(name,'',phn)
         if not request.user or request.user.is_anonymous():
             # logout(request)
+            user.backend = 'django.contrib.auth.backends.ModelBackend'
             login(request, user)
-        obj['result']= user.id
+
+        obj['result'] = {}
+        obj['result']['userid'] = request.user.id
+        if request.user.first_name and len(request.user.first_name):
+            obj['result']['username'] = request.user.first_name
+        else:
+            obj['result']['username'] = request.user.username
+        obj['result']['email'] = request.user.email
+        obj['result']['auth'] = True
+    else:
+        obj['status'] = True
+        obj['result'] = {}
+        obj['result']['auth'] = False
+        obj['result']['msg'] = obj['msg']
+
+    # findOtp     = Otp.objects.filter(mobile=phn)
+    # if (onetp==findOtp[0].otp):
+    #     obj['status'] = True
+    #     obj['counter'] = 1
+    #     obj['msg'] = "Success"
+    #     user = create_guest_user(name,'',phn)
+    #     if not request.user or request.user.is_anonymous():
+    #         # logout(request)
+    #         login(request, user)
+    #     obj['result']= user.id
 
     return HttpResponse(json.dumps(obj), content_type='application/json')
-
-

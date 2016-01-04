@@ -325,6 +325,8 @@ class Coupon(models.Model):
 class Otp(models.Model):
     mobile = models.CharField(max_length=50)
     otp = models.CharField(max_length=50)
-
+    created      =   models.DateTimeField(default=None)
+    updated      =   models.DateTimeField(default=None)
+    username     = models.CharField(max_length=50)
 
 
