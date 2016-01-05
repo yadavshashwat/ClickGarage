@@ -507,7 +507,8 @@ def cart(request):
                         'model' :   carObj.model,
                         'year'  :   carObj.year,
                         'name'  :   carObj.name,
-                        'size'  :   carObj.size
+                        'size'  :   carObj.size,
+                        'car_bike'  :   carObj.car_bike
                     }
                     cartDict[ts] = obj
             if loginFlag:
@@ -822,7 +823,8 @@ def bookings(request):
                         'model' :   carObj.model,
                         'year'  :   carObj.year,
                         'name'  :   carObj.name,
-                        'size'  :   carObj.size
+                        'size'  :   carObj.size,
+                        'car_bike'  :   carObj.car_bike,
                     }
                     cartDict[ts] = obj
 
