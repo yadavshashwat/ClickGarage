@@ -17,22 +17,22 @@ runentry.loadCarTrieFile()
 
 ##Loading Services New
 
-ServiceDealerCatNew.objects.all().delete()
-runentry.loadServiceDealerCatNew('Servicing_Labour.txt')
-ServicingNew.objects.all().delete()
-runentry.exportServicesListNew()
-runentry.loadPriceFreqNew('Servicing_Parts.txt')
-runentry.loadDealerListNew('Servicing_Dealers.txt')
+# ServiceDealerCatNew.objects.all().delete()
+# runentry.loadServiceDealerCatNew('Servicing_Labour.txt')
+# ServicingNew.objects.all().delete()
+# runentry.exportServicesListNew()
+# runentry.loadPriceFreqNew('Servicing_Parts.txt')
+# runentry.loadDealerListNew('Servicing_Dealers.txt')
 #
 # #Loading cleaning and value added services
-CleaningDealerName.objects.all().delete()
-CleaningServiceCat.objects.all().delete()
-CleaningCategoryServices.objects.all().delete()
-VASDealerName.objects.all().delete()
-VASServiceCat.objects.all().delete()
-VASCategoryServices.objects.all().delete()
-#
-runentry.loadCleaning('Cleaning_VAS_all.txt')
+# CleaningDealerName.objects.all().delete()
+# CleaningServiceCat.objects.all().delete()
+# CleaningCategoryServices.objects.all().delete()
+# VASDealerName.objects.all().delete()
+# VASServiceCat.objects.all().delete()
+# VASCategoryServices.objects.all().delete()
+# #
+# runentry.loadCleaning('Cleaning_VAS_all.txt')
 
 ##Loading windshield
 # WindShieldCat.objects.all().delete()
@@ -44,4 +44,4 @@ runentry.loadCleaning('Cleaning_VAS_all.txt')
 #runentry.loadWheelServiceProvider('WheelServices_provider.txt')
 #runentry.loadTyreSale('TyreSales.txt')
 # Coupon.objects.all().delete()
-# runentry.loadCoupon('Coupon.txt')
+runentry.loadCoupon('Coupon.txt')
