@@ -17,12 +17,12 @@ runentry.loadCarTrieFile()
 
 ##Loading Services New
 
-ServiceDealerCatNew.objects.all().delete()
-runentry.loadServiceDealerCatNew('Servicing_Labour.txt')
-ServicingNew.objects.all().delete()
-runentry.exportServicesListNew()
-runentry.loadPriceFreqNew('Servicing_Parts.txt')
-runentry.loadDealerListNew('Servicing_Dealers.txt')
+# ServiceDealerCatNew.objects.all().delete()
+# runentry.loadServiceDealerCatNew('Servicing_Labour.txt')
+# ServicingNew.objects.all().delete()
+# runentry.exportServicesListNew()
+# runentry.loadPriceFreqNew('Servicing_Parts.txt')
+# runentry.loadDealerListNew('Servicing_Dealers.txt')
 #
 # #Loading cleaning and value added services
 CleaningDealerName.objects.all().delete()
