@@ -985,6 +985,7 @@ def fetch_user_login(request):
         else:
             res['username'] = request.user.username
         # res['username'] = request.user.first_name
+        res['contact'] = request.user.contact_no
         res['email'] = request.user.email
         res['auth'] = True
     else:
