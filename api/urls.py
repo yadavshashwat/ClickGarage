@@ -63,6 +63,7 @@ urlpatterns = [
     url(r'create_otp_user/$','api.views.create_otp_user',name='create_otp_user'),
     url(r'order_complete/$','api.views.order_complete',name='order_complete'),
     url(r'cancel_booking_new/$','api.views.cancel_booking_new',name='cancel_booking_new'),
+    url(r'service_selected/$','api.views.service_selected',name='service_selected'),
     url(r'fetch_all_users/$','api.views.fetch_all_users',name='fetch_all_users'),
     url(r'fetch_user_cart/$','api.views.fetch_user_cart',name='fetch_user_cart'),
     url(r'fetch_additional_details/$','api.views.fetch_additional_details',name='fetch_additional_details'),

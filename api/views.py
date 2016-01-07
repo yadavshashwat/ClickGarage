@@ -3373,3 +3373,118 @@ def create_otp_user(request):
     #     obj['result']= user.id
 
     return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def service_selected(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    service            = get_param(request,'service',None)
+    id_selection      = get_param(request,'id',None)
+    result = []
+
+    if (service=="servicing"):
+        ServicedetailObjs = ServiceDealerCatNew.objects.filter(id=id_selection)
+        for service in ServicedetailObjs:
+                        obj['result'].append({
+                            'id':service.id
+                              ,'name':service.name
+                              ,'brand':service.brand
+                              ,'car':service.carname
+                              ,'car_bike':service.car_bike
+                              ,'vendor':service.dealer_category
+                              ,'parts_list':service.part_replacement
+                              ,'parts_price':service.price_parts
+                              ,'labour_price':service.price_labour
+                              ,'wa_price':service.wheel_alignment
+                              ,'wb_price':service.wheel_balancing
+                              ,'wa_wb_present':service.WA_WB_Inc
+                              ,'dealer_details':service.detail_dealers
+                              # ,'car_bike':car_bike
+                        ,'type_service':service.type_service
+                        ,'part_dic':service.part_dic
+                        ,'labour_price':service.price_labour
+                        ,'discosunt':service.discount
+                        ,'priority':service.priority
+                     }
+                    )
+    if (service=="cleaning"):
+        CleanCatObjs=CleaningCategoryServices.objects.filter(id=id_selection)
+        for service in CleanCatObjs:
+                obj['result'].append({
+                        'id':service.id
+                        ,'vendor':service.vendor
+                        ,'category':service.category
+                        ,'car_cat':service.car_cat
+                        ,'service':service.service
+                        ,'price_labour':service.price_labour
+                        ,'price_parts':service.price_parts
+                        ,'total_price':service.price_total
+                        ,'description':service.description
+                        ,'discount':service.discount
+                        ,'rating':service.rating
+                        ,'reviews':service.reviews
+                        ,'priority':service.priority
+                              } )
+    if (service=="vas"):
+        VasCatObjs=VASCategoryServices.objects.filter(id=id_selection)
+        for service in VasCatObjs:
+                obj['result'].append({
+                        'id':service.id
+                        ,'vendor':service.vendor
+                        ,'category':service.category
+                        ,'car_cat':service.car_cat
+                        ,'service':service.service
+                        ,'price_labour':service.price_labour
+                        ,'price_parts':service.price_parts
+                        ,'total_price':service.price_total
+                        ,'description':service.description
+                        ,'doorstep':service.doorstep
+                        ,'discount':service.discount
+                        ,'rating':service.rating
+                        ,'reviews':service.reviews
+                        ,'car_bike': service.car_bike
+                        ,'priority':service.priority
+                              } )
+    if (service=="windshield"):
+        wsTypeObjs=WindShieldServiceDetails.objects.filter(id=id_selection)
+        # wsTypeObjs = WindShieldServiceDetails.objects.filter(city=city,vendor = vendor, ws_type = ws_type, carname = carname, brand=brand)
+        for service in wsTypeObjs:
+            obj['result'].append({'id':service.id
+                                    ,'vendor':service.vendor
+                                    ,'brand':service.brand
+                                    ,'carname':service.carname
+                                    ,'colour':service.colour
+                                    ,'ws_type':service.ws_type
+                                    ,'ws_subtype':service.ws_subtype
+                                    ,'price_ws':service.price_ws
+                                    ,'price_sealant':service.price_sealant
+                                    ,'price_labour':service.price_labour
+                                    ,'price_insurance':service.price_insurance
+                                    ,'price_total'    :service.price_total
+                                    ,'city'           :service.city
+                                    ,'description':service.description
+                                    ,'rating':service.rating
+                                    ,'reviews':service.reviews
+                              } )
+
+
+
+    # CleaningCategoryServices.objects.all().delete()
+    # VASCategoryServices.objects.all().delete()
+    # WindShieldServiceDetails.objects.all().delete()
+
+
+    # obj['result'] = result
+    obj['status'] = True
+    # obj['counter'] = 1
+    obj['msg'] = "Success"
+    # else:
+    #     obj['result'] = {
+    #         'status'         :   False
+    #         ,'message'      :   'Not a coupon'
+    #     }
+#    mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
+#         mviews.send_cancel_final(username,useremail,booking_id)
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
