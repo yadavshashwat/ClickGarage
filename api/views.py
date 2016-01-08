@@ -3468,7 +3468,7 @@ def service_selected(request):
                                     ,'price_sealant':service.price_sealant
                                     ,'price_labour':service.price_labour
                                     ,'price_insurance':service.price_insurance
-                                    ,'price_total'    :service.price_total
+                                    ,'total_price'    :service.price_total
                                     ,'city'           :service.city
                                     ,'description':service.description
                                     ,'rating':service.rating
