@@ -283,7 +283,7 @@ def checkout(request):
                                 total_price = total_price+ float(serviceDetail.price_parts)
                             # if serviceDe
                             if len(serviceDetail.price_labour):
-                                total_price = int(total_price + (math.ceil(float(serviceDetail.price_labour)*0.14)) + float(serviceDetail.price_labour)+ 0)
+                                total_price = int(total_price + (math.ceil(float(serviceDetail.price_labour)*0.145)) + float(serviceDetail.price_labour)+ 0)
                             item = {
                                 'id':serviceDetail.id,
                                 'name':serviceDetail.name,
@@ -315,9 +315,12 @@ def checkout(request):
                             #     total_price = total_price+ float(150)
                             if len(serviceDetail.price_labour):
                                 if (serviceDetail.car_bike == "Bike"):
-                                    total_price =  int(total_price + (math.ceil(float(serviceDetail.price_labour)*0.14)) + float(serviceDetail.price_labour)+ 150)
+                                    if (serviceDetail.dealer_category == "ClickGarage Doorstep"):
+                                        total_price =  int(total_price + (math.ceil(float(serviceDetail.price_labour)*0.145)) + float(serviceDetail.price_labour))
+                                    else:
+                                        total_price =  int(total_price + (math.ceil(float(serviceDetail.price_labour)*0.145)) + float(serviceDetail.price_labour)+ 150)
                                 else:
-                                    total_price =  int(total_price + (math.ceil(float(serviceDetail.price_labour)*0.14)) + float(serviceDetail.price_labour)+ 0)
+                                    total_price =  int(total_price + (math.ceil(float(serviceDetail.price_labour)*0.145)) + float(serviceDetail.price_labour)+ 0)
                             item = {
                                 'id':serviceDetail.id,
                                 'name':serviceDetail.name,
@@ -569,7 +572,7 @@ def cart(request):
                     if len(serviceDetail.price_parts):
                         total_price = total_price+ float(serviceDetail.price_parts)
                     if len(serviceDetail.price_labour):
-                        total_price =  int(total_price + (math.ceil(float(serviceDetail.price_labour)*0.14)) + float(serviceDetail.price_labour)+ 0)
+                        total_price =  int(total_price + (math.ceil(float(serviceDetail.price_labour)*0.145)) + float(serviceDetail.price_labour)+ 0)
                     item = {
                         'id':serviceDetail.id,
                         'name':serviceDetail.name,
@@ -603,9 +606,12 @@ def cart(request):
                         total_price = total_price+ float(serviceDetail.price_parts)
                     if len(serviceDetail.price_labour):
                         if (serviceDetail.car_bike == "Bike"):
-                            total_price =  int(total_price + (math.ceil(float(serviceDetail.price_labour)*0.14)) + float(serviceDetail.price_labour)+ 150)
+                            if(serviceDetail.dealer_category == "ClickGarage Doorstep"):
+                                total_price =  int(total_price + (math.ceil(float(serviceDetail.price_labour)*0.145)) + float(serviceDetail.price_labour))
+                            else:
+                                total_price =  int(total_price + (math.ceil(float(serviceDetail.price_labour)*0.145)) + float(serviceDetail.price_labour)+ 150)
                         else:
-                            total_price =  int(total_price + (math.ceil(float(serviceDetail.price_labour)*0.14)) + float(serviceDetail.price_labour)+ 0)
+                            total_price =  int(total_price + (math.ceil(float(serviceDetail.price_labour)*0.145)) + float(serviceDetail.price_labour)+ 0)
                     item = {
                         'id':serviceDetail.id,
                         'name':serviceDetail.name,
