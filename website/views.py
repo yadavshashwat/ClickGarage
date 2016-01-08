@@ -127,9 +127,6 @@ def mobile(request):
     return HttpResponse(template.render(context))
 
 def order(request):
-    print 'order'
-    print 'd ', request.user
-    print 'tru ', request.user.is_authenticated()
     if 1 or request.user.is_authenticated():
         template = loader.get_template('website/order.html')
         car_obj = views.fetch_car(request, False)
@@ -159,6 +156,17 @@ def checkout(request):
         template = loader.get_template('website/checkout.html')
         carInfo = {}
         varCarObj = Car.objects.filter(id=selectCarID)
+
+        userObj = {}
+        userObj['userid'] = request.user.id
+        if request.user.first_name and len(request.user.first_name):
+            userObj['username'] = request.user.first_name
+        else:
+            userObj['username'] = request.user.username
+        # res['username'] = request.user.first_name
+        userObj['contact'] = request.user.contact_no
+        userObj['email'] = request.user.email
+
 
         selectCarName = False
         if len(varCarObj):
@@ -450,7 +458,8 @@ def checkout(request):
                     'cart':contextDict,
                     'cart_number':len(contextDict[selectCarName]),
                     'car_info':carInfo,
-                    'emergFlag':emergFlag
+                    'emergFlag':emergFlag,
+                    'userObj':userObj
                 })
                 return HttpResponse(template.render(context))
 

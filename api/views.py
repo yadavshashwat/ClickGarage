@@ -1901,6 +1901,14 @@ def place_order(request):
         if request.user.is_authenticated():
             userID = request.user.id
             email = request.user.email
+            if not email:
+                email = get_param(request, 'email', None)
+
+            if not email:
+                usr = CGUser.objects.filter(is_staff=True)
+                if len(usr):
+                    email = usr[0].email
+
         else:
             usr = CGUser.objects.filter(is_staff=True)
             email = get_param(request, 'email', None)
@@ -2644,7 +2652,7 @@ def fetch_user_cart(request):
 
 def apply_coupon(request):
     obj = {}
-    obj['status'] = False
+    obj['status'] = True
     obj['result'] = {}
     obj['msg'] = "Invalid Coupon"
     cpn_cd       = get_param(request,'c_cd',None)
@@ -3406,8 +3414,7 @@ def service_selected(request):
                         ,'labour_price':service.price_labour
                         ,'discosunt':service.discount
                         ,'priority':service.priority
-                     }
-                    )
+                     } )
     if (service=="cleaning"):
         CleanCatObjs=CleaningCategoryServices.objects.filter(id=id_selection)
         for service in CleanCatObjs:
@@ -3416,7 +3423,7 @@ def service_selected(request):
                         ,'vendor':service.vendor
                         ,'category':service.category
                         ,'car_cat':service.car_cat
-                        ,'service':service.service
+                        ,'type_service':service.service
                         ,'price_labour':service.price_labour
                         ,'price_parts':service.price_parts
                         ,'total_price':service.price_total
@@ -3425,7 +3432,7 @@ def service_selected(request):
                         ,'rating':service.rating
                         ,'reviews':service.reviews
                         ,'priority':service.priority
-                              } )
+                      } )
     if (service=="vas"):
         VasCatObjs=VASCategoryServices.objects.filter(id=id_selection)
         for service in VasCatObjs:
@@ -3434,7 +3441,7 @@ def service_selected(request):
                         ,'vendor':service.vendor
                         ,'category':service.category
                         ,'car_cat':service.car_cat
-                        ,'service':service.service
+                        ,'type_service':service.service
                         ,'price_labour':service.price_labour
                         ,'price_parts':service.price_parts
                         ,'total_price':service.price_total
@@ -3445,7 +3452,7 @@ def service_selected(request):
                         ,'reviews':service.reviews
                         ,'car_bike': service.car_bike
                         ,'priority':service.priority
-                              } )
+                      } )
     if (service=="windshield"):
         wsTypeObjs=WindShieldServiceDetails.objects.filter(id=id_selection)
         # wsTypeObjs = WindShieldServiceDetails.objects.filter(city=city,vendor = vendor, ws_type = ws_type, carname = carname, brand=brand)
@@ -3455,7 +3462,7 @@ def service_selected(request):
                                     ,'brand':service.brand
                                     ,'carname':service.carname
                                     ,'colour':service.colour
-                                    ,'ws_type':service.ws_type
+                                    ,'type_service':service.ws_type
                                     ,'ws_subtype':service.ws_subtype
                                     ,'price_ws':service.price_ws
                                     ,'price_sealant':service.price_sealant
