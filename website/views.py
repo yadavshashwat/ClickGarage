@@ -1030,12 +1030,17 @@ def orderParse(request, carName, city):
         city = False
 
     title = ''
+    meta_desc = ''
     if carName:
         carName = " ".join(carName.split('-'))
         car_obj = views.getCarObjFromName([carName])
         if len(car_obj):
             car_obj = car_obj[0]
-            title = carName + ' - ClickGarage - On Demand Car and Bike Services'
+            carCleanName = carName.replace('Diesel',' ').replace('Petrol',' ').strip()
+            title = carCleanName + ' Servicing, Repair & Cleaning @ ClickGarage'
+            meta_desc = 'Solution to all your '+carCleanName+' maintenance needs.' \
+                                  ' Compare prices, choose from a network of authorized and multibrand service centers, ' \
+                                  'book doorstep services, get expert advice and save money. All within a few clicks.'
         else:
             car_obj = False
     else:
@@ -1052,7 +1057,8 @@ def orderParse(request, carName, city):
         'carSelected': car_obj,
         'cars':cars,
         'city':city,
-        'title':title
+        'title':title,
+        'meta_desc':meta_desc
     })
     return HttpResponse(template.render(context))
 
