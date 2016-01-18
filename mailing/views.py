@@ -12,7 +12,7 @@ from email.MIMEImage import MIMEImage
 from email.MIMEBase import MIMEBase
 from email import Encoders
 
-helpline_number = "09620839801"
+helpline_number = "09717353148"
 key = "ab33f626-fba5-4bff-9a2b-68a7e9eed43c"
 sendername = "CLKGRG"
 
@@ -25,7 +25,7 @@ smtp_server = 'email-smtp.us-west-2.amazonaws.com'
 smtp_username = 'AKIAJ4U5VOXPWBT37X4A'
 smtp_password = 'AkJxDBO/FOsxkF1Ucd1EhblV5DTAVLpFfqWQv/KI2gn7'
 from_address = "ClickGarage <bookings@clickgarage.in>"
-helpline_number = "+91-9620839801"
+helpline_number = "+91-9717353148"
 
 
 def send_sms(type,to,message):
@@ -4028,7 +4028,7 @@ def send_cancel_email(to_address,to_name,booking_id_1):
 	server.sendmail(me, you, msg.as_string())
 	server.quit()
 
-def send_feedback_bill(to_address,to_name,service,booking_id,path_file,amount):
+def send_feedback_report(to_address,to_name,booking_id,path_file,amount):
 	me = from_address
 	you = to_address
 	booking_id = str(booking_id)
@@ -4668,7 +4668,7 @@ def send_feedback_bill(to_address,to_name,service,booking_id,path_file,amount):
 	Booking ID #"""+booking_id+"""</h3>
 	&nbsp;
 
-	<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span id="docs-internal-guid-a5acf9b5-2d61-8cb0-61dd-92f1d4247aeb"><span style="background-color: transparent;color: #000000;font-family: arial;font-size: 14.6666666666667px;vertical-align: baseline;white-space: pre-wrap;">Hello """+to_name+"""! Your ClickGarage booking for """+service+""" is complete. Your total bill amount was """+amount+""". It was a pleasure serving you. Kindly spare some time to share your valuable feedback.</span></span></p>
+	<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span id="docs-internal-guid-a5acf9b5-2d61-8cb0-61dd-92f1d4247aeb"><span style="background-color: transparent;color: #000000;font-family: arial;font-size: 14.6666666666667px;vertical-align: baseline;white-space: pre-wrap;">Hello """+to_name+"""! Your ClickGarage booking is complete. Your total amount paid was """+amount+""". Please find attached a detailed service report. It was a pleasure serving you. Kindly spare some time to share your valuable feedback.</span></span></p>
 <!--Python-->
 
 <title>ClickGarage Feedback</title>
@@ -4785,6 +4785,7 @@ body {
 
 .ss-q-title {
   font-family: "Roboto";
+  padding-top:10px;
   color: rgb(80,80,80);
   font-weight: 700;
   font-size: 1.080rem;
@@ -4964,69 +4965,62 @@ input[type='text'], input:not([type]), textarea {
 
 
 
-
 <div class="ss-form-container"><div class="ss-header-image-container"><div class="ss-header-image-image"><div class="ss-header-image-sizer"></div></div></div>
 <div class="ss-top-of-page"><div class="ss-form-heading"><h1 class="ss-form-title" dir="ltr">ClickGarage Feedback</h1>
 <div class="ss-form-desc ss-no-ignore-whitespace" dir="ltr">Help us serve you better!</div>
 
-<div class="ss-required-asterisk" aria-hidden="true"></div></div></div>
+<div class="ss-required-asterisk" aria-hidden="true">*Required</div></div></div>
 <div class="ss-form"><form action="https://docs.google.com/forms/d/1__CYdYzqK2NcZvz4JHCEpVqHQR3A9rRYw_guvXOC-xQ/formResponse" method="POST" id="ss-form" target="_self" onsubmit=""><ol role="list" class="ss-question-list" style="padding-left: 0">
 <div class="ss-form-question errorbox-good" role="listitem">
 <div dir="auto" class="ss-item ss-item-required ss-text"><div class="ss-form-entry">
-<label class="ss-q-item-label" for="entry_1026407056"><div class="ss-q-title">Booking ID #
+<label class="ss-q-item-label" for="entry_1026407056"><div class="ss-q-title">Name
 <label for="itemView.getDomIdToLabel()" aria-label="(Required field)"></label>
 <span class="ss-required-asterisk" aria-hidden="true">*</span></div>
 <div class="ss-q-help ss-secondary-text" dir="auto"></div></label>
-<input type="text" name="entry.1026407056" value="" class="ss-q-short" id="entry_1026407056" dir="auto" aria-label="Booking ID #  " aria-required="true" required="" title="">
+<input type="text" name="entry.1026407056" value='"""+to_name+"""' class="ss-q-short" id="entry_1026407056" dir="auto" aria-label="Name  " aria-required="true" required="" title="" disabled>
 <div class="error-message" id="935836896_errorMessage"></div>
-<br>
 
 </div></div></div> <div class="ss-form-question errorbox-good" role="listitem">
-<br>
 <div dir="auto" class="ss-item ss-item-required ss-checkbox"><div class="ss-form-entry">
-<label class="ss-q-item-label" for="entry_1329036029"><div class="ss-q-title">1. Did the driver reach on promised time?
+<label class="ss-q-item-label" for="entry_1329036029"><div class="ss-q-title" style="padding-top:10px;">Did the driver/ mechanic reach on promised time?
 <label for="itemView.getDomIdToLabel()" aria-label="(Required field)"></label>
 <span class="ss-required-asterisk" aria-hidden="true">*</span></div>
 <div class="ss-q-help ss-secondary-text" dir="auto"></div></label>
 
-<ul class="ss-choices ss-choices-required" role="group" aria-label="Did the driver reach on promised time?  "><li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="checkbox" name="entry.1935106486" value="Yes" id="group_1935106486_1" role="checkbox" class="ss-q-checkbox" aria-required="true"></span>
+<ul class="ss-choices ss-choices-required" style="list-style:none; padding-top:10px;" role="group" aria-label="Did the driver/ mechanic reach on promised time?  "><li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="checkbox" name="entry.1935106486" value="Yes" id="group_1935106486_1" role="checkbox" class="ss-q-checkbox" aria-required="true"></span>
 <span class="ss-choice-label">Yes</span>
 </label></li> <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="checkbox" name="entry.1935106486" value="No" id="group_1935106486_2" role="checkbox" class="ss-q-checkbox" aria-required="true"></span>
 <span class="ss-choice-label">No</span>
 </label></li></ul>
 <div class="error-message" id="1329036029_errorMessage"></div>
 </div></div></div> <div class="ss-form-question errorbox-good" role="listitem">
-<br>
 <div dir="auto" class="ss-item ss-item-required ss-checkbox"><div class="ss-form-entry">
-<label class="ss-q-item-label" for="entry_1462549280"><div class="ss-q-title">2. Was the driver courteous in receiving the car/bike?
+<label class="ss-q-item-label" for="entry_1462549280"><div class="ss-q-title" style="padding-top:10px;">Was the staff courteous in receiving the vehicle?
 <label for="itemView.getDomIdToLabel()" aria-label="(Required field)"></label>
 <span class="ss-required-asterisk" aria-hidden="true">*</span></div>
 <div class="ss-q-help ss-secondary-text" dir="auto"></div></label>
 
-<ul class="ss-choices ss-choices-required" role="group" aria-label="Was the driver courteous in receiving the car/bike?  "><li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="checkbox" name="entry.949514215" value="Yes" id="group_949514215_1" role="checkbox" class="ss-q-checkbox" aria-required="true"></span>
+<ul class="ss-choices ss-choices-required" style="list-style:none; padding-top:10px;" role="group" aria-label="Was the staff courteous in receiving the vehicle?  "><li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="checkbox" name="entry.949514215" value="Yes" id="group_949514215_1" role="checkbox" class="ss-q-checkbox" aria-required="true"></span>
 <span class="ss-choice-label">Yes</span>
 </label></li> <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="checkbox" name="entry.949514215" value="No" id="group_949514215_2" role="checkbox" class="ss-q-checkbox" aria-required="true"></span>
 <span class="ss-choice-label">No</span>
 </label></li></ul>
 <div class="error-message" id="1462549280_errorMessage"></div>
 </div></div></div> <div class="ss-form-question errorbox-good" role="listitem">
-<br>
-<div dir="auto" class="ss-item ss-item-required ss-scale"><div class="ss-form-entry">
-<label class="ss-q-item-label" for="entry_1630365110"><div class="ss-q-title">3. How would you rate the quality of the washing and cleaning of your car/bike?
-<label for="itemView.getDomIdToLabel()" aria-label="(Required field)"></label>
-<span class="ss-required-asterisk" aria-hidden="true">*</span></div>
+<div dir="auto" class="ss-item  ss-scale"><div class="ss-form-entry">
+<label class="ss-q-item-label" for="entry_1630365110"><div class="ss-q-title" style="padding-top:10px;">How would you rate the quality of the washing and cleaning of your vehicle? (if applicable)
+</div>
 <div class="ss-q-help ss-secondary-text" dir="auto"></div></label>
 
 <table border="0" cellpadding="5" cellspacing="0" id="entry_193013796"><tbody><tr aria-hidden="true"><td class="ss-scalenumbers"></td>
 <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_193013796_1">1</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_193013796_2">2</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_193013796_3">3</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_193013796_4">4</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_193013796_5">5</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_193013796_6">6</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_193013796_7">7</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_193013796_8">8</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_193013796_9">9</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_193013796_10">10</label></td>
 <td class="ss-scalenumbers"></td></tr>
-<tr role="radiogroup" aria-label="How would you rate the quality of the washing and cleaning of your car/bike?  Select a value from a range of 1,Bad, to 10,Excellent,."><td class="ss-scalerow ss-leftlabel"><div aria-hidden="true" class="aria-todo">Bad</div></td>
-<td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.193013796" value="1" id="group_193013796_1" role="radio" class="ss-q-radio" aria-label="1" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.193013796" value="2" id="group_193013796_2" role="radio" class="ss-q-radio" aria-label="2" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.193013796" value="3" id="group_193013796_3" role="radio" class="ss-q-radio" aria-label="3" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.193013796" value="4" id="group_193013796_4" role="radio" class="ss-q-radio" aria-label="4" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.193013796" value="5" id="group_193013796_5" role="radio" class="ss-q-radio" aria-label="5" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.193013796" value="6" id="group_193013796_6" role="radio" class="ss-q-radio" aria-label="6" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.193013796" value="7" id="group_193013796_7" role="radio" class="ss-q-radio" aria-label="7" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.193013796" value="8" id="group_193013796_8" role="radio" class="ss-q-radio" aria-label="8" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.193013796" value="9" id="group_193013796_9" role="radio" class="ss-q-radio" aria-label="9" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.193013796" value="10" id="group_193013796_10" role="radio" class="ss-q-radio" aria-label="10" required="" aria-required="true"></div></td>
+<tr role="radiogroup" aria-label="How would you rate the quality of the washing and cleaning of your vehicle? (if applicable)  Select a value from a range from 1,Bad, to 10,Excellent,."><td class="ss-scalerow ss-leftlabel"><div aria-hidden="true" class="aria-todo">Bad</div></td>
+<td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.193013796" value="1" id="group_193013796_1" role="radio" class="ss-q-radio" aria-label="1"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.193013796" value="2" id="group_193013796_2" role="radio" class="ss-q-radio" aria-label="2"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.193013796" value="3" id="group_193013796_3" role="radio" class="ss-q-radio" aria-label="3"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.193013796" value="4" id="group_193013796_4" role="radio" class="ss-q-radio" aria-label="4"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.193013796" value="5" id="group_193013796_5" role="radio" class="ss-q-radio" aria-label="5"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.193013796" value="6" id="group_193013796_6" role="radio" class="ss-q-radio" aria-label="6"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.193013796" value="7" id="group_193013796_7" role="radio" class="ss-q-radio" aria-label="7"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.193013796" value="8" id="group_193013796_8" role="radio" class="ss-q-radio" aria-label="8"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.193013796" value="9" id="group_193013796_9" role="radio" class="ss-q-radio" aria-label="9"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.193013796" value="10" id="group_193013796_10" role="radio" class="ss-q-radio" aria-label="10"></div></td>
 <td class="ss-scalerow ss-rightlabel" aria-hidden="true">Excellent</td></tr></tbody></table>
 </div></div></div> <div class="ss-form-question errorbox-good" role="listitem">
-<br>
 <div dir="auto" class="ss-item ss-item-required ss-scale"><div class="ss-form-entry">
-<label class="ss-q-item-label" for="entry_1663139288"><div class="ss-q-title">4. How do you rate the overall interaction and the experience?
+<label class="ss-q-item-label" for="entry_1663139288"><div class="ss-q-title" style="padding-top:10px;">How do you rate the overall interaction and the experience?
 <label for="itemView.getDomIdToLabel()" aria-label="(Required field)"></label>
 <span class="ss-required-asterisk" aria-hidden="true">*</span></div>
 <div class="ss-q-help ss-secondary-text" dir="auto"></div></label>
@@ -5034,27 +5028,12 @@ input[type='text'], input:not([type]), textarea {
 <table border="0" cellpadding="5" cellspacing="0" id="entry_1618681913"><tbody><tr aria-hidden="true"><td class="ss-scalenumbers"></td>
 <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_1618681913_1">1</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_1618681913_2">2</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_1618681913_3">3</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_1618681913_4">4</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_1618681913_5">5</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_1618681913_6">6</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_1618681913_7">7</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_1618681913_8">8</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_1618681913_9">9</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_1618681913_10">10</label></td>
 <td class="ss-scalenumbers"></td></tr>
-<tr role="radiogroup" aria-label="How do you rate the overall interaction and the experience?  Select a value from a range of 1,Bad, to 10,Excellent,."><td class="ss-scalerow ss-leftlabel"><div aria-hidden="true" class="aria-todo">Bad</div></td>
+<tr role="radiogroup" aria-label="How do you rate the overall interaction and the experience?  Select a value from a range from 1,Bad, to 10,Excellent,."><td class="ss-scalerow ss-leftlabel"><div aria-hidden="true" class="aria-todo">Bad</div></td>
 <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.1618681913" value="1" id="group_1618681913_1" role="radio" class="ss-q-radio" aria-label="1" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.1618681913" value="2" id="group_1618681913_2" role="radio" class="ss-q-radio" aria-label="2" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.1618681913" value="3" id="group_1618681913_3" role="radio" class="ss-q-radio" aria-label="3" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.1618681913" value="4" id="group_1618681913_4" role="radio" class="ss-q-radio" aria-label="4" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.1618681913" value="5" id="group_1618681913_5" role="radio" class="ss-q-radio" aria-label="5" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.1618681913" value="6" id="group_1618681913_6" role="radio" class="ss-q-radio" aria-label="6" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.1618681913" value="7" id="group_1618681913_7" role="radio" class="ss-q-radio" aria-label="7" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.1618681913" value="8" id="group_1618681913_8" role="radio" class="ss-q-radio" aria-label="8" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.1618681913" value="9" id="group_1618681913_9" role="radio" class="ss-q-radio" aria-label="9" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.1618681913" value="10" id="group_1618681913_10" role="radio" class="ss-q-radio" aria-label="10" required="" aria-required="true"></div></td>
 <td class="ss-scalerow ss-rightlabel" aria-hidden="true">Excellent</td></tr></tbody></table>
 </div></div></div> <div class="ss-form-question errorbox-good" role="listitem">
-<br>
 <div dir="auto" class="ss-item ss-item-required ss-scale"><div class="ss-form-entry">
-<label class="ss-q-item-label" for="entry_1368084842"><div class="ss-q-title">5. How would you rate the overall pickup and drop experience?
-<label for="itemView.getDomIdToLabel()" aria-label="(Required field)"></label>
-<span class="ss-required-asterisk" aria-hidden="true">*</span></div>
-<div class="ss-q-help ss-secondary-text" dir="auto"></div></label>
-
-<table border="0" cellpadding="5" cellspacing="0" id="entry_443851258"><tbody><tr aria-hidden="true"><td class="ss-scalenumbers"></td>
-<td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_443851258_1">1</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_443851258_2">2</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_443851258_3">3</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_443851258_4">4</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_443851258_5">5</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_443851258_6">6</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_443851258_7">7</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_443851258_8">8</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_443851258_9">9</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_443851258_10">10</label></td>
-<td class="ss-scalenumbers"></td></tr>
-<tr role="radiogroup" aria-label="How would you rate the overall pickup and drop experience?  Select a value from a range of 1,Bad, to 10,Excellent,."><td class="ss-scalerow ss-leftlabel"><div aria-hidden="true" class="aria-todo">Bad</div></td>
-<td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.443851258" value="1" id="group_443851258_1" role="radio" class="ss-q-radio" aria-label="1" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.443851258" value="2" id="group_443851258_2" role="radio" class="ss-q-radio" aria-label="2" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.443851258" value="3" id="group_443851258_3" role="radio" class="ss-q-radio" aria-label="3" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.443851258" value="4" id="group_443851258_4" role="radio" class="ss-q-radio" aria-label="4" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.443851258" value="5" id="group_443851258_5" role="radio" class="ss-q-radio" aria-label="5" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.443851258" value="6" id="group_443851258_6" role="radio" class="ss-q-radio" aria-label="6" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.443851258" value="7" id="group_443851258_7" role="radio" class="ss-q-radio" aria-label="7" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.443851258" value="8" id="group_443851258_8" role="radio" class="ss-q-radio" aria-label="8" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.443851258" value="9" id="group_443851258_9" role="radio" class="ss-q-radio" aria-label="9" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.443851258" value="10" id="group_443851258_10" role="radio" class="ss-q-radio" aria-label="10" required="" aria-required="true"></div></td>
-<td class="ss-scalerow ss-rightlabel" aria-hidden="true">Excellent</td></tr></tbody></table>
-</div></div></div> <div class="ss-form-question errorbox-good" role="listitem">
-<br>
-<div dir="auto" class="ss-item ss-item-required ss-scale"><div class="ss-form-entry">
-<label class="ss-q-item-label" for="entry_1622944453"><div class="ss-q-title">6. How likely are you to recommend ClickGarage services to others?
+<label class="ss-q-item-label" for="entry_1622944453"><div class="ss-q-title" style="padding-top:10px;">How likely are you to recommend ClickGarage services to others?
 <label for="itemView.getDomIdToLabel()" aria-label="(Required field)"></label>
 <span class="ss-required-asterisk" aria-hidden="true">*</span></div>
 <div class="ss-q-help ss-secondary-text" dir="auto"></div></label>
@@ -5062,40 +5041,40 @@ input[type='text'], input:not([type]), textarea {
 <table border="0" cellpadding="5" cellspacing="0" id="entry_787110920"><tbody><tr aria-hidden="true"><td class="ss-scalenumbers"></td>
 <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_1">1</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_2">2</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_3">3</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_4">4</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_5">5</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_6">6</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_7">7</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_8">8</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_9">9</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_10">10</label></td>
 <td class="ss-scalenumbers"></td></tr>
-<tr role="radiogroup" aria-label="How likely are you to recommend ClickGarage services to others?  Select a value from a range of 1,No, Never, to 10,Yes, Definitely,."><td class="ss-scalerow ss-leftlabel"><div aria-hidden="true" class="aria-todo">No, Never</div></td>
+<tr role="radiogroup" aria-label="How likely are you to recommend ClickGarage services to others?  Select a value from a range from 1,No, Never, to 10,Yes, Definitely,."><td class="ss-scalerow ss-leftlabel"><div aria-hidden="true" class="aria-todo">No, Never</div></td>
 <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="1" id="group_787110920_1" role="radio" class="ss-q-radio" aria-label="1" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="2" id="group_787110920_2" role="radio" class="ss-q-radio" aria-label="2" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="3" id="group_787110920_3" role="radio" class="ss-q-radio" aria-label="3" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="4" id="group_787110920_4" role="radio" class="ss-q-radio" aria-label="4" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="5" id="group_787110920_5" role="radio" class="ss-q-radio" aria-label="5" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="6" id="group_787110920_6" role="radio" class="ss-q-radio" aria-label="6" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="7" id="group_787110920_7" role="radio" class="ss-q-radio" aria-label="7" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="8" id="group_787110920_8" role="radio" class="ss-q-radio" aria-label="8" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="9" id="group_787110920_9" role="radio" class="ss-q-radio" aria-label="9" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="10" id="group_787110920_10" role="radio" class="ss-q-radio" aria-label="10" required="" aria-required="true"></div></td>
 <td class="ss-scalerow ss-rightlabel" aria-hidden="true">Yes, Definitely</td></tr></tbody></table>
 </div></div></div> <div class="ss-form-question errorbox-good" role="listitem">
-<br>
 <div dir="auto" class="ss-item  ss-paragraph-text"><div class="ss-form-entry">
-<label class="ss-q-item-label" for="entry_1853312704"><div class="ss-q-title">7. Do you have any additional comments, feedback or ideas to help us improve our services?
+<label class="ss-q-item-label" for="entry_1853312704"><div class="ss-q-title" style="padding-top:10px;">Do you have any additional comments, feedback or ideas to help us improve our services?
 </div>
 <div class="ss-q-help ss-secondary-text" dir="auto"></div></label>
-<textarea name="entry.1853312704" rows="8" cols="0" class="ss-q-long" id="entry_1853312704" dir="auto" aria-label="Do you have any additional comments, feedback or ideas to help us improve our services?  " style="width: 80%;"></textarea>
+<textarea name="entry.1853312704" rows="5" cols="50" class="ss-q-long" id="entry_1853312704" dir="auto" aria-label="Do you have any additional comments, feedback or ideas to help us improve our services?  "></textarea>
 <div class="error-message" id="1325539642_errorMessage"></div>
-<div class="required-message"></div>
+
 </div></div></div> <div class="ss-form-question errorbox-good" role="listitem">
-<br>
 <div dir="auto" class="ss-item  ss-paragraph-text"><div class="ss-form-entry">
-<label class="ss-q-item-label" for="entry_1390039714"><div class="ss-q-title">8. Please write a testimonial for us. :)
+<label class="ss-q-item-label" for="entry_1390039714"><div class="ss-q-title" style="padding-top:10px;">Please write a testimonial for us. :)
 </div>
 <div class="ss-q-help ss-secondary-text" dir="auto"></div></label>
-<textarea name="entry.1390039714" rows="8" cols="0" class="ss-q-long" id="entry_1390039714" dir="auto" aria-label="Please write a testimonial for us. :)  " style="width: 80%;"></textarea>
+<textarea name="entry.1390039714" rows="5" cols="50" class="ss-q-long" id="entry_1390039714" dir="auto" aria-label="Please write a testimonial for us. :)  "></textarea>
 <div class="error-message" id="918343290_errorMessage"></div>
+
 </div></div></div>
-<input type="hidden" name="draftResponse" value="[,,&quot;-2376870797102009370&quot;]
+<input type="hidden" name="draftResponse" value="[,,&quot;-7794270178595494330&quot;]
 ">
 <input type="hidden" name="pageHistory" value="0">
 
 <input type="hidden" name="fvv" value="0">
 
 
-<input type="hidden" name="fbzx" value="-2376870797102009370">
+<input type="hidden" name="fbzx" value="-7794270178595494330">
 
 <div class="ss-item ss-navigate"><table id="navigation-table"><tbody><tr><td class="ss-form-entry goog-inline-block" id="navigation-buttons" dir="ltr">
 <input type="submit" name="submit" value="Submit" id="ss-submit" class="jfk-button jfk-button-action ">
-</td>
+<!-- <div class="ss-password-warning ss-secondary-text">Never submit passwords through Google Forms.</div></td> -->
 </tr></tbody></table></div></ol></form></div>
+
 <div class="ss-footer"><div class="ss-attribution"></div>
 <div class="ss-legal"><div class="disclaimer-separator"></div>
 
@@ -5275,7 +5254,7 @@ W-22, Second Floor, Green Park, New Delhi - 110016</div>
 	part = MIMEBase('application', "octet-stream")
 	part.set_payload(open(path_file, "rb").read())
 	Encoders.encode_base64(part)
-	part.add_header('Content-Disposition', 'attachment; '+'filename=Invoice_'+booking_id+'.pdf')
+	part.add_header('Content-Disposition', 'attachment; '+'filename=Report_'+booking_id+'.pdf')
 	
 	msg.attach(part)
 
@@ -6164,6 +6143,9 @@ input[type='text'], input:not([type]), textarea {
 }
 }
 
+.ss-q-title{
+padding-top:10px;}
+
 </style>
 
 
@@ -6253,7 +6235,7 @@ input[type='text'], input:not([type]), textarea {
 <span class="ss-required-asterisk" aria-hidden="true">*</span></div>
 <div class="ss-q-help ss-secondary-text" dir="auto"></div></label>
 
-<ul class="ss-choices ss-choices-required" role="group" aria-label="Did the driver reach on promised time?  "><li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="checkbox" name="entry.1935106486" value="Yes" id="group_1935106486_1" role="checkbox" class="ss-q-checkbox" aria-required="true"></span>
+<ul class="ss-choices ss-choices-required" style="list-style:none;" role="group" aria-label="Did the driver reach on promised time?  "><li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="checkbox" name="entry.1935106486" value="Yes" id="group_1935106486_1" role="checkbox" class="ss-q-checkbox" aria-required="true"></span>
 <span class="ss-choice-label">Yes</span>
 </label></li> <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="checkbox" name="entry.1935106486" value="No" id="group_1935106486_2" role="checkbox" class="ss-q-checkbox" aria-required="true"></span>
 <span class="ss-choice-label">No</span>
@@ -6267,7 +6249,7 @@ input[type='text'], input:not([type]), textarea {
 <span class="ss-required-asterisk" aria-hidden="true">*</span></div>
 <div class="ss-q-help ss-secondary-text" dir="auto"></div></label>
 
-<ul class="ss-choices ss-choices-required" role="group" aria-label="Was the driver courteous in receiving the car/bike?  "><li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="checkbox" name="entry.949514215" value="Yes" id="group_949514215_1" role="checkbox" class="ss-q-checkbox" aria-required="true"></span>
+<ul class="ss-choices ss-choices-required" role="group" style="list-style:none;" aria-label="Was the driver courteous in receiving the car/bike?  "><li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="checkbox" name="entry.949514215" value="Yes" id="group_949514215_1" role="checkbox" class="ss-q-checkbox" aria-required="true"></span>
 <span class="ss-choice-label">Yes</span>
 </label></li> <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="checkbox" name="entry.949514215" value="No" id="group_949514215_2" role="checkbox" class="ss-q-checkbox" aria-required="true"></span>
 <span class="ss-choice-label">No</span>
