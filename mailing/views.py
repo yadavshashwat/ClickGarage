@@ -29,7 +29,7 @@ helpline_number = "+91-9717353148"
 
 
 def send_sms(type,to,message):
-	url = "http://sms.hspsms.com:80/sendSMS?username=clickgarage&message="+ message + "&sendername=" + sendername+ "&smstype=" + type + "&numbers=" + to + "&apikey=" + key
+	url = "http://sms.hspsms.com:/sendSMS?username=clickgarage&message="+ message + "&sendername=" + sendername+ "&smstype=" + type + "&numbers=" + to + "&apikey=" + key
 	r = urllib2.urlopen(url)
 
 def send_otp(to,message):
