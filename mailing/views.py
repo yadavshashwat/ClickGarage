@@ -12,7 +12,7 @@ from email.MIMEImage import MIMEImage
 from email.MIMEBase import MIMEBase
 from email import Encoders
 
-helpline_number = "09717353148"
+helpline_number = "9717353148"
 key = "ab33f626-fba5-4bff-9a2b-68a7e9eed43c"
 sendername = "CLKGRG"
 
@@ -29,7 +29,7 @@ helpline_number = "+91-9717353148"
 
 
 def send_sms(type,to,message):
-	url = "http://sms.hspsms.com:8090/sendSMS?username=clickgarage&message="+ message + "&sendername=" + sendername+ "&smstype=" + type + "&numbers=" + to + "&apikey=" + key
+	url = "http://sms.hspsms.com:80/sendSMS?username=clickgarage&message="+ message + "&sendername=" + sendername+ "&smstype=" + type + "&numbers=" + to + "&apikey=" + key
 	r = urllib2.urlopen(url)
 
 def send_otp(to,message):
