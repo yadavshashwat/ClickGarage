@@ -329,4 +329,17 @@ class Otp(models.Model):
     updated      =   models.DateTimeField(default=None)
     username     = models.CharField(max_length=50)
 
+class Driver(models.Model):
+    mobile  = models.CharField(max_length=50)
+    name    = models.CharField(max_length=50)
+
+class DriverBooking(models.Model):
+    driver      = models.ForeignKey('Driver')   
+    booking     = models.ForeignKey('Transaction')
+    status      = models.ForeignKey('Location')
+
+class DriverStatus(models.Model):
+    status   = models.CharField(max_length=50)
+    lat      = models.DecimalField(null=True, max_digits=7, decimal_places=5) 
+    lon      = models.DecimalField(null=True, max_digits=7, decimal_places=5)
 
