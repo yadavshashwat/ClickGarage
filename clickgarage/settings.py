@@ -52,7 +52,8 @@ INSTALLED_APPS = (
     'dataEntry',
     'website',
     'mailing'
-    ,'ajaxuploader',)
+    ,'ajaxuploader',
+    'djcelery',)
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
