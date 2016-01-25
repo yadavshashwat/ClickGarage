@@ -1,11 +1,11 @@
 from __future__ import absolute_import
-from django.conf import settings  # noqa
+from django.conf import settings  
 import os
 
 from celery import Celery
 
 # set the default Django settings module for the 'celery' program.
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'clickgarage.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "clickgarage.settings")
 
 app = Celery('clickgarage')
 
