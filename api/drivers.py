@@ -1,7 +1,11 @@
 from api.models import *
 from django.http import HttpResponse
+import api.tasks as tasks
 
 secret_string = "dmFydW5ndWxhdGlsaWtlc2dhbG91dGlrZWJhYg=="
+
+def test_func():
+    return tasks.test_function()
 
 def signUpDriver(request):
     if (request.method == 'POST') :
@@ -10,7 +14,7 @@ def signUpDriver(request):
         mobile      = body.get('mobile')
         name        = body.get('name')
         
-        if (body.get('secret') && body.get('secret')=='anaconda') :
+        if (body.get('secret') and body.get('secret')=='anaconda') :
             driver, exists = Driver.objects.get_or_create(mobile=mobile, name=name)
 
             if exists :

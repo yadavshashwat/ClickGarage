@@ -1,12 +1,15 @@
-from mailing import views as mViews
 from __future__ import absolute_import
-
+from mailing import views as mViews
 from celery import shared_task
+
+@shared_task
+def test_function():
+	return "yay"
 
 @shared_task
 def send_sms(type,to,message):
 	mViews.send_sms(type,to,message)
-    return True
+	return True
 
 @shared_task
 def send_otp(to,message):
@@ -56,4 +59,4 @@ def send_postdrop(to_name,to,booking_id):
 @shared_task
 def send_booking_email_doorstep(to_address,to_name,time_start,date,booking_id):
 	mViews.send_booking_email_doorstep(to_address,to_name,time_start,date,booking_id)
-	return True	
+	return True 
