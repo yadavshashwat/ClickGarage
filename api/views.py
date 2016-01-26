@@ -2341,6 +2341,7 @@ def fetch_car_services_new(request):
                             ,'brand':service.brand
                             ,'car_name':service.carname
                             ,'type_service' : service.type_service
+                            ,'service_desc' : service.service_desc
                             ,'regular_checks':service.regular_checks
 
                             ,'parts_replaced':service.part_replacement
@@ -2405,13 +2406,23 @@ def fetch_car_servicedetails_new(request):
                               ,'labour_price':service.price_labour
                               ,'wa_price':service.wheel_alignment
                               ,'wb_price':service.wheel_balancing
-                              ,'wa_wb_present':service.WA_WB_Inc
+                              # ,'wa_wb_present':service.WA_WB_Inc
+                              ,'service_desc':service.service_desc
                               ,'dealer_details':service.detail_dealers
+                             ,'dry_cleaning': service.dry_cleaning
+                             ,'engine_additive': service.engine_additive
+                             ,'injector_cleaning': service.injector_cleaning
+                             ,'rubbing_polishing': service.rubbing_polishing
+                             ,'anti_rust'        : service.anti_rust
+                             ,'teflon'           : service.teflon
+                             ,'engine_flush'    : service.engine_flush
+                             ,'ac_servicing'    : service.ac_servicing
+                             ,'ac_disinfection': service.ac_disinfection
                               # ,'car_bike':car_bike
                         ,'type_service':service.type_service
                         ,'part_dic':service.part_dic
                         ,'labour_price':service.price_labour
-                        ,'discosunt':service.discount
+                        ,'discount':service.discount
                         ,'priority':service.priority
                      }
                         )
