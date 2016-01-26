@@ -1461,7 +1461,7 @@ def place_order(request):
     if (request.user and request.user.is_authenticated()) or random_req_auth(request) or (loc == 'mobile'):
         name = get_param(request, 'name', None)
         number = get_param(request, 'number', None)
-        car_reg_number = get_param(request, 'reg_no', None)
+        car_reg_number = get_param(request, 'reg_no', '--')
         pick_obj = get_param(request, 'pick', None)
         drop_obj = get_param(request, 'drop', None)
         order_list = get_param(request, 'order_list', None)
@@ -1472,7 +1472,7 @@ def place_order(request):
         doorstep_counter = 0
         # obj_pick = json.loads(pick_obj)
         pick_obj = ast.literal_eval(pick_obj)
-        drop_obj = ast.literal_eval(drop_obj)
+        # drop_obj = ast.literal_eval(drop_obj)
         # pick_obj = ast.literal_eval(pick_obj)
         # print pick_obj
         # pick_obj = json.loads(pick_obj)
@@ -1855,10 +1855,20 @@ def place_order(request):
 
 
         html_list.append('<div> <span>Pickup Address : </span><span>')
-        html_list.append(pick_obj['street'])
-        if 'landmark' in pick_obj:
-            html_list.append('</span><span> Landmark : ')
-            html_list.append(pick_obj['landmark'])
+
+        # html_list.append(pick_obj['street'])
+
+        # if 'landmark' in pick_obj:
+        #     html_list.append('</span><span> Landmark : ')
+        #     html_list.append(pick_obj['landmark'])
+
+
+        if 'street' in pick_obj:
+            html_list.append(pick_obj['street'])
+
+        if 'locality' in pick_obj:
+            html_list.append(pick_obj['locality'])
+
         html_list.append('</span><span> City : ')
         html_list.append(pick_obj['city'])
         if 'pincode' in pick_obj:
@@ -1881,18 +1891,18 @@ def place_order(request):
         html_list.append(str(number))
         html_list.append('</span></div>')
 
-        html_list.append('<div> <span>Drop Address : </span><span>')
-        html_list.append(drop_obj['street'])
-        if 'landmark' in pick_obj:
-            html_list.append('</span><span> Landmark : ')
-            html_list.append(drop_obj['landmark'])
-        html_list.append('</span><span> City : ')
-        html_list.append(drop_obj['city'])
-
-        if 'pincode' in drop_obj:
-            html_list.append('</span><span> Pincode : ')
-            html_list.append(drop_obj['pincode'])
-        html_list.append('</span></div>')
+        # html_list.append('<div> <span>Drop Address : </span><span>')
+        # html_list.append(drop_obj['street'])
+        # if 'landmark' in pick_obj:
+        #     html_list.append('</span><span> Landmark : ')
+        #     html_list.append(drop_obj['landmark'])
+        # html_list.append('</span><span> City : ')
+        # html_list.append(drop_obj['city'])
+        #
+        # if 'pincode' in drop_obj:
+        #     html_list.append('</span><span> Pincode : ')
+        #     html_list.append(drop_obj['pincode'])
+        # html_list.append('</span></div>')
 
 
         userID = None
@@ -1968,7 +1978,7 @@ def insert_tran(request):
     trans_timestamp = datetime.datetime.now()
     cust_name       = get_param(request,'cust_name',None)   
     cust_brand      = get_param(request,'cust_brand',None)   
-    cust_carname    = get_param(request,'cust_carname',None)   
+    cust_carname    = get_param(request,'cust_carname',None)
     cust_number     = get_param(request,'cust_number',None)   
     cust_email      = get_param(request,'cust_email',None)   
     cust_pickup_add = get_param(request,'cust_pickup_add',None)   
@@ -2341,6 +2351,7 @@ def fetch_car_services_new(request):
                             ,'brand':service.brand
                             ,'car_name':service.carname
                             ,'type_service' : service.type_service
+                            ,'service_desc' : service.service_desc
                             ,'regular_checks':service.regular_checks
 
                             ,'parts_replaced':service.part_replacement
@@ -2405,13 +2416,23 @@ def fetch_car_servicedetails_new(request):
                               ,'labour_price':service.price_labour
                               ,'wa_price':service.wheel_alignment
                               ,'wb_price':service.wheel_balancing
-                              ,'wa_wb_present':service.WA_WB_Inc
+                              # ,'wa_wb_present':service.WA_WB_Inc
+                              ,'service_desc':service.service_desc
                               ,'dealer_details':service.detail_dealers
+                             ,'dry_cleaning': service.dry_cleaning
+                             ,'engine_additive': service.engine_additive
+                             ,'injector_cleaning': service.injector_cleaning
+                             ,'rubbing_polishing': service.rubbing_polishing
+                             ,'anti_rust'        : service.anti_rust
+                             ,'teflon'           : service.teflon
+                             ,'engine_flush'    : service.engine_flush
+                             ,'ac_servicing'    : service.ac_servicing
+                             ,'ac_disinfection': service.ac_disinfection
                               # ,'car_bike':car_bike
                         ,'type_service':service.type_service
                         ,'part_dic':service.part_dic
                         ,'labour_price':service.price_labour
-                        ,'discosunt':service.discount
+                        ,'discount':service.discount
                         ,'priority':service.priority
                      }
                         )

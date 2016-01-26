@@ -627,17 +627,28 @@ def loadServiceDealerCatNew(fileName):
             brand              = cleanstring(dealerz[0])
             carname            = cleanstring(dealerz[1])
             type_service       = cleanstring(dealerz[2])
-            #year              = cleanstring(dealerz[3])
-            dealer_category    = cleanstring(dealerz[3])
-            price_labour       = cleanstring(dealerz[4])
-            wheel_alignment    = cleanstring(dealerz[5])
-            wheel_balancing    = cleanstring(dealerz[6])
-            WA_WB_Inc          = dealerz[7]
-            priority           = dealerz[8]
-            discount           = dealerz[9]
-            regular_checks     = cleanstring(dealerz[10]).split("$")
-            priority_service   = dealerz[11]
-            car_bike           = cleanstring(dealerz[12])
+            service_desc       = cleanstring(dealerz[3])
+            dealer_category    = cleanstring(dealerz[4])
+            price_labour       = cleanstring(dealerz[5])
+            priority           = dealerz[6]
+            discount           = dealerz[7]
+            priority_service   = dealerz[8]
+            car_bike           = cleanstring(dealerz[9])
+            wheel_alignment    = cleanstring(dealerz[10])
+            wheel_balancing    = cleanstring(dealerz[11])
+            dry_cleaning       = cleanstring(dealerz[12])
+            engine_additive    = cleanstring(dealerz[13])
+            injector_cleaning  = cleanstring(dealerz[14])
+            rubbing_polishing  = cleanstring(dealerz[15])
+            anti_rust          = cleanstring(dealerz[16])
+            teflon             = cleanstring(dealerz[17])
+            engine_flush       =  cleanstring(dealerz[18])
+            ac_servicing       = cleanstring(dealerz[19])
+            ac_disinfection    = cleanstring(dealerz[20])
+
+            # WA_WB_Inc          = dealerz[7]
+
+
 
             findDealer = ServiceDealerCatNew.objects.filter(brand = brand, carname=carname, dealer_category=dealer_category, type_service=type_service)
             if len(findDealer):
@@ -646,9 +657,10 @@ def loadServiceDealerCatNew(fileName):
                 findDealer.price_labour      =  price_labour
                 findDealer.wheel_alignment   =  wheel_alignment
                 findDealer.wheel_balancing   =  wheel_balancing
-                findDealer.WA_WB_Inc         =  WA_WB_Inc
+                # findDealer.WA_WB_Inc         =  WA_WB_Inc
                 findDealer.price_parts       =  "0"
-                findDealer.regular_checks    = regular_checks
+                findDealer.service_desc      =  service_desc
+                # findDealer.regular_checks    = regular_checks
                 findDealer.discount    = discount
                 findDealer.priority    = priority
                 findDealer.priority_service = priority_service
@@ -656,6 +668,26 @@ def loadServiceDealerCatNew(fileName):
                 findDealer.part_replacement  = []
                 findDealer.part_dic =[]
                 findDealer.detail_dealers = []
+                findDealer.dry_cleaning        = dry_cleaning
+                findDealer.engine_additive     = engine_additive
+                findDealer.injector_cleaning   = injector_cleaning
+                findDealer.rubbing_polishing   = rubbing_polishing
+                findDealer.anti_rust           = anti_rust
+                findDealer.teflon               = teflon
+                findDealer.engine_flush        = engine_flush
+                findDealer.ac_servicing        = ac_servicing
+                findDealer.ac_disinfection     = ac_disinfection
+                # obj = {}
+                # obj['part_name']= part
+                # obj['part_price']= minor_price
+                # obj['part_action'] = minor_action
+                # obj['units'] = minor_qty
+                # obj['unit_price'] = unit_price
+                #
+                #
+                # obj_list = findDealer.part_dic
+                # obj_list.append(obj)
+
 
 
                 # if (price_labour == "0"):
@@ -672,14 +704,14 @@ def loadServiceDealerCatNew(fileName):
                                         ,carname           =  carname
                                         ,type_service      =  type_service
                                         ,dealer_category   =  dealer_category
-                                        #,year             =  year
+                                        ,service_desc      =  service_desc
                                         ,price_labour      =  price_labour
                                         ,wheel_alignment   =  wheel_alignment
                                         ,wheel_balancing   =  wheel_balancing
-                                        ,WA_WB_Inc         =  WA_WB_Inc
+                                        # ,WA_WB_Inc         =  WA_WB_Inc
                                         ,price_parts = "0"
                                         ,part_replacement  = []
-                                        ,regular_checks = regular_checks
+                                        # ,regular_checks = regular_checks
                                         ,part_dic = []
                                         ,detail_dealers = []
                                         ,discount    = discount
@@ -687,6 +719,15 @@ def loadServiceDealerCatNew(fileName):
                                         ,car_bike = car_bike
                                         # ,paid_free =  paid_free
                                         ,priority_service = priority_service
+                                        ,dry_cleaning        = dry_cleaning
+                                        ,engine_additive     = engine_additive
+                                        ,injector_cleaning   = injector_cleaning
+                                        ,rubbing_polishing   = rubbing_polishing
+                                        ,anti_rust           = anti_rust
+                                        ,teflon               = teflon
+                                        ,engine_flush        = engine_flush
+                                        ,ac_servicing        = ac_servicing
+                                        ,ac_disinfection     = ac_disinfection
                                       )
                 cc.save()
 
@@ -729,6 +770,7 @@ def exportServicesListNew():
             cc = ServicingNew(brand             = service.brand
                               ,carname          = service.carname
                               ,type_service     =service.type_service
+                              ,service_desc     = service.service_desc
                               ,priority_service =service.priority_service
                              # ,year             = service.year
                               ,regular_checks   = service.regular_checks
@@ -748,32 +790,35 @@ def loadPriceFreqNew(fileName):
             brand            = cleanstring(prt[0])
             carname          = cleanstring(prt[1])
             part             = cleanstring(prt[2])
-            minor            = int(cleanstring(prt[3]))
-            major            = int(cleanstring(prt[4]))
+            # minor            = int(cleanstring(prt[3]))
+            # major            = int(cleanstring(prt[4]))
             #second_occ      = int(cleanstring(prt[5]))
-            dealer_category  = cleanstring(prt[5])
-            unit             = cleanstring(prt[6])
-            unit_price       = cleanstring(prt[7])
-            minor_qty      = cleanstring(prt[8])
-            major_qty      = cleanstring(prt[9])
-            minor_price      = float(cleanstring(prt[10]))
-            major_price      = float(cleanstring(prt[11]))
-            minor_action     = cleanstring(prt[12])
-            major_action     = cleanstring(prt[13])
-            to_add      =  cleanstring(prt[14])
+            dealer_category  = cleanstring(prt[3])
+            unit             = cleanstring(prt[4])
+            unit_price       = cleanstring(prt[5])
+            minor_qty      = cleanstring(prt[6])
+            major_qty      = cleanstring(prt[7])
+            minor_price      = float(cleanstring(prt[8]))
+            major_price      = float(cleanstring(prt[9]))
+            minor_action     = cleanstring(prt[10])
+            major_action     = cleanstring(prt[11])
+            check_action      = cleanstring(prt[12])
+            # to_add      =  cleanstring(prt[13])
 
 
             service_1 = ""
             service_2 = ""
             service_3 = ""
             service_4 = ""
+            service_5 = ""
 
-            if (minor == 1):
-                service_1 = "Minor Servicing"
-                service_3 = "Not Defined"
-                service_4 = "Regular Servicing"
-            if (major == 1):
-                service_2 ="Major Servicing"
+            #
+            service_1 = "Standard Service"
+            service_2 ="Comprehensive Service"
+            # service_3 = "Not Defined"
+            # service_4 = "Regular"
+            service_5 = "General Check Up"
+            # if (major == 1):
 
             #print prt
 
@@ -786,14 +831,17 @@ def loadPriceFreqNew(fileName):
 
                 price_s = findDealer.price_parts
                 price = float(price_s)
-                if (to_add=="1"):
-                    price = price + minor_price
+                # if (to_add=="1"):
+                price = price + minor_price
                 findDealer.price_parts = str(price)
 
                 obj = {}
                 obj['part_name']= part
                 obj['part_price']= minor_price
                 obj['part_action'] = minor_action
+                obj['units'] = minor_qty
+                obj['unit_price'] = unit_price
+
 
                 obj_list = findDealer.part_dic
                 obj_list.append(obj)
@@ -809,14 +857,16 @@ def loadPriceFreqNew(fileName):
                 findDealer.part_replacement = parts
                 price_s = findDealer.price_parts
                 price = float(price_s)
-                if (to_add=="1"):
-                    price = price + major_price
+                # if (to_add=="1"):
+                price = price + major_price
                 findDealer.price_parts = str(price)
 
                 obj = {}
                 obj['part_name']= part
                 obj['part_price']= major_price
                 obj['part_action'] = major_action
+                obj['units'] = major_qty
+                obj['unit_price'] = unit_price
 
                 obj_list = findDealer.part_dic
                 obj_list.append(obj)
@@ -833,14 +883,17 @@ def loadPriceFreqNew(fileName):
                 findDealer.part_replacement = parts
                 price_s = findDealer.price_parts
                 price = float(price_s)
-                if (to_add=="1"):
-                    price = price + minor_price
+                # if (to_add=="1"):
+                price = price + minor_price
                 findDealer.price_parts = str(price)
 
                 obj = {}
                 obj['part_name']= part
                 obj['part_price']= minor_price
                 obj['part_action'] = minor_action
+                obj['units'] = minor_qty
+                obj['unit_price'] = unit_price
+
 
                 obj_list = findDealer.part_dic
                 obj_list.append(obj)
@@ -857,8 +910,8 @@ def loadPriceFreqNew(fileName):
                 findDealer.part_replacement = parts
                 price_s = findDealer.price_parts
                 price = float(price_s)
-                if (to_add=="1"):
-                    price = price + minor_price
+                # if (to_add=="1"):
+                price = price + minor_price
 
                 findDealer.price_parts = str(price)
 
@@ -866,6 +919,35 @@ def loadPriceFreqNew(fileName):
                 obj['part_name']= part
                 obj['part_price']= minor_price
                 obj['part_action'] = minor_action
+                obj['units'] = minor_qty
+                obj['unit_price'] = unit_price
+
+                obj_list = findDealer.part_dic
+                obj_list.append(obj)
+                findDealer.part_dic = obj_list
+                findDealer.save()
+
+            findDealer = ServiceDealerCatNew.objects.filter(brand = brand, carname=carname, dealer_category=dealer_category, type_service=service_5)
+
+            if len(findDealer):
+                findDealer = findDealer[0]
+                parts = findDealer.part_replacement
+                parts.append(part)
+                findDealer.part_replacement = parts
+                price_s = findDealer.price_parts
+                price = float(price_s)
+                # if (to_add=="1"):
+                #     price = price + minor_price
+
+                findDealer.price_parts = 0
+
+                obj = {}
+                obj['part_name']= part
+                obj['part_price']= "NA"
+                obj['part_action'] = check_action
+                obj['units'] = "NA"
+                obj['unit_price'] = "NA"
+
 
                 obj_list = findDealer.part_dic
                 obj_list.append(obj)
