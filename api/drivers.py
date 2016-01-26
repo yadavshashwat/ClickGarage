@@ -56,6 +56,7 @@ def updateBookingStatus(request):
                                             lon=lon)
             booking_object.save()
 
+            # todo send_messages(status, params)
             result = dict(status=True, message='updated')
             return HttpResponse(result, content_type='application/json')
 
@@ -82,3 +83,4 @@ def getDriverBookings(request):
 
             return HttpResponse(result, content_type='application/json')
 
+# def send_message(status, params)

@@ -350,7 +350,7 @@ class Driver(models.Model):
 class DriverBooking(models.Model):
     driver      = models.ForeignKey('Driver')   
     booking     = models.ForeignKey('Transaction')
-    status      = models.ForeignKey('Location')
+    status      = models.ForeignKey('DriverStatus')
 
 class DriverStatus(models.Model):
     status   = models.CharField(max_length=50)

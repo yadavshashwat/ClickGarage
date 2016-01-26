@@ -334,7 +334,7 @@ def checkout(request):
                                 'labour_price':serviceDetail.price_labour,
                                 'wa_price':serviceDetail.wheel_alignment,
                                 'wb_price':serviceDetail.wheel_balancing,
-                                'wa_wb_present':serviceDetail.WA_WB_Inc,
+                                # 'wa_wb_present':serviceDetail.WA_WB_Inc,
                                 'dealer_details':serviceDetail.detail_dealers,
                                 # 'year':serviceDetail.year,
                                 'total_price':total_price
@@ -625,7 +625,7 @@ def cart(request):
                         'labour_price':serviceDetail.price_labour,
                         'wa_price':serviceDetail.wheel_alignment,
                         'wb_price':serviceDetail.wheel_balancing,
-                        'wa_wb_present':serviceDetail.WA_WB_Inc,
+                        # 'wa_wb_present':serviceDetail.WA_WB_Inc,
                         'dealer_details':serviceDetail.detail_dealers,
                         # 'year':serviceDetail.year,
 

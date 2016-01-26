@@ -59,4 +59,9 @@ def send_postdrop(to_name,to,booking_id):
 @shared_task
 def send_booking_email_doorstep(to_address,to_name,time_start,date,booking_id):
 	mViews.send_booking_email_doorstep(to_address,to_name,time_start,date,booking_id)
-	return True 
+	return True
+
+@shared_task
+def send_booking_final_pick(username,useremail,userphone,time_start,date,booking_id,html_script):
+	mViews.send_booking_final_pick(username,useremail,userphone,time_start,date,booking_id,html_script)
+	return True

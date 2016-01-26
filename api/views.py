@@ -22,6 +22,7 @@ from models import *
 from dataEntry.runentry import carMakers, cleanstring
 from activity import views as ac_vi
 from mailing import views as mviews
+from api import tasks as tasks
 
 from activity.models import Transactions, CGUser
 # from lxml import html
@@ -1606,7 +1607,7 @@ def place_order(request):
                         'labour_price':serviceDetail.price_labour,
                         'wa_price':serviceDetail.wheel_alignment,
                         'wb_price':serviceDetail.wheel_balancing,
-                        'wa_wb_present':serviceDetail.WA_WB_Inc,
+                        # 'wa_wb_present':serviceDetail.WA_WB_Inc,
                         'dealer_details':serviceDetail.detail_dealers,
                         # 'year':serviceDetail.year,
                         'total_price':total_price,
@@ -1960,7 +1961,7 @@ def place_order(request):
             if (doorstep_counter==1):
                 mviews.send_booking_final_doorstep(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
             else:
-                mviews.send_booking_final_pick(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
+                tasks.send_booking_final_pick(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
             obj = {}
             obj['status'] = True
             obj['result'] = pick_obj
