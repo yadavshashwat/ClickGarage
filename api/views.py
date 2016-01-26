@@ -1461,7 +1461,7 @@ def place_order(request):
     if (request.user and request.user.is_authenticated()) or random_req_auth(request) or (loc == 'mobile'):
         name = get_param(request, 'name', None)
         number = get_param(request, 'number', None)
-        car_reg_number = get_param(request, 'reg_no', None)
+        car_reg_number = get_param(request, 'reg_no', '--')
         pick_obj = get_param(request, 'pick', None)
         drop_obj = get_param(request, 'drop', None)
         order_list = get_param(request, 'order_list', None)
@@ -1472,7 +1472,7 @@ def place_order(request):
         doorstep_counter = 0
         # obj_pick = json.loads(pick_obj)
         pick_obj = ast.literal_eval(pick_obj)
-        drop_obj = ast.literal_eval(drop_obj)
+        # drop_obj = ast.literal_eval(drop_obj)
         # pick_obj = ast.literal_eval(pick_obj)
         # print pick_obj
         # pick_obj = json.loads(pick_obj)
@@ -1855,10 +1855,20 @@ def place_order(request):
 
 
         html_list.append('<div> <span>Pickup Address : </span><span>')
-        html_list.append(pick_obj['street'])
-        if 'landmark' in pick_obj:
-            html_list.append('</span><span> Landmark : ')
-            html_list.append(pick_obj['landmark'])
+
+        # html_list.append(pick_obj['street'])
+
+        # if 'landmark' in pick_obj:
+        #     html_list.append('</span><span> Landmark : ')
+        #     html_list.append(pick_obj['landmark'])
+
+
+        if 'street' in pick_obj:
+            html_list.append(pick_obj['street'])
+
+        if 'locality' in pick_obj:
+            html_list.append(pick_obj['locality'])
+
         html_list.append('</span><span> City : ')
         html_list.append(pick_obj['city'])
         if 'pincode' in pick_obj:
@@ -1881,18 +1891,18 @@ def place_order(request):
         html_list.append(str(number))
         html_list.append('</span></div>')
 
-        html_list.append('<div> <span>Drop Address : </span><span>')
-        html_list.append(drop_obj['street'])
-        if 'landmark' in pick_obj:
-            html_list.append('</span><span> Landmark : ')
-            html_list.append(drop_obj['landmark'])
-        html_list.append('</span><span> City : ')
-        html_list.append(drop_obj['city'])
-
-        if 'pincode' in drop_obj:
-            html_list.append('</span><span> Pincode : ')
-            html_list.append(drop_obj['pincode'])
-        html_list.append('</span></div>')
+        # html_list.append('<div> <span>Drop Address : </span><span>')
+        # html_list.append(drop_obj['street'])
+        # if 'landmark' in pick_obj:
+        #     html_list.append('</span><span> Landmark : ')
+        #     html_list.append(drop_obj['landmark'])
+        # html_list.append('</span><span> City : ')
+        # html_list.append(drop_obj['city'])
+        #
+        # if 'pincode' in drop_obj:
+        #     html_list.append('</span><span> Pincode : ')
+        #     html_list.append(drop_obj['pincode'])
+        # html_list.append('</span></div>')
 
 
         userID = None
@@ -1968,7 +1978,7 @@ def insert_tran(request):
     trans_timestamp = datetime.datetime.now()
     cust_name       = get_param(request,'cust_name',None)   
     cust_brand      = get_param(request,'cust_brand',None)   
-    cust_carname    = get_param(request,'cust_carname',None)   
+    cust_carname    = get_param(request,'cust_carname',None)
     cust_number     = get_param(request,'cust_number',None)   
     cust_email      = get_param(request,'cust_email',None)   
     cust_pickup_add = get_param(request,'cust_pickup_add',None)   
