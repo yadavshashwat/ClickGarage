@@ -1961,7 +1961,7 @@ def place_order(request):
             if (doorstep_counter==1):
                 mviews.send_booking_final_doorstep(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
             else:
-                tasks.send_booking_final_pick(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
+                mviews.send_booking_final_pick(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
             obj = {}
             obj['status'] = True
             obj['result'] = pick_obj
