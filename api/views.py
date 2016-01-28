@@ -253,7 +253,7 @@ def fetch_car_servicedetails(request):
                               ,'labour_price':service.price_labour
                               ,'wa_price':service.wheel_alignment
                               ,'wb_price':service.wheel_balancing
-                              ,'wa_wb_present':service.WA_WB_Inc
+                              # ,'wa_wb_present':service.WA_WB_Inc
                               ,'dealer_details':service.detail_dealers
                               ,'car_bike':car_bike} )
 
@@ -371,7 +371,7 @@ def fetch_all_servicedealercat(request):
                         ,'labour_price':service.price_labour        
                         ,'wheel_alignment_price':service.wheel_alignment     
                         ,'wheel_balancing_price':service.wheel_balancing     
-                        ,'WA_WB?':service.WA_WB_Inc           
+                        # ,'WA_WB?':service.WA_WB_Inc
                         ,'dealer_details':service.detail_dealers
                         #,'paid_free?':service.paid_free
                         ,'regular_checks':service.regular_checks
@@ -1560,7 +1560,7 @@ def place_order(request):
                         'labour_price':serviceDetail.price_labour,
                         'wa_price':serviceDetail.wheel_alignment,
                         'wb_price':serviceDetail.wheel_balancing,
-                        'wa_wb_present':serviceDetail.WA_WB_Inc,
+                        # 'wa_wb_present':serviceDetail.WA_WB_Inc,
                         'dealer_details':serviceDetail.detail_dealers,
                         'year':serviceDetail.year,
                         'total_price':total_price,
@@ -2712,7 +2712,7 @@ def apply_coupon(request):
 
 def add_guest_transaction(request):
     # print 'p'
-     if request.user.email in ['y.shashwat@gmail.com', 'bhuvan.batra@gmail.com', 'sanskar@clickgarage.in', 'v.rajeev92@gmail.com', 'RajeevVempuluru']:
+     if request.user.email in ['bhuvan.batra@gmail.com', 'shashwat@clickgarage.in', 'y.shashwat@gmail.com', 'bhuvan@clickgarage.in', 'sanskar@clickgarage.in', 'v.rajeev92@gmail.com']:
         print "user"
         # To handle
         email          = get_param(request, 'email', None)
@@ -2822,7 +2822,7 @@ def add_guest_transaction(request):
                         'labour_price':serviceDetail.price_labour,
                         'wa_price':serviceDetail.wheel_alignment,
                         'wb_price':serviceDetail.wheel_balancing,
-                        'wa_wb_present':serviceDetail.WA_WB_Inc,
+                        # 'wa_wb_present':serviceDetail.WA_WB_Inc,
                         'dealer_details':serviceDetail.detail_dealers,
                         'year':serviceDetail.year,
                         'total_price':total_price,
@@ -2869,7 +2869,7 @@ def add_guest_transaction(request):
                         'labour_price':serviceDetail.price_labour,
                         'wa_price':serviceDetail.wheel_alignment,
                         'wb_price':serviceDetail.wheel_balancing,
-                        'wa_wb_present':serviceDetail.WA_WB_Inc,
+                        # 'wa_wb_present':serviceDetail.WA_WB_Inc,
                         'dealer_details':serviceDetail.detail_dealers,
                         # 'year':serviceDetail.year,
                         'total_price':total_price,
@@ -3428,7 +3428,7 @@ def service_selected(request):
                               ,'labour_price':service.price_labour
                               ,'wa_price':service.wheel_alignment
                               ,'wb_price':service.wheel_balancing
-                              ,'wa_wb_present':service.WA_WB_Inc
+                              # ,'wa_wb_present':service.WA_WB_Inc
                               ,'dealer_details':service.detail_dealers
                               # ,'car_bike':car_bike
                         ,'type_service':service.type_service
