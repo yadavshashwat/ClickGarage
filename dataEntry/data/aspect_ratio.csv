@@ -1,371 +1,286 @@
-Car Name,Aspect Ratio,Car/ Bike,Hatchback/ Sedan,Small/ Large,,,,,,,,,,,
-Chevrolet Beat Diesel,NA,Car,Non Luxury Small,Small,,,,,,,,,,,
-Chevrolet Beat Petrol,NA,Car,Non Luxury Small,Small,,,,,,,,,,,
-Chevrolet Captiva Diesel,NA,Car,SUV,Extra Large,,,,,,,,,,,
-Chevrolet Cruze Diesel,NA,Car,Luxury,Large,,,,,,,,,,,
-Chevrolet Sail Diesel,NA,Car,Luxury,Medium,,,,,,,,,,,
-Chevrolet Sail Hatchback Diesel,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Chevrolet Sail Hatchback Petrol,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Chevrolet Sail Petrol,NA,Car,Luxury,Medium,,,,,,,,,,,
-Chevrolet Spark Petrol,NA,Car,Non Luxury Small,Small,,,,,,,,,,,
-Datsun Go Petrol,NA,Car,Non Luxury Small,Small,,,,,,,,,,,
-Datsun Go Plus Petrol,NA,Car,Luxury,Medium,,,,,,,,,,,
-Fiat Avventura Diesel,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Fiat Avventura Petrol,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Fiat Linea Classic Diesel,NA,Car,Luxury,Medium,,,,,,,,,,,
-Fiat Linea Classic Petrol,NA,Car,Luxury,Medium,,,,,,,,,,,
-Fiat Linea Diesel,NA,Car,Luxury,Medium,,,,,,,,,,,
-Fiat Linea Petrol,NA,Car,Luxury,Medium,,,,,,,,,,,
-Fiat Palio Diesel,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Fiat Palio Petrol,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Fiat Punto Diesel,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Fiat Punto Petrol,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Ford Classic Diesel,NA,Car,Luxury,Medium,,,,,,,,,,,
-Ford Classic Petrol,NA,Car,Luxury,Medium,,,,,,,,,,,
-Ford Ecosport Diesel,NA,Car,Luxury,Medium,,,,,,,,,,,
-Ford Ecosport Petrol,NA,Car,Luxury,Medium,,,,,,,,,,,
-Ford Endeavour Diesel New,NA,Car,SUV,Extra Large,,,,,,,,,,,
-Ford Endeavour Diesel Old,NA,Car,SUV,Extra Large,,,,,,,,,,,
-Ford Fiesta Diesel,NA,Car,Luxury,Medium,,,,,,,,,,,
-Ford Fiesta Petrol,NA,Car,Luxury,Medium,,,,,,,,,,,
-Ford Figo Aspire Diesel,NA,Car,Luxury,Medium,,,,,,,,,,,
-Ford Figo Aspire Petrol,NA,Car,Luxury,Medium,,,,,,,,,,,
-Ford Figo Diesel New,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Ford Figo Diesel Old,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Ford Figo Petrol New,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Ford Figo Petrol Old,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Ford Fusion Diesel,NA,Car,Luxury,Medium,,,,,,,,,,,
-Ford Fusion Petrol,NA,Car,Luxury,Medium,,,,,,,,,,,
-Ford Ikon Diesel,NA,Car,Luxury,Medium,,,,,,,,,,,
-Ford Ikon Petrol,NA,Car,Luxury,Medium,,,,,,,,,,,
-Honda Accord Petrol,NA,Car,Premium Luxury,Extra Large,,,,,,,,,,,
-Honda Amaze Diesel,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Honda Amaze Petrol,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Honda Brio Petrol,NA,Car,Non Luxury Small,Small,,,,,,,,,,,
-Honda City Diesel New,NA,Car,Luxury,Medium,,,,,,,,,,,
-Honda City Petrol New,NA,Car,Luxury,Medium,,,,,,,,,,,
-Honda City Petrol Old,NA,Car,Luxury,Medium,,,,,,,,,,,
-Honda Civic Petrol,NA,Car,Luxury,Large,,,,,,,,,,,
-Honda CRV Petrol,NA,Car,SUV,Extra Large,,,,,,,,,,,
-Honda Jazz Diesel New,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Honda Jazz Petrol New,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Honda Jazz Petrol Old,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Honda Mobilio Diesel,NA,Car,SUV,Large,,,,,,,,,,,
-Honda Mobilio Petrol,NA,Car,SUV,Large,,,,,,,,,,,
-Hyundai Accent Diesel,NA,Car,Luxury,Medium,,,,,,,,,,,
-Hyundai Accent Petrol,NA,Car,Luxury,Medium,,,,,,,,,,,
-Hyundai Creta Diesel,NA,Car,SUV,Large,,,,,,,,,,,
-Hyundai Creta Petrol,NA,Car,SUV,Large,,,,,,,,,,,
-Hyundai Elantra Diesel,NA,Car,Luxury,Large,,,,,,,,,,,
-Hyundai Elantra Petrol,NA,Car,Luxury,Large,,,,,,,,,,,
-Hyundai EON Petrol,NA,Car,Non Luxury Small,Small,,,,,,,,,,,
-Hyundai Getz Petrol,NA,Car,Non Luxury Small,Small,,,,,,,,,,,
-Hyundai Grand i10 Diesel,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Hyundai Grand i10 Petrol,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Hyundai i10 Petrol,NA,Car,Non Luxury Small,Small,,,,,,,,,,,
-Hyundai i20 Active Diesel,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Hyundai i20 Active Petrol,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Hyundai i20 Diesel,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Hyundai i20 Elite Diesel,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Hyundai i20 Elite Petrol,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Hyundai i20 Petrol,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Hyundai Santa Fe Diesel,NA,Car,SUV,Extra Large,,,,,,,,,,,
-Hyundai Santro Petrol,NA,Car,Non Luxury Small,Small,,,,,,,,,,,
-Hyundai Sonata Diesel New,NA,Car,Luxury,Large,,,,,,,,,,,
-Hyundai Sonata Diesel Old,NA,Car,Luxury,Large,,,,,,,,,,,
-Hyundai Sonata Petrol New,NA,Car,Luxury,Large,,,,,,,,,,,
-Hyundai Sonata Petrol Old,NA,Car,Luxury,Large,,,,,,,,,,,
-Hyundai Verna Diesel Old,NA,Car,Luxury,Medium,,,,,,,,,,,
-Hyundai Verna Fluidic 4S Diesel,NA,Car,Luxury,Medium,,,,,,,,,,,
-Hyundai Verna Fluidic 4S Petrol,NA,Car,Luxury,Medium,,,,,,,,,,,
-Hyundai Verna Petrol Old,NA,Car,Luxury,Medium,,,,,,,,,,,
-Hyundai Xcent Diesel,NA,Car,Luxury,Medium,,,,,,,,,,,
-Hyundai Xcent Petrol,NA,Car,Luxury,Medium,,,,,,,,,,,
-Mahindra Bolero Diesel,NA,Car,SUV,Large,,,,,,,,,,,
-Mahindra Quanto Diesel,NA,Car,Luxury,Large,,,,,,,,,,,
-Mahindra Scorpio,NA,Car,SUV,Large,,,,,,,,,,,
-Mahindra Thar Diesel,NA,Car,SUV,Large,,,,,,,,,,,
-Mahindra TUV 300,NA,Car,SUV,Extra Large,,,,,,,,,,,
-Mahindra XUV 500,NA,Car,SUV,Large,,,,,,,,,,,
-Mahindra Xylo,NA,Car,SUV,Large,,,,,,,,,,,
-Maruti Suzuki Alto 800 Petrol,NA,Car,Non Luxury Small,Small,,,,,,,,,,,
-Maruti Suzuki Alto K10 Petrol,NA,Car,Non Luxury Small,Small,,,,,,,,,,,
-Maruti Suzuki A-Star Petrol,NA,Car,Non Luxury Small,Small,,,,,,,,,,,
-Maruti Suzuki Baleno Diesel,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Maruti Suzuki Baleno Petrol,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Maruti Suzuki Celerio Petrol,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Maruti Suzuki Ciaz Diesel,NA,Car,Luxury,Medium,,,,,,,,,,,
-Maruti Suzuki Ciaz Petrol,NA,Car,Luxury,Medium,,,,,,,,,,,
-Maruti Suzuki Dzire Diesel,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Maruti Suzuki Dzire Petrol,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Maruti Suzuki Eeco Petrol,NA,Car,SUV,Medium,,,,,,,,,,,
-Maruti Suzuki Ertiga Diesel,NA,Car,SUV,Large,,,,,,,,,,,
-Maruti Suzuki Ertiga Petrol,NA,Car,SUV,Large,,,,,,,,,,,
-Maruti Suzuki Omni Petrol,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Maruti Suzuki Ritz Diesel,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Maruti Suzuki Ritz Petrol,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Maruti Suzuki S Cross,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Maruti Suzuki Swift Diesel,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Maruti Suzuki Swift Petrol,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Maruti Suzuki SX4 Diesel,NA,Car,Luxury,Medium,,,,,,,,,,,
-Maruti Suzuki SX4 Petrol,NA,Car,Luxury,Medium,,,,,,,,,,,
-Maruti Suzuki WagonR Petrol New,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Maruti Suzuki WagonR Petrol Old,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Maruti Suzuki WagonR Stingray Petrol,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Maruti Suzuki Zen Estilo Petrol,NA,Car,Non Luxury Small,Small,,,,,,,,,,,
-Nissan Evalia Diesel,NA,Car,SUV,Extra Large,,,,,,,,,,,
-Nissan Micra Active Petrol,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Nissan Micra Diesel,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Nissan Micra Petrol,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Nissan Sunny Diesel,NA,Car,Luxury,Medium,,,,,,,,,,,
-Nissan Sunny Petrol,NA,Car,Luxury,Medium,,,,,,,,,,,
-Nissan Teana Petrol,NA,Car,Luxury,Extra Large,,,,,,,,,,,
-Nissan Terrano Diesel,NA,Car,SUV,Large,,,,,,,,,,,
-Nissan Terrano Petrol,NA,Car,SUV,Large,,,,,,,,,,,
-Renault Duster Diesel,NA,Car,SUV,Large,,,,,,,,,,,
-Renault Duster Petrol,NA,Car,SUV,Large,,,,,,,,,,,
-Renault Fluence Diesel,NA,Car,Luxury,Large,,,,,,,,,,,
-Renault Koleos Diesel,NA,Car,SUV,Large,,,,,,,,,,,
-Renault Kwid Diesel,NA,Car,Non Luxury Small,Small,,,,,,,,,,,
-Renault Kwid Petrol,NA,Car,Non Luxury Small,Small,,,,,,,,,,,
-Renault Lodgy Diesel,NA,Car,Luxury,Extra Large,,,,,,,,,,,
-Renault Pulse Diesel,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Renault Pulse Petrol,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Renault Scala Diesel,NA,Car,Luxury,Medium,,,,,,,,,,,
-Renault Scala Petrol,NA,Car,Luxury,Medium,,,,,,,,,,,
-Skoda Fabia Diesel,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Skoda Fabia Petrol,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Skoda Laura Diesel,NA,Car,Luxury,Large,,,,,,,,,,,
-Skoda Laura Petrol,NA,Car,Luxury,Large,,,,,,,,,,,
-Skoda Octavia Diesel,NA,Car,Luxury,Large,,,,,,,,,,,
-Skoda Octavia Petrol,NA,Car,Luxury,Large,,,,,,,,,,,
-Skoda Rapid Diesel,NA,Car,Luxury,Medium,,,,,,,,,,,
-Skoda Rapid Petrol,NA,Car,Luxury,Medium,,,,,,,,,,,
-Skoda Superb Diesel,NA,Car,Premium Luxury,Large,,,,,,,,,,,
-Skoda Superb Petrol New,NA,Car,Premium Luxury,Large,,,,,,,,,,,
-Skoda Superb Petrol Old,NA,Car,Premium Luxury,Large,,,,,,,,,,,
-Skoda Yeti Diesel New,NA,Car,Luxury,Large,,,,,,,,,,,
-Skoda Yeti Diesel Old,NA,Car,Luxury,Large,,,,,,,,,,,
-Tata Aria,NA,Car,SUV,Large,,,,,,,,,,,
-Tata Bolt Diesel,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Tata Bolt Petrol,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Tata Indica eV2 Diesel,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Tata Indica eV2 Petrol,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Tata Indica Vista Diesel Quadrajet,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Tata Indica Vista Diesel TDI,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Tata Indica Vista Petrol,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Tata Indigo eCS Diesel,NA,Car,Luxury,Medium,,,,,,,,,,,
-Tata Indigo eCS Petrol,NA,Car,Luxury,Medium,,,,,,,,,,,
-Tata Indigo Manza Diesel,NA,Car,Luxury,Medium,,,,,,,,,,,
-Tata Indigo Manza Petrol,NA,Car,Luxury,Medium,,,,,,,,,,,
-Tata Nano,NA,Car,Non Luxury Small,Small,,,,,,,,,,,
-Tata Safari Dicor,NA,Car,SUV,Extra Large,,,,,,,,,,,
-Tata Safari Storme,NA,Car,SUV,Extra Large,,,,,,,,,,,
-Tata Safari Storme New,NA,Car,SUV,Extra Large,,,,,,,,,,,
-Tata Zest Diesel,NA,Car,Luxury,Medium,,,,,,,,,,,
-Tata Zest Petrol,NA,Car,Luxury,Medium,,,,,,,,,,,
-Toyota Altis Diesel,NA,Car,Luxury,Large,,,,,,,,,,,
-Toyota Altis Petrol,NA,Car,Luxury,Large,,,,,,,,,,,
-Toyota Camry Petrol New,NA,Car,Premium Luxury,Extra Large,,,,,,,,,,,
-Toyota Corolla Petrol,NA,Car,Luxury,Large,,,,,,,,,,,
-Toyota Etios Liva Diesel,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Toyota Etios Liva Petrol,NA,Car,Non Luxury Small,Small,,,,,,,,,,,
-Toyota Etios Petrol,NA,Car,Luxury,Medium,,,,,,,,,,,
-Toyota Fortuner Diesel,NA,Car,SUV,Extra Large,,,,,,,,,,,
-Toyota Innova Diesel,NA,Car,SUV,Large,,,,,,,,,,,
-Volkswagen Cross Polo Diesel,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Volkswagen Jetta Diesel,NA,Car,Luxury,Large,,,,,,,,,,,
-Volkswagen Jetta Petrol,NA,Car,Luxury,Large,,,,,,,,,,,
-Volkswagen Polo Diesel,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Volkswagen Polo Petrol,NA,Car,Non Luxury Small,Medium,,,,,,,,,,,
-Volkswagen Vento Diesel,NA,Car,Luxury,Medium,,,,,,,,,,,
-Volkswagen Vento Petrol,NA,Car,Luxury,Medium,,,,,,,,,,,
-Bajaj Avenger DTS-i 200,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Bajaj Avenger DTS-i 220,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Bajaj Discover 100,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Bajaj Discover 125,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Bajaj Discover 125 ST,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Bajaj Discover 150,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Bajaj Platina,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Bajaj Platina 125,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Bajaj Pulsar 135 LS,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Bajaj Pulsar 150 UG IV,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Bajaj Pulsar 200 DTS-i,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Bajaj Pulsar 200 NS,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Bajaj Pulsar 220 DTS-Fi,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Bajaj Pulsar 220 DTS-i,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Hero Achiever,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Hero Glamour,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Hero Glamour Programmed FI,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Hero HF Dawn,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Hero HF Deluxe,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Hero HF Deluxe Eco,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Hero Hunk,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Hero Ignitor,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Hero Impulse,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Hero Karizma,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Hero Karizma ZMR,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Hero Maestro,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Hero Passion Pro,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Hero Passion Pro TR,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Hero Passion XPRO,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Hero Pleasure,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Hero Splendor iSmart,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Hero Splendor Plus,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Hero Splendor Pro,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Hero Splendor Pro Classic,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Hero Splendor Pro J-1,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Hero Super Splendor,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Hero Xtreme,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Hero Xtreme Sports,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Honda Activa 125,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Honda Activa 3G,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Honda CB Shine,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Honda CB Unicorn,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Honda CBR 150,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Honda CBR 250,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Honda Livo,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-KTM 200Duke,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-KTM 390Duke,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-KTM RC200,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-KTM RC390,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Mahindra Centuro Disc Brake,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Mahindra Centuro NXT,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Mahindra Centuro Rockstar,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Mahindra Centuro Rockstar Kick Alloy,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Mahindra Centuro XT,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Mahindra Duro,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Mahindra Gusto,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Mahindra Rodeo,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Royal Enfield Bullet 350,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Royal Enfield Bullet 500,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Royal Enfield Classic 350,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Royal Enfield Classic 500,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Royal Enfield Continental GT,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Royal Enfield Thunderbird 350,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Royal Enfield Thunderbird 500,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Suzuki Access,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Suzuki Gixxer,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Suzuki Gixxer SF,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Suzuki GS150R,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Suzuki Hayate,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Suzuki Lets,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Suzuki Slingshot Plus,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Suzuki Swish,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-TVS Apache RTR160,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-TVS Apache RTR160-FI,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-TVS Apache RTR180,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-TVS Flame DS125,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-TVS Flame SR125,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-TVS Jive,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-TVS Scooty Streak,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-TVS Scooty Teenz,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-TVS Star,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-TVS Star City,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-TVS Star Sport,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-TVS Wego,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-TVS XL Super,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Yamaha Alpha,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Yamaha Crux,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Yamaha Fazer,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Yamaha Fazer FI,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Yamaha FZ,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Yamaha FZ FI,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Yamaha FZS,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Yamaha FZS FI,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Yamaha R15,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Yamaha Ray,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Yamaha Ray-Z,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Yamaha Saluto,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Yamaha SS125,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Yamaha SZ RR,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Yamaha SZ RR Blue Core,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Yamaha SZ S,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Yamaha YBR110,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-Yamaha YBR125,NA,Bike,Non Luxury Small,Small,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,
+Car Name,Aspect Ratio,Car/ Bike,Hatchback/ Sedan,Small/ Large
+Chevrolet Beat Diesel,NA,Car,Non Luxury Small,Small
+Chevrolet Beat Petrol,NA,Car,Non Luxury Small,Small
+Chevrolet Captiva Diesel,NA,Car,SUV,Extra Large
+Chevrolet Cruze Diesel,NA,Car,Luxury,Large
+Chevrolet Sail Diesel,NA,Car,Luxury,Medium
+Chevrolet Sail Hatchback Diesel,NA,Car,Non Luxury Small,Medium
+Chevrolet Sail Hatchback Petrol,NA,Car,Non Luxury Small,Medium
+Chevrolet Sail Petrol,NA,Car,Luxury,Medium
+Chevrolet Spark Petrol,NA,Car,Non Luxury Small,Small
+Datsun Go Petrol,NA,Car,Non Luxury Small,Small
+Datsun Go Plus Petrol,NA,Car,Luxury,Medium
+Fiat Avventura Diesel,NA,Car,Non Luxury Small,Medium
+Fiat Avventura Petrol,NA,Car,Non Luxury Small,Medium
+Fiat Linea Classic Diesel,NA,Car,Luxury,Medium
+Fiat Linea Classic Petrol,NA,Car,Luxury,Medium
+Fiat Linea Diesel,NA,Car,Luxury,Medium
+Fiat Linea Petrol,NA,Car,Luxury,Medium
+Fiat Palio Diesel,NA,Car,Non Luxury Small,Medium
+Fiat Palio Petrol,NA,Car,Non Luxury Small,Medium
+Fiat Punto Diesel,NA,Car,Non Luxury Small,Medium
+Fiat Punto Petrol,NA,Car,Non Luxury Small,Medium
+Ford Classic Diesel,NA,Car,Luxury,Medium
+Ford Classic Petrol,NA,Car,Luxury,Medium
+Ford Ecosport Diesel,NA,Car,Luxury,Medium
+Ford Ecosport Petrol,NA,Car,Luxury,Medium
+Ford Endeavour Diesel New,NA,Car,SUV,Extra Large
+Ford Endeavour Diesel Old,NA,Car,SUV,Extra Large
+Ford Fiesta Diesel,NA,Car,Luxury,Medium
+Ford Fiesta Petrol,NA,Car,Luxury,Medium
+Ford Figo Aspire Diesel,NA,Car,Luxury,Medium
+Ford Figo Aspire Petrol,NA,Car,Luxury,Medium
+Ford Figo Diesel New,NA,Car,Non Luxury Small,Medium
+Ford Figo Diesel Old,NA,Car,Non Luxury Small,Medium
+Ford Figo Petrol New,NA,Car,Non Luxury Small,Medium
+Ford Figo Petrol Old,NA,Car,Non Luxury Small,Medium
+Ford Fusion Diesel,NA,Car,Luxury,Medium
+Ford Fusion Petrol,NA,Car,Luxury,Medium
+Ford Ikon Diesel,NA,Car,Luxury,Medium
+Ford Ikon Petrol,NA,Car,Luxury,Medium
+Honda Accord Petrol,NA,Car,Premium Luxury,Extra Large
+Honda Amaze Diesel,NA,Car,Non Luxury Small,Medium
+Honda Amaze Petrol,NA,Car,Non Luxury Small,Medium
+Honda Brio Petrol,NA,Car,Non Luxury Small,Small
+Honda City Diesel New,NA,Car,Luxury,Medium
+Honda City Petrol New,NA,Car,Luxury,Medium
+Honda City Petrol Old,NA,Car,Luxury,Medium
+Honda Civic Petrol,NA,Car,Luxury,Large
+Honda CRV Petrol,NA,Car,SUV,Extra Large
+Honda Jazz Diesel New,NA,Car,Non Luxury Small,Medium
+Honda Jazz Petrol New,NA,Car,Non Luxury Small,Medium
+Honda Jazz Petrol Old,NA,Car,Non Luxury Small,Medium
+Honda Mobilio Diesel,NA,Car,SUV,Large
+Honda Mobilio Petrol,NA,Car,SUV,Large
+Hyundai Accent Diesel,NA,Car,Luxury,Medium
+Hyundai Accent Petrol,NA,Car,Luxury,Medium
+Hyundai Creta Diesel,NA,Car,SUV,Large
+Hyundai Creta Petrol,NA,Car,SUV,Large
+Hyundai Elantra Diesel,NA,Car,Luxury,Large
+Hyundai Elantra Petrol,NA,Car,Luxury,Large
+Hyundai EON Petrol,NA,Car,Non Luxury Small,Small
+Hyundai Getz Petrol,NA,Car,Non Luxury Small,Small
+Hyundai Grand i10 Diesel,NA,Car,Non Luxury Small,Medium
+Hyundai Grand i10 Petrol,NA,Car,Non Luxury Small,Medium
+Hyundai i10 Petrol,NA,Car,Non Luxury Small,Small
+Hyundai i20 Active Diesel,NA,Car,Non Luxury Small,Medium
+Hyundai i20 Active Petrol,NA,Car,Non Luxury Small,Medium
+Hyundai i20 Diesel,NA,Car,Non Luxury Small,Medium
+Hyundai i20 Elite Diesel,NA,Car,Non Luxury Small,Medium
+Hyundai i20 Elite Petrol,NA,Car,Non Luxury Small,Medium
+Hyundai i20 Petrol,NA,Car,Non Luxury Small,Medium
+Hyundai Santa Fe Diesel,NA,Car,SUV,Extra Large
+Hyundai Santro Petrol,NA,Car,Non Luxury Small,Small
+Hyundai Sonata Diesel New,NA,Car,Luxury,Large
+Hyundai Sonata Diesel Old,NA,Car,Luxury,Large
+Hyundai Sonata Petrol New,NA,Car,Luxury,Large
+Hyundai Sonata Petrol Old,NA,Car,Luxury,Large
+Hyundai Verna Diesel Old,NA,Car,Luxury,Medium
+Hyundai Verna Fluidic 4S Diesel,NA,Car,Luxury,Medium
+Hyundai Verna Fluidic 4S Petrol,NA,Car,Luxury,Medium
+Hyundai Verna Petrol Old,NA,Car,Luxury,Medium
+Hyundai Xcent Diesel,NA,Car,Luxury,Medium
+Hyundai Xcent Petrol,NA,Car,Luxury,Medium
+Mahindra Bolero Diesel,NA,Car,SUV,Large
+Mahindra Quanto Diesel,NA,Car,Luxury,Large
+Mahindra Scorpio,NA,Car,SUV,Large
+Mahindra Thar Diesel,NA,Car,SUV,Large
+Mahindra TUV 300,NA,Car,SUV,Extra Large
+Mahindra XUV 500,NA,Car,SUV,Large
+Mahindra Xylo,NA,Car,SUV,Large
+Maruti Suzuki Alto 800 Petrol,NA,Car,Non Luxury Small,Small
+Maruti Suzuki Alto K10 Petrol,NA,Car,Non Luxury Small,Small
+Maruti Suzuki A-Star Petrol,NA,Car,Non Luxury Small,Small
+Maruti Suzuki Baleno Diesel,NA,Car,Non Luxury Small,Medium
+Maruti Suzuki Baleno Petrol,NA,Car,Non Luxury Small,Medium
+Maruti Suzuki Celerio Petrol,NA,Car,Non Luxury Small,Medium
+Maruti Suzuki Ciaz Diesel,NA,Car,Luxury,Medium
+Maruti Suzuki Ciaz Petrol,NA,Car,Luxury,Medium
+Maruti Suzuki Dzire Diesel,NA,Car,Non Luxury Small,Medium
+Maruti Suzuki Dzire Petrol,NA,Car,Non Luxury Small,Medium
+Maruti Suzuki Eeco Petrol,NA,Car,SUV,Medium
+Maruti Suzuki Ertiga Diesel,NA,Car,SUV,Large
+Maruti Suzuki Ertiga Petrol,NA,Car,SUV,Large
+Maruti Suzuki Omni Petrol,NA,Car,Non Luxury Small,Medium
+Maruti Suzuki Ritz Diesel,NA,Car,Non Luxury Small,Medium
+Maruti Suzuki Ritz Petrol,NA,Car,Non Luxury Small,Medium
+Maruti Suzuki S Cross,NA,Car,Non Luxury Small,Medium
+Maruti Suzuki Swift Diesel,NA,Car,Non Luxury Small,Medium
+Maruti Suzuki Swift Petrol,NA,Car,Non Luxury Small,Medium
+Maruti Suzuki SX4 Diesel,NA,Car,Luxury,Medium
+Maruti Suzuki SX4 Petrol,NA,Car,Luxury,Medium
+Maruti Suzuki WagonR Petrol New,NA,Car,Non Luxury Small,Medium
+Maruti Suzuki WagonR Petrol Old,NA,Car,Non Luxury Small,Medium
+Maruti Suzuki WagonR Stingray Petrol,NA,Car,Non Luxury Small,Medium
+Maruti Suzuki Zen Estilo Petrol,NA,Car,Non Luxury Small,Small
+Nissan Evalia Diesel,NA,Car,SUV,Extra Large
+Nissan Micra Active Petrol,NA,Car,Non Luxury Small,Medium
+Nissan Micra Diesel,NA,Car,Non Luxury Small,Medium
+Nissan Micra Petrol,NA,Car,Non Luxury Small,Medium
+Nissan Sunny Diesel,NA,Car,Luxury,Medium
+Nissan Sunny Petrol,NA,Car,Luxury,Medium
+Nissan Teana Petrol,NA,Car,Luxury,Extra Large
+Nissan Terrano Diesel,NA,Car,SUV,Large
+Nissan Terrano Petrol,NA,Car,SUV,Large
+Renault Duster Diesel,NA,Car,SUV,Large
+Renault Duster Petrol,NA,Car,SUV,Large
+Renault Fluence Diesel,NA,Car,Luxury,Large
+Renault Koleos Diesel,NA,Car,SUV,Large
+Renault Kwid Diesel,NA,Car,Non Luxury Small,Small
+Renault Kwid Petrol,NA,Car,Non Luxury Small,Small
+Renault Lodgy Diesel,NA,Car,Luxury,Extra Large
+Renault Pulse Diesel,NA,Car,Non Luxury Small,Medium
+Renault Pulse Petrol,NA,Car,Non Luxury Small,Medium
+Renault Scala Diesel,NA,Car,Luxury,Medium
+Renault Scala Petrol,NA,Car,Luxury,Medium
+Skoda Fabia Diesel,NA,Car,Non Luxury Small,Medium
+Skoda Fabia Petrol,NA,Car,Non Luxury Small,Medium
+Skoda Laura Diesel,NA,Car,Luxury,Large
+Skoda Laura Petrol,NA,Car,Luxury,Large
+Skoda Octavia Diesel,NA,Car,Luxury,Large
+Skoda Octavia Petrol,NA,Car,Luxury,Large
+Skoda Rapid Diesel,NA,Car,Luxury,Medium
+Skoda Rapid Petrol,NA,Car,Luxury,Medium
+Skoda Superb Diesel,NA,Car,Premium Luxury,Large
+Skoda Superb Petrol New,NA,Car,Premium Luxury,Large
+Skoda Superb Petrol Old,NA,Car,Premium Luxury,Large
+Skoda Yeti Diesel New,NA,Car,Luxury,Large
+Skoda Yeti Diesel Old,NA,Car,Luxury,Large
+Tata Aria,NA,Car,SUV,Large
+Tata Bolt Diesel,NA,Car,Non Luxury Small,Medium
+Tata Bolt Petrol,NA,Car,Non Luxury Small,Medium
+Tata Indica eV2 Diesel,NA,Car,Non Luxury Small,Medium
+Tata Indica eV2 Petrol,NA,Car,Non Luxury Small,Medium
+Tata Indica Vista Diesel Quadrajet,NA,Car,Non Luxury Small,Medium
+Tata Indica Vista Diesel TDI,NA,Car,Non Luxury Small,Medium
+Tata Indica Vista Petrol,NA,Car,Non Luxury Small,Medium
+Tata Indigo eCS Diesel,NA,Car,Luxury,Medium
+Tata Indigo eCS Petrol,NA,Car,Luxury,Medium
+Tata Indigo Manza Diesel,NA,Car,Luxury,Medium
+Tata Indigo Manza Petrol,NA,Car,Luxury,Medium
+Tata Nano,NA,Car,Non Luxury Small,Small
+Tata Safari Dicor,NA,Car,SUV,Extra Large
+Tata Safari Storme,NA,Car,SUV,Extra Large
+Tata Safari Storme New,NA,Car,SUV,Extra Large
+Tata Zest Diesel,NA,Car,Luxury,Medium
+Tata Zest Petrol,NA,Car,Luxury,Medium
+Toyota Altis Diesel,NA,Car,Luxury,Large
+Toyota Altis Petrol,NA,Car,Luxury,Large
+Toyota Camry Petrol New,NA,Car,Premium Luxury,Extra Large
+Toyota Corolla Petrol,NA,Car,Luxury,Large
+Toyota Etios Liva Diesel,NA,Car,Non Luxury Small,Medium
+Toyota Etios Liva Petrol,NA,Car,Non Luxury Small,Small
+Toyota Etios Petrol,NA,Car,Luxury,Medium
+Toyota Fortuner Diesel,NA,Car,SUV,Extra Large
+Toyota Innova Diesel,NA,Car,SUV,Large
+Volkswagen Cross Polo Diesel,NA,Car,Non Luxury Small,Medium
+Volkswagen Jetta Diesel,NA,Car,Luxury,Large
+Volkswagen Jetta Petrol,NA,Car,Luxury,Large
+Volkswagen Polo Diesel,NA,Car,Non Luxury Small,Medium
+Volkswagen Polo Petrol,NA,Car,Non Luxury Small,Medium
+Volkswagen Vento Diesel,NA,Car,Luxury,Medium
+Volkswagen Vento Petrol,NA,Car,Luxury,Medium
+Bajaj Avenger DTS-i 200,NA,Bike,Non Luxury Small,Small
+Bajaj Avenger DTS-i 220,NA,Bike,Non Luxury Small,Small
+Bajaj Discover 100,NA,Bike,Non Luxury Small,Small
+Bajaj Discover 125,NA,Bike,Non Luxury Small,Small
+Bajaj Discover 125 ST,NA,Bike,Non Luxury Small,Small
+Bajaj Discover 150,NA,Bike,Non Luxury Small,Small
+Bajaj Platina,NA,Bike,Non Luxury Small,Small
+Bajaj Platina 125,NA,Bike,Non Luxury Small,Small
+Bajaj Pulsar 135 LS,NA,Bike,Non Luxury Small,Small
+Bajaj Pulsar 150 UG IV,NA,Bike,Non Luxury Small,Small
+Bajaj Pulsar 200 DTS-i,NA,Bike,Non Luxury Small,Small
+Bajaj Pulsar 200 NS,NA,Bike,Non Luxury Small,Small
+Bajaj Pulsar 220 DTS-Fi,NA,Bike,Non Luxury Small,Small
+Bajaj Pulsar 220 DTS-i,NA,Bike,Non Luxury Small,Small
+Hero Achiever,NA,Bike,Non Luxury Small,Small
+Hero Glamour,NA,Bike,Non Luxury Small,Small
+Hero Glamour Programmed FI,NA,Bike,Non Luxury Small,Small
+Hero HF Dawn,NA,Bike,Non Luxury Small,Small
+Hero HF Deluxe,NA,Bike,Non Luxury Small,Small
+Hero HF Deluxe Eco,NA,Bike,Non Luxury Small,Small
+Hero Hunk,NA,Bike,Non Luxury Small,Small
+Hero Ignitor,NA,Bike,Non Luxury Small,Small
+Hero Impulse,NA,Bike,Non Luxury Small,Small
+Hero Karizma,NA,Bike,Non Luxury Small,Small
+Hero Karizma ZMR,NA,Bike,Non Luxury Small,Small
+Hero Maestro,NA,Bike,Non Luxury Small,Small
+Hero Passion Pro,NA,Bike,Non Luxury Small,Small
+Hero Passion Pro TR,NA,Bike,Non Luxury Small,Small
+Hero Passion XPRO,NA,Bike,Non Luxury Small,Small
+Hero Pleasure,NA,Bike,Non Luxury Small,Small
+Hero Splendor iSmart,NA,Bike,Non Luxury Small,Small
+Hero Splendor Plus,NA,Bike,Non Luxury Small,Small
+Hero Splendor Pro,NA,Bike,Non Luxury Small,Small
+Hero Splendor Pro Classic,NA,Bike,Non Luxury Small,Small
+Hero Splendor Pro J-1,NA,Bike,Non Luxury Small,Small
+Hero Super Splendor,NA,Bike,Non Luxury Small,Small
+Hero Xtreme,NA,Bike,Non Luxury Small,Small
+Hero Xtreme Sports,NA,Bike,Non Luxury Small,Small
+Honda Activa 125,NA,Bike,Non Luxury Small,Small
+Honda Activa 3G,NA,Bike,Non Luxury Small,Small
+Honda CB Shine,NA,Bike,Non Luxury Small,Small
+Honda CB Unicorn,NA,Bike,Non Luxury Small,Small
+Honda CBR 150,NA,Bike,Non Luxury Small,Small
+Honda CBR 250,NA,Bike,Non Luxury Small,Small
+Honda Livo,NA,Bike,Non Luxury Small,Small
+KTM 200Duke,NA,Bike,Non Luxury Small,Small
+KTM 390Duke,NA,Bike,Non Luxury Small,Small
+KTM RC200,NA,Bike,Non Luxury Small,Small
+KTM RC390,NA,Bike,Non Luxury Small,Small
+Mahindra Centuro Disc Brake,NA,Bike,Non Luxury Small,Small
+Mahindra Centuro NXT,NA,Bike,Non Luxury Small,Small
+Mahindra Centuro Rockstar,NA,Bike,Non Luxury Small,Small
+Mahindra Centuro Rockstar Kick Alloy,NA,Bike,Non Luxury Small,Small
+Mahindra Centuro XT,NA,Bike,Non Luxury Small,Small
+Mahindra Duro,NA,Bike,Non Luxury Small,Small
+Mahindra Gusto,NA,Bike,Non Luxury Small,Small
+Mahindra Rodeo,NA,Bike,Non Luxury Small,Small
+Royal Enfield Bullet 350,NA,Bike,Non Luxury Small,Small
+Royal Enfield Bullet 500,NA,Bike,Non Luxury Small,Small
+Royal Enfield Classic 350,NA,Bike,Non Luxury Small,Small
+Royal Enfield Classic 500,NA,Bike,Non Luxury Small,Small
+Royal Enfield Continental GT,NA,Bike,Non Luxury Small,Small
+Royal Enfield Thunderbird 350,NA,Bike,Non Luxury Small,Small
+Royal Enfield Thunderbird 500,NA,Bike,Non Luxury Small,Small
+Suzuki Access,NA,Bike,Non Luxury Small,Small
+Suzuki Gixxer,NA,Bike,Non Luxury Small,Small
+Suzuki Gixxer SF,NA,Bike,Non Luxury Small,Small
+Suzuki GS150R,NA,Bike,Non Luxury Small,Small
+Suzuki Hayate,NA,Bike,Non Luxury Small,Small
+Suzuki Lets,NA,Bike,Non Luxury Small,Small
+Suzuki Slingshot Plus,NA,Bike,Non Luxury Small,Small
+Suzuki Swish,NA,Bike,Non Luxury Small,Small
+TVS Apache RTR160,NA,Bike,Non Luxury Small,Small
+TVS Apache RTR160-FI,NA,Bike,Non Luxury Small,Small
+TVS Apache RTR180,NA,Bike,Non Luxury Small,Small
+TVS Flame DS125,NA,Bike,Non Luxury Small,Small
+TVS Flame SR125,NA,Bike,Non Luxury Small,Small
+TVS Jive,NA,Bike,Non Luxury Small,Small
+TVS Scooty Streak,NA,Bike,Non Luxury Small,Small
+TVS Scooty Teenz,NA,Bike,Non Luxury Small,Small
+TVS Star,NA,Bike,Non Luxury Small,Small
+TVS Star City,NA,Bike,Non Luxury Small,Small
+TVS Star Sport,NA,Bike,Non Luxury Small,Small
+TVS Wego,NA,Bike,Non Luxury Small,Small
+TVS XL Super,NA,Bike,Non Luxury Small,Small
+Yamaha Alpha,NA,Bike,Non Luxury Small,Small
+Yamaha Crux,NA,Bike,Non Luxury Small,Small
+Yamaha Fazer,NA,Bike,Non Luxury Small,Small
+Yamaha Fazer FI,NA,Bike,Non Luxury Small,Small
+Yamaha FZ,NA,Bike,Non Luxury Small,Small
+Yamaha FZ FI,NA,Bike,Non Luxury Small,Small
+Yamaha FZS,NA,Bike,Non Luxury Small,Small
+Yamaha FZS FI,NA,Bike,Non Luxury Small,Small
+Yamaha R15,NA,Bike,Non Luxury Small,Small
+Yamaha Ray,NA,Bike,Non Luxury Small,Small
+Yamaha Ray-Z,NA,Bike,Non Luxury Small,Small
+Yamaha Saluto,NA,Bike,Non Luxury Small,Small
+Yamaha SS125,NA,Bike,Non Luxury Small,Small
+Yamaha SZ RR,NA,Bike,Non Luxury Small,Small
+Yamaha SZ RR Blue Core,NA,Bike,Non Luxury Small,Small
+Yamaha SZ S,NA,Bike,Non Luxury Small,Small
+Yamaha YBR110,NA,Bike,Non Luxury Small,Small
+Yamaha YBR125,NA,Bike,Non Luxury Small,Small
+Bajaj Pulsar 180,NA,Bike,Non Luxury Small,Small
