@@ -104,9 +104,7 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-                'social.apps.django_app.context_processors.backends',
-                'social.apps.django_app.context_processors.login_redirect',
+                'django.contrib.messages.context_processors.messages'
             ],
         },
     },
@@ -136,8 +134,8 @@ DATABASES = {
     'default': {
         'ENGINE' : 'django_mongodb_engine',
         'NAME' : 'test_clickg',
-        # 'USER': 'Clickadmin',
-        # 'PASSWORD': 'DoctorWho?',
+        'USER': 'Clickadmin',
+        'PASSWORD': 'DoctorWho?',
         'HOST': 'localhost',
         'PORT': 27017,
         'SUPPORTS_TRANSACTIONS': False,
