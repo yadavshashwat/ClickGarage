@@ -22,6 +22,7 @@ from models import *
 from dataEntry.runentry import carMakers, cleanstring
 from activity import views as ac_vi
 from mailing import views as mviews
+from api import tasks as tasks
 
 from activity.models import Transactions, CGUser
 # from lxml import html
@@ -252,7 +253,7 @@ def fetch_car_servicedetails(request):
                               ,'labour_price':service.price_labour
                               ,'wa_price':service.wheel_alignment
                               ,'wb_price':service.wheel_balancing
-                              ,'wa_wb_present':service.WA_WB_Inc
+                              # ,'wa_wb_present':service.WA_WB_Inc
                               ,'dealer_details':service.detail_dealers
                               ,'car_bike':car_bike} )
 
@@ -370,7 +371,7 @@ def fetch_all_servicedealercat(request):
                         ,'labour_price':service.price_labour        
                         ,'wheel_alignment_price':service.wheel_alignment     
                         ,'wheel_balancing_price':service.wheel_balancing     
-                        ,'WA_WB?':service.WA_WB_Inc           
+                        # ,'WA_WB?':service.WA_WB_Inc
                         ,'dealer_details':service.detail_dealers
                         #,'paid_free?':service.paid_free
                         ,'regular_checks':service.regular_checks
@@ -1559,7 +1560,7 @@ def place_order(request):
                         'labour_price':serviceDetail.price_labour,
                         'wa_price':serviceDetail.wheel_alignment,
                         'wb_price':serviceDetail.wheel_balancing,
-                        'wa_wb_present':serviceDetail.WA_WB_Inc,
+                        # 'wa_wb_present':serviceDetail.WA_WB_Inc,
                         'dealer_details':serviceDetail.detail_dealers,
                         'year':serviceDetail.year,
                         'total_price':total_price,
@@ -1606,7 +1607,7 @@ def place_order(request):
                         'labour_price':serviceDetail.price_labour,
                         'wa_price':serviceDetail.wheel_alignment,
                         'wb_price':serviceDetail.wheel_balancing,
-                        'wa_wb_present':serviceDetail.WA_WB_Inc,
+                        # 'wa_wb_present':serviceDetail.WA_WB_Inc,
                         'dealer_details':serviceDetail.detail_dealers,
                         # 'year':serviceDetail.year,
                         'total_price':total_price,
@@ -2351,6 +2352,7 @@ def fetch_car_services_new(request):
                             ,'brand':service.brand
                             ,'car_name':service.carname
                             ,'type_service' : service.type_service
+                            ,'service_desc' : service.service_desc
                             ,'regular_checks':service.regular_checks
 
                             ,'parts_replaced':service.part_replacement
@@ -2415,13 +2417,23 @@ def fetch_car_servicedetails_new(request):
                               ,'labour_price':service.price_labour
                               ,'wa_price':service.wheel_alignment
                               ,'wb_price':service.wheel_balancing
-                              ,'wa_wb_present':service.WA_WB_Inc
+                              # ,'wa_wb_present':service.WA_WB_Inc
+                              ,'service_desc':service.service_desc
                               ,'dealer_details':service.detail_dealers
+                             ,'dry_cleaning': service.dry_cleaning
+                             ,'engine_additive': service.engine_additive
+                             ,'injector_cleaning': service.injector_cleaning
+                             ,'rubbing_polishing': service.rubbing_polishing
+                             ,'anti_rust'        : service.anti_rust
+                             ,'teflon'           : service.teflon
+                             ,'engine_flush'    : service.engine_flush
+                             ,'ac_servicing'    : service.ac_servicing
+                             ,'ac_disinfection': service.ac_disinfection
                               # ,'car_bike':car_bike
                         ,'type_service':service.type_service
                         ,'part_dic':service.part_dic
                         ,'labour_price':service.price_labour
-                        ,'discosunt':service.discount
+                        ,'discount':service.discount
                         ,'priority':service.priority
                      }
                         )
@@ -2700,7 +2712,7 @@ def apply_coupon(request):
 
 def add_guest_transaction(request):
     # print 'p'
-     if request.user.email in ['y.shashwat@gmail.com', 'bhuvan.batra@gmail.com', 'sanskar@clickgarage.in', 'v.rajeev92@gmail.com', 'RajeevVempuluru']:
+     if request.user.email in ['bhuvan.batra@gmail.com', 'shashwat@clickgarage.in', 'y.shashwat@gmail.com', 'bhuvan@clickgarage.in', 'sanskar@clickgarage.in', 'v.rajeev92@gmail.com']:
         print "user"
         # To handle
         email          = get_param(request, 'email', None)
@@ -2810,7 +2822,7 @@ def add_guest_transaction(request):
                         'labour_price':serviceDetail.price_labour,
                         'wa_price':serviceDetail.wheel_alignment,
                         'wb_price':serviceDetail.wheel_balancing,
-                        'wa_wb_present':serviceDetail.WA_WB_Inc,
+                        # 'wa_wb_present':serviceDetail.WA_WB_Inc,
                         'dealer_details':serviceDetail.detail_dealers,
                         'year':serviceDetail.year,
                         'total_price':total_price,
@@ -2857,7 +2869,7 @@ def add_guest_transaction(request):
                         'labour_price':serviceDetail.price_labour,
                         'wa_price':serviceDetail.wheel_alignment,
                         'wb_price':serviceDetail.wheel_balancing,
-                        'wa_wb_present':serviceDetail.WA_WB_Inc,
+                        # 'wa_wb_present':serviceDetail.WA_WB_Inc,
                         'dealer_details':serviceDetail.detail_dealers,
                         # 'year':serviceDetail.year,
                         'total_price':total_price,
@@ -3416,7 +3428,7 @@ def service_selected(request):
                               ,'labour_price':service.price_labour
                               ,'wa_price':service.wheel_alignment
                               ,'wb_price':service.wheel_balancing
-                              ,'wa_wb_present':service.WA_WB_Inc
+                              # ,'wa_wb_present':service.WA_WB_Inc
                               ,'dealer_details':service.detail_dealers
                               # ,'car_bike':car_bike
                         ,'type_service':service.type_service
@@ -3505,4 +3517,5 @@ def service_selected(request):
 #         mviews.send_cancel_final(username,useremail,booking_id)
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+# Drivers APIs
 

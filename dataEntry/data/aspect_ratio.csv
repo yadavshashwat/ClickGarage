@@ -74,9 +74,9 @@ Hyundai Sonata Diesel New,NA,Car,Luxury,Large
 Hyundai Sonata Diesel Old,NA,Car,Luxury,Large
 Hyundai Sonata Petrol New,NA,Car,Luxury,Large
 Hyundai Sonata Petrol Old,NA,Car,Luxury,Large
-Hyundai Verna / Fluidic 4S Diesel,NA,Car,Luxury,Medium
-Hyundai Verna / Fluidic 4S Petrol,NA,Car,Luxury,Medium
 Hyundai Verna Diesel Old,NA,Car,Luxury,Medium
+Hyundai Verna Fluidic 4S Diesel,NA,Car,Luxury,Medium
+Hyundai Verna Fluidic 4S Petrol,NA,Car,Luxury,Medium
 Hyundai Verna Petrol Old,NA,Car,Luxury,Medium
 Hyundai Xcent Diesel,NA,Car,Luxury,Medium
 Hyundai Xcent Petrol,NA,Car,Luxury,Medium
@@ -87,9 +87,9 @@ Mahindra Thar Diesel,NA,Car,SUV,Large
 Mahindra TUV 300,NA,Car,SUV,Extra Large
 Mahindra XUV 500,NA,Car,SUV,Large
 Mahindra Xylo,NA,Car,SUV,Large
-Maruti Suzuki A-Star Petrol,NA,Car,Non Luxury Small,Small
 Maruti Suzuki Alto 800 Petrol,NA,Car,Non Luxury Small,Small
 Maruti Suzuki Alto K10 Petrol,NA,Car,Non Luxury Small,Small
+Maruti Suzuki A-Star Petrol,NA,Car,Non Luxury Small,Small
 Maruti Suzuki Baleno Diesel,NA,Car,Non Luxury Small,Medium
 Maruti Suzuki Baleno Petrol,NA,Car,Non Luxury Small,Medium
 Maruti Suzuki Celerio Petrol,NA,Car,Non Luxury Small,Medium
@@ -108,9 +108,9 @@ Maruti Suzuki Swift Diesel,NA,Car,Non Luxury Small,Medium
 Maruti Suzuki Swift Petrol,NA,Car,Non Luxury Small,Medium
 Maruti Suzuki SX4 Diesel,NA,Car,Luxury,Medium
 Maruti Suzuki SX4 Petrol,NA,Car,Luxury,Medium
-Maruti Suzuki Wagon-R (Stingray) Petrol,NA,Car,Non Luxury Small,Medium
-Maruti Suzuki Wagon-R Petrol New,NA,Car,Non Luxury Small,Medium
-Maruti Suzuki Wagon-R Petrol Old,NA,Car,Non Luxury Small,Medium
+Maruti Suzuki WagonR Petrol New,NA,Car,Non Luxury Small,Medium
+Maruti Suzuki WagonR Petrol Old,NA,Car,Non Luxury Small,Medium
+Maruti Suzuki WagonR Stingray Petrol,NA,Car,Non Luxury Small,Medium
 Maruti Suzuki Zen Estilo Petrol,NA,Car,Non Luxury Small,Small
 Nissan Evalia Diesel,NA,Car,SUV,Extra Large
 Nissan Micra Active Petrol,NA,Car,Non Luxury Small,Medium
@@ -125,7 +125,6 @@ Renault Duster Diesel,NA,Car,SUV,Large
 Renault Duster Petrol,NA,Car,SUV,Large
 Renault Fluence Diesel,NA,Car,Luxury,Large
 Renault Koleos Diesel,NA,Car,SUV,Large
-Renault Koleos Diesel Automatic,NA,Car,SUV,Large
 Renault Kwid Diesel,NA,Car,Non Luxury Small,Small
 Renault Kwid Petrol,NA,Car,Non Luxury Small,Small
 Renault Lodgy Diesel,NA,Car,Luxury,Extra Large
@@ -135,20 +134,15 @@ Renault Scala Diesel,NA,Car,Luxury,Medium
 Renault Scala Petrol,NA,Car,Luxury,Medium
 Skoda Fabia Diesel,NA,Car,Non Luxury Small,Medium
 Skoda Fabia Petrol,NA,Car,Non Luxury Small,Medium
-Skoda Laura Diesel Automatic,NA,Car,Luxury,Large
-Skoda Laura Diesel Manual,NA,Car,Luxury,Large
+Skoda Laura Diesel,NA,Car,Luxury,Large
 Skoda Laura Petrol,NA,Car,Luxury,Large
-Skoda Octavia Diesel Automatic,NA,Car,Luxury,Large
-Skoda Octavia Diesel Manual,NA,Car,Luxury,Large
+Skoda Octavia Diesel,NA,Car,Luxury,Large
 Skoda Octavia Petrol,NA,Car,Luxury,Large
 Skoda Rapid Diesel,NA,Car,Luxury,Medium
-Skoda Rapid Petrol Automatic,NA,Car,Luxury,Medium
-Skoda Rapid Petrol Manual,NA,Car,Luxury,Medium
+Skoda Rapid Petrol,NA,Car,Luxury,Medium
 Skoda Superb Diesel,NA,Car,Premium Luxury,Large
-Skoda Superb Petrol New Automatic,NA,Car,Premium Luxury,Large
-Skoda Superb Petrol New Manual,NA,Car,Premium Luxury,Large
-Skoda Superb Petrol Old Automatic,NA,Car,Premium Luxury,Large
-Skoda Superb Petrol Old Manual,NA,Car,Premium Luxury,Large
+Skoda Superb Petrol New,NA,Car,Premium Luxury,Large
+Skoda Superb Petrol Old,NA,Car,Premium Luxury,Large
 Skoda Yeti Diesel New,NA,Car,Luxury,Large
 Skoda Yeti Diesel Old,NA,Car,Luxury,Large
 Tata Aria,NA,Car,SUV,Large
@@ -174,6 +168,7 @@ Toyota Altis Petrol,NA,Car,Luxury,Large
 Toyota Camry Petrol New,NA,Car,Premium Luxury,Extra Large
 Toyota Corolla Petrol,NA,Car,Luxury,Large
 Toyota Etios Liva Diesel,NA,Car,Non Luxury Small,Medium
+Toyota Etios Liva Petrol,NA,Car,Non Luxury Small,Small
 Toyota Etios Petrol,NA,Car,Luxury,Medium
 Toyota Fortuner Diesel,NA,Car,SUV,Extra Large
 Toyota Innova Diesel,NA,Car,SUV,Large
@@ -184,86 +179,6 @@ Volkswagen Polo Diesel,NA,Car,Non Luxury Small,Medium
 Volkswagen Polo Petrol,NA,Car,Non Luxury Small,Medium
 Volkswagen Vento Diesel,NA,Car,Luxury,Medium
 Volkswagen Vento Petrol,NA,Car,Luxury,Medium
-Audi A3,NA,Car,Premium Luxury,Extra Large
-Audi A3 Cabriolet,NA,Car,Premium Luxury,Extra Large
-Audi A4,NA,Car,Premium Luxury,Extra Large
-Audi A6,NA,Car,Premium Luxury,Extra Large
-Audi A8 L,NA,Car,Premium Luxury,Extra Large
-Audi Q3,NA,Car,Premium Luxury,Extra Large
-Audi Q5,NA,Car,Premium Luxury,Extra Large
-Audi Q7,NA,Car,Premium Luxury,Extra Large
-Audi R8,NA,Car,Premium Luxury,Extra Large
-Audi RS5,NA,Car,Premium Luxury,Extra Large
-Audi RS6,NA,Car,Premium Luxury,Extra Large
-Audi RS7 Sportback,NA,Car,Premium Luxury,Extra Large
-Audi S6,NA,Car,Premium Luxury,Extra Large
-Audi TT,NA,Car,Premium Luxury,Extra Large
-Ssangyong Rexton,NA,Car,Premium Luxury,Extra Large
-Porsche 911,NA,Car,Premium Luxury,Extra Large
-Porsche Boxster,NA,Car,Premium Luxury,Extra Large
-Porsche Cayenne,NA,Car,Premium Luxury,Extra Large
-Porsche Cayman,NA,Car,Premium Luxury,Extra Large
-Porsche Macan,NA,Car,Premium Luxury,Extra Large
-Porsche Panamera,NA,Car,Premium Luxury,Extra Large
-Mercedes-Benz A-Class,NA,Car,Premium Luxury,Extra Large
-Mercedes-Benz B-Class,NA,Car,Premium Luxury,Extra Large
-Mercedes-Benz C-Class,NA,Car,Premium Luxury,Extra Large
-Mercedes-Benz CLA Class,NA,Car,Premium Luxury,Extra Large
-Mercedes-Benz CLS,NA,Car,Premium Luxury,Extra Large
-Mercedes-Benz E-Class,NA,Car,Premium Luxury,Extra Large
-Mercedes-Benz GL,NA,Car,Premium Luxury,Extra Large
-Mercedes-Benz GL63 AMG,NA,Car,Premium Luxury,Extra Large
-Mercedes-Benz GLA,NA,Car,Premium Luxury,Extra Large
-Mercedes-Benz M-Class,NA,Car,Premium Luxury,Extra Large
-Mercedes-Benz ML 63AMG,NA,Car,Premium Luxury,Extra Large
-Mercedes-Benz S-Class,NA,Car,Premium Luxury,Extra Large
-Mercedes-Benz SLK-Class,NA,Car,Premium Luxury,Extra Large
-Rolls-Royce Drophead Coupe,NA,Car,Premium Luxury,Extra Large
-Rolls-Royce Ghost,NA,Car,Premium Luxury,Extra Large
-Rolls-Royce Ghost Series II,NA,Car,Premium Luxury,Extra Large
-Rolls-Royce Phantom,NA,Car,Premium Luxury,Extra Large
-Rolls-Royce Phantom Coupe,NA,Car,Premium Luxury,Extra Large
-Isuzu MU7,NA,Car,Premium Luxury,Extra Large
-Land Rover Discovery,NA,Car,Premium Luxury,Extra Large
-Land Rover Freelander 2,NA,Car,Premium Luxury,Extra Large
-Land Rover Range Rover Evoque,NA,Car,Premium Luxury,Extra Large
-Land Rover Range Rover LWB,NA,Car,Premium Luxury,Extra Large
-Land Rover Range Rover Sport,NA,Car,Premium Luxury,Extra Large
-BMW 1 Series,NA,Car,Premium Luxury,Extra Large
-BMW 3 Series,NA,Car,Premium Luxury,Extra Large
-BMW 3 Series GT,NA,Car,Premium Luxury,Extra Large
-BMW 4 Series,NA,Car,Premium Luxury,Extra Large
-BMW 5 Series,NA,Car,Premium Luxury,Extra Large
-BMW 6 Series,NA,Car,Premium Luxury,Extra Large
-BMW 7 Series,NA,Car,Premium Luxury,Extra Large
-BMW i8,NA,Car,Premium Luxury,Extra Large
-BMW X1,NA,Car,Premium Luxury,Extra Large
-BMW X3,NA,Car,Premium Luxury,Extra Large
-BMW X5,NA,Car,Premium Luxury,Extra Large
-BMW Z4,NA,Car,Premium Luxury,Extra Large
-Lamborghini Aventador,NA,Car,Premium Luxury,Extra Large
-Lamborghini Huracan,NA,Car,Premium Luxury,Extra Large
-Jaguar F-Type,NA,Car,Premium Luxury,Extra Large
-Jaguar XF,NA,Car,Premium Luxury,Extra Large
-Jaguar XJ L,NA,Car,Premium Luxury,Extra Large
-Volvo S60,NA,Car,Premium Luxury,Extra Large
-Volvo S80,NA,Car,Premium Luxury,Extra Large
-Volvo V40 Cross Country,NA,Car,Premium Luxury,Extra Large
-Volvo XC60,NA,Car,Premium Luxury,Extra Large
-Volvo XC90,NA,Car,Premium Luxury,Extra Large
-Ferrari 458 Italia,NA,Car,Premium Luxury,Extra Large
-Ferrari 599 GTB Fiorano,NA,Car,Premium Luxury,Extra Large
-Ferrari California,NA,Car,Premium Luxury,Extra Large
-Ferrari FF,NA,Car,Premium Luxury,Extra Large
-Mini Cooper,NA,Car,Premium Luxury,Large
-Mini Cooper Convertible,NA,Car,Premium Luxury,Large
-Mini Cooper Countryman,NA,Car,Premium Luxury,Large
-Mini Cooper S,NA,Car,Premium Luxury,Large
-Bentley Continental Flying Spur,NA,Car,Premium Luxury,Extra Large
-Bentley Continental GT,NA,Car,Premium Luxury,Extra Large
-Bentley Continental GTC,NA,Car,Premium Luxury,Extra Large
-Bentley Mulsanne,NA,Car,Premium Luxury,Extra Large
-Bugatti Veyron,NA,Car,Premium Luxury,Extra Large
 Bajaj Avenger DTS-i 200,NA,Bike,Non Luxury Small,Small
 Bajaj Avenger DTS-i 220,NA,Bike,Non Luxury Small,Small
 Bajaj Discover 100,NA,Bike,Non Luxury Small,Small
@@ -306,13 +221,21 @@ Honda Activa 125,NA,Bike,Non Luxury Small,Small
 Honda Activa 3G,NA,Bike,Non Luxury Small,Small
 Honda CB Shine,NA,Bike,Non Luxury Small,Small
 Honda CB Unicorn,NA,Bike,Non Luxury Small,Small
-Honda Livo,NA,Bike,Non Luxury Small,Small
-Honda CBR 250,NA,Bike,Non Luxury Small,Small
 Honda CBR 150,NA,Bike,Non Luxury Small,Small
+Honda CBR 250,NA,Bike,Non Luxury Small,Small
+Honda Livo,NA,Bike,Non Luxury Small,Small
 KTM 200Duke,NA,Bike,Non Luxury Small,Small
 KTM 390Duke,NA,Bike,Non Luxury Small,Small
 KTM RC200,NA,Bike,Non Luxury Small,Small
 KTM RC390,NA,Bike,Non Luxury Small,Small
+Mahindra Centuro Disc Brake,NA,Bike,Non Luxury Small,Small
+Mahindra Centuro NXT,NA,Bike,Non Luxury Small,Small
+Mahindra Centuro Rockstar,NA,Bike,Non Luxury Small,Small
+Mahindra Centuro Rockstar Kick Alloy,NA,Bike,Non Luxury Small,Small
+Mahindra Centuro XT,NA,Bike,Non Luxury Small,Small
+Mahindra Duro,NA,Bike,Non Luxury Small,Small
+Mahindra Gusto,NA,Bike,Non Luxury Small,Small
+Mahindra Rodeo,NA,Bike,Non Luxury Small,Small
 Royal Enfield Bullet 350,NA,Bike,Non Luxury Small,Small
 Royal Enfield Bullet 500,NA,Bike,Non Luxury Small,Small
 Royal Enfield Classic 350,NA,Bike,Non Luxury Small,Small
@@ -325,7 +248,7 @@ Suzuki Gixxer,NA,Bike,Non Luxury Small,Small
 Suzuki Gixxer SF,NA,Bike,Non Luxury Small,Small
 Suzuki GS150R,NA,Bike,Non Luxury Small,Small
 Suzuki Hayate,NA,Bike,Non Luxury Small,Small
-Suzuki Let's,NA,Bike,Non Luxury Small,Small
+Suzuki Lets,NA,Bike,Non Luxury Small,Small
 Suzuki Slingshot Plus,NA,Bike,Non Luxury Small,Small
 Suzuki Swish,NA,Bike,Non Luxury Small,Small
 TVS Apache RTR160,NA,Bike,Non Luxury Small,Small
@@ -349,6 +272,7 @@ Yamaha FZ,NA,Bike,Non Luxury Small,Small
 Yamaha FZ FI,NA,Bike,Non Luxury Small,Small
 Yamaha FZS,NA,Bike,Non Luxury Small,Small
 Yamaha FZS FI,NA,Bike,Non Luxury Small,Small
+Yamaha R15,NA,Bike,Non Luxury Small,Small
 Yamaha Ray,NA,Bike,Non Luxury Small,Small
 Yamaha Ray-Z,NA,Bike,Non Luxury Small,Small
 Yamaha Saluto,NA,Bike,Non Luxury Small,Small
@@ -358,12 +282,4 @@ Yamaha SZ RR Blue Core,NA,Bike,Non Luxury Small,Small
 Yamaha SZ S,NA,Bike,Non Luxury Small,Small
 Yamaha YBR110,NA,Bike,Non Luxury Small,Small
 Yamaha YBR125,NA,Bike,Non Luxury Small,Small
-Yamaha R15,NA,Bike,Non Luxury Small,Small
-Mahindra Centuro NXT,NA,Bike,Non Luxury Small,Small
-Mahindra Centuro Disc Brake,NA,Bike,Non Luxury Small,Small
-Mahindra Centuro XT,NA,Bike,Non Luxury Small,Small
-Mahindra Centuro Rockstar,NA,Bike,Non Luxury Small,Small
-Mahindra Centuro Rockstar Kick Alloy,NA,Bike,Non Luxury Small,Small
-Mahindra Gusto,NA,Bike,Non Luxury Small,Small
-Mahindra Rodeo,NA,Bike,Non Luxury Small,Small
-Mahindra Duro,NA,Bike,Non Luxury Small,Small
+Bajaj Pulsar 180,NA,Bike,Non Luxury Small,Small

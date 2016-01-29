@@ -89,7 +89,8 @@ class ServicingNew(models.Model):
     brand               = models.CharField(max_length=50)
     carname             = models.CharField(max_length=50)
     type_service        = models.CharField(max_length=200)
-    #year                = models.CharField(max_length=50)
+    service_desc        = models.CharField(max_length=500)
+        #year                = models.CharField(max_length=50)
     regular_checks      = ListField(models.CharField(max_length=200))
     #while uploading servicing labour
     #paid_free           = models.CharField(max_length=50)
@@ -103,6 +104,8 @@ class ServiceDealerCatNew(models.Model):
     brand               = models.CharField(max_length=50)
     carname             = models.CharField(max_length=50)
     type_service        = models.CharField(max_length=200)
+    service_desc        = models.CharField(max_length=500)
+
     #year               = models.CharField(max_length=50)
     dealer_category     = models.CharField(max_length=200)
     part_dic = ListField(DictField())
@@ -112,7 +115,7 @@ class ServiceDealerCatNew(models.Model):
     price_labour        = models.CharField(max_length=50)
     wheel_alignment     = models.CharField(max_length=50)
     wheel_balancing     = models.CharField(max_length=50)
-    WA_WB_Inc           = models.CharField(max_length=50)
+    # WA_WB_Inc           = models.CharField(max_length=50)
     detail_dealers      = ListField(DictField())
     #paid_free          = models.CharField(max_length=50)
     regular_checks      = ListField(models.CharField(max_length=200))
@@ -120,6 +123,17 @@ class ServiceDealerCatNew(models.Model):
     priority            = models.CharField(max_length=50)
     priority_service           = models.CharField(max_length=50)
     car_bike = models.CharField(max_length=50)
+    # vas_dic = ListField(DictField())
+    dry_cleaning        = models.CharField(max_length=50)
+    engine_additive     = models.CharField(max_length=50)
+    injector_cleaning   = models.CharField(max_length=50)
+    rubbing_polishing   = models.CharField(max_length=50)
+    anti_rust           = models.CharField(max_length=50)
+    teflon              = models.CharField(max_length=50)
+    engine_flush        = models.CharField(max_length=50)
+    ac_servicing        = models.CharField(max_length=50)
+    ac_disinfection     = models.CharField(max_length=50)
+
 
 
 class ServiceDealerNameNew(models.Model):
@@ -329,4 +343,16 @@ class Otp(models.Model):
     updated      =   models.DateTimeField(default=None)
     username     = models.CharField(max_length=50)
 
+class Driver(models.Model):
+    mobile  = models.CharField(max_length=50)
+    name    = models.CharField(max_length=50)
 
+class DriverBooking(models.Model):
+    driver      = models.ForeignKey('Driver')   
+    booking     = models.ForeignKey('Transaction')
+    status      = models.ForeignKey('DriverStatus')
+
+class DriverStatus(models.Model):
+    status   = models.CharField(max_length=50)
+    lat      = models.DecimalField(null=True, max_digits=7, decimal_places=5) 
+    lon      = models.DecimalField(null=True, max_digits=7, decimal_places=5)
