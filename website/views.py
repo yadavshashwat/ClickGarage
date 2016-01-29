@@ -138,6 +138,10 @@ def order(request):
         cars = views.fetch_all_cars(request).content
         cars = json.loads(cars)
         cars = cars['result']
+
+        if car_obj and car_obj['car_bike'] == 'Bike':
+            template = loader.get_template('website/b_order.html')
+
         context = RequestContext(request, {
             'carSelected': car_obj,
             'cars':cars

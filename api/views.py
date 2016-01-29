@@ -149,13 +149,19 @@ def fetch_car(request, HTTPFlag=True):
     print car_id
     obj = {}
     obj['status'] = False
+    carObj = None
     if car_id:
         carObj = Car.objects.filter(id=car_id)
-        if len(carObj):
-            carObj = carObj[0]
-            result = {'name':carObj.name, 'make':carObj.make, 'aspect_ratio':carObj.aspect_ratio, 'car_bike':carObj.car_bike,'size':carObj.size,'id':carObj.id}
-            obj['result'] = result
-            obj['status'] = True
+    elif 'clgacarid' in request.COOKIES:
+        car_id = request.COOKIES['clgacarid']
+        if car_id:
+            carObj = Car.objects.filter(id=car_id)
+
+    if carObj and len(carObj):
+        carObj = carObj[0]
+        result = {'name':carObj.name, 'make':carObj.make, 'aspect_ratio':carObj.aspect_ratio, 'car_bike':carObj.car_bike,'size':carObj.size,'id':carObj.id}
+        obj['result'] = result
+        obj['status'] = True
 
     obj['counter'] = 1
     obj['msg'] = "Success"
