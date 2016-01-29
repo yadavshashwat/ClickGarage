@@ -1024,6 +1024,7 @@ def orderParse(request, carName, city):
     obj = {}
     obj['car'] = carName
     obj['city'] = city
+    service = views.get_param(request,'cat','servicing')
     template = loader.get_template('website/order.html')
     car_obj = False
     if not (city and (city in ["Delhi", "Gurgaon", "Noida"]) ):
@@ -1050,6 +1051,19 @@ def orderParse(request, carName, city):
         else:
             car_obj = False
 
+    if car_obj and (car_obj['car_bike'] == 'Bike'):
+        template = loader.get_template('website/b_order.html')
+
+
+    descript_dict = {
+        'servicing':'',
+        'cleaning' :'',
+        'repair'   :'',
+        'emergency':'',
+        'windshield':'',
+        'car_care':''
+
+    }
     cars = views.fetch_all_cars(request).content
     cars = json.loads(cars)
     cars = cars['result']
@@ -1058,7 +1072,9 @@ def orderParse(request, carName, city):
         'cars':cars,
         'city':city,
         'title':title,
-        'meta_desc':meta_desc
+        'meta_desc':meta_desc,
+        'service':service,
+        'descript_dict':descript_dict
     })
     return HttpResponse(template.render(context))
 
