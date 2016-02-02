@@ -68,7 +68,7 @@ def getDriverBookings(request):
             mobile  = params.get('mobile')
             name    = params.get('name')
 
-            bookings = DriverBookings.objects.filter(driver__name=name, driver__mobile=mobile)
+            bookings = DriverBookings.objects.filter(driver__name=name, driver__mobile=mobile, status__status='accepted')
 
             result = list()
 
