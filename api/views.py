@@ -2499,7 +2499,7 @@ def fetch_all_booking(request):
 
     # if cust_id:
 
-    if request.user.email in ['bhuvan.batra@gmail.com', 'shashwat@clickgarage.in', 'y.shashwat@gmail.com', 'bhuvan@clickgarage.in', 'sanskar@clickgarage.in', 'v.rajeev92@gmail.com']:
+    if request.user.email in ['priyank@clickgarage.in','bhuvan.batra@gmail.com', 'shashwat@clickgarage.in', 'y.shashwat@gmail.com', 'bhuvan@clickgarage.in', 'sanskar@clickgarage.in', 'v.rajeev92@gmail.com']:
         tranObjs = Transactions.objects.all().order_by('-booking_id')
             #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
     for trans in tranObjs:
@@ -2720,7 +2720,7 @@ def apply_coupon(request):
 
 def add_guest_transaction(request):
     # print 'p'
-     if request.user.email in ['bhuvan.batra@gmail.com', 'shashwat@clickgarage.in', 'y.shashwat@gmail.com', 'bhuvan@clickgarage.in', 'sanskar@clickgarage.in', 'v.rajeev92@gmail.com']:
+     if request.user.email in ['priyank@clickgarage.in','bhuvan.batra@gmail.com', 'shashwat@clickgarage.in', 'y.shashwat@gmail.com', 'bhuvan@clickgarage.in', 'sanskar@clickgarage.in', 'v.rajeev92@gmail.com']:
         print "user"
         # To handle
         email          = get_param(request, 'email', None)
