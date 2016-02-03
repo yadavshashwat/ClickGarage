@@ -1385,10 +1385,12 @@ def place_emergency_order(request):
 
 
         html_list.append('<div> <span>Pickup Address : </span><span>')
-        html_list.append(pick_obj['street'])
-        if 'landmark' in pick_obj:
-            html_list.append('</span><span> Landmark : ')
-            html_list.append(pick_obj['landmark'])
+        # html_list.append(pick_obj['street'])
+        if 'street' in pick_obj:
+            # html_list.append('</span><span> street : ')
+            html_list.append(pick_obj['street'])
+        if 'locality' in pick_obj:
+            html_list.append(pick_obj['locality'])
         html_list.append('</span><span> City : ')
         html_list.append(pick_obj['city'])
         if 'pincode' in pick_obj:
