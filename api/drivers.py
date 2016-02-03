@@ -1,8 +1,10 @@
 from api.models import *
+from activity.models import *
 from django.http import HttpResponse
 import api.tasks as tasks
 
 secret_string = "dmFydW5ndWxhdGlsaWtlc2dhbG91dGlrZWJhYg=="
+
 
 def test_func():
     return tasks.test_function()
@@ -56,6 +58,8 @@ def updateBookingStatus(request):
                                             lon=lon)
             booking_object.save()
 
+
+
             # todo send_messages(status, params)
             result = dict(status=True, message='updated')
             return HttpResponse(result, content_type='application/json')
@@ -63,7 +67,6 @@ def updateBookingStatus(request):
 def getDriverBookings(request):
     if (request.method == 'GET') :
         params = request.GET
-
         if (params.get('rID')) :
             mobile  = params.get('mobile')
             name    = params.get('name')
@@ -77,6 +80,15 @@ def getDriverBookings(request):
                 booking_details = booking.booking
                 booking_dict['id'] = booking_details.booking_id 
                 booking_dict['cust_id'] = booking_details.cust_id
+                booking_dict['make'] = booking_details.cust_brand
+                booking_dict['model'] = booking_details.cust_carname
+                # booking_dict['service_selected']
+                # booking_dict['additional_details']
+                booking_dict['pick_up_time'] = booking_details.time_booking
+                booking_dict['pick_up_date'] = booking_details.date_booking
+                booking_dict['cust_number'] = booking_details.cust_number
+                # booking_dict['car_bike']
+                # booking_dict['vendor'] =
                 # TODO fill necessary details
 
                 result.append(booking_dict)
@@ -84,3 +96,44 @@ def getDriverBookings(request):
             return HttpResponse(result, content_type='application/json')
 
 # def send_message(status, params)
+def send_message(status,car_bike,cust_number,cust_name,driver_mechanic_name,driver_mechanic_number, driver_mechanic_link, due_amount, payment):
+    sms_type = "TRANS"
+    if (car_bike == "bike"):
+        if (status="accepted"):
+            # message = "Hi " + cust_name +
+            message = "Hi " + cust_name + " our team ("+driver_mechanic_name +" : "+driver_mechanic_number +" | " + driver_mechanic_link +") is out for your bike servicing. They will reach your location at around " + time + ". They will need a water source for washing your bike."
+            message = message.replace(" ","+")
+            tasks.send_sms(sms_type,cust_number,message)
+
+        if (status=="complete"):
+            message = "Hi " + cust_name + "  is out for your bike servicing. They will reach your location at around " + time + ". They will need a water source for washing your bike."
+            message = message.replace(" ","+")
+            tasks.send_sms(sms_type,cust_number,message)
+
+    if (car_bike == "car"):
+        if (status="accepted"):
+            # message = "Hi " + cust_name +
+            message = "Hi " + cust_name + " our driver ("+driver_mechanic_name +" : "+driver_mechanic_number +" | " + driver_mechanic_link +") is out to pick your vehicle. He will reach your location at around " + time + ". Kindly keep your vehicle documents ready."
+            message = message.replace(" ","+")
+            tasks.send_sms(sms_type,cust_number,message)
+
+        if (status=="checked-in"):
+            message = "Hi " + cust_name + " your car was successfully checked in at the service centre. Our service advisor will give you a call post vehicle inspection."
+            message = message.replace(" ","+")
+            tasks.send_sms(sms_type,cust_number,message)
+
+        if (status=="work-complete"):
+            message = "Hi " + cust_name + " our driver is out to deliver your vehicle. He will need the due payment of Rs."+ due_amount +" and receiving form for handing over the vehicle. You can pay the amount online at http://imojo.in/wukje"
+            message = message.replace(" ","+")
+            tasks.send_sms(sms_type,cust_number,message)
+
+        if (status=="paid-feedback"):
+            message = "Hi " + cust_name + " Thanks for using ClickGarage! We have recieved your payment of Rs."+ payment +". It was a pleasure serving you. Can you please write a testimonial for us? Your kind words keep us motivated. :) Link - http://bit.ly/1QGgSXc"
+            message = message.replace(" ","+")
+            tasks.send_sms(sms_type,cust_number,message)
+
+        if (status=="unpaid-feedback"):
+            message = "Hi " + cust_name + " Thanks for using ClickGarage! It was a pleasure serving you. Can you please write a testimonial for us? Your kind words keep us motivated. :) Link - http://bit.ly/1QGgSXc"
+            message = message.replace(" ","+")
+            tasks.send_sms(sms_type,cust_number,message)
+

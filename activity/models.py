@@ -29,29 +29,29 @@ class CGUser(AbstractUser):
     transactions_temp = ListField(DictField())
 
 # class CartCheckouts(models.Model):
-
-class Transaction(models.Model):
-    booking_id         = models.IntegerField()
-    trans_timestamp    = models.CharField(max_length=200)
-    cust_name          = models.CharField(max_length=200)
-    cust_brand         = models.CharField(max_length=200)
-    cust_carname       = models.CharField(max_length=200)
-    cust_number        = models.CharField(max_length=200)
-    cust_email         = models.CharField(max_length=200)
-    cust_pickup_add    = models.CharField(max_length=200)
-    cust_drop_add      = models.CharField(max_length=200)
-    booking_vendor     = models.CharField(max_length=200)
-    booking_cat        = models.CharField(max_length=200)
-    booking_type       = models.CharField(max_length=200)
-    price_labour       = models.CharField(max_length=200)
-    price_parts        = models.CharField(max_length=200)
-    price_total        = models.CharField(max_length=200)
-    date_booking       = models.CharField(max_length=200)
-    time_booking       = models.CharField(max_length=200)
-    amount_paid        = models.BooleanField()
-    status             = models.CharField(max_length=200)
-    comments           = models.CharField(max_length=300)
-
+#
+# class Transaction(models.Model):
+#     booking_id         = models.IntegerField()
+#     trans_timestamp    = models.CharField(max_length=200)
+#     cust_name          = models.CharField(max_length=200)
+#     cust_brand         = models.CharField(max_length=200)
+#     cust_carname       = models.CharField(max_length=200)
+#     cust_number        = models.CharField(max_length=200)
+#     cust_email         = models.CharField(max_length=200)
+#     cust_pickup_add    = models.CharField(max_length=200)
+#     cust_drop_add      = models.CharField(max_length=200)
+#     booking_vendor     = models.CharField(max_length=200)
+#     booking_cat        = models.CharField(max_length=200)
+#     booking_type       = models.CharField(max_length=200)
+#     price_labour       = models.CharField(max_length=200)
+#     price_parts        = models.CharField(max_length=200)
+#     price_total        = models.CharField(max_length=200)
+#     date_booking       = models.CharField(max_length=200)
+#     time_booking       = models.CharField(max_length=200)
+#     amount_paid        = models.BooleanField()
+#     status             = models.CharField(max_length=200)
+#     comments           = models.CharField(max_length=300)
+#
 
 class Transactions(models.Model):
     booking_id         = models.IntegerField()
@@ -87,3 +87,17 @@ class CGUserFullCustom(AbstractBaseUser):
     username = models.CharField(max_length=40)
     USERNAME_FIELD = 'user_email'
     # REQUIRED_FIELDS = ['user_email']
+
+class Driver(models.Model):
+    mobile  = models.CharField(max_length=50)
+    name    = models.CharField(max_length=50)
+
+class DriverBooking(models.Model):
+    driver      = models.ForeignKey('Driver')
+    booking     = models.ForeignKey('Transactions')
+    status      = models.ForeignKey('DriverStatus')
+
+class DriverStatus(models.Model):
+    status   = models.CharField(max_length=50)
+    lat      = models.DecimalField(null=True, max_digits=7, decimal_places=5)
+    lon      = models.DecimalField(null=True, max_digits=7, decimal_places=5)
