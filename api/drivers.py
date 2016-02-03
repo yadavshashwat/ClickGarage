@@ -28,14 +28,14 @@ def signUpDriver(request):
 
             return HttpResponse(result, content_type='application/json')
 
-def fetchAllBookings(request):
-    if (request.method == 'GET') :
-        params = request.GET
-
-        if (params.get('rID')) :
-            all_bookings = list()
-            #TODO show booking details
-            return HttpResponse(all_bookings, content_type='application/json')
+# def fetchAllBookings(request):
+#     if (request.method == 'GET') :
+#         params = request.GET
+#
+#         if (params.get('rID')) :
+#             all_bookings = list()
+#             #TODO show booking details
+#             return HttpResponse(all_bookings, content_type='application/json')
 
 def updateBookingStatus(request):
     if (request.method == 'POST') :
@@ -57,8 +57,6 @@ def updateBookingStatus(request):
                                             lat=lat,
                                             lon=lon)
             booking_object.save()
-
-
 
             # todo send_messages(status, params)
             result = dict(status=True, message='updated')
@@ -82,7 +80,7 @@ def getDriverBookings(request):
                 booking_dict['cust_id'] = booking_details.cust_id
                 booking_dict['make'] = booking_details.cust_brand
                 booking_dict['model'] = booking_details.cust_carname
-                # booking_dict['service_selected']
+                booking_dict['service_item'] = booking_details.servicing_item
                 # booking_dict['additional_details']
                 booking_dict['pick_up_time'] = booking_details.time_booking
                 booking_dict['pick_up_date'] = booking_details.date_booking
