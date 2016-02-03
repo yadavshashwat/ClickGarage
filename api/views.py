@@ -1481,7 +1481,11 @@ def place_order(request):
         doorstep_counter = 0
         # obj_pick = json.loads(pick_obj)
         pick_obj = ast.literal_eval(pick_obj)
-        # drop_obj = ast.literal_eval(drop_obj)
+        if drop_obj:
+            try:
+                drop_obj = ast.literal_eval(drop_obj)
+            except ValueError:
+                drop_obj = None
         # pick_obj = ast.literal_eval(pick_obj)
         # print pick_obj
         # pick_obj = json.loads(pick_obj)
