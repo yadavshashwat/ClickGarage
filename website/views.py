@@ -455,7 +455,7 @@ def checkout(request):
                         cartDict[ts]['ts'] = ts
                         contextDict[carCmpName].append(cartDict[ts])
 
-            print contextDict
+            # print contextDict
             if contextDict.has_key(selectCarName):
                 context = RequestContext(request, {
                     'address': [],
