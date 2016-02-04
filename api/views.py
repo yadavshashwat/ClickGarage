@@ -1501,11 +1501,11 @@ def place_order(request):
         print pick_obj
         print drop_obj
 
-        tran_len = len(Transaction.objects.all())
-        booking_id = 1
-        if tran_len > 0:
-            tran = Transaction.objects.all().aggregate(Max('booking_id'))
-            booking_id = tran['booking_id'] + 1
+        # tran_len = len(Transactions.objects.all())
+        # booking_id = 1
+        # if tran_len > 0:
+        #     tran = Transactions.objects.all().aggregate(Max('booking_id'))
+        #     booking_id = tran['booking_id'] + 1
 
 
 
@@ -2008,10 +2008,10 @@ def insert_tran(request):
     status          = get_param(request,'status',None)   
     comments        = get_param(request,'comments',None)   
 
-    tran_len = len(Transaction.objects.all())
+    tran_len = len(Transactions.objects.all())
     if tran_len > 0:
-        tran = Transaction.objects.all().aggregate(Max('booking_id'))
-        booking_id = tran['booking_id'] + 1
+        tran = Transactions.objects.all().aggregate(Max('booking_id'))
+        booking_id = int(tran['booking_id']) + 1
     else:
         booking_id = 1
     cc = ServiceDealerCat(
