@@ -3,10 +3,6 @@ from mailing import views as mViews
 from celery import shared_task
 
 @shared_task
-def test_function():
-	return "yay"
-
-@shared_task
 def send_sms(type,to,message):
 	mViews.send_sms(type,to,message)
 	return True

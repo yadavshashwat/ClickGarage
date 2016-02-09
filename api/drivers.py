@@ -5,10 +5,6 @@ import api.tasks as tasks
 
 secret_string = "dmFydW5ndWxhdGlsaWtlc2dhbG91dGlrZWJhYg=="
 
-
-def test_func():
-    return tasks.test_function()
-
 def signUpDriver(request):
     if (request.method == 'POST') :
         b_unicode   = request.body.decode('utf-8')
@@ -24,25 +20,16 @@ def signUpDriver(request):
 
             else :
                 driver.save()
-                result = dict(status=True, mobile=mobile, rID=rID)
+                result = dict(status=True, mobile=mobile, rID=secret_string)
 
             return HttpResponse(result, content_type='application/json')
-
-# def fetchAllBookings(request):
-#     if (request.method == 'GET') :
-#         params = request.GET
-#
-#         if (params.get('rID')) :
-#             all_bookings = list()
-#             #TODO show booking details
-#             return HttpResponse(all_bookings, content_type='application/json')
 
 def updateBookingStatus(request):
     if (request.method == 'POST') :
         b_unicode   = request.body.decode('utf-8')
         body        = json.loads(b_unicode)
 
-        if (request.POST.get('rID')) :
+        if (request.POST.get('rID') and request.POST.get('rID')==secret_string) :
             mobile  = body.get('mobile')
             name    = body.get('name')
             status  = body.get('status')
@@ -58,14 +45,15 @@ def updateBookingStatus(request):
                                             lon=lon)
             booking_object.save()
 
-            # todo send_messages(status, params)
             result = dict(status=True, message='updated')
+            send_message(status, params)
+
             return HttpResponse(result, content_type='application/json')
 
 def getDriverBookings(request):
     if (request.method == 'GET') :
         params = request.GET
-        if (params.get('rID')) :
+        if (params.get('rID') and params.get('rID')==secret_string) :
             mobile  = params.get('mobile')
             name    = params.get('name')
 
@@ -81,19 +69,15 @@ def getDriverBookings(request):
                 booking_dict['make'] = booking_details.cust_brand
                 booking_dict['model'] = booking_details.cust_carname
                 booking_dict['service_item'] = booking_details.servicing_item
-                # booking_dict['additional_details']
                 booking_dict['pick_up_time'] = booking_details.time_booking
                 booking_dict['pick_up_date'] = booking_details.date_booking
                 booking_dict['cust_number'] = booking_details.cust_number
-                # booking_dict['car_bike']
-                # booking_dict['vendor'] =
-                # TODO fill necessary details
 
                 result.append(booking_dict)
 
             return HttpResponse(result, content_type='application/json')
 
-# def send_message(status, params)
+# todo null check for parameters
 def send_message(status,car_bike,cust_number,cust_name,driver_mechanic_name,driver_mechanic_number, driver_mechanic_link, due_amount, payment):
     sms_type = "TRANS"
     if (car_bike == "bike"):

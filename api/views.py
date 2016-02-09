@@ -3530,4 +3530,18 @@ def service_selected(request):
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 # Drivers APIs
+def signUpDriver(request):
+    from api.drivers import signUpDriver
+    return signUpDriver(request)
+
+def updateBookingStatus(request):
+    from api.drivers import updateBookingStatus
+    return updateBookingStatus(request)
+
+def getDriverBookings(request):
+    from api.drivers import getDriverBookings
+    return getDriverBookings(request)
+
+
+
 
