@@ -15,13 +15,10 @@ def signUpDriver(request):
         if (body.get('secret') and body.get('secret')=='anaconda') :
             driver, exists = Driver.objects.get_or_create(mobile=mobile, name=name)
 
-            if exists :
-                result = dict(status=True, message='User exists')
-
-            else :
+            if not exists :
                 driver.save()
-                result = dict(status=True, mobile=mobile, rID=secret_string)
 
+            result = dict(status=True, mobile=mobile, rID=secret_string)
             return HttpResponse(result, content_type='application/json')
 
 def updateBookingStatus(request):
