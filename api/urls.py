@@ -104,11 +104,11 @@ urlpatterns = [
 
     url(r'fetch_all_wheelservices/$','api.views.fetch_all_wheelservices',name='fetch_all_wheelservices'),
     url(r'fetch_all_wheelserviceprovider/$','api.views.fetch_all_wheelserviceprovider',name='fetch_all_wheelserviceprovider'),
-    url(r'fetch_all_tyresales/$','api.views.fetch_all_tyresales',name='fetch_all_tyresales')
+    url(r'fetch_all_tyresales/$','api.views.fetch_all_tyresales',name='fetch_all_tyresales'),
 
     #drivers
-    url(r'signUpDriver/$','api.views.signUpDriver',name='signUpDriver')
-    url(r'updateBookingStatus/$','api.views.updateBookingStatus',name='updateBookingStatus')
-    url(r'getDriverBookings/$','api.views.getDriverBookings',name='getDriverBookings')
+    url(r'signUpDriver/$','api.views.signUpDriver',name='signUpDriver'),
+    url(r'updateBookingStatus/$','api.views.updateBookingStatus',name='updateBookingStatus'),
+    url(r'getDriverBookings/$','api.views.getDriverBookings',name='getDriverBookings'),
 
     ]
