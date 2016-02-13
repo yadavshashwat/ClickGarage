@@ -137,8 +137,8 @@ DATABASES = {
     'default': {
         'ENGINE' : 'django_mongodb_engine',
         'NAME' : 'test_clickg',
-        # 'USER': 'Clickadmin',
-        # 'PASSWORD': 'DoctorWho?',
+        'USER': 'Clickadmin',
+        'PASSWORD': 'DoctorWho?',
         'HOST': 'localhost',
         'PORT': 27017,
         'SUPPORTS_TRANSACTIONS': False,
