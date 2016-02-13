@@ -1331,11 +1331,11 @@ def place_emergency_order(request):
         print pick_obj
         # print drop_obj
 
-        tran_len = len(Transaction.objects.all())
+        # tran_len = len(Transaction.objects.all())
         booking_id = 1
-        if tran_len > 0:
-            tran = Transaction.objects.all().aggregate(Max('booking_id'))
-            booking_id = tran['booking_id'] + 1
+        # if tran_len > 0:
+        #     tran = Transaction.objects.all().aggregate(Max('booking_id'))
+        #     booking_id = tran['booking_id'] + 1
 
 
 
@@ -1500,11 +1500,10 @@ def place_order(request):
         print order_list
         print pick_obj
         print drop_obj
-
-        # tran_len = len(Transactions.objects.all())
-        # booking_id = 1
+        # tran_len = len(Transaction.objects.all())
+        booking_id = 1
         # if tran_len > 0:
-        #     tran = Transactions.objects.all().aggregate(Max('booking_id'))
+        #     tran = Transaction.objects.all().aggregate(Max('booking_id'))
         #     booking_id = tran['booking_id'] + 1
 
 
@@ -1926,7 +1925,6 @@ def place_order(request):
             email = request.user.email
             if not email:
                 email = get_param(request, 'email', None)
-
             if not email:
                 usr = CGUser.objects.filter(is_staff=True)
                 if len(usr):
@@ -1935,6 +1933,8 @@ def place_order(request):
         else:
             usr = CGUser.objects.filter(is_staff=True)
             email = get_param(request, 'email', None)
+            print 'email',email
+
             if len(usr):
                 usr = usr[0]
                 userID = usr.id
@@ -2762,11 +2762,11 @@ def add_guest_transaction(request):
         print drop_obj
         print car_reg_number
 
-        tran_len = len(Transaction.objects.all())
+        # tran_len = len(Transaction.objects.all())
         booking_id = 1
-        if tran_len > 0:
-            tran = Transaction.objects.all().aggregate(Max('booking_id'))
-            booking_id = tran['booking_id'] + 1
+        # if tran_len > 0:
+        #     tran = Transaction.objects.all().aggregate(Max('booking_id'))
+        #     booking_id = tran['booking_id'] + 1
 
 
 
