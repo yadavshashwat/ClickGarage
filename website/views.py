@@ -263,6 +263,7 @@ def checkout(request):
 
                 newDict = cartObj
                 newDict['ts'] = ts
+                newDict['datetime'] = common.localTimeString(int(ts)/1000)
                 if not contextDict.has_key(carCmpName):
                     contextDict[carCmpName] = []
 
