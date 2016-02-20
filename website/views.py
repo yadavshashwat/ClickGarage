@@ -163,8 +163,6 @@ def checkout(request):
     cookieCartData = request.COOKIES.get('clgacart')
     ccdAdditional = request.COOKIES.get('clgacartaddi')
     couponData = request.COOKIES.get('clgacoup')
-    print request.META
-    print request.COOKIES
     singleCoupon = None
     if couponData and len(couponData):
         try:
