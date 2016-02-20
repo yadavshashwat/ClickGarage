@@ -14,7 +14,7 @@ import os
 from decimal import Decimal
 from api import views
 from api.models import ServiceDealerCat,ServiceDealerCatNew, CleaningCategoryServices, VASCategoryServices, WindShieldServiceDetails, Car, Coupon
-
+from cgutils import common
 
 repair_map = {
     'diagnostics':{'name':'Diagnostics','detail':"I don't know what is wrong with my car"},
@@ -590,7 +590,7 @@ def cart(request):
                 for ts2 in cartDict['emergency']:
                     emergObj = cartDict['emergency'][ts2]
                     emergObj['ts'] = ts2
-                    emergObj['datetime'] = datetime.datetime.fromtimestamp(int(ts2)/1000)
+                    emergObj['datetime'] = common.localTimeString(int(ts2)/1000)
                     contextDict['emergency'].append(emergObj)
                 continue
 
