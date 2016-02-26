@@ -13,8 +13,8 @@ import json, urllib
 import os
 from decimal import Decimal
 from api import views
-from api.models import ServiceDealerCat,ServiceDealerCatNew, CleaningCategoryServices, VASCategoryServices, WindShieldServiceDetails, Car
-
+from api.models import ServiceDealerCat,ServiceDealerCatNew, CleaningCategoryServices, VASCategoryServices, WindShieldServiceDetails, Car, Coupon
+from cgutils import common
 
 repair_map = {
     'diagnostics':{'name':'Diagnostics','detail':"I don't know what is wrong with my car"},
@@ -93,7 +93,14 @@ def history(request):
 
 def adminpanel(request):
     template = loader.get_template('website/adminpanel.html')
+    coupon_flag = False
+
+    if request.user and request.user.is_authenticated():
+        if request.user.email in ['shashwat@clickgarage.in', 'bhuvan@clickgarage.in', 'v.rajeev92@gmail.com']:
+            coupon_flag = True
+    print coupon_flag
     context = RequestContext(request, {
+        'coupon_flag' : coupon_flag
     })
     return HttpResponse(template.render(context))
 
@@ -155,6 +162,33 @@ def checkout(request):
     selectCarID = request.COOKIES.get('clgacarid')
     cookieCartData = request.COOKIES.get('clgacart')
     ccdAdditional = request.COOKIES.get('clgacartaddi')
+    couponData = request.COOKIES.get('clgacoup')
+    singleCoupon = None
+    if couponData and len(couponData):
+        try:
+            couponData = json.loads( urllib.unquote(couponData) )
+
+            if 'Singleton' in couponData:
+                print couponData['Singleton']
+                for code in couponData['Singleton'].iterkeys():
+                    print code
+                    cpnObjs = Coupon.objects.filter(coupon_code=code).exclude(valid="0")
+                    if len(cpnObjs):
+                        cpnObjs = cpnObjs[0]
+                        singleCoupon = {
+                            'coupon_code'       :    cpnObjs.coupon_code
+                            ,'message'          :    cpnObjs.message
+                            ,'value'            :    cpnObjs.value
+                            ,'cap'            :    cpnObjs.cap
+                            ,'type'            :    cpnObjs.type
+                            ,'vendor'            :    cpnObjs.vendor
+                            ,'category'            :    cpnObjs.category
+                            ,'price_key'            :    cpnObjs.price_key
+                            ,'car_bike'            :    cpnObjs.car_bike
+                        }
+        except:
+            print 'Coupon Error'
+            singleCoupon = None
     cartEmpty = False
     if request.user.is_authenticated():
         template = loader.get_template('website/checkout.html')
@@ -229,6 +263,7 @@ def checkout(request):
 
                 newDict = cartObj
                 newDict['ts'] = ts
+                newDict['datetime'] = common.localTimeString(int(ts)/1000)
                 if not contextDict.has_key(carCmpName):
                     contextDict[carCmpName] = []
 
@@ -463,7 +498,8 @@ def checkout(request):
                     'cart_number':len(contextDict[selectCarName]),
                     'car_info':carInfo,
                     'emergFlag':emergFlag,
-                    'userObj':userObj
+                    'userObj':userObj,
+                    'singleCoupon' : singleCoupon
                 })
                 return HttpResponse(template.render(context))
 
@@ -553,7 +589,7 @@ def cart(request):
                 for ts2 in cartDict['emergency']:
                     emergObj = cartDict['emergency'][ts2]
                     emergObj['ts'] = ts2
-                    emergObj['datetime'] = datetime.datetime.fromtimestamp(int(ts2)/1000)
+                    emergObj['datetime'] = common.localTimeString(int(ts2)/1000)
                     contextDict['emergency'].append(emergObj)
                 continue
 
@@ -1054,7 +1090,7 @@ def orderParse(request, carName, city):
             car_obj = car_obj['result']
         else:
             car_obj = False
-
+    print car_obj
     if car_obj and (car_obj['car_bike'] == 'Bike'):
         template = loader.get_template('website/b_order.html')
 

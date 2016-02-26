@@ -1,6 +1,6 @@
 from django.db import models
 from djangotoolbox.fields import DictField, ListField
-
+import datetime
 #from dbpreferences.fields import DictField
 # Create your models here.
 
@@ -324,17 +324,43 @@ class Emergency(models.Model):
 #     comments        = models.CharField(max_length=200)
 
 class Coupon(models.Model):
-    coupon_code     = models.CharField(max_length=50)
-    date_issue      = models.CharField(max_length=50)
-    valid_till_date = models.CharField(max_length=50)
-    discount        = models.CharField(max_length=50)
-    cashback        = models.CharField(max_length=50)
+    date_issue      = models.CharField(max_length=50, null=True)
+    valid_till_date = models.CharField(max_length=50, null=True)
+    discount        = models.CharField(max_length=50, null=True)
+    cashback        = models.CharField(max_length=50, null=True)
+    valid           = models.CharField(max_length=50, null=True)
+    #new values
     message         = models.CharField(max_length=500)
-    valid           = models.CharField(max_length=50)
+    date_init       = models.DateField(default=datetime.date(2016,1,1))
+    date_expiry     = models.DateField(default=datetime.date(2016,1,1))
+    coupon_code     = models.CharField(max_length=50)
     category        = models.CharField(max_length=50)
-    car_bike        = models.CharField(max_length=50)
+    value    = models.FloatField(default=0)
+    cap      = models.FloatField(null=True)
+    type      = models.CharField(default='discount', max_length=10)
+    price_key      = models.CharField(max_length=50, null = True)
     vendor          = models.CharField(max_length=50)
+    car_bike        = models.CharField(max_length=50)
 
+    def is_coupon_valid(self, td=None):
+        import datetime
+        today = datetime.date.today()
+        if td:
+            today = td
+        if self.date_init <= today:
+            if self.date_expiry >= today:
+                return "valid"
+            elif self.date_expiry < today:
+                return "expired"
+        else:
+            return "upcoming"
+#{
+#price_key :
+#type : 'flat', 'discount', 'percent'
+#value : 99,50,100,
+#cap :
+#
+#}
 
 class Otp(models.Model):
     mobile = models.CharField(max_length=50)

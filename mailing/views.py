@@ -13,6 +13,8 @@ from email import Encoders
 helpline_number = "+91-9643844759"
 key = "ab33f626-fba5-4bff-9a2b-68a7e9eed43c"
 sendername = "CLKGRG"
+staffmails = ["priyank@clickgarage.in", "shashwat@clickgarage.in","bhuvan@clickgarage.in","sanskar@clickgarage.in","bookings@clickgarage.in"]
+
 
 import smtplib
 
@@ -6542,23 +6544,23 @@ W-22, Second Floor, Green Park, New Delhi - 110016</div>
 
 
 def send_booking_final(username,useremail,userphone,time_start,date,booking_id,html_script):
-	send_booking_details(["shashwat@clickgarage.in","bhuvan@clickgarage.in","sanskar@clickgarage.in","bookings@clickgarage.in"],booking_id,html_script)
+	send_booking_details(staffmails,booking_id,html_script)
 	send_booking_email_pick(useremail,username,time_start,date,booking_id)
 	send_booking_sms(username, userphone, date, time_start, booking_id)
 
 def send_booking_final_pick(username,useremail,userphone,time_start,date,booking_id,html_script):
-	send_booking_details(["shashwat@clickgarage.in","bhuvan@clickgarage.in","sanskar@clickgarage.in","bookings@clickgarage.in"],booking_id,html_script)
+	send_booking_details(staffmails,booking_id,html_script)
 	send_booking_email_pick(useremail,username,time_start,date,booking_id)
 	send_booking_sms(username, userphone, date, time_start, booking_id)
 
 def send_booking_final_doorstep(username,useremail,userphone,time_start,date,booking_id,html_script):
-	send_booking_details(["shashwat@clickgarage.in","bhuvan@clickgarage.in","sanskar@clickgarage.in","bookings@clickgarage.in"],booking_id,html_script)
+	send_booking_details(staffmails,booking_id,html_script)
 	send_booking_email_doorstep(useremail,username,time_start,date,booking_id)
 	send_booking_sms(username, userphone, date, time_start, booking_id)
 
 def send_cancel_final(username,useremail,booking_id):
 	send_cancel_email(useremail,username,booking_id)
-	send_booking_details(["shashwat@clickgarage.in","bhuvan@clickgarage.in","sanskar@clickgarage.in","bookings@clickgarage.in"],booking_id,"Booking Cancelled")
+	send_booking_details(staffmails,booking_id,"Booking Cancelled")
 
 def send_order_complete(username,userphone,useremail,booking_id):
 	# send_postdrop(username,userphone,booking_id)
@@ -6611,7 +6613,7 @@ def send_booking_details(to_address,booking_id,html_script):
 
 def send_contact_mail(name,phone,content):
 	me = "info@clickgarage.in"
-	you = ["shashwat@clickgarage.in","bhuvan@clickgarage.in","sanskar@clickgarage.in"]
+	you = ["priyank@clickgarage.in", "shashwat@clickgarage.in","bhuvan@clickgarage.in","sanskar@clickgarage.in"]
 	# booking_id = str(booking_id)
 	# Create message container - the correct MIME type is multipart/alternative.
 	msg = MIMEMultipart('alternative')

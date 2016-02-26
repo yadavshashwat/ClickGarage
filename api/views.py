@@ -1331,11 +1331,11 @@ def place_emergency_order(request):
         print pick_obj
         # print drop_obj
 
-        tran_len = len(Transaction.objects.all())
+        # tran_len = len(Transaction.objects.all())
         booking_id = 1
-        if tran_len > 0:
-            tran = Transaction.objects.all().aggregate(Max('booking_id'))
-            booking_id = tran['booking_id'] + 1
+        # if tran_len > 0:
+        #     tran = Transaction.objects.all().aggregate(Max('booking_id'))
+        #     booking_id = tran['booking_id'] + 1
 
 
 
@@ -1476,6 +1476,7 @@ def place_order(request):
         order_list = get_param(request, 'order_list', None)
         car_name = get_param(request, 'car_name', None)
         coupon_data = get_param(request, 'global_coupon', None)
+        s_coupon = get_param(request, 'single_coupon', None)
         print coupon_data
         # car_id = get_param(request, 'car_id', None)
         doorstep_counter = 0
@@ -1500,11 +1501,10 @@ def place_order(request):
         print order_list
         print pick_obj
         print drop_obj
-
-        # tran_len = len(Transactions.objects.all())
-        # booking_id = 1
+        # tran_len = len(Transaction.objects.all())
+        booking_id = 1
         # if tran_len > 0:
-        #     tran = Transactions.objects.all().aggregate(Max('booking_id'))
+        #     tran = Transaction.objects.all().aggregate(Max('booking_id'))
         #     booking_id = tran['booking_id'] + 1
 
 
@@ -1899,6 +1899,16 @@ def place_order(request):
                     html_list.append(coupon_json[coupon])
                     html_list.append('] ')
                 html_list.append('</span></div>')
+        if s_coupon and len(s_coupon):
+            coupon_json = json.loads(urllib.unquote(s_coupon))
+            if isinstance(coupon_json, dict):
+                html_list.append('<div><span>Single Coupon. : ')
+                for coupon in coupon_json.keys():
+                    html_list.append(coupon)
+                    html_list.append(' [')
+                    html_list.append(coupon_json[coupon])
+                    html_list.append('] ')
+                html_list.append('</span></div>')
 
         html_list.append('<div><span> Contact No. : ')
         html_list.append(str(number))
@@ -1926,7 +1936,6 @@ def place_order(request):
             email = request.user.email
             if not email:
                 email = get_param(request, 'email', None)
-
             if not email:
                 usr = CGUser.objects.filter(is_staff=True)
                 if len(usr):
@@ -1935,6 +1944,8 @@ def place_order(request):
         else:
             usr = CGUser.objects.filter(is_staff=True)
             email = get_param(request, 'email', None)
+            print 'email',email
+
             if len(usr):
                 usr = usr[0]
                 userID = usr.id
@@ -2684,6 +2695,90 @@ def fetch_user_cart(request):
     else:
         return HttpResponse(json.dumps(obj), content_type='application/json')
 
+def add_coupon(request):
+    obj = {}
+    obj['status'] = True
+    obj['result'] = {}
+    today = datetime.date.today()
+
+    cpn_cd       = get_param(request,'code',None)
+    cpn_msg       = get_param(request,'message',None)
+
+    cpn_amt       = get_param(request,'amount',None)
+    cpn_cap    = get_param(request,'cap',None)
+    cpn_type    = get_param(request,'type',None)
+    cpn_key     = get_param(request, 'price_key', None)
+    cpn_vendor    = get_param(request,'vendor',today)
+    cpn_cat    = get_param(request,'service',today)
+    car_bike    = get_param(request,'car_bike','Car')
+
+    cpn_expiry    = get_param(request,'expiry',None)
+    if cpn_expiry:
+        try:
+            cpn_expiry = eval('datetime.date('+cpn_expiry+')')
+        except:
+            cpn_expiry = today
+    else:
+        cpn_expiry = today
+
+    cpn_init    = get_param(request,'init',None)
+    if cpn_init:
+        try:
+            cpn_init = eval('datetime.date('+cpn_init+')')
+        except:
+            cpn_init = today
+    else:
+        cpn_init = today
+
+    cpnObjs = Coupon.objects.filter(coupon_code=cpn_cd).exclude(valid="0")
+
+    this_coupon = None
+
+    if len(cpnObjs) and cpnObjs[0].is_coupon_valid() == 'expired':
+        this_coupon = cpnObjs[0]
+
+        this_coupon.message = cpn_msg
+        this_coupon.date_init       = cpn_init
+        this_coupon.date_expiry     = cpn_expiry
+        this_coupon.value    = cpn_amt
+        this_coupon.cap      = cpn_cap
+        this_coupon.type      = cpn_type
+        this_coupon.price_key      = cpn_key
+        this_coupon.vendor          = cpn_vendor
+        this_coupon.category          = cpn_cat
+        this_coupon.car_bike        = car_bike
+
+        this_coupon.save()
+        obj['result'] = {
+            'status'         :   True
+            ,'message'      :   'Coupon Updated Successfully'
+        }
+    elif len(cpnObjs):
+        obj['result'] = {
+            'status'         :   False
+            ,'message'      :   'A valid Coupon already exists'
+        }
+    else:
+        this_coupon = Coupon(
+            message = cpn_msg,
+            date_init       = cpn_init,
+            date_expiry     = cpn_expiry,
+            coupon_code = cpn_cd,
+            price_key      = cpn_key,
+            value    = cpn_amt,
+            cap      = cpn_cap,
+            type      = cpn_type,
+            vendor          = cpn_vendor,
+            category          = cpn_cat,
+            car_bike        = car_bike
+        )
+        obj['result'] = {
+            'status'         :   True
+            ,'message'      :   'Coupon Created Successfully'
+        }
+
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
 def apply_coupon(request):
     obj = {}
     obj['status'] = True
@@ -2704,9 +2799,17 @@ def apply_coupon(request):
             ,'valid_till_date'  :    cpn.valid_till_date
             ,'discount'         :    cpn.discount
             ,'cashback'         :    cpn.cashback
-            ,'message'          :    cpn.message
             ,'valid'            :    cpn.valid
             ,'status'           :    True
+
+            ,'message'          :    cpn.message
+            ,'value'            :    cpn.value
+            ,'cap'            :    cpn.cap
+            ,'type'            :    cpn.type
+            ,'vendor'            :    cpn.vendor
+            ,'category'            :    cpn.category
+            ,'price_key'            :    cpn.price_key
+            ,'car_bike'            :    cpn.car_bike
         }
         # obj['result']['cancell = tran_id
     if len(cpnObjs):
@@ -2762,11 +2865,11 @@ def add_guest_transaction(request):
         print drop_obj
         print car_reg_number
 
-        tran_len = len(Transaction.objects.all())
+        # tran_len = len(Transaction.objects.all())
         booking_id = 1
-        if tran_len > 0:
-            tran = Transaction.objects.all().aggregate(Max('booking_id'))
-            booking_id = tran['booking_id'] + 1
+        # if tran_len > 0:
+        #     tran = Transaction.objects.all().aggregate(Max('booking_id'))
+        #     booking_id = tran['booking_id'] + 1
 
 
 
