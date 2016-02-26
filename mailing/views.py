@@ -4024,6 +4024,36 @@ def send_cancel_email(to_address,to_name,booking_id_1):
 	server.ehlo()
 	server.login(smtp_username, smtp_password)
 	server.sendmail(me, you, msg.as_string())
+
+
+	script = MIMEText(html, 'html')
+	msg.attach(script)
+
+
+	# file_pdf = MIMEText(file(path_file)
+	# msg.attach(file_pdf)
+	part = MIMEBase('application', "octet-stream")
+	part.set_payload(open(path_file, "rb").read())
+	Encoders.encode_base64(part)
+	part.add_header('Content-Disposition', 'attachment; '+'filename=Report_'+booking_id+'.pdf')
+
+	msg.attach(part)
+
+
+	smtp_port = '25'
+	smtp_do_tls = True
+
+	server = smtplib.SMTP(
+	    host = smtp_server,
+	    port = smtp_port,
+	    timeout = 30
+	)
+
+	server.set_debuglevel(10)
+	server.starttls()
+	server.ehlo()
+	server.login(smtp_username, smtp_password)
+	server.sendmail(me, you, msg.as_string())
 	server.quit()
 
 def send_feedback_report(to_address,to_name,booking_id,path_file,amount):
@@ -5249,28 +5279,7 @@ W-22, Second Floor, Green Park, New Delhi - 110016</div>
 
 	# file_pdf = MIMEText(file(path_file)
 	# msg.attach(file_pdf)
-	part = MIMEBase('application', "octet-stream")
-	part.set_payload(open(path_file, "rb").read())
-	Encoders.encode_base64(part)
-	part.add_header('Content-Disposition', 'attachment; '+'filename=Report_'+booking_id+'.pdf')
-	
-	msg.attach(part)
-
-
-	smtp_port = '25'
-	smtp_do_tls = True
-
-	server = smtplib.SMTP(
-	    host = smtp_server,
-	    port = smtp_port,
-	    timeout = 30
-	)
-	
-	server.set_debuglevel(10)
-	server.starttls()
-	server.ehlo()
-	server.login(smtp_username, smtp_password)
-	server.sendmail(me, you, msg.as_string())
+	# part = MIMEBase('application', "octet-stream")
 	server.quit()
 
 def send_feedback(to_address,to_name,booking_id):
@@ -6508,19 +6517,10 @@ W-22, Second Floor, Green Park, New Delhi - 110016</div>
 
 
 	"""
-
-
-	script = MIMEText(html, 'html')
-	msg.attach(script)
-
-
-	# file_pdf = MIMEText(file(path_file)
-	# msg.attach(file_pdf)
-	# part = MIMEBase('application', "octet-stream")
 	# part.set_payload(open(path_file, "rb").read())
 	# Encoders.encode_base64(part)
 	# part.add_header('Content-Disposition', 'attachment; '+'filename=Invoice_'+booking_id+'.pdf')
-    #
+	#
 	# msg.attach(part)
 
 
@@ -6528,9 +6528,9 @@ W-22, Second Floor, Green Park, New Delhi - 110016</div>
 	smtp_do_tls = True
 
 	server = smtplib.SMTP(
-	    host = smtp_server,
-	    port = smtp_port,
-	    timeout = 30
+		host = smtp_server,
+		port = smtp_port,
+		timeout = 30
 	)
 
 	server.set_debuglevel(10)
