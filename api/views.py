@@ -2683,6 +2683,7 @@ def fetch_user_cart(request):
         for user1 in userObjs:
                 obj['result'].append({
                                 'id'          : user1.id,
+                                'phone'       : user1.contact_no,
                                 'email'       : user1.email,
                                 'cart'        : user1.uc_cart
                                 # ,'name':trans.name
