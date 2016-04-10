@@ -58,6 +58,7 @@ urlpatterns = [
     url(r'fetch_car_cancelled/$','api.views.fetch_car_cancelled',name='fetch_car_cancelled'),
     url(r'cancel_booking/$','api.views.cancel_booking',name='cancel_booking'),
     url(r'apply_coupon/$','api.views.apply_coupon',name='apply_coupon'),
+    url(r'add_coupon/$','api.views.add_coupon',name='add_coupon'),
     url(r'send_otp/$','api.views.send_otp',name='send_otp'),
     url(r'fetch_all_otp/$','api.views.fetch_all_otp',name='fetch_all_otp'),
     url(r'create_otp_user/$','api.views.create_otp_user',name='create_otp_user'),

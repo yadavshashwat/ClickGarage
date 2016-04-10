@@ -11,6 +11,7 @@ import datetime
 import math
 import json, urllib
 import os
+import re
 from decimal import Decimal
 from api import views
 from api.models import ServiceDealerCat,ServiceDealerCatNew, CleaningCategoryServices, VASCategoryServices, WindShieldServiceDetails, Car, Coupon
@@ -22,6 +23,33 @@ repair_map = {
     'custom':{'name':'Custom Repair Request','detail':""}
 }
 
+ad_landing_map = {
+    'car':{
+        'servicing':{
+            'title':'ClickGarage Car Servicing - On Demand Car Services',
+            'meta_desc':'',
+            'meta_keys':''
+        },
+        'cleaning':{
+            'title':'ClickGarage Car Cleaning - On Demand Car Services',
+            'meta_desc':'',
+            'meta_keys':''
+        },
+        'repair':{
+            'title':'ClickGarage Car Repair - On Demand Car Services',
+            'meta_desc':'',
+            'meta_keys':''
+        }
+    },
+    'bike':{
+        'servicing':{
+            'title':'ClickGarage Car Servicing - On Demand Car Services',
+            'meta_desc':'',
+            'meta_keys':''
+        }
+    }
+}
+
 # Create your views here.
 def index(request):
 
@@ -29,10 +57,16 @@ def index(request):
     selectedCarID = request.COOKIES.get('clgacarid')
     carObj = Car.objects.filter(id=selectedCarID)
     source = views.get_param(request, 'source', None)
-
+    path =  request.path
     redir = (source == 'logo')
 
-    if (not redir) and request.user and request.user.is_authenticated() and len(carObj):
+    specific_land = None
+    if path:
+        path = re.sub('[//]','',path)
+        if path == 'cars' or path == 'bikes':
+            specific_land = path
+
+    if (not specific_land) and (not redir) and request.user and request.user.is_authenticated() and len(carObj):
         carObj = carObj[0]
         return redirect("/order")
     else:
@@ -45,11 +79,99 @@ def index(request):
         cars = cars['result']
         context = RequestContext(request, {
             'cars': cars,
-            'loginFlag':flag
+            'loginFlag':flag,
+            'specific_land':specific_land
         })
         return HttpResponse(template.render(context))
 
+def ad_landing_cars(request, service):
+    if service in ['servicing','cleaning','repair']:
+        template = loader.get_template('website/ad_service.html')
 
+        print ad_landing_map['car'][service]
+        title = ad_landing_map['car'][service]['title']
+        meta_desc = ad_landing_map['car'][service]['meta_desc']
+        logoText = 'ClickGarage'
+        category_list = []
+        dd = {
+            'servicing':'Servicing',
+            'cleaning':'Car Cleaning',
+            'repair': 'Car Repair'
+        }
+        dds = {
+            'servicing':[['general','General Check Up'],['standard','Standard Service'],['comprehensive','Comprehensive Service']],
+            'cleaning':[['interior','Interior Cleaning'],['exterior','Exterior Cleaning'],['overall','Overall Package']],
+            'carcare': [],
+            'repair': []
+        }
+        service_list = False
+        print len(dds[service])
+        if dds[service] and len(dds[service]):
+            service_list = True
+        for opt, label in dd.iteritems():
+            if opt == service:
+                category_list.append({'label':label, 'value':opt,'active':True})
+            else:
+                category_list.append({'label':label, 'value':opt,'active':False})
+
+        context = RequestContext(request, {
+            'car_bike': 'Car',
+            'service':service,
+            'title':title,
+            'category_list':category_list,
+            'service_dict':dds,
+            'service_list':service_list,
+            'meta_desc':meta_desc,
+            'logo_text':logoText
+        })
+        return HttpResponse(template.render(context))
+
+    template = loader.get_template('website/privacy.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+
+def ad_landing_bikes(request, service):
+    if service in ['servicing']:
+        template = loader.get_template('website/ad_service.html')
+
+        print ad_landing_map['bike'][service]
+        title = ad_landing_map['bike'][service]['title']
+
+        meta_desc = ad_landing_map['bike'][service]['meta_desc']
+        logoText = 'ClickGarage'
+        category_list = []
+        dd = {
+            'servicing':'Servicing'
+        }
+        dds = {
+            'servicing':[['general','General Check Up'],['standard','Standard Service']],
+        }
+        service_list = False
+        if dds[service] and len(dds[service]):
+            service_list = True
+        for opt, label in dd.iteritems():
+            if opt == service:
+                category_list.append({'label':label, 'value':opt,'active':True})
+            else:
+                category_list.append({'label':label, 'value':opt,'active':False})
+
+        context = RequestContext(request, {
+            'car_bike': 'Bike',
+            'service':service,
+            'title':title,
+            'category_list':category_list,
+            'service_dict':dds,
+            'service_list':service_list,
+            'meta_desc':meta_desc,
+            'logo_text':logoText
+        })
+        return HttpResponse(template.render(context))
+
+    template = loader.get_template('website/privacy.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
 
 def privacy(request):
     # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))

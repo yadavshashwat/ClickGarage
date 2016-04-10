@@ -1889,7 +1889,7 @@ def place_order(request):
             html_list.append(pick_obj['pincode'])
         html_list.append('</span></div>')
 
-        if coupon_data and len(coupon_data):
+        if coupon_data and len(coupon_data) and None:
             coupon_json = json.loads(coupon_data)
             if isinstance(coupon_json, dict):
                 html_list.append('<div><span> Coupons. : ')
@@ -2764,15 +2764,16 @@ def add_coupon(request):
             message = cpn_msg,
             date_init       = cpn_init,
             date_expiry     = cpn_expiry,
-            coupon_code = cpn_cd,
-            price_key      = cpn_key,
-            value    = cpn_amt,
-            cap      = cpn_cap,
-            type      = cpn_type,
+            coupon_code     = cpn_cd,
+            price_key       = cpn_key,
+            value           = cpn_amt,
+            cap             = cpn_cap,
+            type            = cpn_type,
             vendor          = cpn_vendor,
-            category          = cpn_cat,
+            category        = cpn_cat,
             car_bike        = car_bike
         )
+        this_coupon.save()
         obj['result'] = {
             'status'         :   True
             ,'message'      :   'Coupon Created Successfully'
