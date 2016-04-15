@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'fetch_all_cars/$','api.views.fetch_all_cars',name='fetch_all_cars'),
     url(r'fetch_car_list/$','api.views.fetch_car_list',name='fetch_car_list'),
     url(r'fetch_car/$','api.views.fetch_car',name='fetch_car'),
+    url(r'request_quote/$','api.views.request_quote',name='request_quote'),
 
     url(r'fetch_car_autocomplete/$','api.views.fetch_car_autocomplete',name='fetch_car_autocomplete'),
 

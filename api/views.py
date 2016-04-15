@@ -1462,7 +1462,28 @@ def place_emergency_order(request):
 
 
 @csrf_exempt
+def request_quote(request):
+
+    name = get_param(request, 'name', None)
+    number = get_param(request, 'number', None)
+    category = get_param(request, 'category', None)
+    service = get_param(request, 'service', None)
+
+    # if (doorstep_counter==1):
+    #     mviews.send_booking_final_doorstep(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
+    # else:
+    #     mviews.send_booking_final_pick(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
+
+    resp = {}
+    obj = {'name':name, 'number':number, 'category':category, 'service':service  }
+    resp['status'] = True
+    resp['result'] = obj
+    return HttpResponse(json.dumps(resp), content_type='application/json')
+
+
+@csrf_exempt
 def place_order(request):
+
     # print 'p'
     android_flag = get_param(request, 'android', None)
     loc = get_param(request, 'loc', None)
