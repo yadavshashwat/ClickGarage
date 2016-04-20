@@ -1476,6 +1476,7 @@ def request_quote(request):
 
     resp = {}
     obj = {'name':name, 'number':number, 'category':category, 'service':service  }
+    mviews.send_adwords_mail(name,number,category,service)
     resp['status'] = True
     resp['result'] = obj
     return HttpResponse(json.dumps(resp), content_type='application/json')
@@ -3237,14 +3238,15 @@ def add_guest_transaction(request):
             #     ac_vi.updateCart(request.user, ts+'*', 'delete', '', None)
             transList.append(listItem)
 
-
-        html_list.append('<div> <span>Pickup Address : </span><span>')
-        html_list.append(pick_obj['street'])
+        if 'street' in pick_obj:
+            html_list.append('<div> <span>Pickup Address : </span><span>')
+            html_list.append(pick_obj['street'])
         if 'landmark' in pick_obj:
             html_list.append('</span><span> Landmark : ')
             html_list.append(pick_obj['landmark'])
-        html_list.append('</span><span> City : ')
-        html_list.append(pick_obj['city'])
+        if 'city' in pick_obj:
+            html_list.append('</span><span> City : ')
+            html_list.append(pick_obj['city'])
         if 'pincode' in pick_obj:
             html_list.append('</span><span> Pincode : ')
             html_list.append(pick_obj['pincode'])
@@ -3265,13 +3267,15 @@ def add_guest_transaction(request):
         html_list.append(str(number))
         html_list.append('</span></div>')
 
-        html_list.append('<div> <span>Drop Address : </span><span>')
-        html_list.append(drop_obj['street'])
-        if 'landmark' in pick_obj:
+        if 'street' in drop_obj:
+            html_list.append('<div> <span>Drop Address : </span><span>')
+            html_list.append(drop_obj['street'])
+        if 'landmark' in drop_obj:
             html_list.append('</span><span> Landmark : ')
             html_list.append(drop_obj['landmark'])
-        html_list.append('</span><span> City : ')
-        html_list.append(drop_obj['city'])
+        if 'city' in drop_obj:
+            html_list.append('</span><span> City : ')
+            html_list.append(drop_obj['city'])
         if 'pincode' in drop_obj:
             html_list.append('</span><span> Pincode : ')
             html_list.append(drop_obj['pincode'])

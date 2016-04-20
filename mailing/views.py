@@ -13,7 +13,7 @@ from email import Encoders
 helpline_number = "+91-9643844759"
 key = "ab33f626-fba5-4bff-9a2b-68a7e9eed43c"
 sendername = "CLKGRG"
-staffmails = ["priyank@clickgarage.in", "shashwat@clickgarage.in","bhuvan@clickgarage.in","sanskar@clickgarage.in","bookings@clickgarage.in"]
+staffmails = ["priyank@clickgarage.in", "shashwat@clickgarage.in","bhuvan@clickgarage.in","bookings@clickgarage.in"]
 
 
 import smtplib
@@ -6613,7 +6613,7 @@ def send_booking_details(to_address,booking_id,html_script):
 
 def send_contact_mail(name,phone,content):
 	me = "info@clickgarage.in"
-	you = ["priyank@clickgarage.in", "shashwat@clickgarage.in","bhuvan@clickgarage.in","sanskar@clickgarage.in"]
+	you = ["priyank@clickgarage.in", "shashwat@clickgarage.in","bhuvan@clickgarage.in"]
 	# booking_id = str(booking_id)
 	# Create message container - the correct MIME type is multipart/alternative.
 	msg = MIMEMultipart('alternative')
@@ -6650,6 +6650,49 @@ def send_contact_mail(name,phone,content):
 	server.login(smtp_username, smtp_password)
 	server.sendmail(me, you, msg.as_string())
 	server.quit()
+
+
+def send_adwords_mail(name,phone,service,definition):
+	me = "info@clickgarage.in"
+	you = ["priyank@clickgarage.in", "shashwat@clickgarage.in","bhuvan@clickgarage.in"]
+	# booking_id = str(booking_id)
+	# Create message container - the correct MIME type is multipart/alternative.
+	msg = MIMEMultipart('alternative')
+	msg['Subject'] = "New Service Request"
+	msg['From'] = me
+	msg['To'] = ', '.join(you)
+
+	message = "Name: " + name + " | Phone: " + phone + " | Service : " + service + " | Definition : " + definition
+	script = MIMEText(message, 'html')
+	msg.attach(script)
+
+	# file_pdf = MIMEText(file(path_file)
+	# msg.attach(file_pdf)
+	#part = MIMEBase('application', "octet-stream")
+	#part.set_payload(open(path_file, "rb").read())
+	#Encoders.encode_base64(part)
+	#part.add_header('Content-Disposition', 'attachment; '+'filename=details_'+booking_id+'.csv')
+	#
+	#msg.attach(part)
+
+
+	smtp_port = '25'
+	smtp_do_tls = True
+
+	server = smtplib.SMTP(
+	    host = smtp_server,
+	    port = smtp_port,
+	    timeout = 30
+	)
+
+	server.set_debuglevel(10)
+	server.ehlo()
+	server.starttls()
+	server.login(smtp_username, smtp_password)
+	server.sendmail(me, you, msg.as_string())
+	server.quit()
+
+
 
 
 
