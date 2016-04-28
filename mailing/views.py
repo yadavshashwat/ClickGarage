@@ -13,7 +13,7 @@ from email import Encoders
 helpline_number = "+91-9643844759"
 key = "ab33f626-fba5-4bff-9a2b-68a7e9eed43c"
 sendername = "CLKGRG"
-staffmails = ["priyank@clickgarage.in", "shashwat@clickgarage.in","bhuvan@clickgarage.in","bookings@clickgarage.in"]
+staffmails = ["priyank@clickgarage.in", "shashwat@clickgarage.in","bhuvan@clickgarage.in","bookings@clickgarage.in","smriti.parmar@gmail.com"]
 
 
 import smtplib
@@ -25,7 +25,7 @@ smtp_server = 'email-smtp.us-west-2.amazonaws.com'
 smtp_username = 'AKIAJ4U5VOXPWBT37X4A'
 smtp_password = 'AkJxDBO/FOsxkF1Ucd1EhblV5DTAVLpFfqWQv/KI2gn7'
 from_address = "ClickGarage <bookings@clickgarage.in>"
-helpline_number = "+91-9717353148"
+helpline_number = "+91-9643844759"
 
 
 def send_sms(type,to,message):
