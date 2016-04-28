@@ -6654,7 +6654,7 @@ def send_contact_mail(name,phone,content):
 
 def send_adwords_mail(name,phone,service,definition):
 	me = "info@clickgarage.in"
-	you = ["priyank@clickgarage.in", "shashwat@clickgarage.in","bhuvan@clickgarage.in"]
+	you = staffmails
 	# booking_id = str(booking_id)
 	# Create message container - the correct MIME type is multipart/alternative.
 	msg = MIMEMultipart('alternative')
