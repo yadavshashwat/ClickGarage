@@ -13,7 +13,7 @@ from email import Encoders
 helpline_number = "+91-9643844759"
 key = "ab33f626-fba5-4bff-9a2b-68a7e9eed43c"
 sendername = "CLKGRG"
-staffmails = ["priyank@clickgarage.in", "shashwat@clickgarage.in","bhuvan@clickgarage.in","bookings@clickgarage.in","smriti.parmar@gmail.com"]
+staffmails = ["priyank@clickgarage.in", "shashwat@clickgarage.in", "bhuvan@clickgarage.in","bookings@clickgarage.in","smriti.parmar@clickgarage.in"]
 
 
 import smtplib
