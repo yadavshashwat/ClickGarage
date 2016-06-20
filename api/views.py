@@ -2448,6 +2448,16 @@ def fetch_car_servicedetails_new(request):
                 car_bike = carObj.car_bike
                 print car_bike
                 if car:
+                    AuthServicedetailObj = ServiceDealerCatNew.objects.filter(carname = car, brand = make, type_service = type_service, dealer_category = 'Authorized').order_by('priority')
+                    auth_prices = None
+                    if len(AuthServicedetailObj):
+                        service = AuthServicedetailObj[0]
+                        auth_prices = {
+                              'parts_price':service.price_parts,
+                              'labour_price':service.price_labour,
+                              'vendor':service.dealer_category
+                        }
+
                     ServicedetailObjs = ServiceDealerCatNew.objects.filter(carname = car, brand = make, type_service = type_service).order_by('priority')
                     for service in ServicedetailObjs:
                         obj['result'].append({
@@ -2477,9 +2487,16 @@ def fetch_car_servicedetails_new(request):
                               # ,'car_bike':car_bike
                         ,'type_service':service.type_service
                         ,'part_dic':service.part_dic
-                        ,'labour_price':service.price_labour
                         ,'discount':service.discount
                         ,'priority':service.priority
+                        ,'prices':[
+                            {
+                              'parts_price':service.price_parts,
+                              'labour_price':service.price_labour,
+                              'vendor':service.dealer_category
+                            },
+                            auth_prices
+                        ]
                      }
                         )
 
