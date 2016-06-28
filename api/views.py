@@ -1539,22 +1539,22 @@ def place_order(request):
         html_list = []
         html_list.append('<b>Booking ID #')
         html_list.append(    booking_id)
-        html_list.append(            '</b><br><p>Hi ')
-        html_list.append(name)
-        html_list.append(',<br> Your ClickGarage booking has been confirmed. Pick up time chosen by you is ')
-        html_list.append(            pick_obj['time'])
-        html_list.append(            ' on ')
+        # html_list.append(            '</b><br><p>Hi ')
+        # html_list.append(name)
+        html_list.append('</b><br> Time :')
+        html_list.append(pick_obj['time'])
+        html_list.append(            '<br> Date :')
         html_list.append(            pick_obj['date'])
-        html_list.append(            '. If further assistance is needed, please contact us on 09717353148 and quote your booking confirmation number #')
-        html_list.append(            booking_id)
-        html_list.append(            '.</p>')
+        # html_list.append(            '. If further assistance is needed, please contact us on 09717353148 and quote your booking confirmation number #')
+        # html_list.append(            booking_id)
+        # html_list.append(            '.</p>')
         # html_script = ' '.join(str(x) for x in html_list)
-        html_list.append('<p>The selected services are for ')
+        html_list.append('<br>Vehicle :')
         html_list.append(car_name)
-        html_list.append(' (')
+        html_list.append('<br> Registration Number : ')
         html_list.append(car_reg_number)
-        html_list.append(') ')
-        html_list.append(':</p>')
+        # html_list.append(') ')
+        # html_list.append(':</p>')
 
         transList = []
 
@@ -1649,18 +1649,18 @@ def place_order(request):
                         'ts':ts
                     }
                     listItem['served_data'] = item
-                    html_list.append('<span> regular servicing </span>')
-                    html_list.append('<span> type of servicing : ')
+                    html_list.append('<span> Servicing </span>')
+                    html_list.append('<br><span> Type : ')
                     html_list.append(item['type_service'])
                     html_list.append('</span>')
 
-                    html_list.append('<span> dealer : ')
+                    html_list.append('<br><span> dealer : ')
                     html_list.append(item['dealer_cat'])
                     html_list.append('</span>')
 
-                    html_list.append('<span> price : ')
-                    html_list.append(total_price)
-                    html_list.append('</span><br/>')
+                    # html_list.append('<span> price : ')
+                    # html_list.append(total_price)
+                    # html_list.append('</span><br/>')
 
                     additional = None
                     if request.user and request.user.is_authenticated():
@@ -1728,19 +1728,19 @@ def place_order(request):
                     }
                     listItem['served_data'] = item
                     html_list.append('<span> Cleaning </span>')
-                    html_list.append('<span> Category : ')
+                    html_list.append('<br><span> Category : ')
                     html_list.append(item['category'])
                     html_list.append('</span>')
 
-                    html_list.append('<span>')
+                    html_list.append('<br><span>')
                     html_list.append(item['vendor'])
                     html_list.append(' - ')
                     html_list.append(item['service'])
                     html_list.append('</span>')
 
-                    html_list.append('<span> price : ')
-                    html_list.append(total_price)
-                    html_list.append('</span>')
+                    # html_list.append('<span> price : ')
+                    # html_list.append(total_price)
+                    # html_list.append('</span>')
 
                     html_list.append('</div>')
             elif service == 'vas':
