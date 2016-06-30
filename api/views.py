@@ -1657,8 +1657,7 @@ def place_order(request):
                     html_list.append('<br><span> dealer : ')
                     html_list.append(item['dealer_cat'])
                     html_list.append('</span>')
-
-                    # html_list.append('<span> price : ')
+                        # html_list.append('<span> price : ')
                     # html_list.append(total_price)
                     # html_list.append('</span><br/>')
 
@@ -3034,18 +3033,14 @@ def add_guest_transaction(request):
                         'ts':ts
                     }
                     listItem['served_data'] = item
-                    html_list.append('<span> regular servicing </span>')
-                    html_list.append('<span> type of servicing : ')
+                    html_list.append('<span> Servicing </span>')
+                    html_list.append('<br><span> Type : ')
                     html_list.append(item['type_service'])
                     html_list.append('</span>')
 
-                    html_list.append('<span> dealer : ')
+                    html_list.append('<br><span> dealer : ')
                     html_list.append(item['dealer_cat'])
                     html_list.append('</span>')
-
-                    html_list.append('<span> price : ')
-                    html_list.append(total_price)
-                    html_list.append('</span><br/>')
 
                     additional = None
                     if ts in request.user.uc_cart:
@@ -3106,19 +3101,20 @@ def add_guest_transaction(request):
                     html_list.append('<span> Cleaning </span>')
                     html_list.append('<span> Category : ')
                     html_list.append(item['category'])
+                    html_list.append('<span> Cleaning </span>')
+                    html_list.append('<br><span> Category : ')
+                    html_list.append(item['category'])
                     html_list.append('</span>')
 
-                    html_list.append('<span>')
+                    html_list.append('<br><span>')
                     html_list.append(item['vendor'])
                     html_list.append(' - ')
                     html_list.append(item['service'])
                     html_list.append('</span>')
 
-                    html_list.append('<span> price : ')
-                    html_list.append(total_price)
-                    html_list.append('</span>')
-
-                    html_list.append('</div>')
+                    # html_list.append('<span> price : ')
+                    # html_list.append(total_price)
+                    # html_list.append('</span>')
             elif service == 'vas':
                 serviceDetail = VASCategoryServices.objects.filter(id=service_id)
                 if len(serviceDetail):

@@ -10,10 +10,10 @@ from email.MIMEImage import MIMEImage
 from email.MIMEBase import MIMEBase
 from email import Encoders
 
-helpline_number = "+91-9643844759"
+helpline_number = "+91-9555950000"
 key = "ab33f626-fba5-4bff-9a2b-68a7e9eed43c"
 sendername = "CLKGRG"
-staffmails = ["priyank@clickgarage.in", "shashwat@clickgarage.in", "bhuvan@clickgarage.in","bookings@clickgarage.in","smriti.parmar@clickgarage.in"]
+staffmails = ["priyank@clickgarage.in", "shashwat@clickgarage.in", "bhuvan@clickgarage.in","bookings@clickgarage.in","smriti.parmar@clickgarage.in", "rajiv@clickgarage.in"]
 
 
 import smtplib
@@ -25,7 +25,7 @@ smtp_server = 'email-smtp.us-west-2.amazonaws.com'
 smtp_username = 'AKIAJ4U5VOXPWBT37X4A'
 smtp_password = 'AkJxDBO/FOsxkF1Ucd1EhblV5DTAVLpFfqWQv/KI2gn7'
 from_address = "ClickGarage <bookings@clickgarage.in>"
-helpline_number = "+91-9643844759"
+helpline_number = "+91-9555950000"
 
 
 def send_sms(type,to,message):
@@ -36,7 +36,7 @@ def send_otp(to,message):
 	send_sms("TRANS",to,message)
 
 def send_booking_sms(to_name, to, date, pick_time_start, booking_id):
-	message = "Hi "+ to_name +"! Your ClickGarage appointment has been confirmed. Appointment date: " +date + ", Time: "  + pick_time_start  + ". For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + booking_id + "."
+	message = "Hi "+ to_name +"! Your ClickGarage appointment has been confirmed. Appointment date: " +date + ", Time: "  + pick_time_start  + ". For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + booking_id + ". Your personal relationship manager for the booking will be Shashwat(+91-9717353148)."
 	message = message.replace(" ","+")
 	send_sms("TRANS",to,message)
 
