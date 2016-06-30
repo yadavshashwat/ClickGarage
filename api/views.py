@@ -63,7 +63,9 @@ def auth_and_login(request, onsuccess='/', onfail='/login/'):
 
 def create_user(username, email, password):
     user = CGUser(username=username, email=email)
+    mviews.send_signup_mail(username, "NA", email)
     user.set_password(password)
+    # mviews.send_signup_mail(username, "NA", email)
     user.user_type = 'User'
     user.save()
     return user
@@ -76,11 +78,13 @@ def user_exists(username):
 
 def sign_up_in(request):
     post = request.POST
+    # mviews.send_signup_mail(name, "NA", post['email'])
     if not user_exists(post['email']):
         user = create_user(username=post['email'], email=post['email'], password=post['password'])
     	return auth_and_login(request)
     else:
     	return redirect("/login/")
+    # mviews.send_signup_mail(name, "NA", post['email'])
 
 @login_required(login_url='/login/')
 def secured(request):
@@ -997,7 +1001,7 @@ def fetch_user_login(request):
         res['auth'] = True
     else:
         res['auth'] = False
-
+    # mviews.send_signup_mail(request.user.first_name, request.user.contact_no, request.user.email)
     obj['result'] = res
 
     return HttpResponse(json.dumps(obj), content_type='application/json')
@@ -3493,6 +3497,7 @@ def checkOTP(onetp, mobile, name):
     curr_time = datetime.datetime.now()
     curr_ts = calendar.timegm(curr_time.timetuple())
     findOtp     = Otp.objects.filter(mobile=mobile)
+    mviews.send_signup_mail(name,mobile,"NA")
     if len(findOtp) and findOtp[0].otp:
         findOtp = findOtp[0]
         otp_ts = calendar.timegm(findOtp.updated.timetuple())
