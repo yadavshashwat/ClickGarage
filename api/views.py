@@ -2921,23 +2921,24 @@ def add_guest_transaction(request):
 
         html_list = []
         html_list.append('<b>Booking ID #')
-        html_list.append(    booking_id)
-        html_list.append(            '</b><br><p>Hi ')
-        html_list.append(name)
-        html_list.append(',<br> Your ClickGarage booking has been confirmed. Pick up time chosen by you is ')
-        html_list.append(            pick_obj['time'])
-        html_list.append(            ' on ')
-        html_list.append(            pick_obj['date'])
-        html_list.append(            '. If further assistance is needed, please contact us on 09717353148 and quote your booking confirmation number #')
-        html_list.append(            booking_id)
-        html_list.append(            '.</p>')
+        html_list.append(booking_id)
+        # html_list.append(            '</b><br><p>Hi ')
+        # html_list.append(name)
+        html_list.append('</b><br> Time :')
+        html_list.append(pick_obj['time'])
+        html_list.append('<br> Date :')
+        html_list.append(pick_obj['date'])
+        # html_list.append(            '. If further assistance is needed, please contact us on 09717353148 and quote your booking confirmation number #')
+        # html_list.append(            booking_id)
+        # html_list.append(            '.</p>')
         # html_script = ' '.join(str(x) for x in html_list)
-        html_list.append('<p>The selected services are for ')
+        html_list.append('<br>Vehicle :')
         html_list.append(car_name)
-        html_list.append(' (')
+        html_list.append('<br> Registration Number : ')
         html_list.append(car_reg_number)
-        html_list.append(') ')
-        html_list.append(':</p>')
+        # html_list.append(') ')
+        # html_list.append(':</p>')
+
 
         transList = []
 

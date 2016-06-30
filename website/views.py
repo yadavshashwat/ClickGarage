@@ -1240,6 +1240,66 @@ def orderParse(request, carName, city):
     })
     return HttpResponse(template.render(context))
 
+def orderParseNew(request, carName, city):
+    obj = {}
+    obj['car'] = carName
+    obj['city'] = city
+    service = views.get_param(request,'cat','servicing')
+    template = loader.get_template('website/order.html')
+    car_obj = False
+    if not (city and (city in ["Delhi", "Gurgaon", "Noida"]) ):
+        city = False
+
+    title = ''
+    meta_desc = ''
+    if carName:
+        carName = " ".join(carName.split('-'))
+        car_obj = views.getCarObjFromName([carName])
+        if len(car_obj):
+            car_obj = car_obj[0]
+            carCleanName = carName.replace('Diesel',' ').replace('Petrol',' ').strip()
+            title = carCleanName + ' Servicing, Repair & Cleaning @ ClickGarage'
+            meta_desc = 'Solution to all your '+carCleanName+' maintenance needs.' \
+                                  ' Compare prices, choose from a network of authorized and multibrand service centers, ' \
+                                  'book doorstep services, get expert advice and save money. All within a few clicks.'
+        else:
+            car_obj = False
+    else:
+        car_obj = views.fetch_car(request, False)
+        if(car_obj['status']):
+            car_obj = car_obj['result']
+        else:
+            car_obj = False
+    print car_obj
+    if car_obj and (car_obj['car_bike'] == 'Bike'):
+        template = loader.get_template('website/b_order_new.html')
+
+
+    descript_dict = {
+        'servicing':'',
+        'cleaning' :'',
+        'repair'   :'',
+        'emergency':'',
+        'windshield':'',
+        'car_care':''
+
+    }
+    cars = views.fetch_all_cars(request).content
+    cars = json.loads(cars)
+    cars = cars['result']
+    context = RequestContext(request, {
+        'carSelected': car_obj,
+        'cars':cars,
+        'city':city,
+        'title':title,
+        'meta_desc':meta_desc,
+        'service':service,
+        'descript_dict':descript_dict
+    })
+    return HttpResponse(template.render(context))
+
+
+
 
 def serviceSchedule(request, carName):
     obj = {}
