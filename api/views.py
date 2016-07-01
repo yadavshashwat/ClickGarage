@@ -42,6 +42,8 @@ additionalFeatures = {
 }
 #login views
 
+staffmails = ["shashwat@clickgarage.in", "bhuvan@clickgarage.in","bookings@clickgarage.in","smriti.parmar@clickgarage.in", "rajiv@clickgarage.in"]
+
 def cleanstring(query):
     query = query.strip()
     query = re.sub('\s{2,}', ' ', query)
@@ -2556,7 +2558,7 @@ def fetch_all_booking(request):
 
     # if cust_id:
 
-    if request.user.email in ['smriti.parmar@clickgarage.in','chdhry.namrata@gmail.com','priyank@clickgarage.in','bhuvan.batra@gmail.com', 'shashwat@clickgarage.in', 'y.shashwat@gmail.com', 'bhuvan@clickgarage.in', 'sanskar@clickgarage.in', 'v.rajeev92@gmail.com']:
+    if request.user.email in staffmails:
         tranObjs = Transactions.objects.all().order_by('-booking_id')
             #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
     for trans in tranObjs:
@@ -2871,7 +2873,7 @@ def apply_coupon(request):
 
 def add_guest_transaction(request):
     # print 'p'
-     if request.user.email in ['smriti.parmar@clickgarage.in','priyank@clickgarage.in','bhuvan.batra@gmail.com', 'shashwat@clickgarage.in', 'y.shashwat@gmail.com', 'bhuvan@clickgarage.in', 'sanskar@clickgarage.in', 'v.rajeev92@gmail.com']:
+     if request.user.email in staffmails:
         print "user"
         # To handle
         email          = get_param(request, 'email', None)
