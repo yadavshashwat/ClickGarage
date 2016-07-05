@@ -13,7 +13,7 @@ from email import Encoders
 helpline_number = "9555950000"
 key = "ab33f626-fba5-4bff-9a2b-68a7e9eed43c"
 sendername = "CLKGRG"
-staffmails = ["shashwat@clickgarage.in", "bhuvan@clickgarage.in","bookings@clickgarage.in","smriti.parmar@clickgarage.in", "rajiv@clickgarage.in"]
+staffmails = ["shashwat@clickgarage.in", "bhuvan@clickgarage.in","bookings@clickgarage.in","smriti.parmar@clickgarage.in", "rajiv@clickgarage.in","amit.kumar@clickgarage.in"]
 
 
 import smtplib
@@ -1180,7 +1180,7 @@ def send_booking_email_doorstep(to_address,to_name,time_start,date,booking_id):
                         <td valign="top" class="mcnTextContent" style="padding: 9px 18px; line-height: normal;">
 
                             <div style="text-align: left;"><em style="background-color: #CCCCCC;color: #606060;font-family: helvetica;font-size: 11px;line-height: 13.75px;"><span style="background-color:#FFFFFF">Copyright (C) 2015 Sui Generis Innovations, All rights reserved.</span></em><br>
-<span style="color: #606060;font-family: helvetica;font-size: 11px;line-height: 13.75px;">Email : info@clickgarage.in | Phone No. : +91-9620839801</span></div>
+<span style="color: #606060;font-family: helvetica;font-size: 11px;line-height: 13.75px;">Email : info@clickgarage.in | Phone No. : +91-9555950000</span></div>
 
 <div style="text-align: left;"><br>
 <span style="color: #606060;font-family: helvetica;font-size: 11px;line-height: 13.75px;">W-22, Second Floor, Green Park, New Delhi - 110016</span></div>
@@ -2361,7 +2361,7 @@ def send_booking_email_pick(to_address,to_name,time_start,date,booking_id):
                         <td valign="top" class="mcnTextContent" style="padding: 9px 18px; line-height: normal;">
                         
                             <div style="text-align: left;"><em style="background-color: #CCCCCC;color: #606060;font-family: helvetica;font-size: 11px;line-height: 13.75px;"><span style="background-color:#FFFFFF">Copyright (C) 2015 Sui Generis Innovations, All rights reserved.</span></em><br>
-<span style="color: #606060;font-family: helvetica;font-size: 11px;line-height: 13.75px;">Email : info@clickgarage.in | Phone No. : +91-9620839801</span></div>
+<span style="color: #606060;font-family: helvetica;font-size: 11px;line-height: 13.75px;">Email : info@clickgarage.in | Phone No. : +91-9555950000</span></div>
 
 <div style="text-align: left;"><br>
 <span style="color: #606060;font-family: helvetica;font-size: 11px;line-height: 13.75px;">W-22, Second Floor, Green Park, New Delhi - 110016</span></div>
@@ -5245,7 +5245,7 @@ input[type='text'], input:not([type]), textarea {
                         <td valign="top" class="mcnTextContent" style="padding-top:9px; padding-right: 18px; padding-bottom: 9px; padding-left: 18px;">
 
                             <div style="text-align: center;"><em>Copyright (C) 2015 Sui Generis Innovations, All rights reserved.</em><br>
-Email : info@clickgarage.in | Phone No. : +91-9620839801<br>
+Email : info@clickgarage.in | Phone No. : +91-9555950000<br>
 <br>
 W-22, Second Floor, Green Park, New Delhi - 110016</div>
 
@@ -6491,7 +6491,7 @@ padding-top:10px;}
                         <td valign="top" class="mcnTextContent" style="padding-top:9px; padding-right: 18px; padding-bottom: 9px; padding-left: 18px;">
 
                             <div style="text-align: center;"><em>Copyright (C) 2015 Sui Generis Innovations, All rights reserved.</em><br>
-Email : info@clickgarage.in | Phone No. : +91-9620839801<br>
+Email : info@clickgarage.in | Phone No. : +91-9555950000<br>
 <br>
 W-22, Second Floor, Green Park, New Delhi - 110016</div>
 
@@ -7739,7 +7739,7 @@ def send_mail_coupon(to_address,wash,bike,service):
 	info@clickgarage.in<br>
 	<br>
 	<strong>Contact:</strong><br>
-	+91-9620839801<br>
+	+91-9555950000<br>
 	&nbsp;
 							</td>
 						</tr>
