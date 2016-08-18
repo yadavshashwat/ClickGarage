@@ -3345,7 +3345,7 @@ def add_guest_transaction(request):
         obj['status'] = True
         obj['result'] = pick_obj
         return HttpResponse(json.dumps(obj), content_type='application/json')
-     else:
+    else:
 
         print "no user"
         obj = {}
