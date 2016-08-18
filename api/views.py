@@ -1510,8 +1510,14 @@ def place_order(request):
         # car_id = get_param(request, 'car_id', None)
         doorstep_counter = 0
         # obj_pick = json.loads(pick_obj)
-        pick_obj = ast.literal_eval(pick_obj)
-        if drop_obj:
+        # pick_obj = ast.literal_eval(pick_obj)
+        if pick_obj and (isinstance(pick_obj,str) or isinstance(pick_obj,unicode)):
+            try:
+                pick_obj = ast.literal_eval(pick_obj)
+            except ValueError:
+                pick_obj = None
+
+        if drop_obj and (isinstance(drop_obj,str) or isinstance(drop_obj,unicode)):
             try:
                 drop_obj = ast.literal_eval(drop_obj)
             except ValueError:
@@ -2876,7 +2882,7 @@ def add_guest_transaction(request):
     # print 'p'
     r_id = get_param(request, 'r_id', None)
     apiFlag = (r_id == tempSecretParkwheel)
-    if request.user.email in staffmails or apiFlag:
+    if apiFlag or (request.is_authenticated() and request.user.email in staffmails):
         print "user"
         # To handle
         email          = get_param(request, 'email', None)
