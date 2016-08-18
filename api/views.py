@@ -29,6 +29,7 @@ from activity.models import Transactions, CGUser
 
 
 tempSecretKey = 'dmFydW5ndWxhdGlsaWtlc2dhbG91dGlrZWJhYg=='
+tempSecretParkwheel = 'dGhpcyBrZXkgaXMgZm9yIFBhcmt3aGVlbHM='
 
 repair_map = {
     'diagnostics':{'name':'Diagnostics','detail':"I don't know what is wrong with my car"},
@@ -2873,7 +2874,9 @@ def apply_coupon(request):
 
 def add_guest_transaction(request):
     # print 'p'
-     if request.user.email in staffmails:
+    r_id = get_param(request, 'r_id', None)
+    apiFlag = (r_id == tempSecretParkwheel)
+    if request.user.email in staffmails or apiFlag:
         print "user"
         # To handle
         email          = get_param(request, 'email', None)
@@ -3049,10 +3052,13 @@ def add_guest_transaction(request):
                     html_list.append('</span>')
 
                     additional = None
-                    if ts in request.user.uc_cart:
-                        this_order = request.user.uc_cart[ts]
-                        if 'additional_data' in this_order:
-                            additional = this_order['additional_data']
+                    if apiFlag:
+                        additional = order['additional_data']
+                    elif request.user and 'uc_cart' in request.user:
+                        if ts in request.user.uc_cart:
+                            this_order = request.user.uc_cart[ts]
+                            if 'additional_data' in this_order:
+                                additional = this_order['additional_data']
                     if additional:
                         addStr = '<span> Additional Features : '
                         custAddStr = ''
@@ -3226,10 +3232,14 @@ def add_guest_transaction(request):
                     html_list.append('</span>')
 
                     additional = None
-                    if ts in request.user.uc_cart:
-                        this_order = request.user.uc_cart[ts]
-                        if 'additional_data' in this_order:
-                            additional = this_order['additional_data']
+
+                    if apiFlag:
+                        additional = order['additional_data']
+                    elif request.user and 'uc_cart' in request.user:
+                        if ts in request.user.uc_cart:
+                            this_order = request.user.uc_cart[ts]
+                            if 'additional_data' in this_order:
+                                additional = this_order['additional_data']
                     if additional:
                         addStr = '<span> Repair Queries : '
                         custAddStr = ''
