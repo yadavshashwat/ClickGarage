@@ -2902,7 +2902,7 @@ def add_guest_transaction(request):
 
         # obj_pick = json.loads(pick_obj)
         pick_obj = ast.literal_eval(pick_obj)
-        drop_obj = ast.literal_eval(drop_obj)
+        drop_obj = None#ast.literal_eval(drop_obj)
         # pick_obj = ast.literal_eval(pick_obj)
         # print pick_obj
         # pick_obj = json.loads(pick_obj)
@@ -3303,19 +3303,20 @@ def add_guest_transaction(request):
         html_list.append(str(number))
         html_list.append('</span></div>')
 
-        if 'street' in drop_obj:
-            html_list.append('<div> <span>Drop Address : </span><span>')
-            html_list.append(drop_obj['street'])
-        if 'landmark' in drop_obj:
-            html_list.append('</span><span> Landmark : ')
-            html_list.append(drop_obj['landmark'])
-        if 'city' in drop_obj:
-            html_list.append('</span><span> City : ')
-            html_list.append(drop_obj['city'])
-        if 'pincode' in drop_obj:
-            html_list.append('</span><span> Pincode : ')
-            html_list.append(drop_obj['pincode'])
-        html_list.append('</span></div>')
+        if drop_obj:
+            if 'street' in drop_obj:
+                html_list.append('<div> <span>Drop Address : </span><span>')
+                html_list.append(drop_obj['street'])
+            if 'landmark' in drop_obj:
+                html_list.append('</span><span> Landmark : ')
+                html_list.append(drop_obj['landmark'])
+            if 'city' in drop_obj:
+                html_list.append('</span><span> City : ')
+                html_list.append(drop_obj['city'])
+            if 'pincode' in drop_obj:
+                html_list.append('</span><span> Pincode : ')
+                html_list.append(drop_obj['pincode'])
+            html_list.append('</span></div>')
 
         # create_guest_user(name,email);
 
