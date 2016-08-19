@@ -2882,7 +2882,7 @@ def add_guest_transaction(request):
     # print 'p'
     r_id = get_param(request, 'r_id', None)
     apiFlag = (r_id == tempSecretParkwheel)
-    if apiFlag or (request.user.is_authenticated() and request.user.email in staffmails):
+    if apiFlag or (request.user.email in staffmails):
         print "user"
         # To handle
         email          = get_param(request, 'email', None)
@@ -3060,7 +3060,8 @@ def add_guest_transaction(request):
                     additional = None
                     if apiFlag:
                         additional = order['additional_data']
-                    elif request.user and 'uc_cart' in request.user:
+                    # elif request.user and 'uc_cart' in request.user:
+                    elif request.user.uc_cart:
                         if ts in request.user.uc_cart:
                             this_order = request.user.uc_cart[ts]
                             if 'additional_data' in this_order:
