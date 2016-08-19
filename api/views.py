@@ -2882,7 +2882,7 @@ def add_guest_transaction(request):
     # print 'p'
     r_id = get_param(request, 'r_id', None)
     apiFlag = (r_id == tempSecretParkwheel)
-    if apiFlag or (request.is_authenticated() and request.user.email in staffmails):
+    if apiFlag or (request.user.is_authenticated() and request.user.email in staffmails):
         print "user"
         # To handle
         email          = get_param(request, 'email', None)
