@@ -126,7 +126,7 @@ def fetch_all_cars(request):
     result = []
     allCars = Car.objects.all()
     for car in allCars:
-        result.append({'name':car.name, 'make':car.make, 'aspect_ratio':car.aspect_ratio,'size':car.size,'car_bike':car.car_bike,'id':car.id,'cleaning_cat':car.cleaning_cat})
+        result.append({'name':car.name, 'make':car.make, 'aspect_ratio':car.aspect_ratio,'size':car.size,'car_bike':car.car_bike,'id':car.id,'cleaning_cat':car.cleaning_cat, 'complete_name':car.complete_vehicle_name})
 
     obj['result'] = result
     obj['counter'] = 1
@@ -1506,15 +1506,30 @@ def place_order(request):
         car_name = get_param(request, 'car_name', None)
         coupon_data = get_param(request, 'global_coupon', None)
         s_coupon = get_param(request, 'single_coupon', None)
+
+
+
+        #get car_bike
+        carObj = []
+        carObj = Car.objects.filter(complete_vehicle_name=car_name)
+        carObj = carObj[0]
+        car_bike = carObj.car_bike
+
+        print car_bike
+
         print coupon_data
         # car_id = get_param(request, 'car_id', None)
         doorstep_counter = 0
         # obj_pick = json.loads(pick_obj)
         # pick_obj = ast.literal_eval(pick_obj)
+        print 'po',pick_obj
         if pick_obj and (isinstance(pick_obj,str) or isinstance(pick_obj,unicode)):
             try:
                 pick_obj = ast.literal_eval(pick_obj)
             except ValueError:
+                import traceback
+                traceback.print_exc()
+
                 pick_obj = None
 
         if drop_obj and (isinstance(drop_obj,str) or isinstance(drop_obj,unicode)):
@@ -1522,6 +1537,8 @@ def place_order(request):
                 drop_obj = ast.literal_eval(drop_obj)
             except ValueError:
                 drop_obj = None
+
+                
         # pick_obj = ast.literal_eval(pick_obj)
         # print pick_obj
         # pick_obj = json.loads(pick_obj)
@@ -1531,10 +1548,13 @@ def place_order(request):
         # for key in pick_obj.keys():
         #     print key
         # print json.loads(drop_obj)
+        import json
         order_list = json.loads(order_list)
 
         print order_list
+        print '*'*100
         print pick_obj
+        print '*' * 100
         print drop_obj
         # tran_len = len(Transaction.objects.all())
         booking_id = 1
@@ -1570,6 +1590,8 @@ def place_order(request):
         # html_list.append(':</p>')
 
         transList = []
+        alist = []
+        custom_req = ''
 
         for order in order_list:
             print order
@@ -1673,6 +1695,23 @@ def place_order(request):
                         # html_list.append('<span> price : ')
                     # html_list.append(total_price)
                     # html_list.append('</span><br/>')
+                    # tookan integration start
+
+                    # car_bike_type = serviceDetail.car_bike
+                    category = "Servicing/ Repair"
+                    if car_bike == "Car":
+                        template = "Servicing_Car"
+                        servicing_meta_data = [{"label": "Car_Name", "data": serviceDetail.carname},
+                                               {"label": "Labour_Estimate", "data": float(serviceDetail.price_labour)},
+                                               {"label": "Parts_Estimate", "data": float(serviceDetail.price_parts)}]
+
+                    elif car_bike == "Bike":
+                        template = "Servicing_Bike"
+                        servicing_meta_data = [{"label": "Bike_Name", "data": serviceDetail.carname},
+                                               {"label": "Labour_Estimate", "data": float(serviceDetail.price_labour)},
+                                               {"label": "Parts_Estimate", "data": float(serviceDetail.price_parts)}]
+
+                        # tookan integration end
 
                     additional = None
                     if request.user and request.user.is_authenticated():
@@ -1690,10 +1729,11 @@ def place_order(request):
                         custAddStr = ''
                         listItem['served_data']['additional'] = additional
                         for feat, status in additional.iteritems():
-                            print status
+                            print 'ai',feat,status
                             if status:
                                 if feat == 'Custom Requests':
                                     custAddStr = '<br/><span> Custom Requests : %s </span>' %(status)
+                                    custom_req = status
                                 elif feat == 'Selected Authorized':
                                     d_name = ''
                                     d_address = ''
@@ -1704,8 +1744,15 @@ def place_order(request):
                                     custAddStr = '<br/><span> Authorized Dealer Selected : %s (%s) </span>' %(d_name,d_address)
                                 else:
                                     addStr = '%s [%s] - ' %(addStr,feat)
+                                    alist.append(feat)
                         addStr = addStr + '</span>' + custAddStr
                         html_list.append(addStr)
+
+                    if alist:
+                        category += ' ('+','.join(alist)+')'
+
+                    if custom_req:
+                        category += ' Custom : '+custom_req
 
                     html_list.append('</div>')
 
@@ -1753,6 +1800,16 @@ def place_order(request):
                     # html_list.append('<span> price : ')
                     # html_list.append(total_price)
                     # html_list.append('</span>')
+
+                    # tookan integration start vas
+
+                    category = "Value Added Service"
+                    template = "VAS_Car"
+                    servicing_meta_data = [{"label": "Car_Name", "data": car_name},
+                                           {"label": "Service_Estimate", "data": float(serviceDetail.price_total)},
+                                           {"label": "Service_Requested", "data": serviceDetail.service}]
+
+                    # tookan integration end
 
                     html_list.append('</div>')
             elif service == 'vas':
@@ -1876,11 +1933,14 @@ def place_order(request):
                         listItem['served_data'] = {}
                         listItem['served_data']['additional'] = additional
                         for feat, status in additional.iteritems():
+                            print
                             if status:
                                 if feat == 'Custom Requests':
                                     custAddStr = '<br/><span> Custom Requests : %s </span>' %(status)
+                                    custom_req = status
                                 elif feat == 'Damage Type':
                                     custAddStr = '<br/><span> Damage Type : %s </span>' %(status)
+                                    custom_req = status
                                 # elif feat == 'Selected Authorized':
                                 #     d_name = ''
                                 #     d_address = ''
@@ -1891,10 +1951,27 @@ def place_order(request):
                                 #     custAddStr = '<br/><span> Authorized Dealer Selected : %s (%s) </span>' %(d_name,d_address)
                                 else:
                                     addStr = '%s [%s] - ' %(addStr,feat)
+                                    alist.append(feat)
                         addStr = addStr + '</span>' + custAddStr
+
                         html_list.append(addStr)
 
                     html_list.append('</div>')
+
+                    category = "Repair"
+                    if car_bike == "Car":
+                        template = "Servicing_Car"
+                        servicing_meta_data = [{"label": "Car_Name", "data": car_name}]
+
+                    elif car_bike == "Bike":
+                        template = "Servicing_Bike"
+                        servicing_meta_data = [{"label": "Bike_Name", "data": car_name}]
+                    if alist:
+                        category += ' ('+','.join(alist)+')'
+
+                    if custom_req:
+                        category += ' Custom : '+custom_req
+
 
             if (not android_flag) and (request.user and request.user.is_authenticated()):
                 ac_vi.updateCart(request.user, str(ts)+'*', 'delete', '', None)
@@ -2022,6 +2099,71 @@ def place_order(request):
             obj = {}
             obj['status'] = True
             obj['result'] = pick_obj
+
+            # Tookan Integration Start
+            if 1:
+                from dateutil import parser as dt_parser
+                customer_address = ', '.join(
+                    [pick_obj.get('street', ''), pick_obj.get('landmark', ''), pick_obj.get('city', '')])
+                start_time = pick_obj.get('date') + ' ' + pick_obj.get('time').split(' - ')[0]
+                print 'st0', start_time
+
+                # start_time = my_date_parser(start_time)
+                start_time = dt_parser.parse(start_time)
+
+                print 'st', start_time.month, start_time.year, start_time.day
+                start_time = start_time.strftime('%m/%d/%Y %I:%M %p')
+                end_time = pick_obj.get('date') + ' ' + pick_obj.get('time').split(' - ')[1]
+                print 'et0', end_time
+                end_time = dt_parser.parse(end_time)
+                print 'et', end_time.month, end_time.year, end_time.day
+                end_time = end_time.strftime('%m/%d/%Y %I:%M %p')
+                print start_time
+                print end_time
+
+                # a = {"label": "Servicing_Labour", "data": "100"}
+                values = {
+                    "customer_email": email,
+                    "order_id": str(booking_id),
+                    "customer_username": name,
+                    "customer_phone": number,
+                    "customer_address": customer_address,
+                    "latitude": "",
+                    "longitude": "",
+                    "job_description": category,
+                    "job_pickup_datetime": start_time,
+                    "job_delivery_datetime": end_time,
+                    "has_pickup": "0",
+                    "has_delivery": "0",
+                    "layout_type": "1",
+                    "tracking_link": 1,
+                    "timezone": "-330",
+                    "custom_field_template": template,
+                    "meta_data": servicing_meta_data,
+                    "api_key": "a18332760b2847468d7b569f88ff0fce345c32a0580b095657c81890251fc0a0",
+                    "team_id": "255",
+                    "auto_assignment": "0",
+                    "fleet_id": "636",
+                    "ref_images": ["http://tookanapp.com/wp-content/uploads/2015/11/logo_dark.png",
+                                   "http://tookanapp.com/wp-content/uploads/2015/11/logo_dark.png"],
+                    "notify": 1,
+                    "tags": "tag1,tag2",
+                    "geofence": 0
+                }
+
+                print values
+
+                headers = {
+                    'Content-type': 'application/json'
+                }
+
+                import requests
+                url = 'https://api.tookanapp.com/v2/create_task'
+                import json
+                req = requests.post(url, data=json.dumps(values), headers=headers)
+                obj['took'] = req.json() if req.status_code == 200 else req.content
+                # Tookan Integration End
+
             return HttpResponse(json.dumps(obj), content_type='application/json')
         else:
             obj = {}
@@ -2878,6 +3020,16 @@ def apply_coupon(request):
 #         mviews.send_cancel_final(username,useremail,booking_id)
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+
+def my_date_parser(dt_str):
+    if '-' not in dt_str:
+        rt = datetime.datetime.strptime(dt_str, '%d/%m/%Y %I:%M %p')
+    else:
+        rt = datetime.datetime.strptime(dt_str, '%Y-%m-%d %  I:%M %p')
+
+    return rt
+
+
 def add_guest_transaction(request):
     # print 'p'
     r_id = get_param(request, 'r_id', None)
@@ -2891,6 +3043,7 @@ def add_guest_transaction(request):
         car_reg_number = get_param(request, 'reg_no', None)
         pick_obj       = get_param(request, 'pick', None)
         drop_obj       = get_param(request, 'drop', None)
+        custom_request = get_param(request, 'custom_req', None)
         order_list     = get_param(request, 'order_list', None)
         car_name       = get_param(request, 'car_name', None)
         android_flag   = get_param(request, 'android', None)
@@ -2898,11 +3051,10 @@ def add_guest_transaction(request):
         # print coupon_data
         # car_id = get_param(request, 'car_id', None)
 
-
-
         # obj_pick = json.loads(pick_obj)
         pick_obj = ast.literal_eval(pick_obj)
-        drop_obj = None#ast.literal_eval(drop_obj)
+        drop_obj = None
+        #ast.literal_eval(drop_obj)
         # pick_obj = ast.literal_eval(pick_obj)
         # print pick_obj
         # pick_obj = json.loads(pick_obj)
@@ -2913,6 +3065,7 @@ def add_guest_transaction(request):
         #     print key
         # print json.loads(drop_obj)
         # to handle - list of objects-{service_id:--,service-}
+        import json
         order_list = json.loads(order_list)
 
         print order_list
@@ -3057,6 +3210,29 @@ def add_guest_transaction(request):
                     html_list.append(item['dealer_cat'])
                     html_list.append('</span>')
 
+
+                    # tookan integration start
+
+                    car_bike_type = serviceDetail.car_bike
+                    category = "Servicing/ Repair"
+                    if car_bike_type == "Car":
+                        template = "Servicing_Car"
+                        servicing_meta_data = [{"label": "Car_Name", "data": serviceDetail.carname},
+                                           {"label": "Labour_Estimate", "data": float(serviceDetail.price_labour)},
+                                           {"label": "Parts_Estimate", "data": float(serviceDetail.price_parts)}]
+
+                    elif car_bike_type == "Bike":
+                        template = "Servicing_Bike"
+                        servicing_meta_data = [{"label": "Bike_Name", "data": serviceDetail.carname},
+                                           {"label": "Labour_Estimate", "data": float(serviceDetail.price_labour)},
+                                           {"label": "Parts_Estimate", "data": float(serviceDetail.price_parts)}]
+
+                    if custom_request:
+                        category += ' Custom : ' + custom_request
+
+
+                    # tookan integration end
+
                     additional = None
                     if apiFlag:
                         additional = order['additional_data']
@@ -3130,6 +3306,19 @@ def add_guest_transaction(request):
                     html_list.append(' - ')
                     html_list.append(item['service'])
                     html_list.append('</span>')
+
+                    # tookan integration start vas
+
+                    category = "Value Added Service"
+                    template = "VAS_Car"
+                    servicing_meta_data = [{"label": "Car_Name", "data": car_name},
+                                           {"label": "Service_Estimate", "data": float(serviceDetail.price_total)},
+                                           {"label": "Service_Requested", "data": serviceDetail.service}]
+
+
+                    # tookan integration end
+
+
 
                     # html_list.append('<span> price : ')
                     # html_list.append(total_price)
@@ -3275,6 +3464,14 @@ def add_guest_transaction(request):
             #     ac_vi.updateCart(request.user, ts+'*', 'delete', '', None)
             transList.append(listItem)
 
+
+        #written by vikas for demo
+        # print type(pick_obj['street'])
+        # pip install dateutil
+        # from dateutil import parser as dt_parser
+        # date_string = '2007/10/31 0:30pm'
+        # dt_parser.parse(date_string)
+
         if 'street' in pick_obj:
             html_list.append('<div> <span>Pickup Address : </span><span>')
             html_list.append(pick_obj['street'])
@@ -3352,6 +3549,79 @@ def add_guest_transaction(request):
         obj = {}
         obj['status'] = True
         obj['result'] = pick_obj
+
+        print pick_obj
+        print '*'*100
+        print type(pick_obj)
+        print '*'*100
+        # print pick_obj.__dict__
+        # Tookan Integration Start
+
+
+
+
+        if 1:
+            from dateutil import parser as dt_parser
+            customer_address = ', '.join([pick_obj.get('street',''),pick_obj.get('landmark',''),pick_obj.get('city','')])
+            start_time = pick_obj.get('date')+' '+pick_obj.get('time').split(' - ')[0]
+            print 'st0', start_time
+
+            start_time = my_date_parser(start_time)
+
+            print 'st',start_time.month,start_time.year,start_time.day
+            start_time = start_time.strftime('%m/%d/%Y %I:%M %p')
+            end_time = pick_obj.get('date') + ' ' + pick_obj.get('time').split(' - ')[1]
+            print 'et0', end_time
+            end_time = my_date_parser(end_time)
+            print 'et', end_time.month,end_time.year,end_time.day
+            end_time = end_time.strftime('%m/%d/%Y %I:%M %p')
+            print start_time
+            print end_time
+            # a = {"label": "Servicing_Labour", "data": "100"}
+            values = {
+                "customer_email": email,
+                "order_id": str(booking_id),
+                "customer_username": name,
+                "customer_phone": number,
+                "customer_address": customer_address,
+                "latitude": "",
+                "longitude": "",
+                "job_description": category,
+                "job_pickup_datetime": start_time,
+                "job_delivery_datetime": end_time,
+                "has_pickup": "0",
+                "has_delivery": "0",
+                "layout_type": "1",
+                "tracking_link": 1,
+                "timezone": "-330",
+                "custom_field_template": template,
+                "meta_data": servicing_meta_data,
+                "api_key": "a18332760b2847468d7b569f88ff0fce345c32a0580b095657c81890251fc0a0",
+                "team_id": "255",
+                "auto_assignment": "0",
+                "fleet_id": "636",
+                "ref_images": ["http://tookanapp.com/wp-content/uploads/2015/11/logo_dark.png",
+                               "http://tookanapp.com/wp-content/uploads/2015/11/logo_dark.png"],
+                "notify": 1,
+                "tags": "tag1,tag2",
+                "geofence": 0
+            }
+
+            print values
+
+            headers = {
+                'Content-type': 'application/json'
+            }
+
+            import requests
+            url = 'https://api.tookanapp.com/v2/create_task'
+            import json
+            req = requests.post(url, data=json.dumps(values), headers=headers)
+            obj['took'] = req.json() if req.status_code == 200 else req.content
+        # Tookan Integration End
+
+
+
         return HttpResponse(json.dumps(obj), content_type='application/json')
     else:
 

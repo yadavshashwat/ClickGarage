@@ -92,6 +92,16 @@ def loadCars(fileName):
                 cc = Car(make=make, name=name_model, year=0, aspect_ratio=aspectRatio, size = size, car_bike=car_bike, cleaning_cat = cleaning_cat)
                 cc.save()
 
+
+def updateCars():
+    carObj = Car.objects.all()
+    for c in carObj:
+        car_name = c.name
+        car_make = c.make
+        complete_name = car_make + " " + car_name
+        c.complete_vehicle_name = complete_name
+        c.save()
+
 def loadServicing(fileName):
     with open(path+'/data/Servicing/'+fileName, 'rU') as csvfile:
          carData = csv.reader(csvfile, delimiter='\t', quotechar='|')

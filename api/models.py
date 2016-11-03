@@ -23,6 +23,7 @@ class Car(models.Model):
     size = models.CharField(max_length=50)
     car_bike = models.CharField(max_length=50)
     cleaning_cat = models.CharField(max_length=50)
+    complete_vehicle_name = models.CharField(max_length=200)
 
 #two sets of DBs
 #1 - data entry
