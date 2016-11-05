@@ -36,7 +36,7 @@ def send_otp(to,message):
 	send_sms("TRANS",to,message)
 
 def send_booking_sms(to_name, to, date, pick_time_start, booking_id):
-	message = "Hi "+ to_name +"! Your ClickGarage appointment has been confirmed. Appointment date: " +date + ", Time: "  + pick_time_start  + ". For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + booking_id + ". Your personal relationship manager for the booking will be Smriti (7290001283)."
+	message = "Hi "+ to_name +"! Your ClickGarage appointment has been confirmed. Appointment date: " +date + ", Time: "  + pick_time_start  + ". For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + booking_id + "."
 	message = message.replace(" ","+")
 	send_sms("TRANS",to,message)
 
