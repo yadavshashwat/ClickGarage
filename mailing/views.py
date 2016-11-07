@@ -3165,7 +3165,7 @@ def send_booking_email1(to_address,to_name,time_start,date,booking_id):
 	                        <td valign="top" class="mcnTextContent" style="padding-top:9px; padding-right: 18px; padding-bottom: 9px; padding-left: 18px;">
 
 	                            <em>Copyright (C) 2015 Sui Generis Innovations, All rights reserved.</em><br>
-	Email : info@clickgarage.in | Phone No. : +91-9717353148<br>
+	Email : info@clickgarage.in | Phone No. : +91-9555950000<br>
 	<br>
 	W-22, Second Floor, Green Park, New Delhi - 110016
 	                        </td>
@@ -3967,7 +3967,7 @@ def send_cancel_email(to_address,to_name,booking_id_1):
 								<td valign="top" class="mcnTextContent" style="padding-top:9px; padding-right: 18px; padding-bottom: 9px; padding-left: 18px;">
 
 									<em>Copyright (C) 2015 Sui Generis Innovations, All rights reserved.</em><br>
-		Email : info@clickgarage.in | Phone No. : +91-9717353148<br>
+		Email : info@clickgarage.in | Phone No. : +91-9555950000<br>
 		<br>
 		W-22, Second Floor, Green Park, New Delhi - 110016
 								</td>
