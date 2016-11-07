@@ -2160,13 +2160,13 @@ def place_order(request):
                 # import requests
                 url = 'https://api.tookanapp.com/v2/create_task'
                 # import json
-                # req = requests.post(url, data=json.dumps(values), headers=headers,  timeout=2)
+                req = requests.post(url, data=json.dumps(values), headers=headers,  timeout=10)
 
-                req = Request(url, data=json.dumps(values), headers=headers,timeout = 10)
-                obj['took'] = urlopen(req).read()
+                # req = Request(url, data=json.dumps(values), headers=headers)
+                # obj['took'] = urlopen(req).read()
 
 
-                # obj['took'] = req.json() if req.status_code == 200 else req.content
+                obj['took'] = req.json() if req.status_code == 200 else req.content
                 # obj['took'] = res_body.json() if res_body.status_code == 200 else res_body.content
                 # Tookan Integration End
 
@@ -3621,11 +3621,11 @@ def add_guest_transaction(request):
             # import requests
             url = 'https://api.tookanapp.com/v2/create_task'
             # import json
-            # req = requests.post(url, data=json.dumps(values), headers=headers)
-            req = Request(url , data=json.dumps(values), headers=headers, timeout = 10)
-            obj['took'] = urlopen(req).read()
+            req = requests.post(url, data=json.dumps(values), headers=headers)
+            # req = Request(url , data=json.dumps(values), headers=headers)
+            # obj['took'] = urlopen(req).read()
 
-            # obj['took'] = req.json() if req.status_code == 200 else req.content
+            obj['took'] = req.json() if req.status_code == 200 else req.content
 
 
         # Tookan Integration End
