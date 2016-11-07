@@ -2160,7 +2160,7 @@ def place_order(request):
                 # import requests
                 url = 'https://api.tookanapp.com/v2/create_task'
                 # import json
-                req = requests.post(url, data=json.dumps(values), headers=headers, verify= False)
+                req = requests.post(url, data=json.dumps(values), headers=headers, verify= False, timeout = 10)
 
                 # req = Request(url, data=json.dumps(values), headers=headers)
                 # obj['took'] = urlopen(req).read()
@@ -3621,7 +3621,7 @@ def add_guest_transaction(request):
             # import requests
             url = 'https://api.tookanapp.com/v2/create_task'
             # import json
-            req = requests.post(url, data=json.dumps(values), headers=headers, verify= False)
+            req = requests.post(url, data=json.dumps(values), headers=headers, verify= False, timeout = 10)
             # req = Request(url , data=json.dumps(values), headers=headers)
             # obj['took'] = urlopen(req).read()
 
