@@ -6604,8 +6604,8 @@ def send_booking_details(to_address,booking_id,html_script):
 	)
 	
 	server.set_debuglevel(10)
-	server.ehlo()
 	server.starttls()
+	server.ehlo()
 	server.login(smtp_username, smtp_password)
 	server.sendmail(me, you, msg.as_string())
 	server.quit()
@@ -6645,8 +6645,8 @@ def send_contact_mail(name,phone,content):
 	)
 
 	server.set_debuglevel(10)
-	server.ehlo()
 	server.starttls()
+	server.ehlo()
 	server.login(smtp_username, smtp_password)
 	server.sendmail(me, you, msg.as_string())
 	server.quit()
@@ -6685,8 +6685,8 @@ def send_signup_mail(name,phone,email_id):
 	)
 
 	server.set_debuglevel(10)
-	server.ehlo()
 	server.starttls()
+	server.ehlo()
 	server.login(smtp_username, smtp_password)
 	server.sendmail(me, you, msg.as_string())
 	server.quit()
@@ -6726,8 +6726,8 @@ def send_adwords_mail(name,phone,service,definition):
 	)
 
 	server.set_debuglevel(10)
-	server.ehlo()
 	server.starttls()
+	server.ehlo()
 	server.login(smtp_username, smtp_password)
 	server.sendmail(me, you, msg.as_string())
 	server.quit()

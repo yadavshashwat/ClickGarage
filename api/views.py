@@ -2147,7 +2147,7 @@ def place_order(request):
                     "ref_images": ["http://tookanapp.com/wp-content/uploads/2015/11/logo_dark.png",
                                    "http://tookanapp.com/wp-content/uploads/2015/11/logo_dark.png"],
                     "notify": 1,
-                    "tags": "tag1,tag2",
+                    # "tags": "tag1,tag2",
                     "geofence": 0
                 }
 
@@ -3603,7 +3603,7 @@ def add_guest_transaction(request):
                 "ref_images": ["http://tookanapp.com/wp-content/uploads/2015/11/logo_dark.png",
                                "http://tookanapp.com/wp-content/uploads/2015/11/logo_dark.png"],
                 "notify": 1,
-                "tags": "tag1,tag2",
+                # "tags": "tag1,tag2",
                 "geofence": 0
             }
 
