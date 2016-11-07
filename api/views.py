@@ -2157,9 +2157,9 @@ def place_order(request):
                     'Content-type': 'application/json'
                 }
 
-                import requests
+                # import requests
                 url = 'https://api.tookanapp.com/v2/create_task'
-                import json
+                # import json
                 # req = requests.post(url, data=json.dumps(values), headers=headers,  timeout=2)
 
                 req = Request(url, data=json.dumps(values), headers=headers)
@@ -3618,9 +3618,9 @@ def add_guest_transaction(request):
                 'Content-type': 'application/json'
             }
 
-            import requests
+            # import requests
             url = 'https://api.tookanapp.com/v2/create_task'
-            import json
+            # import json
             # req = requests.post(url, data=json.dumps(values), headers=headers)
             req = Request(url , data=json.dumps(values), headers=headers)
             obj['took'] = urlopen(req).read()
