@@ -2144,8 +2144,7 @@ def place_order(request):
                     "team_id": "255",
                     "auto_assignment": "0",
                     "fleet_id": "636",
-                    "ref_images": ["http://tookanapp.com/wp-content/uploads/2015/11/logo_dark.png",
-                                   "http://tookanapp.com/wp-content/uploads/2015/11/logo_dark.png"],
+                    "ref_images": ["https://gallery.mailchimp.com/2cf3731a4f89990fe68c1bf2a/images/8b0df50f-a54b-4a7b-9ef6-c31d66aff1f1.jpg"                                   ],
                     "notify": 1,
                     # "tags": "tag1,tag2",
                     "geofence": 0
@@ -3600,8 +3599,7 @@ def add_guest_transaction(request):
                 "team_id": "255",
                 "auto_assignment": "0",
                 "fleet_id": "636",
-                # "ref_images": ["http://tookanapp.com/wp-content/uploads/2015/11/logo_dark.png",
-                #                "http://tookanapp.com/wp-content/uploads/2015/11/logo_dark.png"],
+                "ref_images": ["https://gallery.mailchimp.com/2cf3731a4f89990fe68c1bf2a/images/8b0df50f-a54b-4a7b-9ef6-c31d66aff1f1.jpg"],
                 "notify": 1,
                 # "tags": "tag1,tag2",
                 "geofence": 0
