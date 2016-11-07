@@ -2162,7 +2162,7 @@ def place_order(request):
                 import json
                 # req = requests.post(url, data=json.dumps(values), headers=headers,  timeout=2)
 
-                req = Request('https://api.tookanapp.com/v2/create_task', data=json.dumps(values), headers=headers)
+                req = Request(url, data=json.dumps(values), headers=headers)
                 obj['took'] = urlopen(req).read()
 
 
