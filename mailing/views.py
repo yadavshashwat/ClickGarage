@@ -26,6 +26,11 @@ smtp_username = 'AKIAJ4U5VOXPWBT37X4A'
 smtp_password = 'AkJxDBO/FOsxkF1Ucd1EhblV5DTAVLpFfqWQv/KI2gn7'
 from_address = "ClickGarage <bookings@clickgarage.in>"
 helpline_number = "9555950000"
+import boto
+from email.mime.application import MIMEApplication
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import boto.ses
 
 
 def send_sms(type,to,message):
@@ -1217,20 +1222,24 @@ def send_booking_email_doorstep(to_address,to_name,time_start,date,booking_id):
 	msg.attach(script)
 
 
-	smtp_port = '25'
-	smtp_do_tls = True
+	# smtp_port = '25'
+	# smtp_do_tls = True
+    #
+	# server = smtplib.SMTP(
+	#     host = smtp_server,
+	#     port = smtp_port,
+	#     timeout = 30
+	# )
+	# server.set_debuglevel(10)
+	# server.starttls()
+	# server.ehlo()
+	# server.login(smtp_username, smtp_password)
+	# server.sendmail(me, you, msg.as_string())
+	# server.quit()
+	#
+	conn = boto.ses.connect_to_region('us-west-2',aws_access_key_id='AKIAJNAYBONVQTNTSLZQ',aws_secret_access_key='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')
+	result = conn.send_raw_email(msg.as_string())
 
-	server = smtplib.SMTP(
-	    host = smtp_server,
-	    port = smtp_port,
-	    timeout = 30
-	)
-	server.set_debuglevel(10)
-	server.starttls()
-	server.ehlo()
-	server.login(smtp_username, smtp_password)
-	server.sendmail(me, you, msg.as_string())
-	server.quit()
 
 
 def send_booking_email_pick(to_address,to_name,time_start,date,booking_id):
@@ -2398,22 +2407,54 @@ def send_booking_email_pick(to_address,to_name,time_start,date,booking_id):
 	msg.attach(script)
 
 
-	smtp_port = '25'
-	smtp_do_tls = True
+	# smtp_port = '25'
+	# smtp_do_tls = True
+    #
+    # server = smtplib.SMTP(
+	 #    host = smtp_server,
+	 #    port = smtp_port,
+	 #    timeout = 30
+	# )
+	# server.set_debuglevel(10)
+	# server.starttls()
+	# server.ehlo()
+	# server.login(smtp_username, smtp_password)
+	# server.sendmail(me, you, msg.as_string())
+	# server.quit()
 
-	server = smtplib.SMTP(
-	    host = smtp_server,
-	    port = smtp_port,
-	    timeout = 30
-	)
-	server.set_debuglevel(10)
-	server.starttls()
-	server.ehlo()
-	server.login(smtp_username, smtp_password)
-	server.sendmail(me, you, msg.as_string())
-	server.quit()
+	conn = boto.ses.connect_to_region('us-west-2',aws_access_key_id='AKIAJNAYBONVQTNTSLZQ',aws_secret_access_key='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')
+	result = conn.send_raw_email(msg.as_string())
 
 #send_booking(to_address="y.shashwat@gmail.com",to_name="Shashwat",service="Servicing",time_start="9:00AM",time_end="10:00AM",date="16-Aug-2015",booking_id="0001")
+
+
+
+def send_ses(fromaddr,subject,body,recipient, attachment=None,filename=''):
+	"""Send an email via the Amazon SES service.
+
+    Example:
+      send_ses('me@example.com, 'greetings', "Hi!", 'you@example.com)
+
+    Return:
+      If 'ErrorResponse' appears in the return message from SES,
+      return the message, otherwise return an empty '' string.
+    """
+	msg = MIMEMultipart()
+	msg['Subject'] = subject
+	msg['From'] = fromaddr
+	msg['To'] = recipient
+	msg.attach(MIMEText(body))
+	if attachment:
+		part = MIMEApplication(attachment)
+		part.add_header('Content-Disposition', 'attachment', filename=filename)
+		msg.attach(part)
+
+	smtp_username = 'AKIAJ4U5VOXPWBT37X4A'
+	smtp_password = 'AkJxDBO/FOsxkF1Ucd1EhblV5DTAVLpFfqWQv/KI2gn7'
+	# conn = boto.connect_ses(smtp_username,smtp_password)
+	conn = boto.ses.connect_to_region('us-west-2',aws_access_key_id='AKIAJNAYBONVQTNTSLZQ',aws_secret_access_key='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')
+	result = conn.send_raw_email(msg.as_string())
+	return result if 'ErrorResponse' in result else ''
 
 def send_booking_email1(to_address,to_name,time_start,date,booking_id):
 	me = from_address
@@ -3198,20 +3239,22 @@ def send_booking_email1(to_address,to_name,time_start,date,booking_id):
 	msg.attach(script)
 
 
-	smtp_port = '25'
-	smtp_do_tls = True
-
-	server = smtplib.SMTP(
-	    host = smtp_server,
-	    port = smtp_port,
-	    timeout = 30
-	)
-	server.set_debuglevel(10)
-	server.starttls()
-	server.ehlo()
-	server.login(smtp_username, smtp_password)
-	server.sendmail(me, you, msg.as_string())
-	server.quit()
+	# smtp_port = '25'
+	# smtp_do_tls = True
+    #
+	# server = smtplib.SMTP(
+	#     host = smtp_server,
+	#     port = smtp_port,
+	#     timeout = 30
+	# )
+	# server.set_debuglevel(10)
+	# server.starttls()
+	# server.ehlo()
+	# server.login(smtp_username, smtp_password)
+	# server.sendmail(me, you, msg.as_string())
+	# server.quit()
+	conn = boto.ses.connect_to_region('us-west-2',aws_access_key_id='AKIAJNAYBONVQTNTSLZQ',aws_secret_access_key='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')
+	result = conn.send_raw_email(msg.as_string())
 
 def send_cancel_email(to_address,to_name,booking_id_1):
 
@@ -4042,21 +4085,23 @@ def send_cancel_email(to_address,to_name,booking_id_1):
 	msg.attach(part)
 
 
-	smtp_port = '25'
-	smtp_do_tls = True
-
-	server = smtplib.SMTP(
-	    host = smtp_server,
-	    port = smtp_port,
-	    timeout = 30
-	)
-
-	server.set_debuglevel(10)
-	server.starttls()
-	server.ehlo()
-	server.login(smtp_username, smtp_password)
-	server.sendmail(me, you, msg.as_string())
-	server.quit()
+	# smtp_port = '25'
+	# smtp_do_tls = True
+    #
+	# server = smtplib.SMTP(
+	#     host = smtp_server,
+	#     port = smtp_port,
+	#     timeout = 30
+	# )
+    #
+	# server.set_debuglevel(10)
+	# server.starttls()
+	# server.ehlo()
+	# server.login(smtp_username, smtp_password)
+	# server.sendmail(me, you, msg.as_string())
+	# server.quit()
+	conn = boto.ses.connect_to_region('us-west-2',aws_access_key_id='AKIAJNAYBONVQTNTSLZQ',aws_secret_access_key='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')
+	result = conn.send_raw_email(msg.as_string())
 
 def send_feedback_report(to_address,to_name,booking_id,path_file,amount):
 	me = from_address
@@ -6526,21 +6571,24 @@ W-22, Second Floor, Green Park, New Delhi - 110016</div>
 	# msg.attach(part)
 
 
-	smtp_port = '25'
-	smtp_do_tls = True
+	# smtp_port = '25'
+	# smtp_do_tls = True
+    #
+	# server = smtplib.SMTP(
+	# 	host = smtp_server,
+	# 	port = smtp_port,
+	# 	timeout = 30
+	# )
+    #
+	# server.set_debuglevel(10)
+	# server.starttls()
+	# server.ehlo()
+	# server.login(smtp_username, smtp_password)
+	# server.sendmail(me, you, msg.as_string())
+	# server.quit()
+	conn = boto.ses.connect_to_region('us-west-2',aws_access_key_id='AKIAJNAYBONVQTNTSLZQ',aws_secret_access_key='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')
+	result = conn.send_raw_email(msg.as_string())
 
-	server = smtplib.SMTP(
-		host = smtp_server,
-		port = smtp_port,
-		timeout = 30
-	)
-
-	server.set_debuglevel(10)
-	server.starttls()
-	server.ehlo()
-	server.login(smtp_username, smtp_password)
-	server.sendmail(me, you, msg.as_string())
-	server.quit()
 
 
 def send_booking_final(username,useremail,userphone,time_start,date,booking_id,html_script):
@@ -6594,21 +6642,23 @@ def send_booking_details(to_address,booking_id,html_script):
 	#msg.attach(part)
 
 
-	smtp_port = '25'
-	smtp_do_tls = True
-
-	server = smtplib.SMTP(
-	    host = smtp_server,
-	    port = smtp_port,
-	    timeout = 30
-	)
-	
-	server.set_debuglevel(10)
-	server.starttls()
-	server.ehlo()
-	server.login(smtp_username, smtp_password)
-	server.sendmail(me, you, msg.as_string())
-	server.quit()
+	# smtp_port = '25'
+	# smtp_do_tls = True
+    #
+	# server = smtplib.SMTP(
+	#     host = smtp_server,
+	#     port = smtp_port,
+	#     timeout = 30
+	# )
+	#
+	# server.set_debuglevel(10)
+	# server.starttls()
+	# server.ehlo()
+	# server.login(smtp_username, smtp_password)
+	# server.sendmail(me, you, msg.as_string())
+	# server.quit()
+	conn = boto.ses.connect_to_region('us-west-2',aws_access_key_id='AKIAJNAYBONVQTNTSLZQ',aws_secret_access_key='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')
+	result = conn.send_raw_email(msg.as_string())
 
 
 def send_contact_mail(name,phone,content):
@@ -6635,21 +6685,24 @@ def send_contact_mail(name,phone,content):
 	#msg.attach(part)
 
 
-	smtp_port = '25'
-	smtp_do_tls = True
+	# smtp_port = '25'
+	# smtp_do_tls = True
+    #
+	# server = smtplib.SMTP(
+	#     host = smtp_server,
+	#     port = smtp_port,
+	#     timeout = 30
+	# )
+    #
+	# server.set_debuglevel(10)
+	# server.starttls()
+	# server.ehlo()
+	# server.login(smtp_username, smtp_password)
+	# server.sendmail(me, you, msg.as_string())
+	# server.quit()
+	conn = boto.ses.connect_to_region('us-west-2',aws_access_key_id='AKIAJNAYBONVQTNTSLZQ',aws_secret_access_key='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')
+	result = conn.send_raw_email(msg.as_string())
 
-	server = smtplib.SMTP(
-	    host = smtp_server,
-	    port = smtp_port,
-	    timeout = 30
-	)
-
-	server.set_debuglevel(10)
-	server.starttls()
-	server.ehlo()
-	server.login(smtp_username, smtp_password)
-	server.sendmail(me, you, msg.as_string())
-	server.quit()
 
 def send_signup_mail(name,phone,email_id):
 	me = "info@clickgarage.in"
@@ -6675,21 +6728,23 @@ def send_signup_mail(name,phone,email_id):
 	#msg.attach(part)
 
 
-	smtp_port = '25'
-	smtp_do_tls = True
-
-	server = smtplib.SMTP(
-	    host = smtp_server,
-	    port = smtp_port,
-	    timeout = 30
-	)
-
-	server.set_debuglevel(10)
-	server.starttls()
-	server.ehlo()
-	server.login(smtp_username, smtp_password)
-	server.sendmail(me, you, msg.as_string())
-	server.quit()
+	# smtp_port = '25'
+	# smtp_do_tls = True
+    #
+	# server = smtplib.SMTP(
+	#     host = smtp_server,
+	#     port = smtp_port,
+	#     timeout = 30
+	# )
+    #
+	# server.set_debuglevel(10)
+	# server.starttls()
+	# server.ehlo()
+	# server.login(smtp_username, smtp_password)
+	# server.sendmail(me, you, msg.as_string())
+	# server.quit()
+	conn = boto.ses.connect_to_region('us-west-2',aws_access_key_id='AKIAJNAYBONVQTNTSLZQ',aws_secret_access_key='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')
+	result = conn.send_raw_email(msg.as_string())
 
 
 def send_adwords_mail(name,phone,service,definition):
@@ -7787,3 +7842,5 @@ def send_mail_coupon(to_address,wash,bike,service):
 	server.login(smtp_username, smtp_password)
 	server.sendmail(me, you, msg.as_string())
 	server.quit()
+
+
