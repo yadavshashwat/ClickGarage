@@ -13,8 +13,8 @@ from email import Encoders
 helpline_number = "9555950000"
 key = "ab33f626-fba5-4bff-9a2b-68a7e9eed43c"
 sendername = "CLKGRG"
-staffmails = ["shashwat@clickgarage.in", "bhuvan@clickgarage.in","bookings@clickgarage.in","smriti.parmar@clickgarage.in", "rajiv@clickgarage.in","amit.kumar@clickgarage.in"]
-
+staffmails = ["shashwat@clickgarage.in", "bhuvan@clickgarage.in","bookings@clickgarage.in", "rajiv@clickgarage.in","amit.kumar@clickgarage.in"]
+booking_mail = ["bookings@clickgarage.in"]
 
 import smtplib
 
@@ -6592,23 +6592,32 @@ W-22, Second Floor, Green Park, New Delhi - 110016</div>
 
 
 def send_booking_final(username,useremail,userphone,time_start,date,booking_id,html_script):
-	send_booking_details(staffmails,booking_id,html_script)
+	send_booking_details(booking_mail,booking_id,html_script)
 	send_booking_email_pick(useremail,username,time_start,date,booking_id)
 	send_booking_sms(username, userphone, date, time_start, booking_id)
 
+def send_booking_final_guest(username,useremail,userphone,time_start,date,booking_id,html_script,sms):
+	send_booking_details(booking_mail,booking_id,html_script)
+	if sms == "Yes" :
+		send_booking_email_pick(useremail,username,time_start,date,booking_id)
+		send_booking_sms(username, userphone, date, time_start, booking_id)
+
+
+
+
 def send_booking_final_pick(username,useremail,userphone,time_start,date,booking_id,html_script):
-	send_booking_details(staffmails,booking_id,html_script)
+	send_booking_details(booking_mail,booking_id,html_script)
 	send_booking_email_pick(useremail,username,time_start,date,booking_id)
 	send_booking_sms(username, userphone, date, time_start, booking_id)
 
 def send_booking_final_doorstep(username,useremail,userphone,time_start,date,booking_id,html_script):
-	send_booking_details(staffmails,booking_id,html_script)
+	send_booking_details(booking_mail,booking_id,html_script)
 	send_booking_email_doorstep(useremail,username,time_start,date,booking_id)
 	send_booking_sms(username, userphone, date, time_start, booking_id)
 
 def send_cancel_final(username,useremail,booking_id):
 	send_cancel_email(useremail,username,booking_id)
-	send_booking_details(staffmails,booking_id,"Booking Cancelled")
+	send_booking_details(booking_mail,booking_id,"Booking Cancelled")
 
 def send_order_complete(username,userphone,useremail,booking_id):
 	# send_postdrop(username,userphone,booking_id)

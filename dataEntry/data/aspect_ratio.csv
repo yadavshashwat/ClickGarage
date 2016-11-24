@@ -359,8 +359,8 @@ Maruti Suzuki Ritz Petrol,NA,Car,Hatchback,NA
 Maruti Suzuki SCross Diesel,NA,Car,Hatchback,NA
 Maruti Suzuki SCross Petrol,NA,Car,Hatchback,NA
 Maruti Suzuki Swift Diesel,NA,Car,Hatchback,NA
-Maruti Suzuki Swift Dzire Diesel,NA,Car,Hatchback,NA
-Maruti Suzuki Swift Dzire Petrol,NA,Car,Hatchback,NA
+Maruti Suzuki Swift Dzire Diesel,NA,Car,Sedan,NA
+Maruti Suzuki Swift Dzire Petrol,NA,Car,Sedan,NA
 Maruti Suzuki Swift Petrol,NA,Car,Hatchback,NA
 Maruti Suzuki Wagonr Petrol,NA,Car,Hatchback,NA
 Maruti Suzuki Zen,NA,Car,Hatchback,NA
@@ -410,7 +410,6 @@ Mahindra Bolero Diesel,NA,Car,SUV,NA
 Mahindra Camper Diesel,NA,Car,SUV,NA
 Mahindra Commander Diesel,NA,Car,SUV,NA
 Mahindra Genio Diesel,NA,Car,SUV,NA
-Mahindra Marshal Commander,NA,Car,SUV,NA
 Mahindra Marshal Old Diesel,NA,Car,SUV,NA
 Mahindra Maxx,NA,Car,SUV,NA
 Mahindra Scorpio Diesel,NA,Car,SUV,NA

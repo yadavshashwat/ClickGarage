@@ -2139,6 +2139,7 @@ def place_order(request):
                     "layout_type": "1",
                     "tracking_link": 1,
                     "timezone": "-330",
+                    "team_id":"12376",
                     "custom_field_template": template,
                     "meta_data": servicing_meta_data,
                     "api_key": "a18332760b2847468d7b569f88ff0fce345c32a0580b095657c81890251fc0a0",
@@ -2876,7 +2877,7 @@ def fetch_user_cart(request):
     obj['message'] = 'Access Denied'
     obj['result'] = []
     
-    if request.user.email in ['y.shashwat@gmail.com', 'bhuvan.batra@gmail.com', 'sanskar@clickgarage.in', 'v.rajeev92@gmail.com', 'RajeevVempuluru']:
+    if request.user.email in ['y.shashwat@gmail.com','shashwat@clickgarage.in', 'bhuvan.batra@gmail.com', 'sanskar@clickgarage.in', 'v.rajeev92@gmail.com', 'RajeevVempuluru']:
         userObjs = CGUser.objects.all()
             #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
         for user1 in userObjs:
@@ -3050,10 +3051,15 @@ def add_guest_transaction(request):
         pick_obj       = get_param(request, 'pick', None)
         drop_obj       = get_param(request, 'drop', None)
         custom_request = get_param(request, 'custom_req', None)
+        sms_info = get_param(request, 'send_sms', None)
         order_list     = get_param(request, 'order_list', None)
         car_name       = get_param(request, 'car_name', None)
         android_flag   = get_param(request, 'android', None)
         coupon_data    = get_param(request, 'global_coupon', None)
+        print "*******"
+        print sms_info
+        print "*******"
+
         # print coupon_data
         # car_id = get_param(request, 'car_id', None)
 
@@ -3551,7 +3557,9 @@ def add_guest_transaction(request):
         )
         tt.save()
         html_script = ' '.join(str(x) for x in html_list)
-        mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
+        # mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
+        mviews.send_booking_final_guest(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script,sms_info)
+
         obj = {}
         obj['status'] = True
         obj['result'] = pick_obj
@@ -3600,6 +3608,7 @@ def add_guest_transaction(request):
                 "layout_type": "1",
                 "tracking_link": 1,
                 "timezone": "-330",
+                "team_id":"12376",
                 "custom_field_template": template,
                 "meta_data": servicing_meta_data,
                 "api_key": "a18332760b2847468d7b569f88ff0fce345c32a0580b095657c81890251fc0a0",

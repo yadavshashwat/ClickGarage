@@ -6,6 +6,8 @@ import re
 import json
 from django.db.models.base import ObjectDoesNotExist
 
+
+from activity.models import Transactions, CGUser
 from api.models import *
 
 # carMakers = ['Chevrolet', 'Datsun', 'Fiat', 'Ford', 'Honda', 'Hyundai', 'Mahindra', 'Maruti', 'Nissan', 'Skoda', 'Tata', 'Toyota', 'Volkswagen', 'Audi', 'Ssangyong', 'Maserati', 'Porsche', 'Mercedes-Benz', 'Rolls-Royce', 'Isuzu', 'Land', 'Mitsubishi', 'BMW', 'Lamborghini', 'Jaguar', 'Aston', 'Volvo', 'Ferrari', 'Mini', 'Bentley', 'Bugatti'];
@@ -469,6 +471,21 @@ def loadServiceDealerName(fileName):
              else:
                 cc = ServiceDealerName(name=name, make = make,  dealer_category= dealer_category, address = address, phone = phone,timing = timing)
                 cc.save()
+
+
+def deleteUserCart():
+    # obj = {}
+    # obj['status'] = False
+    # obj['message'] = 'Access Denied'
+    # obj['result'] = []
+
+    # if request.user.email in ['y.shashwat@gmail.com', 'shashwat@clickgarage.in', 'bhuvan.batra@gmail.com',
+    #                           'sanskar@clickgarage.in', 'v.rajeev92@gmail.com', 'RajeevVempuluru']:
+    userObjs = CGUser.objects.all()
+    for user1 in userObjs:
+            user1.uc_cart = ""
+            user1.save()
+
 
 def loadWindShielddata(fileName):
     with open(path+'/data/Windshield/'+fileName, 'rU') as csvfile:
