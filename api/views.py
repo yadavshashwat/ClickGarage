@@ -3052,6 +3052,7 @@ def add_guest_transaction(request):
         drop_obj       = get_param(request, 'drop', None)
         custom_request = get_param(request, 'custom_req', None)
         sms_info = get_param(request, 'send_sms', None)
+        tookan_info = get_param(request, 'send_tookan', None)
         order_list     = get_param(request, 'order_list', None)
         car_name       = get_param(request, 'car_name', None)
         android_flag   = get_param(request, 'android', None)
@@ -3574,7 +3575,7 @@ def add_guest_transaction(request):
 
 
 
-        if 1:
+        if tookan_info == "Yes":
             from dateutil import parser as dt_parser
             customer_address = ', '.join([pick_obj.get('street',''),pick_obj.get('landmark',''),pick_obj.get('city','')])
             start_time = pick_obj.get('date')+' '+pick_obj.get('time').split(' - ')[0]
