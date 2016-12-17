@@ -69,5 +69,9 @@ urlpatterns = patterns('',
     url(r'^sitemap/', 'website.views.sitemap', name='sitemap'),
     url(r'^contact/', 'website.views.contact', name='contact'),
 #    url(r'^service-schedule/', 'website.views.serviceSchedule', name='serviceSchedule'),
-    url(r'^service-schedule/(?P<carName>[a-zA-Z0-9\-]*)/','website.views.serviceSchedule',name='serviceSchedule'),                   
-)
+    url(r'^service-schedule/(?P<carName>[a-zA-Z0-9\-]*)/','website.views.serviceSchedule',name='serviceSchedule'),
+
+                       # website revamp
+    url(r'^index_revamp/', 'website.views.index_revamp', name='index_revamp'),
+
+                       )

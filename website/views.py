@@ -1362,3 +1362,13 @@ def start(request):
         {'csrf_token': csrf_token}, context_instance = RequestContext(request))
 
 import_uploader = AjaxFileUploader()
+
+
+# <----- revamp code ------>
+
+
+def index_revamp(request):
+    template = loader.get_template('revamp/index.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
