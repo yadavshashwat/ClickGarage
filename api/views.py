@@ -3989,18 +3989,180 @@ def service_selected(request):
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 # Drivers APIs
-def signUpDriver(request):
-    from api.drivers import signUpDriver
-    return signUpDriver(request)
+# def signUpDriver(request):
+#     from api.drivers import signUpDriver
+#     return signUpDriver(request)
+#
+# def updateBookingStatus(request):
+#     from api.drivers import updateBookingStatus
+#     return updateBookingStatus(request)
+#
+# def getDriverBookings(request):
+#     from api.drivers import getDriverBookings
+#     return getDriverBookings(request)
 
-def updateBookingStatus(request):
-    from api.drivers import updateBookingStatus
-    return updateBookingStatus(request)
 
-def getDriverBookings(request):
-    from api.drivers import getDriverBookings
-    return getDriverBookings(request)
+# <------------------------ Website Revamp ------------------------>
+
+google_map_api_key = "AIzaSyBFxHslgLn1N0XVrRnONqZTJWFyorZd5PQ"
+
+def get_type_make(request):
+    vehicle_type = get_param(request, 'vehicle_type', None)
+    # make_id = get_param(request,'make_id',None)
+    # model_id = get_param(request,'model_id',None)
+    obj = {}
+
+    obj['status'] = False
+    obj['result'] = []
+
+    # vehicle = None
+    # make = None
+    # car_bike = None
+    VehObjs = Vehicle.objects.filter(car_bike = vehicle_type).order_by('make')
+    for veh in VehObjs:
+        obj['result'].append({
+                            # 'id' :            veh.id
+                            'make':           veh.make
+                            # 'model' :         veh.model
+                            # 'year' :          veh.year
+                            # 'fuel_type' :     veh.fuel_type
+                            # 'full_veh_name':  veh.full_veh_name
+                            # 'aspect_ratio' :  veh.aspect_ratio
+                            # 'size' :          veh.size
+                            # 'car_bike' :      veh.car_bike
+                            # 'engine_oil' :    veh.engine_oil
+                            # 'active' :        veh.active
+                                  } )
+
+    obj['result'] = {v['make']:v for v in obj['result']}.values()
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
+
+
+def get_make_model(request):
+    vehicle_type = get_param(request, 'vehicle_type', None)
+    make_id = get_param(request,'make_id',None)
+    # model_id = get_param(request,'model_id',None)
+    obj = {}
+
+    obj['status'] = False
+    obj['result'] = []
+
+    # vehicle = None
+    # make = None
+    # car_bike = None
+    VehObjs = Vehicle.objects.filter(car_bike = vehicle_type, make = make_id).order_by('model')
+    for veh in VehObjs:
+        obj['result'].append({
+                            # 'id' :            veh.id
+                            'make':           veh.make,
+                            'model' :         veh.model
+                            # 'year' :          veh.year
+                            # 'fuel_type' :     veh.fuel_type
+                            # 'full_veh_name':  veh.full_veh_name
+                            # 'aspect_ratio' :  veh.aspect_ratio
+                            # 'size' :          veh.size
+                            # 'car_bike' :      veh.car_bike
+                            # 'engine_oil' :    veh.engine_oil
+                            # 'active' :        veh.active
+                                  } )
+
+    obj['result'] = {v['model']:v for v in obj['result']}.values()
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+def get_location(request):
+    location_id = get_param(request, 'location_id', None)
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    url = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input="+location_id+"India&types=geocode&language=en&key="+ google_map_api_key
+    req = requests.get(url)
+    obj['result'] = req.json()
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+def post_lead(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = {}
+
+    # phone = phone1
+    firstname = get_param(request, 'firstname', None)
+    lastname = get_param(request, 'lastname', None)
+    car_bike = get_param(request, 'car_bike', None)
+    make = get_param(request, 'make', None)
+    model = get_param(request, 'model', None)
+    fuel_type = get_param(request, 'fuel_type', None)
+    service_category = get_param(request, 'service_category', None)
+    additional = get_param(request, 'additional', None)
+    address = get_param(request, 'address', None)
+    locality = get_param(request, 'locality', None)
+    date_requested = get_param(request, 'date_requested', None)
+    time_requested = get_param(request, 'time_requested', None)
+    number = get_param(request, 'number', None)
+    email = get_param(request, 'email', None)
+    source = get_param(request, 'source', None)
+    time_stamp = get_param(request, 'time_stamp', None)
+
+    cc = Leads(firstname       = firstname       ,
+                lastname        = lastname        ,
+                car_bike        = car_bike        ,
+                make            = make            ,
+                model           = model           ,
+                fuel_type       = fuel_type       ,
+                service_category= service_category,
+                additional_request        = additional         ,
+                address         = address         ,
+                locality        = locality        ,
+                date_requested  = date_requested  ,
+                time_requested  = time_requested  ,
+                number          = number          ,
+                email           = email           ,
+                source          = source          ,
+                time_stamp      = time_stamp      )
+    cc.save()
+
+    mviews.send_lead(firstname,lastname,car_bike, number,email, make, model, fuel_type, additional, service_category,locality,address,date_requested,time_requested)
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def post_message(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = {}
+
+    # phone = phone1
+    firstname = get_param(request, 'firstname', None)
+    lastname = get_param(request, 'lastname', None)
+    number = get_param(request, 'number', None)
+    email = get_param(request, 'email', None)
+    time_stamp = get_param(request, 'time_stamp', None)
+    message = get_param(request,'message',None)
+    cc = Messages(firstname = firstname,
+                lastname  = lastname,
+                number    = number,
+                message   = message,
+                email     = email,
+                time_stamp      = time_stamp)
+    cc.save()
+
+    mviews.send_message(firstname,lastname, number,email, message)
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
 
 

@@ -7853,3 +7853,36 @@ def send_mail_coupon(to_address,wash,bike,service):
 	server.quit()
 
 
+# <<<<------ Website revamp ------>>>>>
+def send_message(firstname,lastname,number,email,message):
+	me = "info@clickgarage.in"
+	you = staffmails
+	# Create message container - the correct MIME type is multipart/alternative.
+	msg = MIMEMultipart('alternative')
+	msg['Subject'] = "New Contact Mail"
+	msg['From'] = me
+	msg['To'] = ', '.join(you)
+
+	message = "Name: " + firstname + " " + lastname + " | Phone: " + number+ " | Email: " + email + " | Message : " + message
+	script = MIMEText(message, 'html')
+	msg.attach(script)
+
+	conn = boto.ses.connect_to_region('us-west-2',aws_access_key_id='AKIAJNAYBONVQTNTSLZQ',aws_secret_access_key='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')
+	result = conn.send_raw_email(msg.as_string())
+
+def send_lead(firstname,lastname, number,email, car_bike, make, model, fuel_type, additional, service_category,locality,address,date_requested,time_requested):
+	me = "info@clickgarage.in"
+	you = staffmails
+	# Create message container - the correct MIME type is multipart/alternative.
+	msg = MIMEMultipart('alternative')
+	msg['Subject'] = "New Lead"
+	msg['From'] = me
+	msg['To'] = ', '.join(you)
+
+	message = "Name: " + firstname + " " + lastname + " | Phone: " + number+ " | Email: " + email +" | Car/Bike : " + car_bike+ " | Vehicle : " + make + " " + model + " " + fuel_type + " | Additional :" + additional + " | Service Category : " + service_category + " | Locality : " + locality + " | Address : "+address+" | Date :" + date_requested +" | Time :" + time_requested
+	script = MIMEText(message, 'html')
+	msg.attach(script)
+
+	conn = boto.ses.connect_to_region('us-west-2',aws_access_key_id='AKIAJNAYBONVQTNTSLZQ',aws_secret_access_key='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')
+	result = conn.send_raw_email(msg.as_string())
+

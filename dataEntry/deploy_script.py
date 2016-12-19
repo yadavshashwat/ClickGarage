@@ -2,32 +2,32 @@ from dataEntry import runentry
 from api.models import *
 
 
-#Car loading
-# Car.objects.all().delete()
-runentry.loadCars('aspect_ratio.csv')
-runentry.loadCarTrieFile()
-
-
-
-#Loading Services New
-
-# ServiceDealerCatNew.objects.all().delete()
-runentry.loadServiceDealerCatNew('Servicing_Labour.txt')
-ServicingNew.objects.all().delete()
-runentry.exportServicesListNew()
-runentry.loadPriceFreqNew('Servicing_Parts.txt')
-
-
-
-#Loading cleaning and value added services
-
-# CleaningDealerName.objects.all().delete()
-# CleaningServiceCat.objects.all().delete()
-# CleaningCategoryServices.objects.all().delete()
-runentry.loadCleaning('Cleaning_VAS_all.txt')
-
-runentry.updateCars()
-# runentry.deleteUserCart()
+# #Car loading
+# # Car.objects.all().delete()
+# runentry.loadCars('aspect_ratio.csv')
+# runentry.loadCarTrieFile()
+#
+#
+#
+# #Loading Services New
+#
+# # ServiceDealerCatNew.objects.all().delete()
+# runentry.loadServiceDealerCatNew('Servicing_Labour.txt')
+# ServicingNew.objects.all().delete()
+# runentry.exportServicesListNew()
+# runentry.loadPriceFreqNew('Servicing_Parts.txt')
+#
+#
+#
+# #Loading cleaning and value added services
+#
+# # CleaningDealerName.objects.all().delete()
+# # CleaningServiceCat.objects.all().delete()
+# # CleaningCategoryServices.objects.all().delete()
+# runentry.loadCleaning('Cleaning_VAS_all.txt')
+#
+# runentry.updateCars()
+# # runentry.deleteUserCart()
 
 
 
@@ -58,3 +58,7 @@ runentry.updateCars()
 # runentry.loadTyreSale('TyreSales.txt')
 # Coupon.objects.all().delete()
 # runentry.loadCoupon('Coupon.txt')
+
+
+# ------------------------- Website Revamp---------------------------
+runentry.loadVehicles('vehicle_data.csv');

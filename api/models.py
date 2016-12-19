@@ -5,7 +5,7 @@ import datetime
 # Create your models here.
 
 
-#generic models
+# generic models
 class Address(models.Model):
     full_address = models.TextField()
     street_address = models.CharField(max_length=200)
@@ -370,3 +370,45 @@ class Otp(models.Model):
     updated      =   models.DateTimeField(default=None)
     username     = models.CharField(max_length=50)
 
+
+
+# --------------------------------------Website Revamp ------------------------
+
+class Vehicle(models.Model):
+    make 				= models.CharField(max_length=50)
+    model 				= models.CharField(max_length=50)
+    year 				= models.CharField(max_length=50)
+    fuel_type 			= models.CharField(max_length=50)
+    full_veh_name 		= models.CharField(max_length=200)
+    aspect_ratio 		= models.CharField(max_length=20)
+    size 				= models.CharField(max_length=50)
+    car_bike 			= models.CharField(max_length=50)
+    engine_oil			= models.CharField(max_length=50)
+    active				= models.CharField(max_length=50)
+
+
+class Leads(models.Model):
+    firstname           = models.CharField(max_length=50)
+    lastname            = models.CharField(max_length=50)
+    car_bike            = models.CharField(max_length=50)
+    make 				= models.CharField(max_length=50)
+    model 				= models.CharField(max_length=50)
+    fuel_type           = models.CharField(max_length=50)
+    service_category	= models.CharField(max_length=50)
+    additional_request	= models.CharField(max_length=50)
+    address      		= models.CharField(max_length=200)
+    locality			= models.CharField(max_length=200)
+    date_requested      = models.CharField(max_length=50)
+    time_requested  	= models.CharField(max_length=50)
+    number				= models.CharField(max_length=50)
+    email				= models.CharField(max_length=50)
+    source              = models.CharField(max_length=50)
+    time_stamp          = models.CharField(max_length=50)
+
+class Messages(models.Model):
+    firstname           = models.CharField(max_length=50)
+    lastname            = models.CharField(max_length=50)
+    number              = models.CharField(max_length=50)
+    message             = models.CharField(max_length=1000)
+    email               = models.CharField(max_length=50)
+    time_stamp = models.CharField(max_length=50)

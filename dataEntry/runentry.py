@@ -1111,3 +1111,51 @@ def loadCoupon(fileName):
 )
                 cc.save()
 
+
+
+# ---------------------------------- Website Revamp ------------------------------------------
+
+def loadVehicles(fileName):
+    with open(path+'/data/'+fileName, 'rU') as csvfile:
+         vehicleData = csv.reader(csvfile, delimiter=',', quotechar='|')
+         for vehicle in vehicleData:
+            make                = cleanstring(vehicle[0])
+            model               = cleanstring(vehicle[1])
+            year                = cleanstring(vehicle[2])
+            fuel_type           = cleanstring(vehicle[3])
+            full_veh_name       = cleanstring(vehicle[4])
+            aspect_ratio        = cleanstring(vehicle[5])
+            size                = cleanstring(vehicle[6])
+            car_bike            = cleanstring(vehicle[7])
+            engine_oil          = cleanstring(vehicle[8])
+            active              = cleanstring(vehicle[9])
+            findVehicle = Vehicle.objects.filter(make=make,
+                                                    model=model,
+                                                    year=year,
+                                                    fuel_type = fuel_type)
+            if len(findVehicle):
+                findVehicle = findVehicle[0]
+                findVehicle.make          = make
+                findVehicle.model         = model
+                findVehicle.year          = year
+                findVehicle.fuel_type     = fuel_type
+                findVehicle.full_veh_name = full_veh_name
+                findVehicle.aspect_ratio  = aspect_ratio
+                findVehicle.size          = size
+                findVehicle.car_bike      = car_bike
+                findVehicle.engine_oil    = engine_oil
+                findVehicle.active        = active
+                findVehicle.save()
+            else:
+                veh = Vehicle(
+                    make         = make         ,
+                    model        = model        ,
+                    year         = year         ,
+                    fuel_type    = fuel_type    ,
+                    full_veh_name= full_veh_name,
+                    aspect_ratio = aspect_ratio ,
+                    size         = size         ,
+                    car_bike     = car_bike     ,
+                    engine_oil   = engine_oil   ,
+                    active       = active        )
+                veh.save()
