@@ -1367,7 +1367,7 @@ import_uploader = AjaxFileUploader()
 # <----- revamp code ------>
 
 
-def index_revamp(request):
+def advert(request):
     template = loader.get_template('revamp/index.html')
     context = RequestContext(request, {
     })
