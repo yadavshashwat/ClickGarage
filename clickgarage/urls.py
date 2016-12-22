@@ -72,6 +72,7 @@ urlpatterns = patterns('',
     url(r'^service-schedule/(?P<carName>[a-zA-Z0-9\-]*)/','website.views.serviceSchedule',name='serviceSchedule'),
 
                        # website revamp
-    url(r'^advert/', 'website.views.advert', name='advert'),
+    url(r'^car/advert/', 'website.views.advert', name='advert'),
+    url(r'^advert/', 'website.views.index_new', name='advert'),
 
                        )
