@@ -4005,7 +4005,7 @@ def service_selected(request):
 # <------------------------ Website Revamp ------------------------>
 
 google_map_api_key = "AIzaSyBFxHslgLn1N0XVrRnONqZTJWFyorZd5PQ"
-
+import operator
 def get_type_make(request):
     vehicle_type = get_param(request, 'vehicle_type', None)
     # make_id = get_param(request,'make_id',None)
@@ -4032,9 +4032,11 @@ def get_type_make(request):
                             # 'car_bike' :      veh.car_bike
                             # 'engine_oil' :    veh.engine_oil
                             # 'active' :        veh.active
-                                  } )
+                                  })
 
     obj['result'] = {v['make']:v for v in obj['result']}.values()
+    obj['result'] = sorted(obj['result'], key=operator.itemgetter('make'))
+    # =y
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
@@ -4072,6 +4074,7 @@ def get_make_model(request):
                                   } )
 
     obj['result'] = {v['model']:v for v in obj['result']}.values()
+    obj['result'] = sorted(obj['result'], key=operator.itemgetter('make','model'))
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
@@ -4080,10 +4083,12 @@ def get_make_model(request):
 
 def get_location(request):
     location_id = get_param(request, 'location_id', None)
+    location_delhi="28.6466773,76.813073"
+    radius_m = "100000"
     obj = {}
     obj['status'] = False
     obj['result'] = []
-    url = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input="+location_id+"India&types=geocode&language=en&key="+ google_map_api_key
+    url = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input="+location_id+"&types=geocode&language=en&location="+ location_delhi +"&radius="+radius_m+"&key="+ google_map_api_key
     req = requests.get(url)
     obj['result'] = req.json()
     obj['status'] = True
