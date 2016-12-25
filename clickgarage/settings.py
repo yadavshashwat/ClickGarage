@@ -137,8 +137,8 @@ WSGI_APPLICATION = 'clickgarage.wsgi.application'
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 import socket
 DB_NAME = 'test_clickg'
-if not PRODUCTION:
-    DB_NAME = 'test_clickg_testing'
+# if not PRODUCTION:
+#     DB_NAME = 'test_clickg_testing'
 
 
 if socket.gethostname().startswith('ip-'):
@@ -162,8 +162,8 @@ if socket.gethostname().startswith('ip-'):
             'default': {
                 'ENGINE': 'django_mongodb_engine',
                 'NAME': DB_NAME,
-                # 'USER': 'Clickadmin',
-                # 'PASSWORD': 'DoctorWho?',
+                'USER': 'Clickadmin',
+                'PASSWORD': 'DoctorWho?',
                 'HOST': 'localhost',
                 'PORT': 27017,
                 'SUPPORTS_TRANSACTIONS': False,
