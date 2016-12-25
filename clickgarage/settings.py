@@ -142,20 +142,36 @@ if not PRODUCTION:
 
 
 if socket.gethostname().startswith('ip-'):
-    DATABASES = {
-        'default': {
-            'ENGINE' : 'django_mongodb_engine',
-            'NAME' : DB_NAME,
-            'USER': 'Clickadmin',
-            'PASSWORD': 'DoctorWho?',
-            'HOST': 'localhost',
-            'PORT': 27017,
-            'SUPPORTS_TRANSACTIONS': False,
+    if PRODUCTION:
+        DATABASES = {
+            'default': {
+                'ENGINE' : 'django_mongodb_engine',
+                'NAME' : DB_NAME,
+                'USER': 'Clickadmin',
+                'PASSWORD': 'DoctorWho?',
+                'HOST': 'localhost',
+                'PORT': 27017,
+                'SUPPORTS_TRANSACTIONS': False,
 
-    #        'ENGINE': 'django.db.backends.sqlite3',
-    #        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        #        'ENGINE': 'django.db.backends.sqlite3',
+        #        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            }
         }
-    }
+    else:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django_mongodb_engine',
+                'NAME': DB_NAME,
+                # 'USER': 'Clickadmin',
+                # 'PASSWORD': 'DoctorWho?',
+                'HOST': 'localhost',
+                'PORT': 27017,
+                'SUPPORTS_TRANSACTIONS': False,
+
+                #        'ENGINE': 'django.db.backends.sqlite3',
+                #        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            }
+        }
 else:
     DATABASES = {
         'default': {
