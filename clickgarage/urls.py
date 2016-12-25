@@ -73,6 +73,6 @@ urlpatterns = patterns('',
 
                        # website revamp
     url(r'^car/advert/', 'website.views.advert', name='advert'),
-    url(r'^advert/', 'website.views.index_new', name='advert'),
-
+    url(r'^index_new/', 'website.views.index_new', name='index_new'),
+    url(r'^get_quote/', 'website.views.get_quote', name='get_quote'),
                        )

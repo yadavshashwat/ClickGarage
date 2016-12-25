@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
+PRODUCTION = False
+if os.getcwd()=='/home/ubuntu/beta/suigen':
+    PRODUCTION = True
 
 #connect('my_database', host='127.0.0.1', port=27017)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -132,21 +135,42 @@ WSGI_APPLICATION = 'clickgarage.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
+import socket
+DB_NAME = 'test_clickg'
+if not PRODUCTION:
+    DB_NAME = 'test_clickg_testing'
 
-DATABASES = {
-    'default': {
-        'ENGINE' : 'django_mongodb_engine',
-        'NAME' : 'test_clickg',
-        'USER': 'Clickadmin',
-        'PASSWORD': 'DoctorWho?',
-        'HOST': 'localhost',
-        'PORT': 27017,
-        'SUPPORTS_TRANSACTIONS': False,
 
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if socket.gethostname().startswith('ip-'):
+    DATABASES = {
+        'default': {
+            'ENGINE' : 'django_mongodb_engine',
+            'NAME' : DB_NAME,
+            'USER': 'Clickadmin',
+            'PASSWORD': 'DoctorWho?',
+            'HOST': 'localhost',
+            'PORT': 27017,
+            'SUPPORTS_TRANSACTIONS': False,
+
+    #        'ENGINE': 'django.db.backends.sqlite3',
+    #        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django_mongodb_engine',
+            'NAME': DB_NAME,
+            # 'USER': 'Clickadmin',
+            # 'PASSWORD': 'DoctorWho?',
+            'HOST': 'localhost',
+            'PORT': 27017,
+            'SUPPORTS_TRANSACTIONS': False,
+
+            #        'ENGINE': 'django.db.backends.sqlite3',
+            #        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 AUTH_USER_MODEL = 'activity.CGUser'
 AUTHENTICATION_BACKENDS = (
