@@ -1,0 +1,20 @@
+ClickGarage Doorstep	Cleaning	Interior Doorstep Dry Cleaning	Interior	Hatchback			700	Dry cleaning interiors of car and polishing of plastic parts	1	0	Car	1
+ClickGarage Doorstep	Cleaning	Interior Doorstep Dry Cleaning	Interior	Sedan			800	Dry cleaning interiors of car and polishing of plastic parts	1	0	Car	1
+ClickGarage Doorstep	Cleaning	Interior Doorstep Dry Cleaning	Interior	SUV			1200	Dry cleaning interiors of car and polishing of plastic parts	1	0	Car	1
+ClickGarage Doorstep	Cleaning	Interior Doorstep Dry Cleaning	Interior	Premium Luxury			1500	Dry cleaning interiors of car and polishing of plastic parts	1	0	Car	1
+ClickGarage Doorstep	Cleaning	Exterior Doorstep Rubbing & Polishing	Exterior	Hatchback			600	Complete car pressure wash with polishing and rubbing	1	0	Car	1
+ClickGarage Doorstep	Cleaning	Exterior Doorstep Rubbing & Polishing	Exterior	Sedan			800	Complete car pressure wash with polishing and rubbing	1	0	Car	1
+ClickGarage Doorstep	Cleaning	Exterior Doorstep Rubbing & Polishing	Exterior	SUV			1000	Complete car pressure wash with polishing and rubbing	1	0	Car	1
+ClickGarage Doorstep	Cleaning	Exterior Doorstep Rubbing & Polishing	Exterior	Premium Luxury			1200	Complete car pressure wash with polishing and rubbing	1	0	Car	1
+ClickGarage Doorstep	Cleaning	Overall Doorstep Cleaning	Overall Package	Hatchback			1200	Complete car pressure wash with polishing and rubbing. Interior dry cleaning and polishing of plastic parts.	1	0	Car	1
+ClickGarage Doorstep	Cleaning	Overall Doorstep Cleaning	Overall Package	Sedan			1500	Complete car pressure wash with polishing and rubbing. Interior dry cleaning and polishing of plastic parts.	1	0	Car	1
+ClickGarage Doorstep	Cleaning	Overall Doorstep Cleaning	Overall Package	SUV			2000	Complete car pressure wash with polishing and rubbing. Interior dry cleaning and polishing of plastic parts.	1	0	Car	1
+ClickGarage Doorstep	Cleaning	Overall Doorstep Cleaning	Overall Package	Premium Luxury			2400	Complete car pressure wash with polishing and rubbing. Interior dry cleaning and polishing of plastic parts.	1	0	Car	1
+ClickGarage Doorstep	Cleaning	Doorstep Teflon Coating	Exterior	Hatchback			2000	Complete car pressure wash with polishing and rubbing and teflon coating	1	0	Car	1
+ClickGarage Doorstep	Cleaning	Doorstep Teflon Coating	Exterior	Sedan			2500	Complete car pressure wash with polishing and rubbing and teflon coating	1	0	Car	1
+ClickGarage Doorstep	Cleaning	Doorstep Teflon Coating	Exterior	SUV			3500	Complete car pressure wash with polishing and rubbing and teflon coating	1	0	Car	1
+ClickGarage Doorstep	Cleaning	Doorstep Teflon Coating	Exterior	Premium Luxury			3500	Complete car pressure wash with polishing and rubbing and teflon coating	1	0	Car	1
+ClickGarage Doorstep	Cleaning	Doorstep Teflon Coating & Dry Cleaning	Overall Package	Hatchback			2700	"Complete car pressure wash with polishing and rubbing, teflon coating and interior dry cleaning"	1	0	Car	1
+ClickGarage Doorstep	Cleaning	Doorstep Teflon Coating & Dry Cleaning	Overall Package	Sedan			3300	"Complete car pressure wash with polishing and rubbing, teflon coating and interior dry cleaning"	1	0	Car	1
+ClickGarage Doorstep	Cleaning	Doorstep Teflon Coating & Dry Cleaning	Overall Package	SUV			4700	"Complete car pressure wash with polishing and rubbing, teflon coating and interior dry cleaning"	1	0	Car	1
+ClickGarage Doorstep	Cleaning	Doorstep Teflon Coating & Dry Cleaning	Overall Package	Premium Luxury			5000	"Complete car pressure wash with polishing and rubbing, teflon coating and interior dry cleaning"	1	0	Car	1
