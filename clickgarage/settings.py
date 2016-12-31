@@ -187,8 +187,10 @@ else:
             #        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
+AUTH_USER_MODEL = 'activity.CGUserNew'
+if 1 or PRODUCTION:
+    AUTH_USER_MODEL = 'activity.CGUser'
 
-AUTH_USER_MODEL = 'activity.CGUser'
 AUTHENTICATION_BACKENDS = (
    'social.backends.facebook.FacebookOAuth2',
    'social.backends.google.GoogleOAuth2',
@@ -212,6 +214,7 @@ SOCIAL_AUTH_FACEBOOK_KEY = '1394399690887901'
 SOCIAL_AUTH_FACEBOOK_SECRET = '25f333e60b4b79990c9db69cc1a08276'
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '280103750695-c5eiv9cp9hp4qoj3kdaa2eiajpa25sfo.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'nk0hnQ8_2AZhq3hyZS3rCrds'
+
 
 SOCIAL_AUTH_USER_MODEL = 'activity.CGUser'
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
