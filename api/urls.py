@@ -119,6 +119,8 @@ urlpatterns = [
 
     url(r'get_make_model/$', 'api.views.get_make_model', name='get_make_model'),
     url(r'get_type_make/$', 'api.views.get_type_make', name='get_type_make'),
+    url(r'get_jobs_vehicle/$', 'api.views.get_jobs_vehicle', name='get_jobs_vehicle'),
+    url(r'add_job_cart/$', 'api.views.add_job_cart', name='add_job_cart'),
     url(r'get_location/$', 'api.views.get_location', name='get_location'),
     url(r'post_lead/$', 'api.views.post_lead', name='post_lead'),
     url(r'post_message/$', 'api.views.post_message', name='post_message'),

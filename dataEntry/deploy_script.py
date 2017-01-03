@@ -61,4 +61,7 @@ from api.models import *
 
 
 # ------------------------- Website Revamp---------------------------
+Vehicle.objects.all().delete()
+Services.objects.all().delete()
 runentry.loadVehicles('vehicle_data.csv');
+runentry.loadService('service_data_2.txt');

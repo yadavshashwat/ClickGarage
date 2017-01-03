@@ -386,6 +386,31 @@ class Vehicle(models.Model):
     engine_oil			= models.CharField(max_length=50)
     active				= models.CharField(max_length=50)
 
+class Services(models.Model):
+    make 				= models.CharField(max_length=50)
+    model 				= models.CharField(max_length=50)
+    year 				= models.CharField(max_length=50)
+    fuel_type 			= models.CharField(max_length=50)
+    full_veh_name 		= models.CharField(max_length=200)
+    car_bike 			= models.CharField(max_length=50)
+    city 				= models.CharField(max_length=50)
+    service_cat			= models.CharField(max_length=200)
+    service_desc        = models.CharField(max_length=500)
+    job_name 	        = models.CharField(max_length=200)
+    doorstep            = models.CharField(max_length=50)
+    job_summary         = ListField(models.CharField(max_length=200))
+    job_desc            = models.CharField(max_length=500)
+    job_features        = ListField(models.CharField(max_length=200))
+    job_symptoms        = ListField(models.CharField(max_length=200))
+    dealer  			= models.CharField(max_length=200)
+    default_components  = ListField(DictField())
+    optional_components = ListField(DictField())
+    total_price         = models.FloatField(max_length=50)
+    total_price_comp    = models.FloatField(max_length=50)
+    time                = models.FloatField(max_length=50)
+    priority            = models.CharField(max_length=50)
+    # dea = models.CharField(max_length=50)
+
 
 class Leads(models.Model):
     firstname           = models.CharField(max_length=50)
@@ -411,4 +436,4 @@ class Messages(models.Model):
     number              = models.CharField(max_length=50)
     message             = models.CharField(max_length=1000)
     email               = models.CharField(max_length=50)
-    time_stamp = models.CharField(max_length=50)
+    time_stamp          = models.CharField(max_length=50)

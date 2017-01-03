@@ -4080,6 +4080,121 @@ def get_make_model(request):
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+def get_jobs_vehicle(request):
+    make_id = get_param(request,'make_id',None)
+    model_id = get_param(request,'model_id',None)
+    fuel_id = get_param(request,'fuel_id',None)
+    service_type = get_param(request, 'service_type', None)
+
+    obj = {}
+
+    obj['status'] = False
+    obj['result'] = []
+
+    jobObjs = Services.objects.filter(make = make_id, model = model_id, fuel_type = fuel_id, service_cat = service_type).order_by('priority')
+    for job in jobObjs:
+        obj['result'].append({
+                            "id" :            job.id
+            ,"make"	: job.make
+            ,"model"    : job.model
+            ,"year"    : job.year
+            ,"fuel_type"    : job.fuel_type
+            , "full_veh_name"    : job.full_veh_name
+            , "car_bike"    : job.car_bike
+            , "city"    : job.city
+            , "service_cat"    : job.service_cat
+            , "service_desc"    : job.service_desc
+            , "job_name"    : job.job_name
+            , "doorstep"    : job.doorstep
+            , "job_summary"    : job.job_summary
+            , "job_desc"    : job.job_desc
+            , "job_features"    : job.job_features
+            , "job_symptoms"    : job.job_symptoms
+            , "job_dealer"    : job.dealer
+            , "default_comp"    : job.default_components
+            , "optional_comp"    : job.optional_components
+            , "total_price"    : job.total_price
+            , "total_price_comp"    : job.total_price_comp
+            , "time"    : job.time
+            , "priority"    : job.priority
+        })
+
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def add_job_cart(request):
+    # service_ids = get_param(request,'service_names',None)
+    cookieCartData = request.COOKIES.get('cgcart')
+    list_ids = cookieCartData.split(',')
+    cg_price = 0
+    comp_price = 0
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    obj['summary'] = []
+    jobObjs = Services.objects.filter(id__in=list_ids)
+    for job in jobObjs:
+        obj['result'].append({
+             "id" :            job.id
+            ,"make"	: job.make
+            ,"model"    : job.model
+            ,"year"    : job.year
+            ,"fuel_type"    : job.fuel_type
+            , "full_veh_name"    : job.full_veh_name
+            , "car_bike"    : job.car_bike
+            , "city"    : job.city
+            , "service_cat"    : job.service_cat
+            , "service_desc"    : job.service_desc
+            , "job_name"    : job.job_name
+            , "doorstep"    : job.doorstep
+            , "job_summary"    : job.job_summary
+            , "job_desc"    : job.job_desc
+            , "job_features"    : job.job_features
+            , "job_symptoms"    : job.job_symptoms
+            , "job_dealer"    : job.dealer
+            , "default_comp"    : job.default_components
+            , "optional_comp"    : job.optional_components
+            , "total_price"    : job.total_price
+            , "total_price_comp"    : job.total_price_comp
+            , "time"    : job.time
+            , "priority"    : job.priority
+        }
+        )
+        cg_price = float(job.total_price) + cg_price
+        comp_price = float(job.total_price_comp) + comp_price
+
+    obj['cart_summary'] = {
+        "cg_amount": cg_price
+        , "comp_amount": comp_price
+        ,"discount" : ((comp_price-cg_price)/comp_price)*100
+    }
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def get_location(request):
     location_id = get_param(request, 'location_id', None)
