@@ -363,14 +363,6 @@ class Coupon(models.Model):
 #
 #}
 
-class Otp(models.Model):
-    mobile = models.CharField(max_length=50)
-    otp = models.CharField(max_length=50)
-    created      =   models.DateTimeField(default=None)
-    updated      =   models.DateTimeField(default=None)
-    username     = models.CharField(max_length=50)
-
-
 
 # --------------------------------------Website Revamp ------------------------
 
@@ -409,26 +401,61 @@ class Services(models.Model):
     total_price_comp    = models.FloatField(max_length=50)
     time                = models.FloatField(max_length=50)
     priority            = models.CharField(max_length=50)
-    # dea = models.CharField(max_length=50)
 
 
 class Leads(models.Model):
-    firstname           = models.CharField(max_length=50)
-    lastname            = models.CharField(max_length=50)
-    car_bike            = models.CharField(max_length=50)
-    make 				= models.CharField(max_length=50)
-    model 				= models.CharField(max_length=50)
-    fuel_type           = models.CharField(max_length=50)
-    service_category	= models.CharField(max_length=50)
-    additional_request	= models.CharField(max_length=50)
-    address      		= models.CharField(max_length=200)
-    locality			= models.CharField(max_length=200)
-    date_requested      = models.CharField(max_length=50)
-    time_requested  	= models.CharField(max_length=50)
-    number				= models.CharField(max_length=50)
-    email				= models.CharField(max_length=50)
-    source              = models.CharField(max_length=50)
-    time_stamp          = models.CharField(max_length=50)
+    lead_id              = models.IntegerField()
+    lead_timestamp       = models.CharField(max_length=200)
+    cust_id              = models.CharField(max_length=200)
+    cust_name            = models.CharField(max_length=200)
+    cust_make            = models.CharField(max_length=200)
+    cust_model           = models.CharField(max_length=200)
+    cust_vehicle_type    = models.CharField(max_length=200)
+    cust_fuel_varient    = models.CharField(max_length=200)
+    cust_regnumber       = models.CharField(max_length=200)
+    cust_number          = models.CharField(max_length=200)
+    cust_email           = models.CharField(max_length=200)
+    cust_address         = models.CharField(max_length=200)
+    cust_locality        = models.CharField(max_length=200)
+    cust_city            = models.CharField(max_length=200)
+    service_items        = ListField(DictField())
+    price_total          = models.CharField(max_length=200)
+    date_booking         = models.CharField(max_length=200)
+    time_booking         = models.CharField(max_length=200)
+    follow_up_date       = models.CharField(max_length=200)
+    is_paid              = models.BooleanField()
+    amount_paid          = models.CharField(max_length=200)
+    status               = models.CharField(max_length=200)
+    coupon               = models.CharField(max_length=200)
+    comments             = models.CharField(max_length=300)
+
+class Bookings(models.Model):
+    lead_id            = models.IntegerField()
+    lead_timestamp    = models.CharField(max_length=200)
+    booking_id            = models.IntegerField()
+    trans_timestamp    = models.CharField(max_length=200)
+    cust_id            = models.CharField(max_length=200)
+    cust_name          = models.CharField(max_length=200)
+    cust_make         = models.CharField(max_length=200)
+    cust_model       = models.CharField(max_length=200)
+    cust_vehicle_type = models.CharField(max_length=200)
+    cust_fuel_varient = models.CharField(max_length=200)
+    cust_regnumber     = models.CharField(max_length=200)
+    cust_number        = models.CharField(max_length=200)
+    cust_email         = models.CharField(max_length=200)
+    cust_address    = models.CharField(max_length=200)
+    cust_locality = models.CharField(max_length=200)
+    cust_city = models.CharField(max_length=200)
+    service_items      = ListField(DictField())
+    price_total        = models.CharField(max_length=200)
+    date_booking       = models.CharField(max_length=200)
+    time_booking       = models.CharField(max_length=200)
+    is_paid            = models.BooleanField()
+    customer_comment   = models.CharField(max_length=500)
+    amount_paid        = models.CharField(max_length=200)
+    coupon               = models.CharField(max_length=200)
+    status             = models.CharField(max_length=200)
+    comments           = models.CharField(max_length=300)
 
 class Messages(models.Model):
     firstname           = models.CharField(max_length=50)
@@ -437,3 +464,12 @@ class Messages(models.Model):
     message             = models.CharField(max_length=1000)
     email               = models.CharField(max_length=50)
     time_stamp          = models.CharField(max_length=50)
+
+class Otp(models.Model):
+    mobile = models.CharField(max_length=50)
+    otp = models.CharField(max_length=50)
+    created      =   models.DateTimeField(default=None)
+    updated      =   models.DateTimeField(default=None)
+    username     = models.CharField(max_length=50)
+
+

@@ -122,6 +122,10 @@ urlpatterns = [
     url(r'get_jobs_vehicle/$', 'api.views.get_jobs_vehicle', name='get_jobs_vehicle'),
     url(r'add_job_cart/$', 'api.views.add_job_cart', name='add_job_cart'),
     url(r'get_location/$', 'api.views.get_location', name='get_location'),
-    url(r'post_lead/$', 'api.views.post_lead', name='post_lead'),
     url(r'post_message/$', 'api.views.post_message', name='post_message'),
+    url(r'send_otp_new/$', 'api.views.send_otp_new', name='send_otp_new'),
+    url(r'send_otp_booking/$', 'api.views.send_otp_booking', name='send_otp_booking'),
+    # url(r'fetch_all_user_new/$', 'api.views.fetch_all_user_new', name='fetch_all_user_new'),
+    # url(r'create_otp_newuser/$', 'api.views.create_otp_newuser', name='create_otp_newuser'),
+
 ]

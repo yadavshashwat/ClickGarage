@@ -25,7 +25,7 @@ from activity import views as ac_vi
 from mailing import views as mviews
 from api import tasks as tasks
 
-from activity.models import Transactions, CGUser
+from activity.models import Transactions, CGUser, CGUserNew
 # from lxml import html
 
 
@@ -3668,6 +3668,7 @@ def create_guest_user(name,email='',number=None):
             return users[0]
         else:
             # create_user(name,email)
+
             user_new = CGUser(username=number,email=email,contact_no=number)
             # users2 = CGUser.objects.filter(email=email)
             # user2 = users2[0]
@@ -3832,11 +3833,6 @@ def checkOTP(onetp, mobile, name):
     return {'msg': msg, 'status': check}
 
 def create_otp_user(request):
-    # obj = {}
-    # obj['status'] = False
-    # obj['result'] = {}
-
-    # phone = phone1
     name = get_param(request,'name',None)
     phn = get_param(request,'phone',None)
     onetp = get_param(request,'otp',None)
@@ -4133,10 +4129,12 @@ def add_job_cart(request):
     obj['result']['cart_details'] = []
     cg_price = 0
     comp_price = 0
+    jobs = 0
     if cookieCartData:
         list_ids = cookieCartData.split(',')
         jobObjs = Services.objects.filter(id__in=list_ids)
         for job in jobObjs:
+            jobs = jobs +1
             obj['result']['cart_details'].append({
                  "id" :            job.id
                 ,"make"	: job.make
@@ -4177,32 +4175,12 @@ def add_job_cart(request):
         , "comp_amount": comp_price
         ,"discount": discount
         ,"diff_amount": (comp_price-cg_price)
+        , "total_jobs": jobs
     }]
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 def get_location(request):
     location_id = get_param(request, 'location_id', None)
@@ -4272,7 +4250,6 @@ def post_message(request):
     obj['status'] = False
     obj['result'] = {}
 
-    # phone = phone1
     firstname = get_param(request, 'firstname', None)
     lastname = get_param(request, 'lastname', None)
     number = get_param(request, 'number', None)
@@ -4292,5 +4269,280 @@ def post_message(request):
     obj['counter'] = 1
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def send_otp_new(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = {}
+    phn = get_param(request,'phone',None)
+    otp = random.randint(100000, 999999)
+    otpdatetime = datetime.datetime.now()
+    message = "Your ClickGarage one time password is " + str(otp) + ". Please enter the same to complete your mobile verification."
+    message = message.replace(" ","+")
+    newFlag = False
+    username = None
+    findOtp     = Otp.objects.filter(mobile=phn)
+    if len(findOtp ):
+        findOtp = findOtp[0]
+        obj['result']['username'] = findOtp.username
+        findOtp.otp      = otp
+        findOtp.updated  = otpdatetime
+        findOtp.save()
+    else:
+        newFlag = True
+        cc = Otp(
+            mobile = phn,
+            otp = otp,
+            created = otpdatetime,
+            updated = otpdatetime)
+        cc.save()
+    mviews.send_otp(phn,message)
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    obj['result']['new_user'] = newFlag
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+
+def checkOTP_new(onetp, mobile, name):
+    check = False
+    msg = ''
+    curr_time = datetime.datetime.now()
+    curr_ts = calendar.timegm(curr_time.timetuple())
+    findOtp     = Otp.objects.filter(mobile=mobile)
+    if len(findOtp) and findOtp[0].otp:
+        findOtp = findOtp[0]
+        otp_ts = calendar.timegm(findOtp.updated.timetuple())
+        if (curr_ts - otp_ts) > 3600:
+            msg = 'Expired OTP'
+            # findOtp.otp = ''
+            findOtp.updated = curr_time
+            findOtp.save()
+        elif onetp == findOtp.otp:
+            msg = 'Success'
+            check = True
+            # findOtp.otp = ''
+            if name:
+                findOtp.username = name
+            findOtp.updated = curr_time
+            findOtp.save()
+        else:
+            msg = 'Wrong OTP'
+    else:
+        msg = 'No active OTP'
+
+    return {'msg': msg, 'status': check}
+
+def create_newuser(name,number):
+    if number:
+        users = CGUserNew.objects.filter(contact_no=number)
+        if len(users):
+            return users[0]
+        else:
+            user_new = CGUserNew(username=number,contact_no=number)
+            if name:
+                name = name.split(' ')
+                user_new.first_name = name[0]
+                if len(name) > 1:
+                    user_new.last_name = name[1]
+            user_new.save()
+            return user_new
+
+
+
+
+
+
+# def place_lead(request):
+#     if request.user.is_authenticated():
+#         name        = get_param(request, 'name', None)
+#         number      = get_param(request, 'number', None)
+#         email       = get_param(request, 'number', None)
+#         reg_number  = get_param(request, 'reg_no', None)
+#         address     = get_param(request, 'add', None)
+#         locality    = get_param(request, 'locality', None)
+#         city        = get_param(request, 'city', None)
+#         order_list  = get_param(request, 'order_list', None)
+#         make        = get_param(request, 'make', None)
+#         veh_type    = get_param(request, 'veh_type', None)
+#         model       = get_param(request, 'model', None)
+#         fuel        = get_param(request, 'fuel', None)
+#         date        = get_param(request, 'date', None)
+#         time        = get_param(request, 'time', None)
+#         comment     = get_param(request, 'comment', None)
+#         is_paid     = get_param(request, 'is_paid', None)
+#         paid_amt    = get_param(request, 'paid_amt', None)
+#         coupon      = get_param(request, 'coupon', None)
+#         price_total      = get_param(request, 'price_total', None)
+#         status = "Lead Generated"
+#         lead_id = 100000
+#         tran_len = len(Leads.objects.all())
+#         if tran_len > 0:
+#             tran = Transactions.objects.all().aggregate(Max('booking_id'))
+#             lead_id = int(tran['lead_id__max'] + 1)
+#
+#         tt = Leads(lead_id              = lead_id                ,
+#                             lead_timestamp       = time.time()          ,
+#                             cust_id              = request.user.id      ,
+#                             cust_name            = name            ,
+#                             cust_make            = make            ,
+#                             cust_model           = model           ,
+#                             cust_vehicle_type    = veh_type,
+#                             cust_fuel_varient    = fuel    ,
+#                             cust_regnumber       = reg_number       ,
+#                             cust_number          = number          ,
+#                             cust_email           = email           ,
+#                             cust_address         = address         ,
+#                             cust_locality        = locality        ,
+#                             cust_city            = city            ,
+#                             service_items        = order_list        ,
+#                             price_total          = price_total          ,
+#                             date_booking         = date                ,
+#                             follow_up_date       = date         ,
+#                             time_booking         = time         ,
+#                             is_paid              = is_paid            ,
+#                             coupon               =coupon,
+#                             amount_paid          =  paid_amt          ,
+#                             status               = status             ,
+#                             comments             = comment             )
+#         tt.save()
+
+def place_lead(user_id,name,number,email,reg_number,address,locality,city,order_list,make,veh_type,model,fuel,date,time,comment,is_paid,paid_amt,coupon,price_total ):
+        status = "Lead Generated"
+        lead_id = 100000
+        tran_len = len(Leads.objects.all())
+        if tran_len > 0:
+            tran = Leads.objects.all().aggregate(Max('lead_id'))
+            lead_id = int(tran['lead_id__max'] + 1)
+
+        tt = Leads(lead_id                       = lead_id                ,
+                            lead_timestamp       = time.time()          ,
+                            cust_id              = user_id     ,
+                            cust_name            = name            ,
+                            cust_make            = make            ,
+                            cust_model           = model           ,
+                            cust_vehicle_type    = veh_type,
+                            cust_fuel_varient    = fuel    ,
+                            cust_regnumber       = reg_number       ,
+                            cust_number          = number          ,
+                            cust_email           = email           ,
+                            cust_address         = address         ,
+                            cust_locality        = locality        ,
+                            cust_city            = city            ,
+                            service_items        = order_list        ,
+                            price_total          = price_total          ,
+                            date_booking         = date                ,
+                            follow_up_date       = date         ,
+                            time_booking         = time         ,
+                            is_paid              = is_paid            ,
+                            coupon               =coupon,
+                            amount_paid          =  paid_amt          ,
+                            status               = status             ,
+                            comments             = comment             )
+        tt.save()
+        return {'Status': "Order Placed"}
+
+def send_otp_booking(request):
+
+    obj = {}
+    obj['status'] = False
+    obj['result'] = {}
+
+    name = get_param(request, 'name', None)
+    number = get_param(request, 'number', None)
+    email = get_param(request, 'number', None)
+    reg_number = get_param(request, 'reg_no', None)
+    address = get_param(request, 'add', None)
+    locality = get_param(request, 'locality', None)
+    city = get_param(request, 'city', None)
+    order_list = get_param(request, 'order_list', None)
+    make = get_param(request, 'make', None)
+    veh_type = get_param(request, 'veh_type', None)
+    model = get_param(request, 'model', None)
+    fuel = get_param(request, 'fuel', None)
+    date = get_param(request, 'date', None)
+    time = get_param(request, 'time', None)
+    comment = get_param(request, 'comment', None)
+    is_paid = get_param(request, 'is_paid', None)
+    paid_amt = get_param(request, 'paid_amt', None)
+    coupon = get_param(request, 'coupon', None)
+    price_total = get_param(request, 'price_total', None)
+    onetp = get_param(request,'otp',None)
+    OTP_Status = checkOTP_new(onetp,number,name)
+    if OTP_Status['msg']=="Success":
+        create_newuser(name,number)
+        Booking = place_lead(user_id, name, number, email, reg_number, address, locality, city, order_list, make,
+               veh_type, model, fuel, date, time, comment, is_paid, paid_amt, coupon, price_total)
+        obj['result'] = {"OTP Status": OTP_Status['msg'],"Booking Status": "Order Placed"}
+        obj['status'] = True
+    else:
+        obj['result'] = {"OTP Status": OTP_Status['msg'], "Booking Status": "Order Failed"}
+        obj['status'] = True
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+# def create_otp_newuser(request):
+#     name = get_param(request,'name',None)
+#     phn = get_param(request,'phone',None)
+#     onetp = get_param(request,'otp',None)
+#     obj = checkOTP_new(onetp,phn,name)
+#     if obj['status']:
+#         user = create_newuser(name,phn)
+#         user.backend = 'django.contrib.auth.backends.ModelBackend'
+#         login(request, user)
+#         obj['result'] = {}
+#         obj['result']['userid'] = request.user.id
+#         if request.user.first_name and len(request.user.first_name):
+#             obj['result']['username'] = request.user.first_name
+#         else:
+#             obj['result']['username'] = request.user.username
+#         obj['result']['auth'] = True
+#     else:
+#         obj['status'] = True
+#         obj['result'] = {}
+#         obj['result']['auth'] = False
+#         obj['result']['msg'] = obj['msg']
+#     return HttpResponse(json.dumps(obj), content_type='application/json')
+
+# def fetch_all_user_new(request):
+#     # r_id = get_param(request, 'r_id', None)
+#     obj = {}
+#     obj['status'] = False
+#     obj['result'] = []
+#     tranObjs =[]
+#     tranObjs = CGUserNew.objects.all()
+#     for trans in tranObjs:
+#             obj['result'].append({
+#                        'id'   :trans.id
+#                       ,'email':trans.email
+#                       ,'phone':trans.contact_no,
+#                        'uname':trans.username,
+#                 'name':trans.first_name
+#                             # ,'name':trans.name
+#
+#             } )
+#             obj['status'] = True
+#             obj['counter'] = 1
+#             obj['msg'] = "Success"
+#     return HttpResponse(json.dumps(obj), content_type='application/json')
+#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

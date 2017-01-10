@@ -88,6 +88,7 @@ class CGUserFullCustom(AbstractBaseUser):
     USERNAME_FIELD = 'user_email'
     # REQUIRED_FIELDS = ['user_email']
 
+
 class Driver(models.Model):
     mobile  = models.CharField(max_length=50)
     name    = models.CharField(max_length=50)
@@ -101,3 +102,20 @@ class DriverStatus(models.Model):
     status   = models.CharField(max_length=50)
     lat      = models.DecimalField(null=True, max_digits=7, decimal_places=5)
     lon      = models.DecimalField(null=True, max_digits=7, decimal_places=5)
+
+
+# <<<<<--------- Website Revamp ------->>>>>>
+
+class CGUserNew(AbstractUser):
+    lastest_car_history = ListField(models.CharField(max_length=200))
+    uc_cart = DictField()
+    active = models.BooleanField(default=True)
+    contact_no = models.CharField(max_length=10, default=None, null=True)
+    user_type = models.CharField(max_length=20, default='User')
+    #takes values : User, Guest, Staff, Workshop
+    saved_address = ListField(DictField())
+    # car_ids = ListField(models.CharField(max_length=200))
+
+
+
+
