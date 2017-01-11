@@ -1380,9 +1380,9 @@ def index_new(request):
     })
     return HttpResponse(template.render(context))
 
-def get_quote(request):
+def get_quote(request,veh_type='',veh='',service=''):
     template = loader.get_template('revamp/order.html')
-    context = RequestContext(request, {
-    })
+    # display_name = veh.replace('_',' ')
+    context = RequestContext(request,locals())
     return HttpResponse(template.render(context))
 

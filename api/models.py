@@ -404,7 +404,7 @@ class Services(models.Model):
 
 
 class Leads(models.Model):
-    lead_id              = models.IntegerField()
+    lead_id              = models.IntegerField(null=True)
     lead_timestamp       = models.CharField(max_length=200)
     cust_id              = models.CharField(max_length=200)
     cust_name            = models.CharField(max_length=200)
@@ -412,7 +412,7 @@ class Leads(models.Model):
     cust_model           = models.CharField(max_length=200)
     cust_vehicle_type    = models.CharField(max_length=200)
     cust_fuel_varient    = models.CharField(max_length=200)
-    cust_regnumber       = models.CharField(max_length=200)
+    cust_regnumber       = models.CharField(max_length=200,null=True)
     cust_number          = models.CharField(max_length=200)
     cust_email           = models.CharField(max_length=200)
     cust_address         = models.CharField(max_length=200)
@@ -433,7 +433,7 @@ class Bookings(models.Model):
     lead_id            = models.IntegerField()
     lead_timestamp    = models.CharField(max_length=200)
     booking_id            = models.IntegerField()
-    trans_timestamp    = models.CharField(max_length=200)
+    booking_timestamp    = models.CharField(max_length=200)
     cust_id            = models.CharField(max_length=200)
     cust_name          = models.CharField(max_length=200)
     cust_make         = models.CharField(max_length=200)

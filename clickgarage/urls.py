@@ -72,7 +72,10 @@ urlpatterns = patterns('',
     url(r'^service-schedule/(?P<carName>[a-zA-Z0-9\-]*)/','website.views.serviceSchedule',name='serviceSchedule'),
 
                        # website revamp
-    url(r'^car/advert/', 'website.views.advert', name='advert'),
+    url(r'^/advert/Car/', 'website.views.advert', name='advert'),
     url(r'^index_new/', 'website.views.index_new', name='index_new'),
     url(r'^get_quote/', 'website.views.get_quote', name='get_quote'),
-                       )
+    url(r'^(?P<veh_type>[a-zA-Z0-9\-_ ]+)/(?P<veh>[a-zA-Z0-9\-_ ]+)/$', 'website.views.get_quote', name='get_quote'),
+    url(r'^(?P<veh_type>[a-zA-Z0-9\-_ ]+)/(?P<veh>[a-zA-Z0-9\-_ ]+)/(?P<service>[a-zA-Z0-9\-_ ]+)/$', 'website.views.get_quote', name='get_quote'),
+    url(r'^(?P<veh_type>[a-zA-Z0-9\-_ ]+)/(?P<veh>[a-zA-Z0-9\-_ ]+)/checkout/$', 'website.views.get_quote',name='get_quote'),
+)

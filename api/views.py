@@ -25,6 +25,7 @@ from activity import views as ac_vi
 from mailing import views as mviews
 from api import tasks as tasks
 
+
 from activity.models import Transactions, CGUser, CGUserNew
 # from lxml import html
 
@@ -3845,6 +3846,7 @@ def create_otp_user(request):
             user.backend = 'django.contrib.auth.backends.ModelBackend'
             login(request, user)
 
+
         obj['result'] = {}
         obj['result']['userid'] = request.user.id
         if request.user.first_name and len(request.user.first_name):
@@ -4221,23 +4223,23 @@ def post_lead(request):
     source = get_param(request, 'source', None)
     time_stamp = get_param(request, 'time_stamp', None)
 
-    cc = Leads(firstname       = firstname       ,
-                lastname        = lastname        ,
-                car_bike        = car_bike        ,
-                make            = make            ,
-                model           = model           ,
-                fuel_type       = fuel_type       ,
-                service_category= service_category,
-                additional_request        = additional         ,
-                address         = address         ,
-                locality        = locality        ,
-                date_requested  = date_requested  ,
-                time_requested  = time_requested  ,
-                number          = number          ,
-                email           = email           ,
-                source          = source          ,
-                time_stamp      = time_stamp      )
-    cc.save()
+    # cc = Leads(firstname       = firstname       ,
+    #             lastname        = lastname        ,
+    #             car_bike        = car_bike        ,
+    #             make            = make            ,
+    #             model           = model           ,
+    #             fuel_type       = fuel_type       ,
+    #             service_category= service_category,
+    #             additional_request        = additional         ,
+    #             address         = address         ,
+    #             locality        = locality        ,
+    #             date_requested  = date_requested  ,
+    #             time_requested  = time_requested  ,
+    #             number          = number          ,
+    #             email           = email           ,
+    #             source          = source          ,
+    #             time_stamp      = time_stamp      )
+    # cc.save()
 
     mviews.send_lead(firstname,lastname,car_bike, number,email, make, model, fuel_type, additional, service_category,locality,address,date_requested,time_requested)
     obj['status'] = True
@@ -4349,11 +4351,6 @@ def create_newuser(name,number):
             user_new.save()
             return user_new
 
-
-
-
-
-
 # def place_lead(request):
 #     if request.user.is_authenticated():
 #         name        = get_param(request, 'name', None)
@@ -4412,7 +4409,7 @@ def place_lead(user_id,name,number,email,reg_number,address,locality,city,order_
         status = "Lead Generated"
         lead_id = 100000
         tran_len = len(Leads.objects.all())
-        if tran_len > 0:
+        if tran_len:
             tran = Leads.objects.all().aggregate(Max('lead_id'))
             lead_id = int(tran['lead_id__max'] + 1)
 
@@ -4444,16 +4441,11 @@ def place_lead(user_id,name,number,email,reg_number,address,locality,city,order_
         return {'Status': "Order Placed"}
 
 def send_otp_booking(request):
-
-    obj = {}
-    obj['status'] = False
-    obj['result'] = {}
-
     name = get_param(request, 'name', None)
     number = get_param(request, 'number', None)
     email = get_param(request, 'number', None)
-    reg_number = get_param(request, 'reg_no', None)
-    address = get_param(request, 'add', None)
+    reg_number = get_param(request, 'reg_number', None)
+    address = get_param(request, 'address', None)
     locality = get_param(request, 'locality', None)
     city = get_param(request, 'city', None)
     order_list = get_param(request, 'order_list', None)
@@ -4469,63 +4461,66 @@ def send_otp_booking(request):
     coupon = get_param(request, 'coupon', None)
     price_total = get_param(request, 'price_total', None)
     onetp = get_param(request,'otp',None)
-    OTP_Status = checkOTP_new(onetp,number,name)
-    if OTP_Status['msg']=="Success":
-        create_newuser(name,number)
-        Booking = place_lead(user_id, name, number, email, reg_number, address, locality, city, order_list, make,
-               veh_type, model, fuel, date, time, comment, is_paid, paid_amt, coupon, price_total)
-        obj['result'] = {"OTP Status": OTP_Status['msg'],"Booking Status": "Order Placed"}
-        obj['status'] = True
+    booking = ''
+    obj = checkOTP_new(onetp, number, name)
+    if obj['status']:
+        user = create_newuser(name,number)
+        if not request.user or request.user.is_anonymous():
+            user.backend = 'django.contrib.auth.backends.ModelBackend'
+            login(request, user)
+            booking = place_lead(str(user.id), name, number, email, reg_number, address, locality, city, order_list, make,
+                                      veh_type, model, fuel, date, time, comment, is_paid, paid_amt, coupon, price_total)
+        obj['result'] = {}
+        obj['result']['userid'] = request.user.id
+        obj['result']['booking'] = True
+        if request.user.first_name and len(request.user.first_name):
+            obj['result']['username'] = request.user.first_name
+        else:
+            obj['result']['username'] = request.user.username
+        obj['result']['auth'] = True
     else:
-        obj['result'] = {"OTP Status": OTP_Status['msg'], "Booking Status": "Order Failed"}
         obj['status'] = True
+        obj['result'] = {}
+        obj['result']['auth'] = False
+        obj['result']['msg'] = obj['msg']
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
-
-# def create_otp_newuser(request):
-#     name = get_param(request,'name',None)
-#     phn = get_param(request,'phone',None)
-#     onetp = get_param(request,'otp',None)
-#     obj = checkOTP_new(onetp,phn,name)
-#     if obj['status']:
-#         user = create_newuser(name,phn)
-#         user.backend = 'django.contrib.auth.backends.ModelBackend'
-#         login(request, user)
-#         obj['result'] = {}
-#         obj['result']['userid'] = request.user.id
-#         if request.user.first_name and len(request.user.first_name):
-#             obj['result']['username'] = request.user.first_name
-#         else:
-#             obj['result']['username'] = request.user.username
-#         obj['result']['auth'] = True
-#     else:
-#         obj['status'] = True
-#         obj['result'] = {}
-#         obj['result']['auth'] = False
-#         obj['result']['msg'] = obj['msg']
-#     return HttpResponse(json.dumps(obj), content_type='application/json')
-
-# def fetch_all_user_new(request):
-#     # r_id = get_param(request, 'r_id', None)
-#     obj = {}
-#     obj['status'] = False
-#     obj['result'] = []
-#     tranObjs =[]
-#     tranObjs = CGUserNew.objects.all()
-#     for trans in tranObjs:
-#             obj['result'].append({
-#                        'id'   :trans.id
-#                       ,'email':trans.email
-#                       ,'phone':trans.contact_no,
-#                        'uname':trans.username,
-#                 'name':trans.first_name
-#                             # ,'name':trans.name
-#
-#             } )
-#             obj['status'] = True
-#             obj['counter'] = 1
-#             obj['msg'] = "Success"
-#     return HttpResponse(json.dumps(obj), content_type='application/json')
+def view_all_leads(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    tranObjs = Leads.objects.all()
+    for trans in tranObjs:
+            obj['result'].append({
+                'lead_id': trans.lead_id
+                , 'lead_timestamp   ': trans.lead_timestamp
+                , 'cust_id          ': trans.cust_id
+                , 'cust_name        ': trans.cust_name
+                , 'cust_make        ': trans.cust_make
+                , 'cust_model       ': trans.cust_model
+                , 'cust_vehicle_type': trans.cust_vehicle_type
+                , 'cust_fuel_varient': trans.cust_fuel_varient
+                , 'cust_regnumber   ': trans.cust_regnumber
+                , 'cust_number      ': trans.cust_number
+                , 'cust_email       ': trans.cust_email
+                , 'cust_address     ': trans.cust_address
+                , 'cust_locality    ': trans.cust_locality
+                , 'cust_city        ': trans.cust_city
+                , 'service_items    ': trans.service_items
+                , 'price_total      ': trans.price_total
+                , 'date_booking     ': trans.date_booking
+                , 'time_booking     ': trans.time_booking
+                , 'follow_up_date   ': trans.follow_up_date
+                , 'is_paid          ': trans.is_paid
+                , 'amount_paid      ': trans.amount_paid
+                , 'status           ': trans.status
+                , 'coupon           ': trans.coupon
+                , 'comments         ': trans.comments
+            } )
+            obj['status'] = True
+            obj['counter'] = 1
+            obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
 #
 
 

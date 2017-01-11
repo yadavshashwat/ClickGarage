@@ -125,7 +125,5 @@ urlpatterns = [
     url(r'post_message/$', 'api.views.post_message', name='post_message'),
     url(r'send_otp_new/$', 'api.views.send_otp_new', name='send_otp_new'),
     url(r'send_otp_booking/$', 'api.views.send_otp_booking', name='send_otp_booking'),
-    # url(r'fetch_all_user_new/$', 'api.views.fetch_all_user_new', name='fetch_all_user_new'),
-    # url(r'create_otp_newuser/$', 'api.views.create_otp_newuser', name='create_otp_newuser'),
-
+    url(r'view_all_leads/$', 'api.views.view_all_leads', name='view_all_leads'),
 ]
