@@ -59,7 +59,6 @@ from api.models import *
 # Coupon.objects.all().delete()
 # runentry.loadCoupon('Coupon.txt')
 
-
 # ------------------------- Website Revamp---------------------------
 Vehicle.objects.all().delete()
 Services.objects.all().delete()

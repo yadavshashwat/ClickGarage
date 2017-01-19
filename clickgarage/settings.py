@@ -26,6 +26,8 @@ WEBSITE_PATH = os.path.join(PROJECT_PATH, 'website')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
+# DATE_FORMAT = "dd-mm-YYYY"
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '(33s3+te*%e-h=*u%zh3b13gz7phh-talbz=+dut3_p03y_b-s'
 
@@ -190,7 +192,7 @@ else:
 
 AUTH_USER_MODEL = 'activity.CGUserNew'
 
-if 1 or PRODUCTION:
+if PRODUCTION:
     AUTH_USER_MODEL = 'activity.CGUser'
 
 AUTHENTICATION_BACKENDS = (

@@ -1373,7 +1373,6 @@ def advert(request):
     })
     return HttpResponse(template.render(context))
 
-
 def index_new(request):
     template = loader.get_template('revamp/index.html')
     context = RequestContext(request, {
@@ -1384,5 +1383,11 @@ def get_quote(request,veh_type='',veh='',service=''):
     template = loader.get_template('revamp/order.html')
     # display_name = veh.replace('_',' ')
     context = RequestContext(request,locals())
+    return HttpResponse(template.render(context))
+
+def newadmin(request):
+    template = loader.get_template('revamp/admin.html')
+    context = RequestContext(request, {
+    })
     return HttpResponse(template.render(context))
 

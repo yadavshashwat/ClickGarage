@@ -78,4 +78,5 @@ urlpatterns = patterns('',
     url(r'^(?P<veh_type>[a-zA-Z0-9\-_ ]+)/(?P<veh>[a-zA-Z0-9\-_ ]+)/$', 'website.views.get_quote', name='get_quote'),
     url(r'^(?P<veh_type>[a-zA-Z0-9\-_ ]+)/(?P<veh>[a-zA-Z0-9\-_ ]+)/(?P<service>[a-zA-Z0-9\-_ ]+)/$', 'website.views.get_quote', name='get_quote'),
     url(r'^(?P<veh_type>[a-zA-Z0-9\-_ ]+)/(?P<veh>[a-zA-Z0-9\-_ ]+)/checkout/$', 'website.views.get_quote',name='get_quote'),
-)
+    url(r'^newadmin/', 'website.views.newadmin', name='newadmin'),
+                    )

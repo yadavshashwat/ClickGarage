@@ -111,9 +111,15 @@ class CGUserNew(AbstractUser):
     uc_cart = DictField()
     active = models.BooleanField(default=True)
     contact_no = models.CharField(max_length=10, default=None, null=True)
-    user_type = models.CharField(max_length=20, default='User')
-    #takes values : User, Guest, Staff, Workshop
-    saved_address = ListField(DictField())
+    is_user = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=False)
+    is_agent = models.BooleanField(default=False)
+    is_b2b = models.BooleanField(default=False)
+    user_saved_address = ListField(DictField())
+    user_veh_list = ListField(DictField())
+    agent_details = DictField()
+    email_list = ListField(models.CharField(max_length=200))
+
     # car_ids = ListField(models.CharField(max_length=200))
 
 

@@ -1236,18 +1236,37 @@ def loadService(fileName):
                 if default == "default":
                     findService.default_components.append(obj)
                     price_string = findService.total_price
-                    price_float = float(price_string)
+                    price_float_t = float(price_string)
                     price_string_2 = findService.total_price_comp
                     price_float_2 = float(price_string_2)
-                    if type == "discount":
-                        price_float = price_float - float(price)
+
+                    price_string_p = findService.total_part
+                    price_float_p = float(price_string_p)
+                    price_string_l = findService.total_labour
+                    price_float_l = float(price_string_l)
+                    price_string_d = findService.total_discount
+                    price_float_d = float(price_string_d)
+
+                    if type == "Discount":
+                        price_float_t = price_float_t - float(price)
                         price_float_2 = price_float_2 - float(price_comp)
-                    else:
-                        price_float = price_float + float(price)
+                        price_float_d = price_float_d + float(price)
+                    elif type == "Part":
+                        price_float_t = price_float_t + float(price)
                         price_float_2 = price_float_2 + float(price_comp)
+                        price_float_p = price_float_p + float(price)
+                    elif type == "Labour":
+                        price_float_t = price_float_t + float(price)
+                        price_float_2 = price_float_2 + float(price_comp)
+                        price_float_l = price_float_l + float(price)
+
                 else:
                     findService.optional_components.append(obj)
-                findService.total_price        = price_float
+                findService.total_price        = price_float_t
+                findService.total_part        = price_float_p
+                findService.total_labour        = price_float_l
+                findService.total_discount        = price_float_d
+
                 findService.total_price_comp   = price_float_2
                 findService.priority         = priority
                 findService.save()
@@ -1263,17 +1282,36 @@ def loadService(fileName):
                 obj['price'] = price
                 obj['brand'] = brand
                 obj['price_comp'] = price_comp
+
+                price_float_t_3 = 0
+                price_float_p_3 = 0
+                price_float_l_3 = 0
+                price_float_d_3 = 0
+                price_float_4 = 0
+
                 if default == "default":
                     obj_default.append(obj)
-                    if type == "discount":
-                        price_float_3 = -1*float(price)
+                    if type == "Discount":
+                        price_float_t_3 = -1*float(price)
+                        price_float_d_3 = float(price)
                         price_float_4 = -1*float(price_comp)
-                    else:
-                        price_float_3 = float(price)
+                    elif type == "Part":
+                        price_float_t_3 = float(price)
+                        price_float_p_3 = float(price)
                         price_float_4 = float(price_comp)
+                    elif type == "Labour":
+                        price_float_t_3 = float(price)
+                        price_float_l_3 = float(price)
+                        price_float_4 = float(price_comp)
+                    else:
+                        price_float_t_3 = 0
+                        price_float_p_3 = 0
+                        price_float_l_3 = 0
+                        price_float_d_3 = 0
+
                 else :
                     obj_option.append(obj)
-                    price_float_3 = 0
+                    price_float_t_3 = 0
                     price_float_4 = 0
                 # price_string_3 = str(price_float_3)
                 # price_string_4 = str(price_float_4)
@@ -1296,7 +1334,10 @@ def loadService(fileName):
                     dealer  			= dealer,
                     default_components  = obj_default,
                     optional_components = obj_option,
-                    total_price         = price_float_3,
+                    total_price         = price_float_t_3,
+                    total_part =price_float_p_3,
+                    total_labour =price_float_l_3,
+                    total_discount = price_float_d_3,
                     total_price_comp    = price_float_4,
                     priority            = priority,
                     time = time

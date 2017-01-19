@@ -1,11 +1,15 @@
+production = 1
+
 from django.shortcuts import render
 from django.http import HttpResponseRedirect,HttpResponseForbidden,HttpResponse
 from django.shortcuts import render_to_response, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+
 from django.db import models
 import datetime, time, calendar
+# from datetime import datetime
 import urllib
 from urllib2 import Request, urlopen
 import random
@@ -18,7 +22,7 @@ import ast
 import re
 import requests
 from django.views.decorators.csrf import csrf_exempt
-
+# from bson import json_util
 from models import *
 from dataEntry.runentry import carMakers, cleanstring
 from activity import views as ac_vi
@@ -2744,35 +2748,6 @@ def fetch_all_booking(request):
             obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
-def fetch_all_users(request):
-    r_id = get_param(request, 'r_id', None)
-    obj = {}
-    obj['status'] = False
-    obj['result'] = []
-    tranObjs =[]
-    # cust_id = None
-    # if random_req_auth(request) or (request.user and request.user.is_authenticated()):
-    #     cust_id = request.user.id
-
-    # if cust_id:
-    if (r_id == tempSecretKey):
-        tranObjs = CGUser.objects.all()
-            #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
-    for trans in tranObjs:
-            obj['result'].append({
-                            'id'   :trans.id
-                           ,'email':trans.email
-                        ,'phone':trans.contact_no,
-                        'uname':trans.username,
-                'name':trans.first_name
-                            # ,'name':trans.name
-
-            } )
-            obj['status'] = True
-            obj['counter'] = 1
-            obj['msg'] = "Success"
-    return HttpResponse(json.dumps(obj), content_type='application/json')
-
 def cancel_booking_new(request):
     obj = {}
     obj['status'] = False
@@ -4004,6 +3979,7 @@ def service_selected(request):
 
 google_map_api_key = "AIzaSyBFxHslgLn1N0XVrRnONqZTJWFyorZd5PQ"
 import operator
+
 def get_type_make(request):
     vehicle_type = get_param(request, 'vehicle_type', None)
     # make_id = get_param(request,'make_id',None)
@@ -4039,9 +4015,6 @@ def get_type_make(request):
     obj['counter'] = 1
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
-
-
-
 
 def get_make_model(request):
     vehicle_type = get_param(request, 'vehicle_type', None)
@@ -4088,11 +4061,14 @@ def get_jobs_vehicle(request):
 
     obj['status'] = False
     obj['result'] = []
+    if service_type != None:
+        jobObjs = Services.objects.filter(make = make_id, model = model_id, fuel_type = fuel_id, service_cat = service_type).order_by('priority')
+    else:
+        jobObjs = Services.objects.filter(make=make_id, model=model_id, fuel_type=fuel_id).order_by('priority')
 
-    jobObjs = Services.objects.filter(make = make_id, model = model_id, fuel_type = fuel_id, service_cat = service_type).order_by('priority')
     for job in jobObjs:
         obj['result'].append({
-                            "id" :            job.id
+            "id" :            job.id
             ,"make"	: job.make
             ,"model"    : job.model
             ,"year"    : job.year
@@ -4112,6 +4088,10 @@ def get_jobs_vehicle(request):
             , "default_comp"    : job.default_components
             , "optional_comp"    : job.optional_components
             , "total_price"    : job.total_price
+            , "total_part": job.total_part
+            , "total_labour": job.total_labour
+            , "total_discount": job.total_discount
+
             , "total_price_comp"    : job.total_price_comp
             , "time"    : job.time
             , "priority"    : job.priority
@@ -4123,54 +4103,69 @@ def get_jobs_vehicle(request):
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 def add_job_cart(request):
-    # service_ids = get_param(request,'service_names',None)
+    service_ids = get_param(request,'service_names',None)
     cookieCartData = request.COOKIES.get('cgcart')
     obj = {}
     obj['status'] = False
     obj['result'] = {}
     obj['result']['cart_details'] = []
     cg_price = 0
+    cg_part  = 0
+    cg_labour = 0
+    cg_discount = 0
     comp_price = 0
     jobs = 0
-    if cookieCartData:
+    list_ids = []
+    if service_ids !=None:
+        list_ids = (json.loads(service_ids))
+    elif cookieCartData:
         list_ids = cookieCartData.split(',')
-        jobObjs = Services.objects.filter(id__in=list_ids)
-        for job in jobObjs:
-            jobs = jobs +1
-            obj['result']['cart_details'].append({
-                 "id" :            job.id
-                ,"make"	: job.make
-                ,"model"    : job.model
-                ,"year"    : job.year
-                ,"fuel_type"    : job.fuel_type
-                , "full_veh_name"    : job.full_veh_name
-                , "car_bike"    : job.car_bike
-                , "city"    : job.city
-                , "service_cat"    : job.service_cat
-                , "service_desc"    : job.service_desc
-                , "job_name"    : job.job_name
-                , "doorstep"    : job.doorstep
-                , "job_summary"    : job.job_summary
-                , "job_desc"    : job.job_desc
-                , "job_features"    : job.job_features
-                , "job_symptoms"    : job.job_symptoms
-                , "job_dealer"    : job.dealer
-                , "default_comp"    : job.default_components
-                , "optional_comp"    : job.optional_components
-                , "total_price"    : job.total_price
-                , "total_price_comp"    : job.total_price_comp
-                , "time"    : job.time
-                , "priority"    : job.priority
-            }
-            )
-            cg_price = float(job.total_price) + cg_price
-            comp_price = float(job.total_price_comp) + comp_price
+
+    jobObjs = Services.objects.filter(id__in=list_ids)
+    for job in jobObjs:
+        jobs = jobs +1
+        obj['result']['cart_details'].append({
+             "id" :   job.id
+            ,"make"	: job.make
+            ,"model"    : job.model
+            ,"year"    : job.year
+            ,"fuel_type"    : job.fuel_type
+            , "full_veh_name"    : job.full_veh_name
+            , "car_bike"    : job.car_bike
+            , "city"    : job.city
+            , "service_cat"    : job.service_cat
+            , "service_desc"    : job.service_desc
+            , "job_name"    : job.job_name
+            , "doorstep"    : job.doorstep
+            , "job_summary"    : job.job_summary
+            , "job_desc"    : job.job_desc
+            , "job_features"    : job.job_features
+            , "job_symptoms"    : job.job_symptoms
+            , "job_dealer"    : job.dealer
+            , "default_comp"    : job.default_components
+            , "optional_comp"    : job.optional_components
+            , "total_price"    : job.total_price
+            , "total_labour": job.total_labour
+            , "total_discount": job.total_discount
+            , "total_part": job.total_part
+            , "total_price_comp" : job.total_price_comp
+            , "time"    : job.time
+            , "priority"    : job.priority
+        }
+        )
+        cg_price = float(job.total_price) + cg_price
+        if job.total_part != None:
+            cg_part = float(job.total_part) + cg_part
+        if job.total_labour != None:
+            cg_labour = float(job.total_labour) + cg_labour
+        if job.total_discount != None:
+            cg_discount = float(job.total_discount) + cg_discount
+        comp_price = float(job.total_price_comp) + comp_price
 
     if comp_price == 0:
         discount = 0
     else:
-        discount = "NA"
-
+        discount = (comp_price-cg_price)/comp_price
 
     obj['result']['cart_summary'] = [{
         "cg_amount": cg_price
@@ -4178,6 +4173,9 @@ def add_job_cart(request):
         ,"discount": discount
         ,"diff_amount": (comp_price-cg_price)
         , "total_jobs": jobs
+        ,"total_labour_cg" :cg_labour
+        ,"total_discount_cg":cg_discount
+        , "total_part_cg": cg_part
     }]
     obj['status'] = True
     obj['counter'] = 1
@@ -4198,7 +4196,6 @@ def get_location(request):
     obj['counter'] = 1
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
-
 
 def post_lead(request):
     obj = {}
@@ -4298,16 +4295,15 @@ def send_otp_new(request):
             created = otpdatetime,
             updated = otpdatetime)
         cc.save()
-    mviews.send_otp(phn,message)
+
+    # mviews.send_otp(phn,message)
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
     obj['result']['new_user'] = newFlag
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
-
-
-def checkOTP_new(onetp, mobile, name):
+def checkOTP_new(onetp, mobile):
     check = False
     msg = ''
     curr_time = datetime.datetime.now()
@@ -4325,8 +4321,8 @@ def checkOTP_new(onetp, mobile, name):
             msg = 'Success'
             check = True
             # findOtp.otp = ''
-            if name:
-                findOtp.username = name
+            # if name:
+            #     findOtp.username = name
             findOtp.updated = curr_time
             findOtp.save()
         else:
@@ -4336,7 +4332,7 @@ def checkOTP_new(onetp, mobile, name):
 
     return {'msg': msg, 'status': check}
 
-def create_newuser(name,number):
+def create_check_user(name,number):
     if number:
         users = CGUserNew.objects.filter(contact_no=number)
         if len(users):
@@ -4405,74 +4401,182 @@ def create_newuser(name,number):
 #                             comments             = comment             )
 #         tt.save()
 
-def place_lead(user_id,name,number,email,reg_number,address,locality,city,order_list,make,veh_type,model,fuel,date,time,comment,is_paid,paid_amt,coupon,price_total ):
-        status = "Lead Generated"
-        lead_id = 100000
-        tran_len = len(Leads.objects.all())
-        if tran_len:
-            tran = Leads.objects.all().aggregate(Max('lead_id'))
-            lead_id = int(tran['lead_id__max'] + 1)
+# def place_lead(user_id,name,number,email,reg_number,address,locality,city,order_list,make,veh_type,model,fuel,date,time_str,comment,is_paid,paid_amt,coupon,price_total ):
+#         status = "Lead Generated"
+#         lead_id = 1
+#         tran_len = len(Leads.objects.all())
+#         if tran_len:
+#             tran = Leads.objects.all().aggregate(Max('lead_id'))
+#             lead_id = int(tran['lead_id__max'] + 1)
+#
+#         tt = Leads(lead_id                       = lead_id                ,
+#                             lead_timestamp       = time.time()          ,
+#                             cust_id              = user_id     ,
+#                             cust_name            = name            ,
+#                             cust_make            = make            ,
+#                             cust_model           = model           ,
+#                             cust_vehicle_type    = veh_type,
+#                             cust_fuel_varient    = fuel    ,
+#                             cust_regnumber       = reg_number       ,
+#                             cust_number          = number          ,
+#                             cust_email           = email           ,
+#                             cust_address         = address         ,
+#                             cust_locality        = locality        ,
+#                             cust_city            = city            ,
+#                             service_items        = order_list        ,
+#                             price_total          = price_total          ,
+#                             date_booking         = date                ,
+#                             follow_up_date       = date         ,
+#                             time_booking         = time_str         ,
+#                             is_paid              = is_paid            ,
+#                             coupon               =coupon,
+#                             amount_paid          =  paid_amt          ,
+#                             status               = status             ,
+#                             comments             = comment             )
+#         tt.save()
+#         return {'Status': "Order Placed",'lead_id':str(tt.id)}
 
-        tt = Leads(lead_id                       = lead_id                ,
-                            lead_timestamp       = time.time()          ,
-                            cust_id              = user_id     ,
-                            cust_name            = name            ,
-                            cust_make            = make            ,
-                            cust_model           = model           ,
-                            cust_vehicle_type    = veh_type,
-                            cust_fuel_varient    = fuel    ,
-                            cust_regnumber       = reg_number       ,
-                            cust_number          = number          ,
-                            cust_email           = email           ,
-                            cust_address         = address         ,
-                            cust_locality        = locality        ,
-                            cust_city            = city            ,
-                            service_items        = order_list        ,
-                            price_total          = price_total          ,
-                            date_booking         = date                ,
-                            follow_up_date       = date         ,
-                            time_booking         = time         ,
-                            is_paid              = is_paid            ,
-                            coupon               =coupon,
-                            amount_paid          =  paid_amt          ,
-                            status               = status             ,
-                            comments             = comment             )
-        tt.save()
-        return {'Status': "Order Placed"}
+# booking_flag = models.BooleanField()
+# booking_id = models.IntegerField()
+# booking_timestamp = models.CharField(max_length=200)
+# cust_id = models.CharField(max_length=200)
+# cust_name = models.CharField(max_length=200)
+# cust_make = models.CharField(max_length=200)
+# cust_model = models.CharField(max_length=200)
+# cust_vehicle_type = models.CharField(max_length=200)
+# cust_fuel_varient = models.CharField(max_length=200)
+# cust_regnumber = models.CharField(max_length=200, null=True)
+# cust_number = models.CharField(max_length=200)
+# cust_email = models.CharField(max_length=200)
+# cust_address = models.CharField(max_length=200)
+# cust_locality = models.CharField(max_length=200)
+# cust_city = models.CharField(max_length=200)
+# service_items = ListField(DictField())
+# price_total = models.CharField(max_length=200)
+# date_booking = models.CharField(max_length=200)
+# time_booking = models.CharField(max_length=200)
+# is_paid = models.BooleanField()
+# customer_comment = models.CharField(max_length=500)
+# amount_paid = models.CharField(max_length=200)
+# coupon = models.CharField(max_length=200, null=True)
+# status = models.CharField(max_length=200)
+# comments = models.CharField(max_length=300)
+# source = models.CharField(max_length=200)
+# done_by = models.CharField(max_length=200)
+
+# print newformat
+
+
+def place_booking(user_id, name, number, email, reg_number, address, locality, city, order_list, make, veh_type, model,
+               fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source, booking_flag):
+    if booking_flag:
+        status = "Confirmed"
+    else:
+        status = "Lead"
+    # update estimate history
+    new_estimate_timestamp = time.time()
+    estimate_by_id = user_id
+    estimate_by_number = number
+    estimate_by_name = name
+    estimate_history = [{"timestamp": new_estimate_timestamp, "change_by_userid": estimate_by_id,
+                                 "change_by_number": estimate_by_number, "change_by_name": estimate_by_name,
+                                 'work_estimate': order_list}]
+
+    # update user
+    user = CGUserNew.objects.filter(id=user_id)[0]
+    address2 = {'address':address, 'locality':locality, 'city':city}
+    if address2 not in user.user_saved_address:
+        user.user_saved_address.append(address2)
+    vehicle = {'type':veh_type,'make':make,'model':model,'fuel':fuel,"reg_num":reg_number}
+    if vehicle not in user.user_veh_list:
+        user.user_veh_list.append(vehicle)
+    if email not in user.email_list:
+        user.email_list.append(email)
+    user.save()
+
+    # update booking id
+
+    booking_id = 100000
+    tran_len = len(Bookings.objects.all())
+    if tran_len:
+        tran = Bookings.objects.all().aggregate(Max('booking_id'))
+        booking_id = int(tran['booking_id__max'] + 1)
+
+    tt= Bookings(booking_flag           = booking_flag  ,
+                    booking_id             =booking_id      ,
+                    booking_timestamp      =time.time()     ,
+                    cust_id                =user_id         ,
+                    cust_name              =name            ,
+                    cust_make              =make            ,
+                    cust_model             =model           ,
+                    cust_vehicle_type      =veh_type        ,
+                    cust_fuel_varient      =fuel            ,
+                    cust_regnumber         =reg_number      ,
+                    cust_number            =number           ,
+                    cust_email             =email            ,
+                    cust_address           =address          ,
+                    cust_locality          =locality         ,
+                    cust_city              =city             ,
+                    service_items          =order_list       ,
+                    price_total            =price_total      ,
+                    date_booking           =date              ,
+                    time_booking           =time_str          ,
+                    is_paid                =is_paid           ,
+                    amount_paid            =paid_amt          ,
+                    coupon                 =coupon            ,
+                    status                 =status            ,
+                    comments               =comment           ,
+                    source                 =source           ,
+                    agent                  =    "",
+                    # lead_follow_up_date = follow_up_date,
+                    estimate_history    =estimate_history)
+    tt.save()
+    return {'Status': "Order Placed", 'booking_id': str(tt.id)}
 
 def send_otp_booking(request):
     name = get_param(request, 'name', None)
     number = get_param(request, 'number', None)
-    email = get_param(request, 'number', None)
+    email = get_param(request, 'email', None)
     reg_number = get_param(request, 'reg_number', None)
     address = get_param(request, 'address', None)
     locality = get_param(request, 'locality', None)
     city = get_param(request, 'city', None)
     order_list = get_param(request, 'order_list', None)
+    if order_list:
+        order_list = json.loads(order_list)
+    else:
+        order_list = []
     make = get_param(request, 'make', None)
     veh_type = get_param(request, 'veh_type', None)
     model = get_param(request, 'model', None)
     fuel = get_param(request, 'fuel', None)
     date = get_param(request, 'date', None)
-    time = get_param(request, 'time', None)
+    time_str = get_param(request, 'time', None)
     comment = get_param(request, 'comment', None)
     is_paid = get_param(request, 'is_paid', None)
     paid_amt = get_param(request, 'paid_amt', None)
     coupon = get_param(request, 'coupon', None)
     price_total = get_param(request, 'price_total', None)
     onetp = get_param(request,'otp',None)
+    source = get_param(request,'source',None)
+    booking_flag = False
+    oldformat = date
+    datetimeobject = datetime.datetime.strptime(oldformat, '%d-%m-%Y')
+    newformat = datetimeobject.strftime('%Y-%m-%d')
+    date =newformat
+
     booking = ''
-    obj = checkOTP_new(onetp, number, name)
+    obj = checkOTP_new(onetp, number)
     if obj['status']:
-        user = create_newuser(name,number)
+        user = create_check_user(name,number)
         if not request.user or request.user.is_anonymous():
             user.backend = 'django.contrib.auth.backends.ModelBackend'
             login(request, user)
-            booking = place_lead(str(user.id), name, number, email, reg_number, address, locality, city, order_list, make,
-                                      veh_type, model, fuel, date, time, comment, is_paid, paid_amt, coupon, price_total)
+        booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city, order_list, make,
+                                  veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source,booking_flag)
         obj['result'] = {}
         obj['result']['userid'] = request.user.id
-        obj['result']['booking'] = True
+        obj['result']['booking'] = booking
         if request.user.first_name and len(request.user.first_name):
             obj['result']['username'] = request.user.first_name
         else:
@@ -4485,43 +4589,763 @@ def send_otp_booking(request):
         obj['result']['msg'] = obj['msg']
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
-def view_all_leads(request):
+
+def set_cookie(response, key, value, days_expire = 7):
+  if days_expire is None:
+    max_age = 365 * 24 * 60 * 60  #one year
+  else:
+    max_age = days_expire * 24 * 60 * 60
+  expires = datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(seconds=max_age), "%a, %d-%b-%Y %H:%M:%S GMT")
+  response.set_cookie(key, value, max_age=max_age, expires=expires)
+
+def verify_otp_password_cookie(request):
+    obj = {}
+    obj['status'] = False
+    number = get_param(request, 'number', None)
+    password = get_param(request,'pass',None)
+    onetp = get_param(request,'otp',None)
+    objtp = checkOTP_new(onetp, number)
+    message = ''
+    obj['status'] = False
+    obj['result'] = {}
+    cookieUserData = request.COOKIES.get('c_user_id')
+    if cookieUserData:
+        user = CGUserNew.objects.get(id=cookieUserData)
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        login(request, user)
+        obj['result']['userid'] = user.id
+        obj['result']['username'] = user.username
+        obj['result']['auth'] = True
+        message = "Success"
+    else:
+        try:
+            user = CGUserNew.objects.get(username=number)
+            user.backend = 'django.contrib.auth.backends.ModelBackend'
+            if user.check_password(password):
+                login(request, user)
+                obj['result']['userid'] = user.id
+                obj['result']['username'] = user.username
+                obj['result']['auth'] = True
+                message = "Success"
+            elif objtp['status']:
+                login(request, user)
+                obj['result']['userid'] = user.id
+                obj['result']['username'] = user.username
+                obj['result']['auth'] = True
+                message = "Success"
+            else:
+                obj['result']['auth'] = False
+                message = "Login Failed!"
+        except CGUserNew.DoesNotExist:
+            user = None
+            message = "User Doesn't exist"
+            obj['result']['auth'] = False
+    obj['result']['msg'] = message
+    obj['status'] = True
+    response = HttpResponse(json.dumps(obj), content_type='application/json')
+    # try:
+    # print (user.is_authenticated())
+    if obj['result']['auth']:
+        set_cookie(response,"c_user_id", user.id)
+        set_cookie(response, "c_user_first_name", user.first_name)
+        set_cookie(response, "c_user_last_name", user.last_name)
+    # finally:
+    return response
+
+def set_password_otp(request):
+    obj = {}
+    obj['status'] = False
+    number = get_param(request, 'number', None)
+    # name = get_param(request, 'name', None)
+    pass2 = get_param(request,'pass',None)
+    onetp = get_param(request,'otp',None)
+    objtp = checkOTP_new(onetp, number)
+    message = ''
+    obj['status'] = False
+    obj['result'] = {}
+    try:
+        user = CGUserNew.objects.get(username=number)
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        if objtp['status']:
+            obj['result']['userid'] = user.id
+            obj['result']['username'] = user.username
+            user.set_password(pass2)
+            user.save()
+            login(request, user)
+            obj['result']['auth'] = True
+            obj['result']['pass'] = pass2
+            message = "Success!"
+        else:
+            obj['result']['auth'] = False
+            message = objtp['msg']
+    except CGUserNew.DoesNotExist:
+        user = None
+        message = "User Doesn't exist"
+        obj['result']['auth'] = False
+    obj['result']['msg'] = message
+    obj['status'] = True
+    response = HttpResponse(json.dumps(obj), content_type='application/json')
+    # try:
+    if obj['result']['auth']:
+        set_cookie(response,"c_user_id", user.id)
+        set_cookie(response, "c_user_first_name", user.first_name)
+        set_cookie(response, "c_user_last_name", user.last_name)
+    return response
+
+def sign_up_otp(request):
+    obj = {}
+    obj['status'] = False
+    number = get_param(request, 'number', None)
+    name = get_param(request, 'name', None)
+    password = get_param(request,'pass',None)
+    onetp = get_param(request,'otp',None)
+    objtp = checkOTP_new(onetp, number)
+    message = ''
+    obj['status'] = False
+    obj['result'] = {}
+    # try:
+    if objtp['status']:
+        user = create_check_user(name, number)
+        user.set_password(password)
+        user.save()
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        login(request, user)
+        obj['result']['userid'] = user.id
+        obj['result']['username'] = user.username
+        obj['result']['auth'] = True
+        message = "Success!"
+    else:
+        obj['result']['auth'] = False
+        message = objtp['msg']
+    obj['result']['msg'] = message
+    obj['status'] = True
+    response = HttpResponse(json.dumps(obj), content_type='application/json')
+
+    if obj['result']['auth']:
+        set_cookie(response,"c_user_id", user.id)
+        set_cookie(response, "c_user_first_name", user.first_name)
+        set_cookie(response, "c_user_last_name", user.last_name)
+    return response
+
+def logout_view(request):
+    path = get_param(request, 'path', None)
+    logout(request)
+    return redirect(path)
+
+# Exotel calling start
+sid = "clickgarage1"
+token = "bca1fb4bbe89339878eb1e08aee88f30aed8a39f"
+callerid = "01139585428"
+# calltype='trans'
+calltype='promo'
+
+from pprint import pprint
+def connect_customer_to_agent_exo(agent_no, customer_no, timelimit=None, timeout=None):
+    return requests.post('https://twilix.exotel.in/v1/Accounts/{sid}/Calls/connect.json'.format(sid=sid),
+        auth=(sid, token),
+        data= {
+            'From': agent_no,
+            'To': customer_no,
+            'CallerId': callerid,
+            'TimeLimit': timelimit,
+            'TimeOut': timeout,
+            'CallType': calltype
+        })
+
+def call_customer(request):
     obj = {}
     obj['status'] = False
     obj['result'] = []
-    tranObjs = Leads.objects.all()
+    agent_no = request.user.contact_no
+    cust_no  = get_param(request, 'cust_no', None)
+    exocall = connect_customer_to_agent_exo(agent_no= agent_no,customer_no= cust_no)
+    print agent_no
+    print cust_no
+    print exocall.status_code
+    pprint(exocall.json())
+    # obj['result']['exotel'] = r.json()
+    # obj['result']['status'] = exocall.status_code
+    obj['status'] = True
+    response = HttpResponse(json.dumps(obj), content_type='application/json')
+    return response
+
+# if __name__ == '__main__':
+#     r = connect_customer_to_agent(
+#         sid, token,
+#         agent_no="<First-phone-number-to-call (Your agent's number)>",
+#         customer_no="<Second-phone-number-to-call (Your customer's number)>",
+#         callerid="<Your-Exotel-virtual-number>",
+#         timelimit="<time-in-seconds>",  # This is optional
+#         timeout="<time-in-seconds>",  # This is also optional
+#         calltype="trans"  # Can be "trans" for transactional and "promo" for promotional content
+#         )
+#     print r.status_code
+#     pprint(r.json())
+
+# Exotel calling end
+
+def view_all_bookings(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    booking_id = get_param(request, 'b_id', None)
+    lead_booking = get_param(request, 'lead_booking', None)
+
+    if booking_id == None:
+        tranObjs = Bookings.objects.all().order_by('-booking_id')
+    else:
+        tranObjs = Bookings.objects.filter(booking_id=booking_id)
+
+    if lead_booking =="Lead":
+        tranObjs = tranObjs.filter(booking_flag = False).order_by('-booking_id')
+    elif lead_booking =="Booking":
+        tranObjs = tranObjs.filter(booking_flag = True).order_by('-booking_id')
+    else:
+        tranObjs = tranObjs
+
+    for trans in tranObjs:
+            oldformat_b = str(trans.date_booking)
+            datetimeobject = datetime.datetime.strptime(oldformat_b, '%Y-%m-%d')
+            newformat_b = datetimeobject.strftime('%d-%m-%Y')
+
+            # oldformat_f = str(trans.lead_follow_up_date)
+            # if oldformat_f == "None":
+            #     oldformat_f = oldformat_b
+            # datetimeobject = datetime.datetime.strptime(oldformat_f, '%Y-%m-%d')
+            # newformat_f = datetimeobject.strftime('%d-%m-%Y')
+
+            obj['result'].append({
+                'booking_flag': trans.booking_flag,
+                'booking_id': trans.booking_id,
+                'booking_timestamp': trans.booking_timestamp,
+                'cust_id': trans.cust_id,
+                'cust_name': trans.cust_name,
+                'cust_make': trans.cust_make,
+                'cust_model': trans.cust_model,
+                'cust_vehicle_type': trans.cust_vehicle_type,
+                'cust_fuel_varient': trans.cust_fuel_varient,
+                'cust_regnumber': trans.cust_regnumber,
+                'cust_number': trans.cust_number,
+                'cust_email': trans.cust_email,
+                'cust_address': trans.cust_address,
+                'cust_locality': trans.cust_locality,
+                'cust_city': trans.cust_city,
+                'service_items': trans.service_items,
+                'part_total': trans.price_part,
+                'labour_total': trans.price_labour,
+                'discount_total': trans.price_discount,
+                'price_total': trans.price_total,
+                'date_booking': newformat_b,
+                # 'follow_up_date': newformat_f,
+                'time_booking': trans.time_booking,
+                'is_paid': trans.is_paid,
+                'amount_paid': trans.amount_paid,
+                'coupon': trans.coupon,
+                'status': trans.status,
+                'comments': trans.comments,
+                'source': trans.source,
+                'agent': trans.agent,
+                'estimate_history': trans.estimate_history,
+            })
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    obj['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent,
+                  'staff': request.user.is_staff}
+
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+def fetch_all_users(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    type = get_param(request, 'type', None)
+
+    if type ==None:
+        tranObjs = CGUserNew.objects.all()
+    else:
+        if type == "agent":
+            tranObjs = CGUserNew.objects.filter(is_agent=True)
+        elif type == "b2b":
+            tranObjs = CGUserNew.objects.filter(is_b2b=True)
+        elif type == "user":
+            tranObjs = CGUserNew.objects.filter(is_user=True)
+        elif type == "admin":
+            tranObjs = CGUserNew.objects.filter(is_admin=True)
+        elif type == "staff":
+            tranObjs = CGUserNew.objects.filter(is_admin=True)
+        else:
+            tranObjs = CGUserNew.objects.all()
     for trans in tranObjs:
             obj['result'].append({
-                'lead_id': trans.lead_id
-                , 'lead_timestamp   ': trans.lead_timestamp
-                , 'cust_id          ': trans.cust_id
-                , 'cust_name        ': trans.cust_name
-                , 'cust_make        ': trans.cust_make
-                , 'cust_model       ': trans.cust_model
-                , 'cust_vehicle_type': trans.cust_vehicle_type
-                , 'cust_fuel_varient': trans.cust_fuel_varient
-                , 'cust_regnumber   ': trans.cust_regnumber
-                , 'cust_number      ': trans.cust_number
-                , 'cust_email       ': trans.cust_email
-                , 'cust_address     ': trans.cust_address
-                , 'cust_locality    ': trans.cust_locality
-                , 'cust_city        ': trans.cust_city
-                , 'service_items    ': trans.service_items
-                , 'price_total      ': trans.price_total
-                , 'date_booking     ': trans.date_booking
-                , 'time_booking     ': trans.time_booking
-                , 'follow_up_date   ': trans.follow_up_date
-                , 'is_paid          ': trans.is_paid
-                , 'amount_paid      ': trans.amount_paid
-                , 'status           ': trans.status
-                , 'coupon           ': trans.coupon
-                , 'comments         ': trans.comments
-            } )
-            obj['status'] = True
-            obj['counter'] = 1
-            obj['msg'] = "Success"
+                        'id'   :trans.id
+                        ,'email':trans.email_list
+                        ,'phone':trans.contact_no
+                        ,'uname':trans.username
+                        ,'first_name':trans.first_name
+                        ,'last_name':trans.last_name
+                        ,'agent': trans.is_agent
+                        , 'user': trans.is_user
+                        , 'admin': trans.is_admin
+                        ,'staff': trans.is_staff
+                        ,'b2b': trans.is_b2b
+                        , 'user_address': trans.user_saved_address
+                        , 'user_vehicles': trans.user_veh_list
+
+            })
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
+    obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
-#
+
+def update_user(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    user_id = get_param(request, 'user_id', None)
+    agent = get_param(request, 'agent_st', None)
+    b2b = get_param(request, 'b2b_st', None)
+    admin = get_param(request, 'admin_st', None)
+    staff = get_param(request, 'staff_st', None)
+    user2 = CGUserNew.objects.filter(id=user_id)[0]
+    # print (request.user)
+    if production or request.user.is_admin:
+        if agent == "true":
+            user2.is_agent = True
+        else:
+            user2.is_agent = False
+        if b2b == "true":
+            user2.is_b2b = True
+        else:
+            user2.is_b2b = False
+        if admin == "true":
+            user2.is_admin = True
+        else:
+            user2.is_admin = False
+        if staff == "true":
+            user2.is_staff = True
+        else:
+            user2.is_staff = False
+        user2.save()
+    obj['status'] = True
+    obj['result'] = "Success"
+    obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def update_booking(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    booking_id = get_param(request, 'b_id', None)
+    agent_id = get_param(request,'agent_id',None)
+    email_n = get_param(request,'email',None)
+    reg_number_n = get_param(request,'reg_number',None)
+    comment_n = get_param(request,'comment',None)
+    estimate = get_param(request,'estimate',None)
+    time_n = get_param(request,'time',None)
+    date_n = get_param(request, 'date', None)
+    booking = Bookings.objects.filter(booking_id=booking_id)[0]
+
+    if agent_id != None and agent_id != "":
+        booking.agent = agent_id
+
+    if reg_number_n != None:
+        booking.cust_regnumber = reg_number_n
+
+    if comment_n != None:
+        booking.comments = comment_n
+
+    if time_n != None:
+        booking.time_booking = time_n
+
+    if date_n != None:
+        oldformat = date_n
+        datetimeobject = datetime.datetime.strptime(oldformat, '%d-%m-%Y')
+        newformat = datetimeobject.strftime('%Y-%m-%d')
+        date_n = newformat
+        booking.date_booking = date_n
+
+    if estimate != None:
+        old_estimate = booking.service_items
+        new_estimate_timestamp = time.time()
+        estimate_by_id = request.user.id
+        estimate_by_number = request.user.contact_no
+        estimate_by_name = request.user.first_name + " " + request.user.last_name
+        estimate = json.loads(estimate)
+        booking.service_items = estimate
+        total_price = 0
+        total_part = 0
+        total_labour = 0
+        total_discount = 0
+        # print estimate
+        for item in estimate:
+            # print item
+            if item['type']=="Part":
+                total_price = total_price + float(item['price'])
+                total_part = total_part + float(item['price'])
+            elif item['type']=="Labour":
+                total_price = total_price + float(item['price'])
+                total_labour = total_labour + float(item['price'])
+            elif item['type'] == "Discount":
+                total_price = total_price - float(item['price'])
+                total_discount = total_discount + float(item['price'])
+        booking.price_total = str(total_price)
+        booking.price_labour = str(total_labour)
+        booking.price_part = str(total_part)
+        booking.price_discount = str(total_discount)
+        # print total_price
+        # print total_labour
+        # print total_discount
+        # print total_part
+        a = booking.estimate_history.append({"timestamp": new_estimate_timestamp, "change_by_userid" : estimate_by_id, "change_by_number": estimate_by_number, "change_by_name":  estimate_by_name, 'estimate':old_estimate})
+        print a
+    if email_n != None:
+        booking.cust_email = email_n
+        user = CGUserNew.objects.filter(id=booking.cust_id)[0]
+        if email_n not in user.email_list:
+            user.email_list.append(email_n)
+        user.save()
+
+    booking.save()
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def add_modify_coupon(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    coupon_code     = get_param(request, 'c_id', None)
+    datetime_created    = time.time()
+    date_start      = get_param(request, 'd_start', None)
+    expiry_date     = get_param(request, 'd_end', None)
+    type            = get_param(request, 'type', None)
+    active          = get_param(request, 'active', None)
+    message         = get_param(request, 'message', None)
+    category        = get_param(request, 'cat_id', None)
+    value           = get_param(request, 'val', None)
+    car_bike        = get_param(request, 'veh_type', None)
+    cap             = get_param(request, 'cap', None)
+
+    oldformat_s = date_start
+    datetimeobject = datetime.datetime.strptime(oldformat_s, '%d-%m-%Y')
+    newformat_s = datetimeobject.strftime('%Y-%m-%d')
+    date_start = newformat_s
+
+    oldformat_e = expiry_date
+    datetimeobject = datetime.datetime.strptime(oldformat_e, '%d-%m-%Y')
+    newformat_e = datetimeobject.strftime('%Y-%m-%d')
+    expiry_date = newformat_e
+
+
+    if active == "true":
+        active_n = True
+    else:
+        active_n = False
+
+    findCoupon = CouponNew.objects.filter(coupon_code = coupon_code)
+    if len(findCoupon):
+        findCoupon = findCoupon[0]
+        findCoupon.date_start = date_start
+        findCoupon.expiry_date = expiry_date
+        findCoupon.type = type
+        findCoupon.active = active_n
+        findCoupon.message = message
+        findCoupon.category = category
+        findCoupon.value = value
+        findCoupon.car_bike = car_bike
+        findCoupon.cap = cap
+        findCoupon.save()
+    else:
+        coupon = CouponNew(
+                    datetime_created= datetime_created,
+                    coupon_code=coupon_code,
+                    date_start=date_start,
+                    expiry_date=expiry_date,
+                    type=type,
+                    active=True,
+                    message=message,
+                    category=category,
+                    value=value,
+                    car_bike=car_bike,
+                    cap=cap)
+        coupon.save()
+    obj['status'] = True
+    obj['result'] = "Success"
+    obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def view_all_coupons(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    coupon_id = get_param(request, 'c_id', None)
+
+    if coupon_id == None:
+        coupons = CouponNew.objects.all()
+    else:
+        coupons = CouponNew.objects.filter(id=coupon_id)
+
+    for coupon in coupons:
+            oldformat_s = str(coupon.date_start)
+            datetimeobject = datetime.datetime.strptime(oldformat_s,'%Y-%m-%d')
+            newformat_s = datetimeobject.strftime('%d-%m-%Y')
+
+            oldformat_e = str(coupon.expiry_date)
+            datetimeobject = datetime.datetime.strptime(oldformat_e, '%Y-%m-%d')
+            newformat_e = datetimeobject.strftime('%d-%m-%Y')
+
+            obj['result'].append({
+                'id'   :coupon.id
+                ,'datetime_created': coupon.datetime_created
+                ,'date_start': newformat_s
+                ,'expiry_date': newformat_e
+                ,'type': coupon.type
+                ,'active': coupon.active
+                ,'message': coupon.message
+                ,'coupon_code': coupon.coupon_code
+                ,'category': coupon.category
+                ,'value': coupon.value
+                ,'car_bike': coupon.car_bike
+                ,'cap': coupon.cap
+            })
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+def check_coupon(request):
+    check = False
+    msg = ''
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    coupon_id = get_param(request, 'c_id', None)
+    vehtype_id = get_param(request, 'veh_type', None)
+    coupons = CouponNew.objects.filter(coupon_code=coupon_id,car_bike=vehtype_id)
+    date_today = datetime.date.today()
+    if coupons:
+        coupon = coupons[0]
+        if (coupon.expiry_date >= date_today):
+            active = True
+        else:
+            active = False
+
+        if coupon.active and active:
+            obj['result'].append({
+                'id': coupon.id
+                , 'type': coupon.type
+                , 'active': coupon.active
+                , 'message': coupon.message
+                , 'coupon_code': coupon.coupon_code
+                , 'category': coupon.category
+                , 'value': coupon.value
+                , 'car_bike': coupon.car_bike
+                , 'cap': coupon.cap})
+            msg = coupon.message
+        else:
+            msg = "Coupon Expired!"
+
+    else:
+        msg = "Invalid Coupon!"
+
+    obj['status'] = True
+    obj['msg'] = msg
+    obj['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent,
+                          'staff': request.user.is_staff}
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def send_booking(request):
+    name = get_param(request, 'name', None)
+    number = get_param(request, 'number', None)
+    email = get_param(request, 'email', None)
+    reg_number = get_param(request, 'reg_number', None)
+    address = get_param(request, 'address', None)
+    locality = get_param(request, 'locality', None)
+    city = get_param(request, 'city', None)
+    order_list = get_param(request, 'order_list', None)
+    if order_list:
+        order_list = json.loads(order_list)
+    else:
+        order_list = []
+    make = get_param(request, 'make', None)
+    veh_type = get_param(request, 'veh_type', None)
+    model = get_param(request, 'model', None)
+    fuel = get_param(request, 'fuel', None)
+    date = get_param(request, 'date', None)
+    time_str = get_param(request, 'time', None)
+    comment = get_param(request, 'comment', None)
+    is_paid = get_param(request, 'is_paid', None)
+    paid_amt = get_param(request, 'paid_amt', None)
+    coupon = get_param(request, 'coupon', None)
+    price_total = get_param(request, 'price_total', None)
+    onetp = get_param(request,'otp',None)
+    source = get_param(request,'source',None)
+    booking_flag_user = get_param(request,'flag',None)
+    # follow_up_date = get_param(request,'follow',None)
+
+    # if follow_up_date == None:
+    #     follow_up_date = date
+
+    oldformat = date
+    datetimeobject = datetime.datetime.strptime(oldformat, '%d-%m-%Y')
+    newformat = datetimeobject.strftime('%Y-%m-%d')
+    date =newformat
+
+    # oldformat_f = follow_up_date
+    # datetimeobject = datetime.datetime.strptime(oldformat_f, '%d-%m-%Y')
+    # newformat_f = datetimeobject.strftime('%Y-%m-%d')
+    # follow_up_date = newformat_f
+
+
+
+    obj = checkOTP_new(onetp, number)
+    if request.user.is_authenticated():
+        if request.user.is_b2b:
+            booking_flag = True
+            name = request.user.first_name +' ' +request.user.last_name
+            number = request.user.contact_no
+            email = request.user.email
+            booking = place_booking(str(request.user.id), name, number, email, reg_number, address, locality, city, order_list,
+                                    make,
+                                    veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
+                                    price_total, source, booking_flag)
+        elif request.user.is_staff or request.user.is_admin or request.user.is_agent:
+            if booking_flag_user == "True":
+                booking_flag = True
+            else:
+                booking_flag = False
+            user = create_check_user(name, number)
+
+            if user.is_b2b:
+                name = user.first_name + ' ' + user.last_name
+                number = user.contact_no
+                email = user.email
+                booking_flag = True
+
+            booking = place_booking(str(request.user.id), name, number, email, reg_number, address, locality, city,
+                                    order_list,
+                                    make,
+                                    veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
+                                    price_total, source, booking_flag)
+        else:
+            booking_flag = False
+            if request.user.contact_no == number:
+                booking = place_booking(str(request.user.id), name, number, email, reg_number, address, locality, city,
+                                        order_list,
+                                        make,
+                                        veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
+                                        price_total, source, booking_flag)
+            elif obj['status']:
+                booking = place_booking(str(request.user.id), name, number, email, reg_number, address, locality, city,
+                                        order_list,
+                                        make,
+                                        veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
+                                        price_total, source, booking_flag)
+    elif obj['status']:
+        user = create_check_user(name,number)
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        login(request, user)
+        booking_flag = False
+        booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city, order_list, make,
+                                  veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source,booking_flag)
+        obj['result'] = {}
+        obj['result']['userid'] = user.id
+        obj['result']['booking'] = booking
+        obj['result']['auth'] = True
+        obj['result']['msg'] = obj['msg']
+    else:
+        obj['status'] = True
+        obj['result'] = {}
+        obj['result']['auth'] = False
+        obj['result']['msg'] = obj['msg']
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+
+
+# 1. Lead - Lead
+# 2. Booking - Confirmed
+# 3. Assign Vendor - Assigned
+# 4. Left - Agent Left
+# 5. Reached - Reached Workshop
+# 6. Estimate shared - Estimate Shared
+# 7. Job completed - Job completed
+# 8. Feedback - Feedback Taken
+# 9. Cancelled - Cancelled
+# 10. Escalation - Escalation
+
+def change_status(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    booking_id = get_param(request, 'b_id', None)
+    status_id = get_param(request,'status_id',None)
+    booking = Bookings.objects.filter(booking_id=booking_id)[0]
+    if status_id != None:
+        old_status = booking.status
+        # if (status_id == "Confirmed" and old_status == "Lead"):
+        #     booking.booking_flag = True
+        #     # send sms to customer
+        #     # send email to customer
+        # if(status_id == "Assigned" and old_status == "Confirmed"):
+        #     # send_sms to vendor
+        #     # send sms to customer about agent
+        # if(status_id == "Agent Left"  and old_status == "Assigned"):
+        #     # send_sms to customer about Agent being on its way
+        #
+        # if (status_id == "Reached Workshop" and old_status == "Agent Left"):
+        #     # send_sms to customer about vehicle reaching the workshop
+        #
+        # if (status_id == "Estimate Shared" and old_status == "Reached Workshop"):
+        #     # send email to customer about estimate breakup
+        #     # send_sms to customer about estimate and in case discrepency call clickgarage no. also tell him about payment methods possible
+        #
+        # if (status_id == "Job Completed" and old_status == "Escalation"):
+        #     # send email to customer about bill reciept and an apology note
+        #     # send_sms to customer about escalation handling and sorry
+        #
+        # if (status_id == "Job Completed" and old_status != "Escalation"):
+        #     # send email to customer about bill reciept and a thank you note
+        #     # send_sms to customer about job completion and feedback
+        #     # add a lead to the leads data base with follow_up_date as (bike - 60 days , car (bill_amount < 2000) - 30 days, car (bill_amount> 2000) 90 days
+        #
+        # if (status_id == "Feedback Taken" and old_status == "Job Completed"):
+        #     # send thankyou to the customer
+        #     # if positive send sharing links and referral links
+        #     # send_sms to customer about vehicle reaching the workshop
+        # if (status_id == "Cancelled"):
+        #     # send sms saying sorry to let you go
+        #     # send email to the customer about cancellation
+        # elif (status_id == "Escalation"):
+        #     # send sms to customer that sorry something happend we will take care of the same - Share number of agent diretly to sort his problems
+        #     # send a sorry note to the customer over email
+
+
+        booking.status = status_id
+    booking.save()
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+
+
+
+
+
+
+
+
+
 
 
 
