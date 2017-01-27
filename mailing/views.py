@@ -37,6 +37,11 @@ def send_sms(type,to,message):
 	url = "http://sms.hspsms.com/sendSMS?username=clickgarage&message="+ message + "&sendername=" + sendername+ "&smstype=" + type + "&numbers=" + to + "&apikey=" + key
 	r = urllib2.urlopen(url)
 
+def send_trans_sms(to, message):
+	url = "http://sms.hspsms.com/sendSMS?username=clickgarage&message=" + message + "&sendername=" + sendername + "&smstype=TRANS&numbers=" + to + "&apikey=" + key
+	r = urllib2.urlopen(url)
+
+
 def send_booking_sms(to_name, to, date, pick_time_start, booking_id):
 	message = "Hi "+ to_name +"! Your ClickGarage appointment has been confirmed. Appointment date: " +date + ", Time: "  + pick_time_start  + ". For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + booking_id + "."
 	message = message.replace(" ","+")
@@ -7890,21 +7895,28 @@ def send_lead(firstname,lastname, number,email, car_bike, make, model, fuel_type
 	conn = boto.ses.connect_to_region(region,aws_access_key_id=aws_access,aws_secret_access_key=aws_secret)
 	result = conn.send_raw_email(msg.as_string())
 
-def send_booking_confirm(email,name,time,date,booking_id,email_type):
+def send_booking_confirm(email,name,time,date,booking_id,number):
 	me = from_address
 	you = email
 
 	# Create message container - the correct MIME type is multipart/alternative.
 	msg = MIMEMultipart('alternative')
-	msg['Subject'] = "Booking Confirmation! Booking ID: " + booking_id
+	msg['Subject'] = "Booking Confirmation! Booking ID: " + str(booking_id)
 	msg['From'] = me
 	msg['To'] = you
-	if email_type == 1:
-		html = "Hi "+name+"Your booking with ClickGarage has been confirmed. Pick up time selected by you is "+time+" on "+date+"For further details please contact "+helpline_number+" and quote quour booking reference id :"+booking_id+"."
-	else:
-		html = "Hi " + name + "Your booking with ClickGarage has been confirmed. Pick up time selected by you is " + time + " on " + date +"For further details please contact " + helpline_number + " and quote quour booking reference id :" + booking_id + "."
+
+	html = "Hi "+name+"Your booking with ClickGarage has been confirmed. Pick up time selected by you is "+time+" on "+date+"For further details please contact "+helpline_number+" and quote your booking reference id :"+str(booking_id)+"."
 
 	script = MIMEText(html, 'html')
 	msg.attach(script)
 	conn = boto.ses.connect_to_region(region,aws_access_key_id=aws_access,aws_secret_access_key=aws_secret)
 	result = conn.send_raw_email(msg.as_string())
+
+	message = "Hi "+ name +"! Your ClickGarage appointment has been confirmed. Appointment date: " +date + ", Time: "  + time  + ". For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(booking_id) + "."
+	message = message.replace(" ","+")
+	send_trans_sms(number,message)
+
+def send_booking_to_agent(agent_name, agent_num, cust_num,date,time,booking_id,cust_name, comments, total, address,vehicle ):
+	message = "Hi " + agent_name + "! You have been assigned a ClickGarage booking. | Booking ID:"+str(booking_id)+" | Date:" + date + " | Time: " + time + "| Name:"+ cust_name + "("+cust_num+")| Vehicle:"+ vehicle +"| Requests: "+comments+" | Amount: "+total+" | Address: "+address
+	message = message.replace(" ", "+")
+	send_trans_sms(agent_num, message)

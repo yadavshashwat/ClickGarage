@@ -60,7 +60,13 @@ from api.models import *
 # runentry.loadCoupon('Coupon.txt')
 
 # ------------------------- Website Revamp---------------------------
+# runentry.loadService('service_data_2.txt')
+
 Vehicle.objects.all().delete()
 Services.objects.all().delete()
-runentry.loadVehicles('vehicle_data.csv');
-runentry.loadService('service_data_2.txt');
+ServiceLabour.objects.all().delete()
+ServicePart.objects.all().delete()
+runentry.loadVehicles('vehicle_list.csv')
+runentry.loadServiceLabour('Labour_Final.txt')
+runentry.loadServiceParts('Parts_Final.txt')
+runentry.CreateJobList()

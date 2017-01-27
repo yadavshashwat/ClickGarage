@@ -133,10 +133,21 @@ urlpatterns = [
     url(r'view_all_bookings/$', 'api.views.view_all_bookings', name='view_all_bookings'),
     url(r'update_user/$', 'api.views.update_user', name='update_user'),
     url(r'update_booking/$', 'api.views.update_booking', name='update_booking'),
+    url(r'update_estimate/$', 'api.views.update_estimate', name='update_estimate'),
+    url(r'update_agent/$', 'api.views.update_agent', name='update_agent'),
+    url(r'change_status/$', 'api.views.change_status', name='change_status'),
     url(r'call_customer/$', 'api.views.call_customer', name='call_customer'),
     url(r'add_modify_coupon/$', 'api.views.add_modify_coupon', name='add_modify_coupon'),
     url(r'view_all_coupons/$', 'api.views.view_all_coupons', name='view_all_coupons'),
     url(r'check_coupon/$', 'api.views.check_coupon', name='check_coupon'),
     url(r'send_booking/$', 'api.views.send_booking', name='send_booking'),
+
+
+
+    # Website Api Check
+    url(r'get_all_models/$', 'api.views.get_all_models', name='get_all_models'),
+    url(r'get_all_jobs/$', 'api.views.get_all_jobs', name='get_all_jobs'),
+    url(r'get_all_labour/$', 'api.views.get_all_labour', name='get_all_labour'),
+    url(r'get_all_part/$', 'api.views.get_all_part', name='get_all_part'),
 
 ]

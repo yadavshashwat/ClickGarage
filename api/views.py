@@ -44,8 +44,8 @@ repair_map = {
 }
 
 additionalFeatures = {
-       'car' : ['Clutch Overhaul', 'Interior Dry-cleaning', 'Brake Repair', 'Wheel Balancing', 'Wheel Alignment', 'AC Servicing', 'Injector Cleaning'],
-       'bike' : ['Front Brake Repair',  'Rear Brake repair', 'Wheel Balancing', 'Wheel Alignment']
+    'car' : ['Clutch Overhaul', 'Interior Dry-cleaning', 'Brake Repair', 'Wheel Balancing', 'Wheel Alignment', 'AC Servicing', 'Injector Cleaning'],
+    'bike' : ['Front Brake Repair',  'Rear Brake repair', 'Wheel Balancing', 'Wheel Alignment']
 }
 #login views
 
@@ -90,10 +90,10 @@ def sign_up_in(request):
     # mviews.send_signup_mail(name, "NA", post['email'])
     if not user_exists(post['email']):
         user = create_user(username=post['email'], email=post['email'], password=post['password'])
-    	return auth_and_login(request)
+        return auth_and_login(request)
     else:
-    	return redirect("/login/")
-    # mviews.send_signup_mail(name, "NA", post['email'])
+        return redirect("/login/")
+        # mviews.send_signup_mail(name, "NA", post['email'])
 
 @login_required(login_url='/login/')
 def secured(request):
@@ -262,19 +262,19 @@ def fetch_car_servicedetails(request):
                     for service in ServicedetailObjs:
                         obj['result'].append({
                             'id':service.id
-                              ,'name':service.name
-                              ,'brand':service.brand
-                              ,'car':service.carname
-                              ,'odometer':service.odometer
-                              ,'vendor':service.dealer_category
-                              ,'parts_list':service.part_replacement
-                              ,'parts_price':service.price_parts
-                              ,'labour_price':service.price_labour
-                              ,'wa_price':service.wheel_alignment
-                              ,'wb_price':service.wheel_balancing
-                              # ,'wa_wb_present':service.WA_WB_Inc
-                              ,'dealer_details':service.detail_dealers
-                              ,'car_bike':car_bike} )
+                            ,'name':service.name
+                            ,'brand':service.brand
+                            ,'car':service.carname
+                            ,'odometer':service.odometer
+                            ,'vendor':service.dealer_category
+                            ,'parts_list':service.part_replacement
+                            ,'parts_price':service.price_parts
+                            ,'labour_price':service.price_labour
+                            ,'wa_price':service.wheel_alignment
+                            ,'wb_price':service.wheel_balancing
+                            # ,'wa_wb_present':service.WA_WB_Inc
+                            ,'dealer_details':service.detail_dealers
+                            ,'car_bike':car_bike} )
 
 
         obj['status'] = True
@@ -300,13 +300,13 @@ def fetch_car_cleaning(request):
                 oneObj = {
                     'name':dealer['name'],
                     'list':[]
-                                     }
+                }
                 for service in CleanCatObjs:
                     oneObj['list'].append({
-                            'id':service.id
-                          ,'name':service.vendor
-                          ,'category':service.category
-                          ,'description':service.description
+                        'id':service.id
+                        ,'name':service.vendor
+                        ,'category':service.category
+                        ,'description':service.description
                     })
                 obj['result'].append(oneObj)
 
@@ -330,13 +330,13 @@ def fetch_car_vas(request):
             oneObj = {
                 'name':dealer['Name'],
                 'list':[]
-                                 }
+            }
             for service in VASCatObjs:
                 oneObj['list'].append({
-                        'id':service.id
-                          ,'name':service.vendor
-                          ,'category':service.category
-                          ,'description':service.description
+                    'id':service.id
+                    ,'name':service.vendor
+                    ,'category':service.category
+                    ,'description':service.description
                 })
             obj['result'].append(oneObj)
 
@@ -351,15 +351,15 @@ def fetch_all_services(request):
     allServices = ServicingNew.objects.order_by('type_service')
     for service in allServices:
         result.append({'id':service.id,
-                        'name' : service.name  
-                        ,'brand' : service.brand     
-                        ,'car_name' : service.carname                   
-                        ,'type_service' : service.type_service
-                        #,'time_reading' : service.year
-                        ,'checks_done' : service.regular_checks                    
-                        #,'paid_free' : service.paid_free
-                        ,'parts_replaced' : service.part_replacement       
-                        ,'dealer_category' : service.dealer} )
+                       'name' : service.name
+                          ,'brand' : service.brand
+                          ,'car_name' : service.carname
+                          ,'type_service' : service.type_service
+                       #,'time_reading' : service.year
+                          ,'checks_done' : service.regular_checks
+                       #,'paid_free' : service.paid_free
+                          ,'parts_replaced' : service.part_replacement
+                          ,'dealer_category' : service.dealer} )
 
 
     obj['result'] = result
@@ -377,25 +377,25 @@ def fetch_all_servicedealercat(request):
     for service in allDealerCat:
 
         result.append({ 'id':service.id
-                        ,'name':service.name                
-                        ,'brand_name':service.brand               
-                        ,'car_name':service.carname             
-                        ,'type_service':service.type_service
-#                        ,'year':service.year
+                          ,'name':service.name
+                          ,'brand_name':service.brand
+                          ,'car_name':service.carname
+                          ,'type_service':service.type_service
+                        #                        ,'year':service.year
 
-                        ,'dealer_category':service.dealer_category
-                        ,'part_dic':service.part_dic
-                        ,'parts_replaced':service.part_replacement    
-                        ,'parts_price':service.price_parts         
-                        ,'labour_price':service.price_labour        
-                        ,'wheel_alignment_price':service.wheel_alignment     
-                        ,'wheel_balancing_price':service.wheel_balancing     
+                          ,'dealer_category':service.dealer_category
+                          ,'part_dic':service.part_dic
+                          ,'parts_replaced':service.part_replacement
+                          ,'parts_price':service.price_parts
+                          ,'labour_price':service.price_labour
+                          ,'wheel_alignment_price':service.wheel_alignment
+                          ,'wheel_balancing_price':service.wheel_balancing
                         # ,'WA_WB?':service.WA_WB_Inc
-                        ,'dealer_details':service.detail_dealers
+                          ,'dealer_details':service.detail_dealers
                         #,'paid_free?':service.paid_free
-                        ,'regular_checks':service.regular_checks
-                        ,'discount':service.discount
-                        ,'priority':service.priority
+                          ,'regular_checks':service.regular_checks
+                          ,'discount':service.discount
+                          ,'priority':service.priority
 
                         } )
     obj['result'] = result
@@ -410,14 +410,14 @@ def fetch_all_servicedealername(request):
     allDealerCat = ServiceDealerName.objects.all()
     for service in allDealerCat:
 
-        result.append({'id':service.id, 'Name':service.name           
-                        ,'make':service.make           
-                        ,'dealer_category':service.dealer_category
-                        ,'address':service.address        
-                        ,'phone':service.phone          
-                        ,'timing':service.timing         
-                        ,'rating':service.rating         
-                        ,'reviews':service.reviews        } )
+        result.append({'id':service.id, 'Name':service.name
+                          ,'make':service.make
+                          ,'dealer_category':service.dealer_category
+                          ,'address':service.address
+                          ,'phone':service.phone
+                          ,'timing':service.timing
+                          ,'rating':service.rating
+                          ,'reviews':service.reviews        } )
     obj['result'] = result
     obj['counter'] = 1
     obj['status'] = True
@@ -431,9 +431,9 @@ def fetch_all_cleaningdealer(request, HTTPFlag = True):
     allDealerCat = CleaningDealerName.objects.all()
     for service in allDealerCat:
 
-        result.append({'id':service.id, 'name':service.vendor           
-                        ,'rating':service.rating           
-                        ,'description':service.description} )
+        result.append({'id':service.id, 'name':service.vendor
+                          ,'rating':service.rating
+                          ,'description':service.description} )
     obj['result'] = result
     obj['counter'] = 1
     obj['status'] = True
@@ -458,7 +458,7 @@ def fetch_dealer_cleancat(request):
     odo = None
     if vendor_id:
         cleanObj = CleaningDealerName.objects.filter(id=vendor_id)
-        
+
         if len(cleanObj):
             cleanObj = cleanObj[0]
             vendor = cleanObj.vendor
@@ -468,11 +468,11 @@ def fetch_dealer_cleancat(request):
                 for service in CleanCatObjs:
                     obj['result'].append({
                         'id':service.id
-                          ,'name':service.vendor  
-                          ,'category':service.category             
-                          ,'description':service.description               
-                              } )
-                      
+                        ,'name':service.vendor
+                        ,'category':service.category
+                        ,'description':service.description
+                    } )
+
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
@@ -492,7 +492,7 @@ def fetch_clean_catservice(request):
 
     if car_id:
         carObj = Car.objects.filter(id=car_id)
-       
+
         if len(carObj):
             carObj = carObj[0]
             size = carObj.size
@@ -500,7 +500,7 @@ def fetch_clean_catservice(request):
 
     if catg_id:
         cleanObj = CleaningServiceCat.objects.filter(id=catg_id)
-        
+
         if len(cleanObj):
             cleanObj = cleanObj[0]
             vendor = cleanObj.vendor
@@ -510,24 +510,24 @@ def fetch_clean_catservice(request):
     if vendor:
         if category:
             if size:
-             CleanCatObjs = CleaningCategoryServices.objects.filter(vendor = vendor, category = category,car_cat = size).order_by('priority')
-             for service in CleanCatObjs:
-                obj['result'].append({
+                CleanCatObjs = CleaningCategoryServices.objects.filter(vendor = vendor, category = category,car_cat = size).order_by('priority')
+                for service in CleanCatObjs:
+                    obj['result'].append({
                         'id':service.id
-                        ,'vendor':service.vendor          
-                        ,'category':service.category        
-                        ,'car_cat':service.car_cat         
-                        ,'service':service.service         
+                        ,'vendor':service.vendor
+                        ,'category':service.category
+                        ,'car_cat':service.car_cat
+                        ,'service':service.service
                         ,'price_labour':service.price_labour
-                        ,'price_parts':service.price_parts     
-                        ,'total_price':service.price_total     
+                        ,'price_parts':service.price_parts
+                        ,'total_price':service.price_total
                         ,'description':service.description
                         ,'discount':service.discount
-                        ,'rating':service.rating          
+                        ,'rating':service.rating
                         ,'reviews':service.reviews
                         ,'priority':service.priority
-                              } )
-                      
+                    } )
+
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
@@ -542,9 +542,9 @@ def fetch_all_cleaningcat(request):
     allDealerCat = CleaningServiceCat.objects.all()
     for service in allDealerCat:
 
-        result.append({'id':service.id, 'name':service.vendor           
-                        ,'category':service.category          
-                        ,'description':service.description} )
+        result.append({'id':service.id, 'name':service.vendor
+                          ,'category':service.category
+                          ,'description':service.description} )
     obj['result'] = result
     obj['counter'] = 1
     obj['status'] = True
@@ -558,18 +558,18 @@ def fetch_all_cleaningcatservices(request):
     for service in allDealerCat:
 
         result.append({'id':service.id
-            ,'name':service.vendor         
-            ,'category':service.category       
-            ,'car_cat':service.car_cat        
-            ,'service':service.service        
-            ,'price_labour':service.price_labour   
-            ,'price_parts':service.price_parts    
-            ,'price_total':service.price_total
-            ,'discount':service.discount
-            ,'service_description':service.description    
-            ,'rating':service.rating         
-            ,'reviews':service.reviews
-            ,'priority':service.priority       } )
+                          ,'name':service.vendor
+                          ,'category':service.category
+                          ,'car_cat':service.car_cat
+                          ,'service':service.service
+                          ,'price_labour':service.price_labour
+                          ,'price_parts':service.price_parts
+                          ,'price_total':service.price_total
+                          ,'discount':service.discount
+                          ,'service_description':service.description
+                          ,'rating':service.rating
+                          ,'reviews':service.reviews
+                          ,'priority':service.priority       } )
     obj['result'] = result
     obj['counter'] = 1
     obj['status'] = True
@@ -582,9 +582,9 @@ def fetch_all_vasdealer(request, HTTPFlag=True):
     allDealerCat = VASDealerName.objects.all()
     for service in allDealerCat:
 
-        result.append({'id':service.id, 'Name':service.vendor           
-                        ,'Rating':service.rating           
-                        ,'Description':service.description} )
+        result.append({'id':service.id, 'Name':service.vendor
+                          ,'Rating':service.rating
+                          ,'Description':service.description} )
     obj['result'] = result
     obj['counter'] = 1
     obj['status'] = True
@@ -605,7 +605,7 @@ def fetch_dealer_vascat(request):
     odo = None
     if vendor_id:
         vasObj = VASDealerName.objects.filter(id=vendor_id)
-        
+
         if len(vasObj):
             vasObj = vasObj[0]
             vendor = vasObj.vendor
@@ -615,11 +615,11 @@ def fetch_dealer_vascat(request):
                 for service in VASCatObjs:
                     obj['result'].append({
                         'id':service.id
-                          ,'name':service.vendor  
-                          ,'category':service.category             
-                          ,'description':service.description               
-                              } )
-                      
+                        ,'name':service.vendor
+                        ,'category':service.category
+                        ,'description':service.description
+                    } )
+
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
@@ -638,14 +638,14 @@ def fetch_vas_catservice(request):
 
     if car_id:
         carObj = Car.objects.filter(id=car_id)
-       
+
         if len(carObj):
             carObj = carObj[0]
             size = carObj.size
 
     if catg_id:
         vasObj = VASServiceCat.objects.filter(id=catg_id)
-        
+
         if len(vasObj):
             vasObj = vasObj[0]
             vendor = vasObj.vendor
@@ -655,25 +655,25 @@ def fetch_vas_catservice(request):
     if vendor:
         if category:
             if size:
-             VASCatObjs = VASCategoryServices.objects.filter(vendor = vendor, category = category,car_cat = size).order_by('priority')
-             for service in VASCatObjs:
-                obj['result'].append({
+                VASCatObjs = VASCategoryServices.objects.filter(vendor = vendor, category = category,car_cat = size).order_by('priority')
+                for service in VASCatObjs:
+                    obj['result'].append({
                         'id':service.id
-                        ,'vendor':service.vendor          
-                        ,'category':service.category        
-                        ,'car_cat':service.car_cat         
-                        ,'service':service.service         
-                        ,'price_labour':service.price_labour    
-                        ,'price_parts':service.price_parts     
-                        ,'total_price':service.price_total     
+                        ,'vendor':service.vendor
+                        ,'category':service.category
+                        ,'car_cat':service.car_cat
+                        ,'service':service.service
+                        ,'price_labour':service.price_labour
+                        ,'price_parts':service.price_parts
+                        ,'total_price':service.price_total
                         ,'description':service.description
                         ,'discount':service.discount
-                        ,'doorstep':service.doorstep     
-                        ,'rating':service.rating          
+                        ,'doorstep':service.doorstep
+                        ,'rating':service.rating
                         ,'reviews':service.reviews
                         ,'priority':service.priority
-                              } )
-                      
+                    } )
+
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
@@ -685,9 +685,9 @@ def fetch_all_vascat(request):
     allDealerCat = VASServiceCat.objects.all()
     for service in allDealerCat:
 
-        result.append({'id':service.id, 'name':service.vendor           
-                        ,'category':service.category          
-                        ,'description':service.description} )
+        result.append({'id':service.id, 'name':service.vendor
+                          ,'category':service.category
+                          ,'description':service.description} )
     obj['result'] = result
     obj['counter'] = 1
     obj['status'] = True
@@ -701,18 +701,18 @@ def fetch_all_vascatservices(request):
     for service in allDealerCat:
 
         result.append({'id':service.id
-            ,'name':service.vendor         
-            ,'category':service.category       
-            ,'car_cat':service.car_cat        
-            ,'service':service.service        
-            ,'price_labour':service.price_labour   
-            ,'price_parts':service.price_parts    
-            ,'price_total':service.price_total
-            ,'discount':service.discount
-            ,'service_description':service.description   
-            ,'doorstep':service.doorstep 
-            ,'rating':service.rating         
-            ,'reviews':service.reviews        } )
+                          ,'name':service.vendor
+                          ,'category':service.category
+                          ,'car_cat':service.car_cat
+                          ,'service':service.service
+                          ,'price_labour':service.price_labour
+                          ,'price_parts':service.price_parts
+                          ,'price_total':service.price_total
+                          ,'discount':service.discount
+                          ,'service_description':service.description
+                          ,'doorstep':service.doorstep
+                          ,'rating':service.rating
+                          ,'reviews':service.reviews        } )
     obj['result'] = result
     obj['counter'] = 1
     obj['status'] = True
@@ -738,10 +738,10 @@ def fetch_car_windshieldservices(request):
                 #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
                 for service in ServiceObjs:
                     obj['result'].append({'id':service.id,
-                                        'vendor': service.vendor
-                                        , 'brand' :service.brand
-                                        , 'carname' :service.carname
-                                        , 'ws_type' :service.ws_type } )
+                                          'vendor': service.vendor
+                                             , 'brand' :service.brand
+                                             , 'carname' :service.carname
+                                             , 'ws_type' :service.ws_type } )
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
@@ -757,11 +757,11 @@ def fetch_car_windshieldcatdetails(request):
     brand   = None
     carname = None
     ws_type = None
-    
-    
+
+
     if catg_id:
         wsObj = WindShieldCat.objects.filter(id=catg_id)
-        
+
         if len(wsObj):
             wsObj = wsObj[0]
             vendor  = wsObj.vendor
@@ -774,23 +774,23 @@ def fetch_car_windshieldcatdetails(request):
         wsTypeObjs = WindShieldServiceDetails.objects.filter(city=city,vendor = vendor, ws_type = ws_type, carname = carname, brand=brand)
         for service in wsTypeObjs:
             obj['result'].append({'id':service.id
-                                    ,'vendor':service.vendor
-                                    ,'brand':service.brand
-                                    ,'carname':service.carname
-                                    ,'colour':service.colour
-                                    ,'ws_type':service.ws_type
-                                    ,'ws_subtype':service.ws_subtype
-                                    ,'price_ws':service.price_ws
-                                    ,'price_sealant':service.price_sealant
-                                    ,'price_labour':service.price_labour
-                                    ,'price_insurance':service.price_insurance 
-                                    ,'price_total'    :service.price_total
-                                    ,'city'           :service.city
-                                    ,'description':service.description
-                                    ,'rating':service.rating
-                                    ,'reviews':service.reviews
-                              } )
-                      
+                                     ,'vendor':service.vendor
+                                     ,'brand':service.brand
+                                     ,'carname':service.carname
+                                     ,'colour':service.colour
+                                     ,'ws_type':service.ws_type
+                                     ,'ws_subtype':service.ws_subtype
+                                     ,'price_ws':service.price_ws
+                                     ,'price_sealant':service.price_sealant
+                                     ,'price_labour':service.price_labour
+                                     ,'price_insurance':service.price_insurance
+                                     ,'price_total'    :service.price_total
+                                     ,'city'           :service.city
+                                     ,'description':service.description
+                                     ,'rating':service.rating
+                                     ,'reviews':service.reviews
+                                  } )
+
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
@@ -803,10 +803,10 @@ def fetch_all_windshieldservices(request):
     for service in allDealerCat:
 
         result.append({'id':service.id
-            ,'vendor': service.vendor
-            , 'brand' :service.brand
-            , 'carname' :service.carname
-            , 'ws_type' :service.ws_type } )
+                          ,'vendor': service.vendor
+                          , 'brand' :service.brand
+                          , 'carname' :service.carname
+                          , 'ws_type' :service.ws_type } )
     obj['result'] = result
     obj['counter'] = 1
     obj['status'] = True
@@ -820,19 +820,19 @@ def fetch_all_windshieldcatdetails(request):
     for service in allDealerCat:
 
         result.append({'id':service.id
-            ,'vendor':service.vendor
-            ,'brand':service.brand
-            ,'carname':service.carname
-            ,'ws_type':service.ws_type
-            ,'ws_subtype':service.ws_subtype
-            ,'price_ws':service.price_ws
-            ,'price_sealant':service.price_sealant
-            ,'price_labour':service.price_labour
-            ,'price_insurance':service.price_insurance  
-            ,'city'           :service.city
-            ,'description':service.description
-            ,'rating':service.rating
-            ,'reviews':service.reviews              } )
+                          ,'vendor':service.vendor
+                          ,'brand':service.brand
+                          ,'carname':service.carname
+                          ,'ws_type':service.ws_type
+                          ,'ws_subtype':service.ws_subtype
+                          ,'price_ws':service.price_ws
+                          ,'price_sealant':service.price_sealant
+                          ,'price_labour':service.price_labour
+                          ,'price_insurance':service.price_insurance
+                          ,'city'           :service.city
+                          ,'description':service.description
+                          ,'rating':service.rating
+                          ,'reviews':service.reviews              } )
     obj['result'] = result
     obj['counter'] = 1
     obj['status'] = True
@@ -849,11 +849,11 @@ def fetch_all_wheelservices(request):
     allServices = WheelServices.objects.all()
     for service in allServices:
         result.append({'id':service.id,
-                        'name':service.name        
-                        ,'service':service.service     
-                        ,'description':service.description     
+                       'name':service.name
+                          ,'service':service.service
+                          ,'description':service.description
 
-            } )
+                       } )
     obj['result'] = result
     obj['counter'] = 1
     obj['status'] = True
@@ -866,15 +866,15 @@ def fetch_all_wheelserviceprovider(request):
     allServices = WheelServiceProvider.objects.all()
     for service in allServices:
         result.append({'id':service.id,
-                'name':service.name    
-                ,'address':service.address 
-                ,'phone':service.phone   
-                ,'timing':service.timing  
-                ,'rating':service.rating  
-                ,'reviews':service.reviews 
-                ,'service':service.service 
-                ,'car':service.car     
-                ,'price':service.price   } )
+                       'name':service.name
+                          ,'address':service.address
+                          ,'phone':service.phone
+                          ,'timing':service.timing
+                          ,'rating':service.rating
+                          ,'reviews':service.reviews
+                          ,'service':service.service
+                          ,'car':service.car
+                          ,'price':service.price   } )
     obj['result'] = result
     obj['counter'] = 1
     obj['status'] = True
@@ -887,23 +887,23 @@ def fetch_all_tyresales(request):
     allServices = TyreSale.objects.all()
     for service in allServices:
         result.append({'id':service.id,
-                    'name':service.name          
-                    ,'address':service.address       
-                    ,'rating_dealer':service.rating_dealer 
-                    ,'aspect_key':service.aspect_key    
-                    ,'brand':service.brand         
-                    ,'model':service.model         
-                    ,'width':service.width         
-                    ,'aspect_ratio':service.aspect_ratio  
-                    ,'rim_size':service.rim_size      
-                    ,'load_rating':service.load_rating   
-                    ,'speed_rating':service.speed_rating  
-                    ,'warranty':service.warranty      
-                    ,'rating':service.rating        
-                    ,'reviews':service.reviews       
-                    ,'price':service.price                         
+                       'name':service.name
+                          ,'address':service.address
+                          ,'rating_dealer':service.rating_dealer
+                          ,'aspect_key':service.aspect_key
+                          ,'brand':service.brand
+                          ,'model':service.model
+                          ,'width':service.width
+                          ,'aspect_ratio':service.aspect_ratio
+                          ,'rim_size':service.rim_size
+                          ,'load_rating':service.load_rating
+                          ,'speed_rating':service.speed_rating
+                          ,'warranty':service.warranty
+                          ,'rating':service.rating
+                          ,'reviews':service.reviews
+                          ,'price':service.price
 
-                 } )
+                       } )
     obj['result'] = result
     obj['counter'] = 1
     obj['status'] = True
@@ -921,30 +921,30 @@ def fetch_car_tyres(request):
 
         if len(carObj):
             carObj = carObj[0]
-            aspect = carObj.aspect_ratio.replace("R","")    
-            
+            aspect = carObj.aspect_ratio.replace("R","")
+
             if aspect:
                 tyreObjs = TyreSale.objects.filter(aspect_key = aspect)
 
                 for tyre in tyreObjs:
                     obj['result'].append({'id':tyre.id,
-                    'name':tyre.name          
-                    ,'address':tyre.address       
-                    ,'rating_dealer':tyre.rating_dealer 
-                    ,'aspect_key':tyre.aspect_key    
-                    ,'brand':tyre.brand         
-                    ,'model':tyre.model         
-                    ,'width':tyre.width         
-                    ,'aspect_ratio':tyre.aspect_ratio  
-                    ,'rim_size':tyre.rim_size      
-                    ,'load_rating':tyre.load_rating   
-                    ,'speed_rating':tyre.speed_rating  
-                    ,'warranty':tyre.warranty      
-                    ,'rating':tyre.rating        
-                    ,'reviews':tyre.reviews       
-                    ,'price':tyre.price                         
-                 } )
-                  
+                                          'name':tyre.name
+                                             ,'address':tyre.address
+                                             ,'rating_dealer':tyre.rating_dealer
+                                             ,'aspect_key':tyre.aspect_key
+                                             ,'brand':tyre.brand
+                                             ,'model':tyre.model
+                                             ,'width':tyre.width
+                                             ,'aspect_ratio':tyre.aspect_ratio
+                                             ,'rim_size':tyre.rim_size
+                                             ,'load_rating':tyre.load_rating
+                                             ,'speed_rating':tyre.speed_rating
+                                             ,'warranty':tyre.warranty
+                                             ,'rating':tyre.rating
+                                             ,'reviews':tyre.reviews
+                                             ,'price':tyre.price
+                                          } )
+
     obj['counter'] = 1
     obj['status'] = True
     obj['msg'] = "Success"
@@ -1019,31 +1019,31 @@ def fetch_user_login(request):
 def getCarObjFromName(carNameArray):
     res = []
     for carCompoundName in carNameArray:
-         carCompoundName = cleanstring(carCompoundName)
-         make = carCompoundName.split(' ')[0]
-         make2 = " ".join([carCompoundName.split(' ')[0], carCompoundName.split(' ')[1]])
-         name_model = ''
+        carCompoundName = cleanstring(carCompoundName)
+        make = carCompoundName.split(' ')[0]
+        make2 = " ".join([carCompoundName.split(' ')[0], carCompoundName.split(' ')[1]])
+        name_model = ''
 
-         if make in carMakers:
-             name_model = carCompoundName.split(' ', 1)[1]
-         elif make2 in carMakers:
-             make = make2
-             name_model = carCompoundName.split(' ', 2)[2]
-         else:
-             make = ''
-             name_model = carCompoundName
+        if make in carMakers:
+            name_model = carCompoundName.split(' ', 1)[1]
+        elif make2 in carMakers:
+            make = make2
+            name_model = carCompoundName.split(' ', 2)[2]
+        else:
+            make = ''
+            name_model = carCompoundName
 
 
-         # if make not in carMakers:
-         #     make = ''
-         #     name_model = carCompoundName
-         # elif make2 in
-         # else:
-         #     name_model = carCompoundName.split(' ', 1)[1]
+        # if make not in carMakers:
+        #     make = ''
+        #     name_model = carCompoundName
+        # elif make2 in
+        # else:
+        #     name_model = carCompoundName.split(' ', 1)[1]
 
-         # print name_model
-         findCar = Car.objects.filter(name=name_model, make=make)
-         if len(findCar):
+        # print name_model
+        findCar = Car.objects.filter(name=name_model, make=make)
+        if len(findCar):
             carObj = findCar[0]
             result = {'name':carObj.name, 'make':carObj.make, 'aspect_ratio':carObj.aspect_ratio, 'size':carObj.size,'id':carObj.id, 'car_bike':carObj.car_bike}
             res.append(result)
@@ -1057,7 +1057,7 @@ def fetch_all_cleaning(request, HTTPFlag = True):
     car_bike = None
     if car_id:
         carObj = Car.objects.filter(id=car_id)
-       
+
         if len(carObj):
             carObj = carObj[0]
             size = carObj.size
@@ -1067,10 +1067,10 @@ def fetch_all_cleaning(request, HTTPFlag = True):
     allDealerCat = CleaningCatName.objects.filter(car_bike = car_bike)
     for service in allDealerCat:
 
-        result.append({'id':service.id         
-                        ,'category':service.category          
-                        ,'description':service.description
-                        ,'car_bike':service.car_bike} )
+        result.append({'id':service.id
+                          ,'category':service.category
+                          ,'description':service.description
+                          ,'car_bike':service.car_bike} )
     obj['result'] = result
     obj['counter'] = 1
     obj['status'] = True
@@ -1124,40 +1124,40 @@ def fetch_clean_service(request):
                 # CleanCatObjs =
                 for service in CleanCatObjs2:
                     obj['result'].append({
-                            'id':service.id
-                            ,'vendor':service.vendor
-                            ,'category':service.category
-                            ,'car_cat':service.car_cat
-                            ,'service':service.service
-                            ,'price_labour':service.price_labour
-                            ,'price_parts':service.price_parts
-                            ,'total_price':service.price_total
-                            ,'discount':service.discount
-                            ,'description':service.description
-                            ,'doorstep':service.doorstep
-                            ,'rating':service.rating
-                            ,'reviews':service.reviews
-                            ,'car_bike': service.car_bike
-                            ,'priority':service.priority
-                                  } )
+                        'id':service.id
+                        ,'vendor':service.vendor
+                        ,'category':service.category
+                        ,'car_cat':service.car_cat
+                        ,'service':service.service
+                        ,'price_labour':service.price_labour
+                        ,'price_parts':service.price_parts
+                        ,'total_price':service.price_total
+                        ,'discount':service.discount
+                        ,'description':service.description
+                        ,'doorstep':service.doorstep
+                        ,'rating':service.rating
+                        ,'reviews':service.reviews
+                        ,'car_bike': service.car_bike
+                        ,'priority':service.priority
+                    } )
                 for service in CleanCatObjs1:
                     obj['result'].append({
-                            'id':service.id
-                            ,'vendor':service.vendor
-                            ,'category':service.category
-                            ,'car_cat':service.car_cat
-                            ,'service':service.service
-                            ,'price_labour':service.price_labour
-                            ,'price_parts':service.price_parts
-                            ,'total_price':service.price_total
-                            ,'discount':service.discount
-                            ,'description':service.description
-                            ,'doorstep':service.doorstep
-                            ,'rating':service.rating
-                            ,'reviews':service.reviews
-                            ,'car_bike': service.car_bike
-                            ,'priority':service.priority
-                                  } )
+                        'id':service.id
+                        ,'vendor':service.vendor
+                        ,'category':service.category
+                        ,'car_cat':service.car_cat
+                        ,'service':service.service
+                        ,'price_labour':service.price_labour
+                        ,'price_parts':service.price_parts
+                        ,'total_price':service.price_total
+                        ,'discount':service.discount
+                        ,'description':service.description
+                        ,'doorstep':service.doorstep
+                        ,'rating':service.rating
+                        ,'reviews':service.reviews
+                        ,'car_bike': service.car_bike
+                        ,'priority':service.priority
+                    } )
 
         obj['status'] = True
         obj['counter'] = 1
@@ -1175,18 +1175,18 @@ def fetch_all_vas(request, HTTPFlag = True):
     car_bike = None
     if car_id:
         carObj = Car.objects.filter(id=car_id)
-       
+
         if len(carObj):
             carObj = carObj[0]
             size = carObj.size
             car_bike = carObj.car_bike
             print size
 
-    allDealerCat = VASCatName.objects.filter(car_bike = car_bike)   
+    allDealerCat = VASCatName.objects.filter(car_bike = car_bike)
     for service in allDealerCat:
-        result.append({'id':service.id         
-                        ,'category':service.category          
-                        ,'description':service.description} )
+        result.append({'id':service.id
+                          ,'category':service.category
+                          ,'description':service.description} )
     obj['result'] = result
     obj['counter'] = 1
     obj['status'] = True
@@ -1213,7 +1213,7 @@ def fetch_vas_service(request):
     car_bike = None
     if car_id:
         carObj = Car.objects.filter(id=car_id)
-       
+
         if len(carObj):
             carObj = carObj[0]
             size = carObj.size
@@ -1221,35 +1221,35 @@ def fetch_vas_service(request):
             print size
     if catg_id:
         cleanObj = VASCatName.objects.filter(id=catg_id)
-    
+
         if len(cleanObj):
             cleanObj = cleanObj[0]
             category = cleanObj.category
             print category
 
-    
+
     if category:
         if size:
             CleanCatObjs = VASCategoryServices.objects.filter(category = category,car_cat = size, car_bike = car_bike).order_by('priority')
             for service in CleanCatObjs:
                 obj['result'].append({
-                        'id':service.id
-                        ,'vendor':service.vendor          
-                        ,'category':service.category        
-                        ,'car_cat':service.car_cat         
-                        ,'service':service.service         
-                        ,'price_labour':service.price_labour
-                        ,'price_parts':service.price_parts     
-                        ,'total_price':service.price_total     
-                        ,'description':service.description  
-                        ,'doorstep':service.doorstep
-                        ,'discount':service.discount
-                        ,'rating':service.rating          
-                        ,'reviews':service.reviews   
-                        ,'car_bike': service.car_bike
-                        ,'priority':service.priority
-                              } )
-                      
+                    'id':service.id
+                    ,'vendor':service.vendor
+                    ,'category':service.category
+                    ,'car_cat':service.car_cat
+                    ,'service':service.service
+                    ,'price_labour':service.price_labour
+                    ,'price_parts':service.price_parts
+                    ,'total_price':service.price_total
+                    ,'description':service.description
+                    ,'doorstep':service.doorstep
+                    ,'discount':service.discount
+                    ,'rating':service.rating
+                    ,'reviews':service.reviews
+                    ,'car_bike': service.car_bike
+                    ,'priority':service.priority
+                } )
+
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
@@ -1544,7 +1544,7 @@ def place_order(request):
             except ValueError:
                 drop_obj = None
 
-                
+
         # pick_obj = ast.literal_eval(pick_obj)
         # print pick_obj
         # pick_obj = json.loads(pick_obj)
@@ -1698,7 +1698,7 @@ def place_order(request):
                     html_list.append('<br><span> dealer : ')
                     html_list.append(item['dealer_cat'])
                     html_list.append('</span>')
-                        # html_list.append('<span> price : ')
+                    # html_list.append('<span> price : ')
                     # html_list.append(total_price)
                     # html_list.append('</span><br/>')
                     # tookan integration start
@@ -1878,21 +1878,21 @@ def place_order(request):
 
                     item = {
                         'id':serviceDetail.id
-                                ,'vendor'         :serviceDetail.vendor
-                                ,'brand'          :serviceDetail.brand
-                                ,'carname'        :serviceDetail.carname
-                                ,'ws_type'        :serviceDetail.ws_type
-                                ,'ws_subtype'     :serviceDetail.ws_subtype
-                                ,'colour'         :serviceDetail.colour
-                                ,'price_ws'       :serviceDetail.price_ws
-                                ,'price_sealant'  :serviceDetail.price_sealant
-                                ,'price_labour'   :serviceDetail.price_labour
-                                ,'price_insurance':serviceDetail.price_insurance
-                                ,'price_total'   :serviceDetail.price_total
-                                ,'city'           :serviceDetail.city
-                                ,'description':serviceDetail.description
-                                ,'status':True
-                                ,'ts':ts
+                        ,'vendor'         :serviceDetail.vendor
+                        ,'brand'          :serviceDetail.brand
+                        ,'carname'        :serviceDetail.carname
+                        ,'ws_type'        :serviceDetail.ws_type
+                        ,'ws_subtype'     :serviceDetail.ws_subtype
+                        ,'colour'         :serviceDetail.colour
+                        ,'price_ws'       :serviceDetail.price_ws
+                        ,'price_sealant'  :serviceDetail.price_sealant
+                        ,'price_labour'   :serviceDetail.price_labour
+                        ,'price_insurance':serviceDetail.price_insurance
+                        ,'price_total'   :serviceDetail.price_total
+                        ,'city'           :serviceDetail.city
+                        ,'description':serviceDetail.description
+                        ,'status':True
+                        ,'ts':ts
                     }
                     listItem['served_data'] = item
                     html_list.append('<span> Windshield </span>')
@@ -2186,26 +2186,26 @@ def place_order(request):
         redirect('/loginPage/')
 
 def insert_tran(request):
-    cust_id         = get_param(request,'cust_id',None)   
+    cust_id         = get_param(request,'cust_id',None)
     trans_timestamp = datetime.datetime.now()
-    cust_name       = get_param(request,'cust_name',None)   
-    cust_brand      = get_param(request,'cust_brand',None)   
+    cust_name       = get_param(request,'cust_name',None)
+    cust_brand      = get_param(request,'cust_brand',None)
     cust_carname    = get_param(request,'cust_carname',None)
-    cust_number     = get_param(request,'cust_number',None)   
-    cust_email      = get_param(request,'cust_email',None)   
-    cust_pickup_add = get_param(request,'cust_pickup_add',None)   
-    cust_drop_add   = get_param(request,'cust_drop_add',None)   
-    booking_vendor  = get_param(request,'booking_vendor',None)   
-    booking_cat     = get_param(request,'booking_cat',None)   
-    booking_type    = get_param(request,'booking_type',None)   
-    price_labour    = get_param(request,'price_labour',None)   
-    price_parts     = get_param(request,'price_parts',None)   
-    price_total     = get_param(request,'price_total',None)   
-    date_booking    = get_param(request,'date_booking',None)   
-    time_booking    = get_param(request,'time_booking',None)   
-    amount_paid     = get_param(request,'amount_paid',None)   
-    status          = get_param(request,'status',None)   
-    comments        = get_param(request,'comments',None)   
+    cust_number     = get_param(request,'cust_number',None)
+    cust_email      = get_param(request,'cust_email',None)
+    cust_pickup_add = get_param(request,'cust_pickup_add',None)
+    cust_drop_add   = get_param(request,'cust_drop_add',None)
+    booking_vendor  = get_param(request,'booking_vendor',None)
+    booking_cat     = get_param(request,'booking_cat',None)
+    booking_type    = get_param(request,'booking_type',None)
+    price_labour    = get_param(request,'price_labour',None)
+    price_parts     = get_param(request,'price_parts',None)
+    price_total     = get_param(request,'price_total',None)
+    date_booking    = get_param(request,'date_booking',None)
+    time_booking    = get_param(request,'time_booking',None)
+    amount_paid     = get_param(request,'amount_paid',None)
+    status          = get_param(request,'status',None)
+    comments        = get_param(request,'comments',None)
 
     tran_len = len(Transactions.objects.all())
     if tran_len > 0:
@@ -2217,29 +2217,29 @@ def insert_tran(request):
         booking_id       = booking_id
         ,trans_timestamp = trans_timestamp
         ,cust_id         = cust_id
-        ,cust_name       = cust_name       
-        ,cust_brand      = cust_brand      
-        ,cust_carname    = cust_carname    
-        ,cust_number     = cust_number     
-        ,cust_email      = cust_email      
-        ,cust_pickup_add = cust_pickup_add 
-        ,cust_drop_add   = cust_drop_add   
-        ,booking_vendor  = booking_vendor  
-        ,booking_cat     = booking_cat     
-        ,booking_type    = booking_type    
-        ,price_labour    = price_labour    
-        ,price_parts     = price_parts     
-        ,price_total     = price_total     
-        ,date_booking    = date_booking    
-        ,time_booking    = time_booking    
-        ,amount_paid     = amount_paid     
-        ,status          = status          
-        ,comments        = comments ) 
+        ,cust_name       = cust_name
+        ,cust_brand      = cust_brand
+        ,cust_carname    = cust_carname
+        ,cust_number     = cust_number
+        ,cust_email      = cust_email
+        ,cust_pickup_add = cust_pickup_add
+        ,cust_drop_add   = cust_drop_add
+        ,booking_vendor  = booking_vendor
+        ,booking_cat     = booking_cat
+        ,booking_type    = booking_type
+        ,price_labour    = price_labour
+        ,price_parts     = price_parts
+        ,price_total     = price_total
+        ,date_booking    = date_booking
+        ,time_booking    = time_booking
+        ,amount_paid     = amount_paid
+        ,status          = status
+        ,comments        = comments )
 
 #run this just once if possible
 
 carTrieObj = trie(carsTrie)
-  
+
 def fetch_car_booking(request):
     obj = {}
     obj['status'] = False
@@ -2251,25 +2251,25 @@ def fetch_car_booking(request):
         arry = []
         for trans in mongoArray:
             arry.append({
-                            'tran_id'          :trans.id
-                            ,'booking_id'       :trans.booking_id
-                            ,'trans_timestamp'  :trans.trans_timestamp
-                            ,'cust_id'          :trans.cust_id
-                            ,'cust_name'        :trans.cust_name
-                            ,'cust_brand'       :trans.cust_brand
-                            ,'cust_carname'     :trans.cust_carname
-                            ,'cust_carnumber'   :trans.cust_carnumber
-                            ,'cust_number'      :trans.cust_number
-                            ,'cust_email'       :trans.cust_email
-                            ,'cust_pickup_add'  :trans.cust_pickup_add
-                            ,'cust_drop_add'    :trans.cust_drop_add
-                            ,'service_items'    :trans.service_items
-                            ,'price_total'      :trans.price_total
-                            ,'date_booking'     :trans.date_booking
-                            ,'time_booking'     :trans.time_booking
-                            ,'amount_paid'      :trans.amount_paid
-                            ,'status'           :trans.status
-                            ,'comments'         :trans.comments})
+                'tran_id'          :trans.id
+                ,'booking_id'       :trans.booking_id
+                ,'trans_timestamp'  :trans.trans_timestamp
+                ,'cust_id'          :trans.cust_id
+                ,'cust_name'        :trans.cust_name
+                ,'cust_brand'       :trans.cust_brand
+                ,'cust_carname'     :trans.cust_carname
+                ,'cust_carnumber'   :trans.cust_carnumber
+                ,'cust_number'      :trans.cust_number
+                ,'cust_email'       :trans.cust_email
+                ,'cust_pickup_add'  :trans.cust_pickup_add
+                ,'cust_drop_add'    :trans.cust_drop_add
+                ,'service_items'    :trans.service_items
+                ,'price_total'      :trans.price_total
+                ,'date_booking'     :trans.date_booking
+                ,'time_booking'     :trans.time_booking
+                ,'amount_paid'      :trans.amount_paid
+                ,'status'           :trans.status
+                ,'comments'         :trans.comments})
         return arry
 
     if random_req_auth(request) or (request.user and request.user.is_authenticated()):
@@ -2326,28 +2326,28 @@ def fetch_car_complete(request):
 
     if cust_id:
         tranObjs = Transactions.objects.filter(cust_id=cust_id, status = 'Complete').order_by('-booking_id')
-            #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
+        #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
         for trans in tranObjs:
             obj['result'].append({
-                            'tran_id'          :trans.id
-                            ,'booking_id'       :trans.booking_id
-                            ,'trans_timestamp'  :trans.trans_timestamp
-                            ,'cust_id'          :trans.cust_id
-                            ,'cust_name'        :trans.cust_name
-                            ,'cust_brand'       :trans.cust_brand
-                            ,'cust_carname'     :trans.cust_carname
-                            ,'cust_carnumber'   :trans.cust_carnumber
-                            ,'cust_number'      :trans.cust_number
-                            ,'cust_email'       :trans.cust_email
-                            ,'cust_pickup_add'  :trans.cust_pickup_add
-                            ,'cust_drop_add'    :trans.cust_drop_add
-                            ,'service_items'    :trans.service_items
-                            ,'price_total'      :trans.price_total
-                            ,'date_booking'     :trans.date_booking
-                            ,'time_booking'     :trans.time_booking
-                            ,'amount_paid'      :trans.amount_paid
-                            ,'status'           :trans.status
-                            ,'comments'         :trans.comments} )
+                'tran_id'          :trans.id
+                ,'booking_id'       :trans.booking_id
+                ,'trans_timestamp'  :trans.trans_timestamp
+                ,'cust_id'          :trans.cust_id
+                ,'cust_name'        :trans.cust_name
+                ,'cust_brand'       :trans.cust_brand
+                ,'cust_carname'     :trans.cust_carname
+                ,'cust_carnumber'   :trans.cust_carnumber
+                ,'cust_number'      :trans.cust_number
+                ,'cust_email'       :trans.cust_email
+                ,'cust_pickup_add'  :trans.cust_pickup_add
+                ,'cust_drop_add'    :trans.cust_drop_add
+                ,'service_items'    :trans.service_items
+                ,'price_total'      :trans.price_total
+                ,'date_booking'     :trans.date_booking
+                ,'time_booking'     :trans.time_booking
+                ,'amount_paid'      :trans.amount_paid
+                ,'status'           :trans.status
+                ,'comments'         :trans.comments} )
         obj['status'] = True
         obj['counter'] = 1
         obj['msg'] = "Success"
@@ -2368,28 +2368,28 @@ def fetch_car_cancelled(request):
 
     if cust_id:
         tranObjs = Transactions.objects.filter(cust_id=cust_id, status = 'Cancelled').order_by('-booking_id')
-            #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
+        #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
         for trans in tranObjs:
             obj['result'].append({
-                            'tran_id'          :trans.id
-                            ,'booking_id'       :trans.booking_id            
-                            ,'trans_timestamp'  :trans.trans_timestamp       
-                            ,'cust_id'          :trans.cust_id          
-                            ,'cust_name'        :trans.cust_name             
-                            ,'cust_brand'       :trans.cust_brand            
-                            ,'cust_carname'     :trans.cust_carname          
-                            ,'cust_carnumber'   :trans.cust_carnumber        
-                            ,'cust_number'      :trans.cust_number           
-                            ,'cust_email'       :trans.cust_email            
-                            ,'cust_pickup_add'  :trans.cust_pickup_add       
-                            ,'cust_drop_add'    :trans.cust_drop_add         
-                            ,'service_items'    :trans.service_items         
-                            ,'price_total'      :trans.price_total           
-                            ,'date_booking'     :trans.date_booking          
-                            ,'time_booking'     :trans.time_booking          
-                            ,'amount_paid'      :trans.amount_paid           
-                            ,'status'           :trans.status                
-                            ,'comments'         :trans.comments} )
+                'tran_id'          :trans.id
+                ,'booking_id'       :trans.booking_id
+                ,'trans_timestamp'  :trans.trans_timestamp
+                ,'cust_id'          :trans.cust_id
+                ,'cust_name'        :trans.cust_name
+                ,'cust_brand'       :trans.cust_brand
+                ,'cust_carname'     :trans.cust_carname
+                ,'cust_carnumber'   :trans.cust_carnumber
+                ,'cust_number'      :trans.cust_number
+                ,'cust_email'       :trans.cust_email
+                ,'cust_pickup_add'  :trans.cust_pickup_add
+                ,'cust_drop_add'    :trans.cust_drop_add
+                ,'service_items'    :trans.service_items
+                ,'price_total'      :trans.price_total
+                ,'date_booking'     :trans.date_booking
+                ,'time_booking'     :trans.time_booking
+                ,'amount_paid'      :trans.amount_paid
+                ,'status'           :trans.status
+                ,'comments'         :trans.comments} )
         obj['status'] = True
         obj['counter'] = 1
         obj['msg'] = "Success"
@@ -2397,7 +2397,7 @@ def fetch_car_cancelled(request):
     else:
         return HttpResponse(json.dumps(obj), content_type='application/json')
 
-    
+
 def cancel_booking(request):
     obj = {}
     obj['status'] = False
@@ -2424,14 +2424,14 @@ def cancel_booking(request):
             obj['status'] = True
             obj['counter'] = 1
             obj['msg'] = "Success"
-#    mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
+        #    mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
         mviews.send_cancel_final(username,useremail,booking_id)
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
-        # useremail = tran.cust_email
-        # username  = tran.cust_name
-        # booking_id = tran.booking_id
-        # mviews.send_cancel_final(username,useremail,booking_id)
+    # useremail = tran.cust_email
+    # username  = tran.cust_name
+    # booking_id = tran.booking_id
+    # mviews.send_cancel_final(username,useremail,booking_id)
 
 
 # def fetch_all_booking(request):
@@ -2474,34 +2474,34 @@ def cancel_booking(request):
 #         return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
-   # if request.user and request.user.is_authenticated():
-   #      cust_id         = request.user.id
-   #      email           = request.user.email
-   #      tran_id         = get_param(request,'tran_id',None)
-   #      item_id         = get_param(request,'item_id',None)
-   #
-   #  obj['cancelled_id'] = tran_id
-   #  tranObjs = Transactions.objects.filter(status = '', id =tran_id)
-   #  for tran in tranObjs:
-   #      # serviceObj = tran.service_items(status = True , ts =item_id)
-   #      listy = tran.service_items
-   #      serviceObj = (item for item in tran.service_items if 'ts' in item and item['ts'] == item_id).next()
-   #      idx = tran.service_items.index(serviceObj)
-   #      serviceObj['status'] = 'Cancelled'
-   #      tran.service_items[idx] = serviceObj
-   #      tran.save()
-   #      # for service in serviceObj:
-   #      #     service.status = "Cancelled"
-   #      #     tran.save()
-   #      #     obj['result'] = {}
-   #      #     obj['result']['cancelled_id'] = tran_id
-   #      #     obj['status'] = True
-   #      #     obj['counter'] = 1
-   #      #     obj['msg'] = "Success"
-   #
-   #      #mviews.send_cancel_email([email,"bookings@clickgarage.in"],tran.cust_name,tran.booking_id)booking_id
+# if request.user and request.user.is_authenticated():
+#      cust_id         = request.user.id
+#      email           = request.user.email
+#      tran_id         = get_param(request,'tran_id',None)
+#      item_id         = get_param(request,'item_id',None)
+#
+#  obj['cancelled_id'] = tran_id
+#  tranObjs = Transactions.objects.filter(status = '', id =tran_id)
+#  for tran in tranObjs:
+#      # serviceObj = tran.service_items(status = True , ts =item_id)
+#      listy = tran.service_items
+#      serviceObj = (item for item in tran.service_items if 'ts' in item and item['ts'] == item_id).next()
+#      idx = tran.service_items.index(serviceObj)
+#      serviceObj['status'] = 'Cancelled'
+#      tran.service_items[idx] = serviceObj
+#      tran.save()
+#      # for service in serviceObj:
+#      #     service.status = "Cancelled"
+#      #     tran.save()
+#      #     obj['result'] = {}
+#      #     obj['result']['cancelled_id'] = tran_id
+#      #     obj['status'] = True
+#      #     obj['counter'] = 1
+#      #     obj['msg'] = "Success"
+#
+#      #mviews.send_cancel_email([email,"bookings@clickgarage.in"],tran.cust_name,tran.booking_id)booking_id
 
-    # return HttpResponse(json.dumps(obj), content_type='application/json')
+# return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
 def fetch_car_list(request):
@@ -2517,12 +2517,12 @@ def fetch_car_list(request):
     CarObjs = Car.objects.filter(car_bike = car_bike_id, make = make_id).order_by('name')
     for caravan in CarObjs:
         obj['result'].append({
-                            'id':caravan.id
-                            ,'name':caravan.name
-                            ,'make':caravan.make
-                            ,'car_bike':caravan.car_bike
-                            ,'size':caravan.size
-                                  } )
+            'id':caravan.id
+            ,'name':caravan.name
+            ,'make':caravan.make
+            ,'car_bike':caravan.car_bike
+            ,'size':caravan.size
+        } )
 
     obj['status'] = True
     obj['counter'] = 1
@@ -2558,7 +2558,7 @@ def fetch_car_services_new(request):
                     #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
                     for service in ServiceObjs:
                         obj['result'].append({
-                             'id':service.id
+                            'id':service.id
                             ,'name':service.name
                             ,'brand':service.brand
                             ,'car_name':service.carname
@@ -2568,13 +2568,13 @@ def fetch_car_services_new(request):
 
                             ,'parts_replaced':service.part_replacement
                             ,'dealers_list':service.dealer
-                    #,'time_reading' : service.year
-                        ,'checks_done' : service.regular_checks
-                        #,'paid_free' : service.paid_free
-                        ,'parts_replaced' : service.part_replacement
-                        ,'part_dic':service.part_dic
-                        ,'dealer_category' : service.dealer
-                        ,'car_bike':car_bike
+                            #,'time_reading' : service.year
+                            ,'checks_done' : service.regular_checks
+                            #,'paid_free' : service.paid_free
+                            ,'parts_replaced' : service.part_replacement
+                            ,'part_dic':service.part_dic
+                            ,'dealer_category' : service.dealer
+                            ,'car_bike':car_bike
                         } )
         obj['status'] = True
         obj['counter'] = 1
@@ -2619,51 +2619,51 @@ def fetch_car_servicedetails_new(request):
                     if len(AuthServicedetailObj):
                         service = AuthServicedetailObj[0]
                         auth_prices = {
-                              'parts_price':service.price_parts,
-                              'labour_price':service.price_labour,
-                              'vendor':service.dealer_category
+                            'parts_price':service.price_parts,
+                            'labour_price':service.price_labour,
+                            'vendor':service.dealer_category
                         }
 
                     ServicedetailObjs = ServiceDealerCatNew.objects.filter(carname = car, brand = make, type_service = type_service).order_by('priority')
                     for service in ServicedetailObjs:
                         obj['result'].append({
                             'id':service.id
-                              ,'name':service.name
-                              ,'brand':service.brand
-                              ,'car':service.carname
-                              ,'car_bike':service.car_bike
-                              ,'vendor':service.dealer_category
-                              ,'parts_list':service.part_replacement
-                              ,'parts_price':service.price_parts
-                              ,'labour_price':service.price_labour
-                              ,'wa_price':service.wheel_alignment
-                              ,'wb_price':service.wheel_balancing
-                              # ,'wa_wb_present':service.WA_WB_Inc
-                              ,'service_desc':service.service_desc
-                              ,'dealer_details':service.detail_dealers
-                             ,'dry_cleaning': service.dry_cleaning
-                             ,'engine_additive': service.engine_additive
-                             ,'injector_cleaning': service.injector_cleaning
-                             ,'rubbing_polishing': service.rubbing_polishing
-                             ,'anti_rust'        : service.anti_rust
-                             ,'teflon'           : service.teflon
-                             ,'engine_flush'    : service.engine_flush
-                             ,'ac_servicing'    : service.ac_servicing
-                             ,'ac_disinfection': service.ac_disinfection
-                              # ,'car_bike':car_bike
-                        ,'type_service':service.type_service
-                        ,'part_dic':service.part_dic
-                        ,'discount':service.discount
-                        ,'priority':service.priority
-                        ,'prices':[
-                            {
-                              'parts_price':service.price_parts,
-                              'labour_price':service.price_labour,
-                              'vendor':service.dealer_category
-                            },
-                            auth_prices
-                        ]
-                     }
+                            ,'name':service.name
+                            ,'brand':service.brand
+                            ,'car':service.carname
+                            ,'car_bike':service.car_bike
+                            ,'vendor':service.dealer_category
+                            ,'parts_list':service.part_replacement
+                            ,'parts_price':service.price_parts
+                            ,'labour_price':service.price_labour
+                            ,'wa_price':service.wheel_alignment
+                            ,'wb_price':service.wheel_balancing
+                            # ,'wa_wb_present':service.WA_WB_Inc
+                            ,'service_desc':service.service_desc
+                            ,'dealer_details':service.detail_dealers
+                            ,'dry_cleaning': service.dry_cleaning
+                            ,'engine_additive': service.engine_additive
+                            ,'injector_cleaning': service.injector_cleaning
+                            ,'rubbing_polishing': service.rubbing_polishing
+                            ,'anti_rust'        : service.anti_rust
+                            ,'teflon'           : service.teflon
+                            ,'engine_flush'    : service.engine_flush
+                            ,'ac_servicing'    : service.ac_servicing
+                            ,'ac_disinfection': service.ac_disinfection
+                            # ,'car_bike':car_bike
+                            ,'type_service':service.type_service
+                            ,'part_dic':service.part_dic
+                            ,'discount':service.discount
+                            ,'priority':service.priority
+                            ,'prices':[
+                                {
+                                    'parts_price':service.price_parts,
+                                    'labour_price':service.price_labour,
+                                    'vendor':service.dealer_category
+                                },
+                                auth_prices
+                            ]
+                        }
                         )
 
 
@@ -2687,22 +2687,22 @@ def fetch_additional_details(request):
         obj['result'] = cart
         obj['status'] = True
     elif ccdAdditional and len(ccdAdditional):
-            try:
-                ccdaObj = json.loads( urllib.unquote(ccdAdditional) )
-                # for ts in ccdaObj:
-                    # if ts in cartDict:
-                    #     obj = cartDict[ccdaObj]
-                for ts in ccdaObj:
-                    print ts
-                    oppy = {}
-                    oppy['additional_data'] = ccdaObj[ts]
-                    obj['result'][ts] = oppy
-                obj['status'] = True
+        try:
+            ccdaObj = json.loads( urllib.unquote(ccdAdditional) )
+            # for ts in ccdaObj:
+            # if ts in cartDict:
+            #     obj = cartDict[ccdaObj]
+            for ts in ccdaObj:
+                print ts
+                oppy = {}
+                oppy['additional_data'] = ccdaObj[ts]
+                obj['result'][ts] = oppy
+            obj['status'] = True
 
-            except ValueError:
-                obj['result'] = None
-                obj['status'] = False
-                #do something
+        except ValueError:
+            obj['result'] = None
+            obj['status'] = False
+            #do something
 
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
@@ -2721,31 +2721,31 @@ def fetch_all_booking(request):
 
     if request.user.email in staffmails:
         tranObjs = Transactions.objects.all().order_by('-booking_id')
-            #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
+        #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
     for trans in tranObjs:
-            obj['result'].append({
-                            'tran_id'          :trans.id
-                            ,'booking_id'       :trans.booking_id
-                            ,'trans_timestamp'  :trans.trans_timestamp
-                            ,'cust_id'          :trans.cust_id
-                            ,'cust_name'        :trans.cust_name
-                            ,'cust_brand'       :trans.cust_brand
-                            ,'cust_carname'     :trans.cust_carname
-                            ,'cust_carnumber'   :trans.cust_carnumber
-                            ,'cust_number'      :trans.cust_number
-                            ,'cust_email'       :trans.cust_email
-                            ,'cust_pickup_add'  :trans.cust_pickup_add
-                            ,'cust_drop_add'    :trans.cust_drop_add
-                            ,'service_items'    :trans.service_items
-                            ,'price_total'      :trans.price_total
-                            ,'date_booking'     :trans.date_booking
-                            ,'time_booking'     :trans.time_booking
-                            ,'amount_paid'      :trans.amount_paid
-                            ,'status'           :trans.status
-                            ,'comments'         :trans.comments} )
-            obj['status'] = True
-            obj['counter'] = 1
-            obj['msg'] = "Success"
+        obj['result'].append({
+            'tran_id'          :trans.id
+            ,'booking_id'       :trans.booking_id
+            ,'trans_timestamp'  :trans.trans_timestamp
+            ,'cust_id'          :trans.cust_id
+            ,'cust_name'        :trans.cust_name
+            ,'cust_brand'       :trans.cust_brand
+            ,'cust_carname'     :trans.cust_carname
+            ,'cust_carnumber'   :trans.cust_carnumber
+            ,'cust_number'      :trans.cust_number
+            ,'cust_email'       :trans.cust_email
+            ,'cust_pickup_add'  :trans.cust_pickup_add
+            ,'cust_drop_add'    :trans.cust_drop_add
+            ,'service_items'    :trans.service_items
+            ,'price_total'      :trans.price_total
+            ,'date_booking'     :trans.date_booking
+            ,'time_booking'     :trans.time_booking
+            ,'amount_paid'      :trans.amount_paid
+            ,'status'           :trans.status
+            ,'comments'         :trans.comments} )
+        obj['status'] = True
+        obj['counter'] = 1
+        obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 def cancel_booking_new(request):
@@ -2813,7 +2813,7 @@ def order_complete(request):
             obj['status'] = True
             obj['counter'] = 1
             obj['msg'] = "Success"
-#    mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
+        #    mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
         mviews.send_order_complete(username,userphone,useremail,booking_id)
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
@@ -2852,19 +2852,19 @@ def fetch_user_cart(request):
     obj['status'] = False
     obj['message'] = 'Access Denied'
     obj['result'] = []
-    
+
     if request.user.email in ['y.shashwat@gmail.com','shashwat@clickgarage.in', 'bhuvan.batra@gmail.com', 'sanskar@clickgarage.in', 'v.rajeev92@gmail.com', 'RajeevVempuluru']:
         userObjs = CGUser.objects.all()
-            #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
+        #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
         for user1 in userObjs:
-                obj['result'].append({
-                                'id'          : user1.id,
-                                'phone'       : user1.contact_no,
-                                'email'       : user1.email,
-                                'cart'        : user1.uc_cart
-                                # ,'name':trans.name
+            obj['result'].append({
+                'id'          : user1.id,
+                'phone'       : user1.contact_no,
+                'email'       : user1.email,
+                'cart'        : user1.uc_cart
+                # ,'name':trans.name
 
-                } )
+            } )
         obj['status'] = True
         obj['counter'] = 1
         obj['msg'] = "Success"
@@ -2999,8 +2999,8 @@ def apply_coupon(request):
             'status'         :   False
             ,'message'      :   'Not a coupon'
         }
-#    mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
-#         mviews.send_cancel_final(username,useremail,booking_id)
+    #    mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
+    #         mviews.send_cancel_final(username,useremail,booking_id)
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
@@ -3207,14 +3207,14 @@ def add_guest_transaction(request):
                     if car_bike_type == "Car":
                         template = "Servicing_Car"
                         servicing_meta_data = [{"label": "Car_Name", "data": serviceDetail.carname},
-                                           {"label": "Labour_Estimate", "data": float(serviceDetail.price_labour)},
-                                           {"label": "Parts_Estimate", "data": float(serviceDetail.price_parts)}]
+                                               {"label": "Labour_Estimate", "data": float(serviceDetail.price_labour)},
+                                               {"label": "Parts_Estimate", "data": float(serviceDetail.price_parts)}]
 
                     elif car_bike_type == "Bike":
                         template = "Servicing_Bike"
                         servicing_meta_data = [{"label": "Bike_Name", "data": serviceDetail.carname},
-                                           {"label": "Labour_Estimate", "data": float(serviceDetail.price_labour)},
-                                           {"label": "Parts_Estimate", "data": float(serviceDetail.price_parts)}]
+                                               {"label": "Labour_Estimate", "data": float(serviceDetail.price_labour)},
+                                               {"label": "Parts_Estimate", "data": float(serviceDetail.price_parts)}]
 
                     if custom_request:
                         category += ' Custom : ' + custom_request
@@ -3371,21 +3371,21 @@ def add_guest_transaction(request):
 
                     item = {
                         'id':serviceDetail.id
-                                ,'vendor'         :serviceDetail.vendor
-                                ,'brand'          :serviceDetail.brand
-                                ,'carname'        :serviceDetail.carname
-                                ,'ws_type'        :serviceDetail.ws_type
-                                ,'ws_subtype'     :serviceDetail.ws_subtype
-                                ,'colour'         :serviceDetail.colour
-                                ,'price_ws'       :serviceDetail.price_ws
-                                ,'price_sealant'  :serviceDetail.price_sealant
-                                ,'price_labour'   :serviceDetail.price_labour
-                                ,'price_insurance':serviceDetail.price_insurance
-                                ,'price_total'   :serviceDetail.price_total
-                                ,'city'           :serviceDetail.city
-                                ,'description':serviceDetail.description
-                                ,'status':True
-                                ,'ts':ts
+                        ,'vendor'         :serviceDetail.vendor
+                        ,'brand'          :serviceDetail.brand
+                        ,'carname'        :serviceDetail.carname
+                        ,'ws_type'        :serviceDetail.ws_type
+                        ,'ws_subtype'     :serviceDetail.ws_subtype
+                        ,'colour'         :serviceDetail.colour
+                        ,'price_ws'       :serviceDetail.price_ws
+                        ,'price_sealant'  :serviceDetail.price_sealant
+                        ,'price_labour'   :serviceDetail.price_labour
+                        ,'price_insurance':serviceDetail.price_insurance
+                        ,'price_total'   :serviceDetail.price_total
+                        ,'city'           :serviceDetail.city
+                        ,'description':serviceDetail.description
+                        ,'status':True
+                        ,'ts':ts
                     }
                     listItem['served_data'] = item
                     html_list.append('<span> Windshield </span>')
@@ -3675,11 +3675,11 @@ def create_guest_user(name,email='',number=None):
             # user2.save()
             user_new.save()
             return user_new
-    # def create_user(username, email, password):
-    # user = User(username=username, email=email)
-    # user.set_password(password)
-    # user.save()
-    # return user
+            # def create_user(username, email, password):
+            # user = User(username=username, email=email)
+            # user.set_password(password)
+            # user.save()
+            # return user
 
 def send_contact(request):
     obj = {}
@@ -3697,18 +3697,18 @@ def send_contact(request):
     #     # username  = tran.cust_name
     #     # booking_id = tran.booking_id
     #     # tran.status = "Cancelled"
-        # tran.save()
-        # obj['result']= {
-        #     'coupon_code'       :    cpn.coupon_code
-        #     ,'date_issue'       :    cpn.date_issue
-        #     ,'valid_till_date'  :    cpn.valid_till_date
-        #     ,'discount'         :    cpn.discount
-        #     ,'cashback'         :    cpn.cashback
-        #     ,'message'          :    cpn.message
-        #     ,'valid'            :    cpn.valid
-        #     ,'status'           :    True
-        # }
-        # obj['result']['cancell = tran_id
+    # tran.save()
+    # obj['result']= {
+    #     'coupon_code'       :    cpn.coupon_code
+    #     ,'date_issue'       :    cpn.date_issue
+    #     ,'valid_till_date'  :    cpn.valid_till_date
+    #     ,'discount'         :    cpn.discount
+    #     ,'cashback'         :    cpn.cashback
+    #     ,'message'          :    cpn.message
+    #     ,'valid'            :    cpn.valid
+    #     ,'status'           :    True
+    # }
+    # obj['result']['cancell = tran_id
     # if len(cpnObjs):
     mviews.send_contact_mail(name,phone,message)
     obj['status'] = True
@@ -3719,8 +3719,8 @@ def send_contact(request):
     #         'status'         :   False
     #         ,'message'      :   'Not a coupon'
     #     }
-#    mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
-#         mviews.send_cancel_final(username,useremail,booking_id)
+    #    mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
+    #         mviews.send_cancel_final(username,useremail,booking_id)
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
@@ -3731,7 +3731,7 @@ def send_otp(request):
 
     # phone = phone1
     phn = get_param(request,'phone',None)
-    otp = random.randint(100000, 999999)
+    otp = random.randint(1000, 9999)
     otpdatetime = datetime.datetime.now()
     message = "Your ClickGarage one time password is " + str(otp) + ". Please enter the same to complete your mobile verification."
     message = message.replace(" ","+")
@@ -3739,7 +3739,7 @@ def send_otp(request):
     username = None
     # print message
     findOtp     = Otp.objects.filter(mobile=phn)
-    if len(findOtp ):
+    if len(findOtp):
         findOtp = findOtp[0]
         obj['result']['username'] = findOtp.username
         findOtp.otp      = otp
@@ -3860,86 +3860,86 @@ def service_selected(request):
     if (service=="servicing"):
         ServicedetailObjs = ServiceDealerCatNew.objects.filter(id=id_selection)
         for service in ServicedetailObjs:
-                        obj['result'].append({
-                            'id':service.id
-                              ,'name':service.name
-                              ,'brand':service.brand
-                              ,'car':service.carname
-                              ,'car_bike':service.car_bike
-                              ,'vendor':service.dealer_category
-                              ,'parts_list':service.part_replacement
-                              ,'parts_price':service.price_parts
-                              ,'labour_price':service.price_labour
-                              ,'wa_price':service.wheel_alignment
-                              ,'wb_price':service.wheel_balancing
-                              # ,'wa_wb_present':service.WA_WB_Inc
-                              ,'dealer_details':service.detail_dealers
-                              # ,'car_bike':car_bike
-                        ,'type_service':service.type_service
-                        ,'part_dic':service.part_dic
-                        ,'labour_price':service.price_labour
-                        ,'discosunt':service.discount
-                        ,'priority':service.priority
-                     } )
+            obj['result'].append({
+                'id':service.id
+                ,'name':service.name
+                ,'brand':service.brand
+                ,'car':service.carname
+                ,'car_bike':service.car_bike
+                ,'vendor':service.dealer_category
+                ,'parts_list':service.part_replacement
+                ,'parts_price':service.price_parts
+                ,'labour_price':service.price_labour
+                ,'wa_price':service.wheel_alignment
+                ,'wb_price':service.wheel_balancing
+                # ,'wa_wb_present':service.WA_WB_Inc
+                ,'dealer_details':service.detail_dealers
+                # ,'car_bike':car_bike
+                ,'type_service':service.type_service
+                ,'part_dic':service.part_dic
+                ,'labour_price':service.price_labour
+                ,'discosunt':service.discount
+                ,'priority':service.priority
+            } )
     if (service=="cleaning"):
         CleanCatObjs=CleaningCategoryServices.objects.filter(id=id_selection)
         for service in CleanCatObjs:
-                obj['result'].append({
-                        'id':service.id
-                        ,'vendor':service.vendor
-                        ,'category':service.category
-                        ,'car_cat':service.car_cat
-                        ,'type_service':service.service
-                        ,'price_labour':service.price_labour
-                        ,'price_parts':service.price_parts
-                        ,'total_price':service.price_total
-                        ,'description':service.description
-                        ,'discount':service.discount
-                        ,'rating':service.rating
-                        ,'reviews':service.reviews
-                        ,'priority':service.priority
-                      } )
+            obj['result'].append({
+                'id':service.id
+                ,'vendor':service.vendor
+                ,'category':service.category
+                ,'car_cat':service.car_cat
+                ,'type_service':service.service
+                ,'price_labour':service.price_labour
+                ,'price_parts':service.price_parts
+                ,'total_price':service.price_total
+                ,'description':service.description
+                ,'discount':service.discount
+                ,'rating':service.rating
+                ,'reviews':service.reviews
+                ,'priority':service.priority
+            } )
     if (service=="vas"):
         VasCatObjs=VASCategoryServices.objects.filter(id=id_selection)
         for service in VasCatObjs:
-                obj['result'].append({
-                        'id':service.id
-                        ,'vendor':service.vendor
-                        ,'category':service.category
-                        ,'car_cat':service.car_cat
-                        ,'type_service':service.service
-                        ,'price_labour':service.price_labour
-                        ,'price_parts':service.price_parts
-                        ,'total_price':service.price_total
-                        ,'description':service.description
-                        ,'doorstep':service.doorstep
-                        ,'discount':service.discount
-                        ,'rating':service.rating
-                        ,'reviews':service.reviews
-                        ,'car_bike': service.car_bike
-                        ,'priority':service.priority
-                      } )
+            obj['result'].append({
+                'id':service.id
+                ,'vendor':service.vendor
+                ,'category':service.category
+                ,'car_cat':service.car_cat
+                ,'type_service':service.service
+                ,'price_labour':service.price_labour
+                ,'price_parts':service.price_parts
+                ,'total_price':service.price_total
+                ,'description':service.description
+                ,'doorstep':service.doorstep
+                ,'discount':service.discount
+                ,'rating':service.rating
+                ,'reviews':service.reviews
+                ,'car_bike': service.car_bike
+                ,'priority':service.priority
+            } )
     if (service=="windshield"):
         wsTypeObjs=WindShieldServiceDetails.objects.filter(id=id_selection)
         # wsTypeObjs = WindShieldServiceDetails.objects.filter(city=city,vendor = vendor, ws_type = ws_type, carname = carname, brand=brand)
         for service in wsTypeObjs:
             obj['result'].append({'id':service.id
-                                    ,'vendor':service.vendor
-                                    ,'brand':service.brand
-                                    ,'carname':service.carname
-                                    ,'colour':service.colour
-                                    ,'type_service':service.ws_type
-                                    ,'ws_subtype':service.ws_subtype
-                                    ,'price_ws':service.price_ws
-                                    ,'price_sealant':service.price_sealant
-                                    ,'price_labour':service.price_labour
-                                    ,'price_insurance':service.price_insurance
-                                    ,'total_price'    :service.price_total
-                                    ,'city'           :service.city
-                                    ,'description':service.description
-                                    ,'rating':service.rating
-                                    ,'reviews':service.reviews
-                              } )
+                                     ,'vendor':service.vendor
+                                     ,'brand':service.brand
+                                     ,'carname':service.carname
+                                     ,'colour':service.colour
+                                     ,'type_service':service.ws_type
+                                     ,'ws_subtype':service.ws_subtype
+                                     ,'price_ws':service.price_ws
+                                     ,'price_sealant':service.price_sealant
+                                     ,'price_labour':service.price_labour
+                                     ,'price_insurance':service.price_insurance
+                                     ,'total_price'    :service.price_total
+                                     ,'city'           :service.city
+                                     ,'description':service.description
+                                     ,'rating':service.rating
+                                     ,'reviews':service.reviews
+                                  } )
 
 
 
@@ -3957,8 +3957,8 @@ def service_selected(request):
     #         'status'         :   False
     #         ,'message'      :   'Not a coupon'
     #     }
-#    mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
-#         mviews.send_cancel_final(username,useremail,booking_id)
+    #    mviews.send_booking_final(name,email,number,pick_obj['time'],pick_obj['date'],str(booking_id),html_script)
+    #         mviews.send_cancel_final(username,useremail,booking_id)
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 # Drivers APIs
@@ -3995,18 +3995,18 @@ def get_type_make(request):
     VehObjs = Vehicle.objects.filter(car_bike = vehicle_type).order_by('make')
     for veh in VehObjs:
         obj['result'].append({
-                            # 'id' :            veh.id
-                            'make':           veh.make
-                            # 'model' :         veh.model
-                            # 'year' :          veh.year
-                            # 'fuel_type' :     veh.fuel_type
-                            # 'full_veh_name':  veh.full_veh_name
-                            # 'aspect_ratio' :  veh.aspect_ratio
-                            # 'size' :          veh.size
-                            # 'car_bike' :      veh.car_bike
-                            # 'engine_oil' :    veh.engine_oil
-                            # 'active' :        veh.active
-                                  })
+            # 'id' :            veh.id
+            'make':           veh.make
+            # 'model' :         veh.model
+            # 'year' :          veh.year
+            # 'fuel_type' :     veh.fuel_type
+            # 'full_veh_name':  veh.full_veh_name
+            # 'aspect_ratio' :  veh.aspect_ratio
+            # 'size' :          veh.size
+            # 'car_bike' :      veh.car_bike
+            # 'engine_oil' :    veh.engine_oil
+            # 'active' :        veh.active
+        })
 
     obj['result'] = {v['make']:v for v in obj['result']}.values()
     obj['result'] = sorted(obj['result'], key=operator.itemgetter('make'))
@@ -4031,18 +4031,18 @@ def get_make_model(request):
     VehObjs = Vehicle.objects.filter(car_bike = vehicle_type, make = make_id).order_by('model')
     for veh in VehObjs:
         obj['result'].append({
-                            # 'id' :            veh.id
-                            'make':           veh.make,
-                            'model' :         veh.model
-                            # 'year' :          veh.year
-                            # 'fuel_type' :     veh.fuel_type
-                            # 'full_veh_name':  veh.full_veh_name
-                            # 'aspect_ratio' :  veh.aspect_ratio
-                            # 'size' :          veh.size
-                            # 'car_bike' :      veh.car_bike
-                            # 'engine_oil' :    veh.engine_oil
-                            # 'active' :        veh.active
-                                  } )
+            # 'id' :            veh.id
+            'make':           veh.make,
+            'model' :         veh.model
+            # 'year' :          veh.year
+            # 'fuel_type' :     veh.fuel_type
+            # 'full_veh_name':  veh.full_veh_name
+            # 'aspect_ratio' :  veh.aspect_ratio
+            # 'size' :          veh.size
+            # 'car_bike' :      veh.car_bike
+            # 'engine_oil' :    veh.engine_oil
+            # 'active' :        veh.active
+        } )
 
     obj['result'] = {v['model']:v for v in obj['result']}.values()
     obj['result'] = sorted(obj['result'], key=operator.itemgetter('make','model'))
@@ -4056,15 +4056,24 @@ def get_jobs_vehicle(request):
     model_id = get_param(request,'model_id',None)
     fuel_id = get_param(request,'fuel_id',None)
     service_type = get_param(request, 'service_type', None)
+    doorstep = get_param(request,'doorstep',None)
+    sub_cat = get_param(request,'sub_cat',None)
+
 
     obj = {}
-
     obj['status'] = False
     obj['result'] = []
+
+    jobObjs = Services.objects.filter(make=make_id, model=model_id, fuel_type=fuel_id).order_by('priority')
+
     if service_type != None:
-        jobObjs = Services.objects.filter(make = make_id, model = model_id, fuel_type = fuel_id, service_cat = service_type).order_by('priority')
-    else:
-        jobObjs = Services.objects.filter(make=make_id, model=model_id, fuel_type=fuel_id).order_by('priority')
+        jobObjs = jobObjs.filter(make = make_id, model = model_id, fuel_type = fuel_id, service_cat = service_type).order_by('priority')
+
+    if sub_cat != None:
+        jobObjs = jobObjs.filter(job_sub_cat = sub_cat)
+
+    if doorstep != None:
+        jobObjs = jobObjs.filter(doorstep=doorstep)
 
     for job in jobObjs:
         obj['result'].append({
@@ -4077,21 +4086,22 @@ def get_jobs_vehicle(request):
             , "car_bike"    : job.car_bike
             , "city"    : job.city
             , "service_cat"    : job.service_cat
-            , "service_desc"    : job.service_desc
+            # , "service_desc"    : job.service_desc
+            , "job_sub_cat": job.job_sub_cat
             , "job_name"    : job.job_name
             , "doorstep"    : job.doorstep
             , "job_summary"    : job.job_summary
             , "job_desc"    : job.job_desc
             , "job_features"    : job.job_features
             , "job_symptoms"    : job.job_symptoms
-            , "job_dealer"    : job.dealer
+            , "job_vendor"    : job.vendor
             , "default_comp"    : job.default_components
             , "optional_comp"    : job.optional_components
             , "total_price"    : job.total_price
             , "total_part": job.total_part
             , "total_labour": job.total_labour
             , "total_discount": job.total_discount
-
+            , "price_active": job.price_active
             , "total_price_comp"    : job.total_price_comp
             , "time"    : job.time
             , "priority"    : job.priority
@@ -4114,6 +4124,9 @@ def add_job_cart(request):
     cg_labour = 0
     cg_discount = 0
     comp_price = 0
+    cg_price_doorstep = 0
+    cg_price_workshop = 0
+    car_bike = ""
     jobs = 0
     list_ids = []
     if service_ids !=None:
@@ -4125,7 +4138,7 @@ def add_job_cart(request):
     for job in jobObjs:
         jobs = jobs +1
         obj['result']['cart_details'].append({
-             "id" :   job.id
+            "id" :   job.id
             ,"make"	: job.make
             ,"model"    : job.model
             ,"year"    : job.year
@@ -4134,14 +4147,15 @@ def add_job_cart(request):
             , "car_bike"    : job.car_bike
             , "city"    : job.city
             , "service_cat"    : job.service_cat
-            , "service_desc"    : job.service_desc
+            # , "service_desc"    : job.service_desc
             , "job_name"    : job.job_name
+            , "price_active": job.price_active
             , "doorstep"    : job.doorstep
             , "job_summary"    : job.job_summary
             , "job_desc"    : job.job_desc
             , "job_features"    : job.job_features
             , "job_symptoms"    : job.job_symptoms
-            , "job_dealer"    : job.dealer
+            , "job_vendor"    : job.vendor
             , "default_comp"    : job.default_components
             , "optional_comp"    : job.optional_components
             , "total_price"    : job.total_price
@@ -4153,7 +4167,14 @@ def add_job_cart(request):
             , "priority"    : job.priority
         }
         )
+
         cg_price = float(job.total_price) + cg_price
+        car_bike = job.car_bike
+        if job.doorstep =="1":
+            cg_price_doorstep = float(job.total_price) + cg_price_doorstep
+        else:
+            cg_price_workshop = float(job.total_price) + cg_price_workshop
+
         if job.total_part != None:
             cg_part = float(job.total_part) + cg_part
         if job.total_labour != None:
@@ -4168,7 +4189,10 @@ def add_job_cart(request):
         discount = (comp_price-cg_price)/comp_price
 
     obj['result']['cart_summary'] = [{
-        "cg_amount": cg_price
+        "car_bike":car_bike
+        ,"cg_amount": cg_price
+        ,"cg_amount_doorstep":cg_price_doorstep
+        , "cg_amount_workshop": cg_price_workshop
         , "comp_amount": comp_price
         ,"discount": discount
         ,"diff_amount": (comp_price-cg_price)
@@ -4256,11 +4280,11 @@ def post_message(request):
     time_stamp = get_param(request, 'time_stamp', None)
     message = get_param(request,'message',None)
     cc = Messages(firstname = firstname,
-                lastname  = lastname,
-                number    = number,
-                message   = message,
-                email     = email,
-                time_stamp      = time_stamp)
+                  lastname  = lastname,
+                  number    = number,
+                  message   = message,
+                  email     = email,
+                  time_stamp      = time_stamp)
     cc.save()
 
     mviews.send_message(firstname,lastname, number,email, message)
@@ -4274,14 +4298,14 @@ def send_otp_new(request):
     obj['status'] = False
     obj['result'] = {}
     phn = get_param(request,'phone',None)
-    otp = random.randint(100000, 999999)
+    otp = random.randint(1000, 9999)
     otpdatetime = datetime.datetime.now()
     message = "Your ClickGarage one time password is " + str(otp) + ". Please enter the same to complete your mobile verification."
     message = message.replace(" ","+")
     newFlag = False
     username = None
     findOtp     = Otp.objects.filter(mobile=phn)
-    if len(findOtp ):
+    if len(findOtp):
         findOtp = findOtp[0]
         obj['result']['username'] = findOtp.username
         findOtp.otp      = otp
@@ -4468,7 +4492,7 @@ def create_check_user(name,number):
 
 
 def place_booking(user_id, name, number, email, reg_number, address, locality, city, order_list, make, veh_type, model,
-               fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source, booking_flag):
+                  fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source, booking_flag):
     if booking_flag:
         status = "Confirmed"
     else:
@@ -4479,8 +4503,8 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
     estimate_by_number = number
     estimate_by_name = name
     estimate_history = [{"timestamp": new_estimate_timestamp, "change_by_userid": estimate_by_id,
-                                 "change_by_number": estimate_by_number, "change_by_name": estimate_by_name,
-                                 'work_estimate': order_list}]
+                         "change_by_number": estimate_by_number, "change_by_name": estimate_by_name,
+                         'work_estimate': order_list}]
 
     # update user
     user = CGUserNew.objects.filter(id=user_id)[0]
@@ -4503,34 +4527,35 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
         booking_id = int(tran['booking_id__max'] + 1)
 
     tt= Bookings(booking_flag           = booking_flag  ,
-                    booking_id             =booking_id      ,
-                    booking_timestamp      =time.time()     ,
-                    cust_id                =user_id         ,
-                    cust_name              =name            ,
-                    cust_make              =make            ,
-                    cust_model             =model           ,
-                    cust_vehicle_type      =veh_type        ,
-                    cust_fuel_varient      =fuel            ,
-                    cust_regnumber         =reg_number      ,
-                    cust_number            =number           ,
-                    cust_email             =email            ,
-                    cust_address           =address          ,
-                    cust_locality          =locality         ,
-                    cust_city              =city             ,
-                    service_items          =order_list       ,
-                    price_total            =price_total      ,
-                    date_booking           =date              ,
-                    time_booking           =time_str          ,
-                    is_paid                =is_paid           ,
-                    amount_paid            =paid_amt          ,
-                    coupon                 =coupon            ,
-                    status                 =status            ,
-                    comments               =comment           ,
-                    source                 =source           ,
-                    agent                  =    "",
-                    # lead_follow_up_date = follow_up_date,
-                    estimate_history    =estimate_history)
+                 booking_id             =booking_id      ,
+                 booking_timestamp      =time.time()     ,
+                 cust_id                =user_id         ,
+                 cust_name              =name            ,
+                 cust_make              =make            ,
+                 cust_model             =model           ,
+                 cust_vehicle_type      =veh_type        ,
+                 cust_fuel_varient      =fuel            ,
+                 cust_regnumber         =reg_number      ,
+                 cust_number            =number           ,
+                 cust_email             =email            ,
+                 cust_address           =address          ,
+                 cust_locality          =locality         ,
+                 cust_city              =city             ,
+                 service_items          =order_list       ,
+                 price_total            =price_total      ,
+                 date_booking           =date              ,
+                 time_booking           =time_str          ,
+                 is_paid                =is_paid           ,
+                 amount_paid            =paid_amt          ,
+                 coupon                 =coupon            ,
+                 status                 =status            ,
+                 comments               =comment           ,
+                 source                 =source           ,
+                 agent                  =    "",
+                 # lead_follow_up_date = follow_up_date,
+                 estimate_history    =estimate_history)
     tt.save()
+    mviews.send_booking_confirm(email=email,name=name,time=time_str,date=date,booking_id=booking_id,number=number)
     return {'Status': "Order Placed", 'booking_id': str(tt.id)}
 
 def send_otp_booking(request):
@@ -4573,7 +4598,7 @@ def send_otp_booking(request):
             user.backend = 'django.contrib.auth.backends.ModelBackend'
             login(request, user)
         booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city, order_list, make,
-                                  veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source,booking_flag)
+                                veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source,booking_flag)
         obj['result'] = {}
         obj['result']['userid'] = request.user.id
         obj['result']['booking'] = booking
@@ -4589,14 +4614,13 @@ def send_otp_booking(request):
         obj['result']['msg'] = obj['msg']
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
-
 def set_cookie(response, key, value, days_expire = 7):
-  if days_expire is None:
-    max_age = 365 * 24 * 60 * 60  #one year
-  else:
-    max_age = days_expire * 24 * 60 * 60
-  expires = datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(seconds=max_age), "%a, %d-%b-%Y %H:%M:%S GMT")
-  response.set_cookie(key, value, max_age=max_age, expires=expires)
+    if days_expire is None:
+        max_age = 365 * 24 * 60 * 60  #one year
+    else:
+        max_age = days_expire * 24 * 60 * 60
+    expires = datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(seconds=max_age), "%a, %d-%b-%Y %H:%M:%S GMT")
+    response.set_cookie(key, value, max_age=max_age, expires=expires)
 
 def verify_otp_password_cookie(request):
     obj = {}
@@ -4649,6 +4673,16 @@ def verify_otp_password_cookie(request):
         set_cookie(response,"c_user_id", user.id)
         set_cookie(response, "c_user_first_name", user.first_name)
         set_cookie(response, "c_user_last_name", user.last_name)
+        set_cookie(response, "c_user_number", user.contact_no)
+        set_cookie(response, "c_user_email", user.email_list[0])
+        set_cookie(response, "c_user_address", user.user_saved_address[0]['address'])
+        set_cookie(response, "c_user_locality", user.user_saved_address[0]['locality'])
+        set_cookie(response, "c_user_city", user.user_saved_address[0]['city'])
+    # local.clearKey('c_user_email');
+    # local.clearKey('c_user_address');
+    # local.clearKey('c_user_locality');
+    # local.clearKey('c_user_city');
+
     # finally:
     return response
 
@@ -4690,6 +4724,11 @@ def set_password_otp(request):
         set_cookie(response,"c_user_id", user.id)
         set_cookie(response, "c_user_first_name", user.first_name)
         set_cookie(response, "c_user_last_name", user.last_name)
+        set_cookie(response, "c_user_number", user.contact_no)
+        set_cookie(response, "c_user_email", user.email_list[0])
+        set_cookie(response, "c_user_address", user.user_saved_address[0]['address'])
+        set_cookie(response, "c_user_locality", user.user_saved_address[0]['locality'])
+        set_cookie(response, "c_user_city", user.user_saved_address[0]['city'])
     return response
 
 def sign_up_otp(request):
@@ -4725,6 +4764,11 @@ def sign_up_otp(request):
         set_cookie(response,"c_user_id", user.id)
         set_cookie(response, "c_user_first_name", user.first_name)
         set_cookie(response, "c_user_last_name", user.last_name)
+        set_cookie(response, "c_user_number", user.contact_no)
+        set_cookie(response, "c_user_email", user.email_list[0])
+        set_cookie(response, "c_user_address", user.user_saved_address[0]['address'])
+        set_cookie(response, "c_user_locality", user.user_saved_address[0]['locality'])
+        set_cookie(response, "c_user_city", user.user_saved_address[0]['city'])
     return response
 
 def logout_view(request):
@@ -4742,15 +4786,15 @@ calltype='promo'
 from pprint import pprint
 def connect_customer_to_agent_exo(agent_no, customer_no, timelimit=None, timeout=None):
     return requests.post('https://twilix.exotel.in/v1/Accounts/{sid}/Calls/connect.json'.format(sid=sid),
-        auth=(sid, token),
-        data= {
-            'From': agent_no,
-            'To': customer_no,
-            'CallerId': callerid,
-            'TimeLimit': timelimit,
-            'TimeOut': timeout,
-            'CallType': calltype
-        })
+                         auth=(sid, token),
+                         data= {
+                             'From': agent_no,
+                             'To': customer_no,
+                             'CallerId': callerid,
+                             'TimeLimit': timelimit,
+                             'TimeOut': timeout,
+                             'CallType': calltype
+                         })
 
 def call_customer(request):
     obj = {}
@@ -4804,56 +4848,90 @@ def view_all_bookings(request):
         tranObjs = tranObjs
 
     for trans in tranObjs:
-            oldformat_b = str(trans.date_booking)
-            datetimeobject = datetime.datetime.strptime(oldformat_b, '%Y-%m-%d')
-            newformat_b = datetimeobject.strftime('%d-%m-%Y')
+        oldformat_b = str(trans.date_booking)
+        datetimeobject = datetime.datetime.strptime(oldformat_b, '%Y-%m-%d')
+        newformat_b = datetimeobject.strftime('%d-%m-%Y')
 
-            # oldformat_f = str(trans.lead_follow_up_date)
-            # if oldformat_f == "None":
-            #     oldformat_f = oldformat_b
-            # datetimeobject = datetime.datetime.strptime(oldformat_f, '%Y-%m-%d')
-            # newformat_f = datetimeobject.strftime('%d-%m-%Y')
-
-            obj['result'].append({
-                'booking_flag': trans.booking_flag,
-                'booking_id': trans.booking_id,
-                'booking_timestamp': trans.booking_timestamp,
-                'cust_id': trans.cust_id,
-                'cust_name': trans.cust_name,
-                'cust_make': trans.cust_make,
-                'cust_model': trans.cust_model,
-                'cust_vehicle_type': trans.cust_vehicle_type,
-                'cust_fuel_varient': trans.cust_fuel_varient,
-                'cust_regnumber': trans.cust_regnumber,
-                'cust_number': trans.cust_number,
-                'cust_email': trans.cust_email,
-                'cust_address': trans.cust_address,
-                'cust_locality': trans.cust_locality,
-                'cust_city': trans.cust_city,
-                'service_items': trans.service_items,
-                'part_total': trans.price_part,
-                'labour_total': trans.price_labour,
-                'discount_total': trans.price_discount,
-                'price_total': trans.price_total,
-                'date_booking': newformat_b,
-                # 'follow_up_date': newformat_f,
-                'time_booking': trans.time_booking,
-                'is_paid': trans.is_paid,
-                'amount_paid': trans.amount_paid,
-                'coupon': trans.coupon,
-                'status': trans.status,
-                'comments': trans.comments,
-                'source': trans.source,
-                'agent': trans.agent,
-                'estimate_history': trans.estimate_history,
-            })
+        # oldformat_f = str(trans.lead_follow_up_date)
+        # if oldformat_f == "None":
+        #     oldformat_f = oldformat_b
+        # datetimeobject = datetime.datetime.strptime(oldformat_f, '%Y-%m-%d')
+        # newformat_f = datetimeobject.strftime('%d-%m-%Y')
+        if trans.agent != "":
+            agent = fetch_user(trans.agent)
+            agent_name = agent['result'][0]['first_name']
+            agent_num = agent['result'][0]['phone']
+            agent_details = agent_name +" - "+agent_num
+        else:
+            agent_details = "Not Assigned"
+        obj['result'].append({
+            'booking_flag': trans.booking_flag,
+            'booking_id': trans.booking_id,
+            'booking_timestamp': trans.booking_timestamp,
+            'cust_id': trans.cust_id,
+            'cust_name': trans.cust_name,
+            'cust_make': trans.cust_make,
+            'cust_model': trans.cust_model,
+            'cust_vehicle_type': trans.cust_vehicle_type,
+            'cust_fuel_varient': trans.cust_fuel_varient,
+            'cust_regnumber': trans.cust_regnumber,
+            'cust_number': trans.cust_number,
+            'cust_email': trans.cust_email,
+            'cust_address': trans.cust_address,
+            'cust_locality': trans.cust_locality,
+            'cust_city': trans.cust_city,
+            'service_items': trans.service_items,
+            'part_total': trans.price_part,
+            'labour_total': trans.price_labour,
+            'discount_total': trans.price_discount,
+            'price_total': trans.price_total,
+            'date_booking': newformat_b,
+            # 'follow_up_date': newformat_f,
+            'time_booking': trans.time_booking,
+            'is_paid': trans.is_paid,
+            'amount_paid': trans.amount_paid,
+            'coupon': trans.coupon,
+            'status': trans.status,
+            'comments': trans.comments,
+            'source': trans.source,
+            'agent': trans.agent,
+            'estimate_history': trans.estimate_history,
+            'agent_details': agent_details
+        })
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
     obj['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent,
-                  'staff': request.user.is_staff}
+                          'staff': request.user.is_staff}
 
     return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def fetch_user(user_id):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    tranObjs = CGUserNew.objects.filter(id=user_id)
+    for trans in tranObjs:
+        obj['result'].append({
+            'id'   :trans.id
+            ,'email':trans.email_list
+            ,'phone':trans.contact_no
+            ,'uname':trans.username
+            ,'first_name':trans.first_name
+            ,'last_name':trans.last_name
+            ,'agent': trans.is_agent
+            , 'user': trans.is_user
+            , 'admin': trans.is_admin
+            ,'staff': trans.is_staff
+            ,'b2b': trans.is_b2b
+            , 'user_address': trans.user_saved_address
+            , 'user_vehicles': trans.user_veh_list
+
+        })
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return obj
 
 
 def fetch_all_users(request):
@@ -4861,39 +4939,44 @@ def fetch_all_users(request):
     obj['status'] = False
     obj['result'] = []
     type = get_param(request, 'type', None)
+    userid = get_param(request,'u_id',None)
 
-    if type ==None:
-        tranObjs = CGUserNew.objects.all()
-    else:
+    tranObjs = CGUserNew.objects.all()
+
+    if userid != None:
+        tranObjs = tranObjs.filter(id=userid)
+
+    if type != None:
         if type == "agent":
-            tranObjs = CGUserNew.objects.filter(is_agent=True)
+            tranObjs = tranObjs.filter(is_agent=True)
         elif type == "b2b":
-            tranObjs = CGUserNew.objects.filter(is_b2b=True)
+            tranObjs = tranObjs.filter(is_b2b=True)
         elif type == "user":
-            tranObjs = CGUserNew.objects.filter(is_user=True)
+            tranObjs = tranObjs.filter(is_user=True)
         elif type == "admin":
-            tranObjs = CGUserNew.objects.filter(is_admin=True)
+            tranObjs = tranObjs.filter(is_admin=True)
         elif type == "staff":
-            tranObjs = CGUserNew.objects.filter(is_admin=True)
-        else:
-            tranObjs = CGUserNew.objects.all()
-    for trans in tranObjs:
-            obj['result'].append({
-                        'id'   :trans.id
-                        ,'email':trans.email_list
-                        ,'phone':trans.contact_no
-                        ,'uname':trans.username
-                        ,'first_name':trans.first_name
-                        ,'last_name':trans.last_name
-                        ,'agent': trans.is_agent
-                        , 'user': trans.is_user
-                        , 'admin': trans.is_admin
-                        ,'staff': trans.is_staff
-                        ,'b2b': trans.is_b2b
-                        , 'user_address': trans.user_saved_address
-                        , 'user_vehicles': trans.user_veh_list
+            tranObjs = tranObjs.filter(is_admin=True)
+        # else:
+        #     tranObjs = CGUserNew.objects.all()
 
-            })
+    for trans in tranObjs:
+        obj['result'].append({
+            'id'   :trans.id
+            ,'email':trans.email_list
+            ,'phone':trans.contact_no
+            ,'uname':trans.username
+            ,'first_name':trans.first_name
+            ,'last_name':trans.last_name
+            ,'agent': trans.is_agent
+            , 'user': trans.is_user
+            , 'admin': trans.is_admin
+            ,'staff': trans.is_staff
+            ,'b2b': trans.is_b2b
+            , 'user_address': trans.user_saved_address
+            , 'user_vehicles': trans.user_veh_list
+
+        })
     obj['status'] = True
     obj['counter'] = 1
     obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
@@ -4905,13 +4988,27 @@ def update_user(request):
     obj['status'] = False
     obj['result'] = []
     user_id = get_param(request, 'user_id', None)
+    user_name = get_param(request, 'user_name',None)
+    # user_lname = get_param(request, 'user_lname',None)
+    user_num = get_param(request, 'user_num',None)
+    user_email = get_param(request, 'user_email',None)
+    user_add = get_param(request, 'user_add',None)
+    user_loc = get_param(request, 'user_loc',None)
+    user_city = get_param(request, 'user_city',None)
     agent = get_param(request, 'agent_st', None)
     b2b = get_param(request, 'b2b_st', None)
     admin = get_param(request, 'admin_st', None)
     staff = get_param(request, 'staff_st', None)
-    user2 = CGUserNew.objects.filter(id=user_id)[0]
-    # print (request.user)
+    if user_id == "" or user_id == None:
+        user2 = create_check_user(name=user_name,number=user_num)
+    else:
+        user2 = CGUserNew.objects.filter(id=user_id)[0]
     if production or request.user.is_admin:
+        address2 = {'address': user_add, 'locality': user_loc, 'city': user_city}
+        if address2 not in user2.user_saved_address:
+            user2.user_saved_address.append(address2)
+        if user_email not in user2.email_list:
+            user2.email_list.append(user_email)
         if agent == "true":
             user2.is_agent = True
         else:
@@ -4939,17 +5036,17 @@ def update_booking(request):
     obj['status'] = False
     obj['result'] = []
     booking_id = get_param(request, 'b_id', None)
-    agent_id = get_param(request,'agent_id',None)
+    # agent_id = get_param(request,'agent_id',None)
     email_n = get_param(request,'email',None)
     reg_number_n = get_param(request,'reg_number',None)
     comment_n = get_param(request,'comment',None)
-    estimate = get_param(request,'estimate',None)
+    # estimate = get_param(request,'estimate',None)
     time_n = get_param(request,'time',None)
     date_n = get_param(request, 'date', None)
     booking = Bookings.objects.filter(booking_id=booking_id)[0]
 
-    if agent_id != None and agent_id != "":
-        booking.agent = agent_id
+    # if agent_id != None and agent_id != "":
+    #     booking.agent = agent_id
 
     if reg_number_n != None:
         booking.cust_regnumber = reg_number_n
@@ -4966,6 +5063,63 @@ def update_booking(request):
         newformat = datetimeobject.strftime('%Y-%m-%d')
         date_n = newformat
         booking.date_booking = date_n
+
+    # if estimate != None:
+    #     old_estimate = booking.service_items
+    #     new_estimate_timestamp = time.time()
+    #     estimate_by_id = request.user.id
+    #     estimate_by_number = request.user.contact_no
+    #     estimate_by_name = request.user.first_name + " " + request.user.last_name
+    #     estimate = json.loads(estimate)
+    #     booking.service_items = estimate
+    #     total_price = 0
+    #     total_part = 0
+    #     total_labour = 0
+    #     total_discount = 0
+    #     # print estimate
+    #     for item in estimate:
+    #         # print item
+    #         if item['type']=="Part":
+    #             total_price = total_price + float(item['price'])
+    #             total_part = total_part + float(item['price'])
+    #         elif item['type']=="Labour":
+    #             total_price = total_price + float(item['price'])
+    #             total_labour = total_labour + float(item['price'])
+    #         elif item['type'] == "Discount":
+    #             total_price = total_price - float(item['price'])
+    #             total_discount = total_discount + float(item['price'])
+    #     booking.price_total = str(total_price)
+    #     booking.price_labour = str(total_labour)
+    #     booking.price_part = str(total_part)
+    #     booking.price_discount = str(total_discount)
+        # print total_price
+        # print total_labour
+        # print total_discount
+        # print total_part
+        # a = booking.estimate_history.append({"timestamp": new_estimate_timestamp, "change_by_userid" : estimate_by_id, "change_by_number": estimate_by_number, "change_by_name":  estimate_by_name, 'estimate':old_estimate})
+        # print a
+    if email_n != None:
+        booking.cust_email = email_n
+        user = CGUserNew.objects.filter(id=booking.cust_id)[0]
+        if email_n not in user.email_list:
+            user.email_list.append(email_n)
+        user.save()
+
+    booking.save()
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def update_estimate(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    booking_id = get_param(request, 'b_id', None)
+    estimate = get_param(request,'estimate',None)
+
+    booking = Bookings.objects.filter(booking_id=booking_id)[0]
 
     if estimate != None:
         old_estimate = booking.service_items
@@ -5001,12 +5155,6 @@ def update_booking(request):
         # print total_part
         a = booking.estimate_history.append({"timestamp": new_estimate_timestamp, "change_by_userid" : estimate_by_id, "change_by_number": estimate_by_number, "change_by_name":  estimate_by_name, 'estimate':old_estimate})
         print a
-    if email_n != None:
-        booking.cust_email = email_n
-        user = CGUserNew.objects.filter(id=booking.cust_id)[0]
-        if email_n not in user.email_list:
-            user.email_list.append(email_n)
-        user.save()
 
     booking.save()
     obj['status'] = True
@@ -5014,6 +5162,54 @@ def update_booking(request):
     obj['msg'] = "Success"
     obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
     return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def update_agent(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    booking_id = get_param(request, 'b_id', None)
+    agent_id = get_param(request,'agent_id',None)
+    booking = Bookings.objects.filter(booking_id=booking_id)[0]
+
+    if agent_id != None and agent_id != "":
+        booking.agent = agent_id
+
+    estimate = booking.service_items
+
+    agent = fetch_user(agent_id)
+    agent_name = agent['result'][0]['first_name']
+    agent_num = agent['result'][0]['phone']
+    cust_name = booking.cust_name
+    cust_num = booking.cust_number
+    oldformat_b = str(booking.date_booking)
+    datetimeobject = datetime.datetime.strptime(oldformat_b, '%Y-%m-%d')
+    date = datetimeobject.strftime('%d-%m-%Y')
+
+    time = booking.time_booking
+    comments = booking.comments
+    total = booking.price_total
+    address = booking.cust_address+" "+booking.cust_locality+" "+booking.cust_city
+    vehicle = booking.cust_make+ " "+booking.cust_model+" "+booking.cust_fuel_varient
+    # service_breakup = ""
+    # for item in estimate:
+    #     service_breakup = service_breakup + item['name'] +"-"+item['price']+" "
+
+    mviews.send_booking_to_agent(agent_name, agent_num, cust_num, date, time, booking_id, cust_name, comments,
+                             total, address,vehicle)
+    booking.status = "Assigned"
+    booking.save()
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+
+
+
+
+
 
 def add_modify_coupon(request):
     obj = {}
@@ -5062,17 +5258,17 @@ def add_modify_coupon(request):
         findCoupon.save()
     else:
         coupon = CouponNew(
-                    datetime_created= datetime_created,
-                    coupon_code=coupon_code,
-                    date_start=date_start,
-                    expiry_date=expiry_date,
-                    type=type,
-                    active=True,
-                    message=message,
-                    category=category,
-                    value=value,
-                    car_bike=car_bike,
-                    cap=cap)
+            datetime_created= datetime_created,
+            coupon_code=coupon_code,
+            date_start=date_start,
+            expiry_date=expiry_date,
+            type=type,
+            active=True,
+            message=message,
+            category=category,
+            value=value,
+            car_bike=car_bike,
+            cap=cap)
         coupon.save()
     obj['status'] = True
     obj['result'] = "Success"
@@ -5091,28 +5287,28 @@ def view_all_coupons(request):
         coupons = CouponNew.objects.filter(id=coupon_id)
 
     for coupon in coupons:
-            oldformat_s = str(coupon.date_start)
-            datetimeobject = datetime.datetime.strptime(oldformat_s,'%Y-%m-%d')
-            newformat_s = datetimeobject.strftime('%d-%m-%Y')
+        oldformat_s = str(coupon.date_start)
+        datetimeobject = datetime.datetime.strptime(oldformat_s,'%Y-%m-%d')
+        newformat_s = datetimeobject.strftime('%d-%m-%Y')
 
-            oldformat_e = str(coupon.expiry_date)
-            datetimeobject = datetime.datetime.strptime(oldformat_e, '%Y-%m-%d')
-            newformat_e = datetimeobject.strftime('%d-%m-%Y')
+        oldformat_e = str(coupon.expiry_date)
+        datetimeobject = datetime.datetime.strptime(oldformat_e, '%Y-%m-%d')
+        newformat_e = datetimeobject.strftime('%d-%m-%Y')
 
-            obj['result'].append({
-                'id'   :coupon.id
-                ,'datetime_created': coupon.datetime_created
-                ,'date_start': newformat_s
-                ,'expiry_date': newformat_e
-                ,'type': coupon.type
-                ,'active': coupon.active
-                ,'message': coupon.message
-                ,'coupon_code': coupon.coupon_code
-                ,'category': coupon.category
-                ,'value': coupon.value
-                ,'car_bike': coupon.car_bike
-                ,'cap': coupon.cap
-            })
+        obj['result'].append({
+            'id'   :coupon.id
+            ,'datetime_created': coupon.datetime_created
+            ,'date_start': newformat_s
+            ,'expiry_date': newformat_e
+            ,'type': coupon.type
+            ,'active': coupon.active
+            ,'message': coupon.message
+            ,'coupon_code': coupon.coupon_code
+            ,'category': coupon.category
+            ,'value': coupon.value
+            ,'car_bike': coupon.car_bike
+            ,'cap': coupon.cap
+        })
     obj['status'] = True
     obj['counter'] = 1
     obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
@@ -5202,9 +5398,7 @@ def send_booking(request):
     # datetimeobject = datetime.datetime.strptime(oldformat_f, '%d-%m-%Y')
     # newformat_f = datetimeobject.strftime('%Y-%m-%d')
     # follow_up_date = newformat_f
-
-
-
+    obj2 = {}
     obj = checkOTP_new(onetp, number)
     if request.user.is_authenticated():
         if request.user.is_b2b:
@@ -5248,24 +5442,30 @@ def send_booking(request):
                                         make,
                                         veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
                                         price_total, source, booking_flag)
+        obj2['result'] = {}
+        obj2['result']['userid'] = user.id
+        obj2['result']['booking'] = booking
+        obj2['result']['auth'] = True
+        obj2['result']['msg'] = "Authenticated User"
+
     elif obj['status']:
         user = create_check_user(name,number)
         user.backend = 'django.contrib.auth.backends.ModelBackend'
         login(request, user)
         booking_flag = False
         booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city, order_list, make,
-                                  veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source,booking_flag)
-        obj['result'] = {}
-        obj['result']['userid'] = user.id
-        obj['result']['booking'] = booking
-        obj['result']['auth'] = True
-        obj['result']['msg'] = obj['msg']
+                                veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source,booking_flag)
+        obj2['result'] = {}
+        obj2['result']['userid'] = user.id
+        obj2['result']['booking'] = booking
+        obj2['result']['auth'] = True
+        obj2['result']['msg'] = obj['msg']
     else:
-        obj['status'] = True
-        obj['result'] = {}
-        obj['result']['auth'] = False
-        obj['result']['msg'] = obj['msg']
-    return HttpResponse(json.dumps(obj), content_type='application/json')
+        obj2['status'] = True
+        obj2['result'] = {}
+        obj2['result']['auth'] = False
+        obj2['result']['msg'] = obj['msg']
+    return HttpResponse(json.dumps(obj2), content_type='application/json')
 
 
 
@@ -5290,10 +5490,11 @@ def change_status(request):
     booking = Bookings.objects.filter(booking_id=booking_id)[0]
     if status_id != None:
         old_status = booking.status
-        # if (status_id == "Confirmed" and old_status == "Lead"):
-        #     booking.booking_flag = True
-        #     # send sms to customer
-        #     # send email to customer
+        if (status_id == "Confirmed" and old_status == "Lead"):
+            booking.booking_flag = True
+            booking.status = "Confirmed"
+        #       send sms to customer
+        #       send email to customer
         # if(status_id == "Assigned" and old_status == "Confirmed"):
         #     # send_sms to vendor
         #     # send sms to customer about agent
@@ -5328,7 +5529,6 @@ def change_status(request):
         #     # send a sorry note to the customer over email
 
 
-        booking.status = status_id
     booking.save()
     obj['status'] = True
     obj['counter'] = 1
@@ -5337,6 +5537,159 @@ def change_status(request):
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
+# <<---- Checking Code ---->>
+def get_all_models(request):
+    # vehicle_type = get_param(request, 'vehicle_type', None)
+    # make_id = get_param(request,'make_id',None)
+    # model_id = get_param(request,'model_id',None)
+    obj = {}
+
+    obj['status'] = False
+    obj['result'] = []
+
+    # vehicle = None
+    # make = None
+    # car_bike = None
+    VehObjs = Vehicle.objects.all()
+    for veh in VehObjs:
+        obj['result'].append({
+            'id' :            veh.id,
+            'make':           veh.make,
+            'model' :         veh.model,
+            'year' :          veh.year,
+            'fuel_type' :     veh.fuel_type,
+            'full_veh_name':  veh.full_veh_name,
+            'aspect_ratio' :  veh.aspect_ratio,
+            'type' :          veh.type,
+            'car_bike' :      veh.car_bike,
+            'engine_oil' :    veh.engine_oil,
+            'active' :        veh.active,
+        } )
+
+    obj['result'] = {v['model']:v for v in obj['result']}.values()
+    obj['result'] = sorted(obj['result'], key=operator.itemgetter('make','model'))
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+
+
+def get_all_jobs(request):
+    obj = {}
+
+    obj['status'] = False
+    obj['result'] = []
+    jobObjs = Services.objects.all()
+
+    for job in jobObjs:
+        obj['result'].append({
+            'city               ': job.city
+            , 'vendor             ': job.vendor
+            , 'car_bike           ': job.car_bike
+            , 'service_cat        ': job.service_cat
+            , 'job_name           ': job.job_name
+            , 'job_sub_cat        ': job.job_sub_cat
+            , 'type               ': job.type
+            , 'total_price        ': job.total_price
+            , 'total_price_comp   ': job.total_price_comp
+            , 'doorstep           ': job.doorstep
+            , 'year               ': job.year
+            , 'fuel_type          ': job.fuel_type
+            , 'full_veh_name      ': job.full_veh_name
+            , 'aspect_ratio       ': job.aspect_ratio
+            , 'job_summary        ': job.job_summary
+            , 'job_desc           ': job.job_desc
+            , 'job_symptoms       ': job.job_symptoms
+            , 'job_features       ': job.job_features
+            , 'time               ': job.time
+            , 'price_active       ': job.price_active
+            , 'priority           ': job.priority
+            , 'make               ': job.make
+            , 'model              ': job.model
+            , 'default_components ': job.default_components
+            , 'optional_components': job.optional_components
+            , 'total_part         ': job.total_part
+            , 'total_labour       ': job.total_labour
+            , 'total_discount     ': job.total_discount
+        })
+
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def get_all_labour(request):
+    obj = {}
+
+    obj['status'] = False
+    obj['result'] = []
+    jobObjs = ServiceLabour.objects.all()
+
+    for job in jobObjs:
+        obj['result'].append({
+            'city             ': job.city
+            , 'vendor           ': job.vendor
+            , 'car_bike         ': job.car_bike
+            , 'service_cat      ': job.service_cat
+            , 'job_name         ': job.job_name
+            , 'job_sub_cat      ': job.job_sub_cat
+            , 'type             ': job.type
+            , 'total_price      ': job.total_price
+            , 'total_price_comp ': job.total_price_comp
+            , 'doorstep         ': job.doorstep
+            # , 'year             ': job.year
+            # , 'fuel_type        ': job.fuel_type
+            # , 'full_veh_name    ': job.full_veh_name
+            # , 'aspect_ratio     ': job.aspect_ratio
+            , 'job_summary      ': job.job_summary
+            , 'job_desc         ': job.job_desc
+            , 'job_symptoms     ': job.job_symptoms
+            , 'job_features     ': job.job_features
+            , 'time             ': job.time
+            , 'price_active     ': job.price_active
+            , 'priority         ': job.priority,
+        })
+
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def get_all_part(request):
+    obj = {}
+
+    obj['status'] = False
+    obj['result'] = []
+    jobObjs = ServicePart.objects.all()
+
+    for job in jobObjs:
+        obj['result'].append({
+            'city               ':job.city               ,
+            'vendor             ':job.vendor             ,
+            'make               ':job.make               ,
+            'model              ':job.model              ,
+            'year               ':job.year               ,
+            'fuel_type          ':job.fuel_type          ,
+            'full_veh_name      ':job.full_veh_name      ,
+            'type               ':job.type               ,
+            'car_bike           ':job.car_bike           ,
+            'doorstep           ':job.doorstep           ,
+            'service_cat        ':job.service_cat        ,
+            'job_name           ':job.job_name           ,
+            'job_sub_cat        ':job.job_sub_cat        ,
+            'default_components ':job.default_components ,
+            'optional_components':job.optional_components,
+            'total_price        ':job.total_price        ,
+            'total_price_comp   ':job.total_price_comp
+
+        })
+
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
 

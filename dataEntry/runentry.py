@@ -1125,7 +1125,7 @@ def loadVehicles(fileName):
             fuel_type           = cleanstring(vehicle[3])
             full_veh_name       = cleanstring(vehicle[4])
             aspect_ratio        = cleanstring(vehicle[5])
-            size                = cleanstring(vehicle[6])
+            type                = cleanstring(vehicle[6])
             car_bike            = cleanstring(vehicle[7])
             engine_oil          = cleanstring(vehicle[8])
             active              = cleanstring(vehicle[9])
@@ -1141,7 +1141,7 @@ def loadVehicles(fileName):
                 findVehicle.fuel_type     = fuel_type
                 findVehicle.full_veh_name = full_veh_name
                 findVehicle.aspect_ratio  = aspect_ratio
-                findVehicle.size          = size
+                findVehicle.type          = type
                 findVehicle.car_bike      = car_bike
                 findVehicle.engine_oil    = engine_oil
                 findVehicle.active        = active
@@ -1154,7 +1154,7 @@ def loadVehicles(fileName):
                     fuel_type    = fuel_type    ,
                     full_veh_name= full_veh_name,
                     aspect_ratio = aspect_ratio ,
-                    size         = size         ,
+                    type         = type         ,
                     car_bike     = car_bike     ,
                     engine_oil   = engine_oil   ,
                     active       = active        )
@@ -1335,12 +1335,333 @@ def loadService(fileName):
                     default_components  = obj_default,
                     optional_components = obj_option,
                     total_price         = price_float_t_3,
-                    total_part =price_float_p_3,
-                    total_labour =price_float_l_3,
-                    total_discount = price_float_d_3,
+                    total_part          =price_float_p_3,
+                    total_labour        =price_float_l_3,
+                    total_discount      = price_float_d_3,
                     total_price_comp    = price_float_4,
                     priority            = priority,
-                    time = time
+                    time                = time
                 )
                 serv.save()
 
+def loadServiceParts(fileName):
+    with open(path+'/data revamp/'+fileName, 'rU') as csvfile:
+        serviceData = csv.reader(csvfile, delimiter='\t', quotechar='|')
+        for service in serviceData:
+            city                = cleanstring(service[0])
+            vendor              = cleanstring(service[1])
+            make                = cleanstring(service[2])
+            model               = cleanstring(service[3])
+            year                = cleanstring(service[4])
+            fuel_type           = cleanstring(service[5])
+            full_veh_name       = cleanstring(service[6])
+            type                = cleanstring(service[7])
+            car_bike            = cleanstring(service[8])
+            service_cat         = cleanstring(service[9])
+            job_name            = cleanstring(service[10])
+            doorstep            = cleanstring(service[11])
+            part_name           = cleanstring(service[12])
+            action              = cleanstring(service[13])
+            quantity            = cleanstring(service[14])
+            units               = cleanstring(service[15])
+            price               = cleanstring(service[16])
+            part_cat            = cleanstring(service[17])
+            price_comp          = cleanstring(service[18])
+            default             = cleanstring(service[19])
+
+            findService = ServicePart.objects.filter(
+                city             =city              ,
+                vendor           =vendor            ,
+                make             = make             ,
+                model            = model            ,
+                year             = year             ,
+                fuel_type        = fuel_type        ,
+                full_veh_name    = full_veh_name    ,
+                type             = type             ,
+                car_bike         = car_bike         ,
+                service_cat      = service_cat      ,
+                job_name         = job_name         ,
+                doorstep         = doorstep
+            )
+
+            if len(findService):
+                findService = findService[0]
+                findService.city             = city
+                findService.vendor           = vendor
+                findService.make             = make
+                findService.model            = model
+                findService.year             = year
+                findService.fuel_type        = fuel_type
+                findService.full_veh_name    = full_veh_name
+                findService.type             = type
+                findService.car_bike         = car_bike
+                findService.city             = city
+                findService.service_cat      = service_cat
+                findService.job_name         = job_name
+                findService.doorstep         = doorstep
+                obj = {}
+                obj['name'] = part_name
+                obj['action'] = action
+                obj['quantity'] = quantity
+                obj['unit_price'] = units
+                obj['price'] = price
+                obj['category'] = part_cat
+                obj['price_comp'] = price_comp
+
+                # price_float_t = 0
+                # price_float_c = 0
+                # price_string = findService.total_price
+                price_float_t = findService.total_price
+                # price_string_2 = findService.total_price_comp
+                price_float_c = findService.total_price_comp
+
+                if default == "Default":
+
+                    findService.default_components.append(obj)
+                    price_float_t = price_float_t + float(price)
+                    price_float_c = price_float_c + float(price_comp)
+
+                else:
+                    findService.optional_components.append(obj)
+                    price_float_t = price_float_t
+                    price_float_c = price_float_c
+
+                findService.total_price        = price_float_t
+                findService.total_price_comp   = price_float_c
+                findService.save()
+            else:
+                obj_default = []
+                obj_option = []
+                obj = {}
+                obj['name'] = part_name
+                obj['action'] = action
+                obj['quantity'] = quantity
+                obj['unit_price'] = units
+                obj['price'] = price
+                obj['category'] = part_cat
+                obj['price_comp'] = price_comp
+
+                price_float_t_2 = 0
+                price_float_c_2 = 0
+
+                if default == "Default":
+                    obj_default.append(obj)
+                    price_float_t_2 = float(price)
+                    price_float_c_2 = float(price_comp)
+                else:
+                    obj_option.append(obj)
+                    # price_float_t_2 = price_float_t_2
+                    # price_float_c_2 = price_float_c_2
+
+                serv = ServicePart(
+                    city             =city              ,
+                    vendor           =vendor            ,
+                    make             = make             ,
+                    model            = model            ,
+                    year             = year             ,
+                    fuel_type        = fuel_type        ,
+                    full_veh_name    = full_veh_name    ,
+                    type             = type             ,
+                    car_bike         = car_bike         ,
+                    service_cat      = service_cat      ,
+                    job_name         = job_name         ,
+                    doorstep         = doorstep         ,
+                    default_components  = obj_default,
+                    optional_components = obj_option,
+                    total_price         = price_float_t_2,
+                    total_price_comp    = price_float_c_2
+                )
+                serv.save()
+
+def loadServiceLabour(fileName):
+    with open(path+'/data revamp/'+fileName, 'rU') as csvfile:
+        serviceData = csv.reader(csvfile, delimiter='\t', quotechar='|')
+        i = 0
+        for service in serviceData:
+            i = i + 1
+            print i
+            city                = cleanstring(service[0])
+            if city != "":
+                vendor              = cleanstring(service[1])
+                car_bike            = cleanstring(service[2])
+                service_cat         = cleanstring(service[3])
+                job_name            = cleanstring(service[4])
+                job_sub_cat         = cleanstring(service[5])
+                type                = cleanstring(service[6])
+                total_price         = cleanstring(service[7])
+                doorstep            = cleanstring(service[8])
+                job_summary         = cleanstring(service[9]).split("$")
+                time                = cleanstring(service[10])
+                job_desc            = cleanstring(service[11])
+                job_symptoms        = cleanstring(service[12]).split("$")
+                job_features        = cleanstring(service[13]).split("$")
+                price_active        = cleanstring(service[14])
+                total_price_comp    = cleanstring(service[15])
+                priority            = cleanstring(service[16])
+            # print type
+                findService = ServiceLabour.objects.filter(
+                                city        =city,
+                                vendor      = vendor,
+                                car_bike    = car_bike,
+                                service_cat = service_cat,
+                                job_name    = job_name,
+                                job_sub_cat = job_sub_cat,
+                                type        = type,
+                                doorstep    = doorstep
+                )
+                # print service_cat
+                # print job_name
+                if len(findService):
+                    findService = findService[0]
+                    print findService
+                    findService.city = city
+                    findService.vendor = vendor
+                    findService.car_bike = car_bike
+                    findService.service_cat = service_cat
+                    findService.job_name = job_name
+                    findService.job_sub_cat = job_sub_cat
+                    findService.type = type
+                    findService.total_price = float(total_price)
+                    findService.doorstep = doorstep
+                    findService.job_summary = job_summary
+                    findService.time = time
+                    findService.job_desc = job_desc
+                    findService.job_symptoms = job_symptoms
+                    findService.job_features = job_features
+                    findService.total_price_comp = float(total_price_comp)
+                    findService.price_active = price_active
+                    findService.priority = priority
+                    findService.save()
+                    # print findService.job_name
+
+                else:
+                    serv = ServiceLabour(
+                        city            = city              ,
+                        vendor          = vendor            ,
+                        car_bike        = car_bike          ,
+                        service_cat     = service_cat       ,
+                        job_name        = job_name          ,
+                        job_sub_cat     = job_sub_cat      ,
+                        type            = type              ,
+                        total_price         = float(total_price)             ,
+                        doorstep            = doorstep          ,
+                        job_summary         = job_summary       ,
+                        time                = time              ,
+                        job_desc            = job_desc          ,
+                        job_symptoms        = job_symptoms      ,
+                        job_features        = job_features      ,
+                        total_price_comp   = float(total_price_comp)        ,
+                        price_active       = price_active            ,
+                        priority     = priority
+                    )
+                    print serv
+                    serv.save()
+
+def CreateJobList():
+    AllVehicle = Vehicle.objects.all()
+    for vehicle in AllVehicle:
+        print vehicle.full_veh_name
+        # print vehicle.type
+        # print vehicle.car_bike
+        AllService = ServiceLabour.objects.filter(type = vehicle.type, car_bike = vehicle.car_bike)
+        for service in AllService:
+            # print service.job_name
+            Parts = ServicePart.objects.filter(
+                city             =service.city              ,
+                vendor           =service.vendor            ,
+                make             = vehicle.make             ,
+                model            = vehicle.model            ,
+                year             = vehicle.year             ,
+                fuel_type        = vehicle.fuel_type        ,
+                full_veh_name    = vehicle.full_veh_name    ,
+                type             = vehicle.type             ,
+                car_bike         = vehicle.car_bike         ,
+                service_cat      = service.service_cat      ,
+                job_name         = service.job_name         ,
+                doorstep         = service.doorstep)
+            if len(Parts):
+                Parts = Parts[0]
+                # print Parts.total_price
+                obj ={}
+                obj['name'] = service.job_name
+                obj['action'] = "Labour"
+                obj['quantity'] = "1"
+                obj['unit_price'] = service.total_price
+                obj['price'] = service.total_price
+                obj['category'] = "Labour"
+                obj['price_comp'] = service.total_price_comp
+                # print obj
+                # final_obj = []
+                final_obj = Parts.default_components
+                final_obj.append(obj)
+
+                serv = Services(
+                city 			= service.city,
+                vendor              = service.vendor,
+                car_bike 			= service.car_bike,
+                service_cat			= service.service_cat,
+                job_name 	        = service.job_name,
+                job_sub_cat         = service.job_sub_cat,
+                type                = service.type,
+                total_price         = (service.total_price + Parts.total_price),
+                total_price_comp    = (service.total_price_comp + Parts.total_price_comp),
+                doorstep            = service.doorstep,
+                year 				= vehicle.year,
+                fuel_type 			= vehicle.fuel_type,
+                full_veh_name 		= vehicle.full_veh_name,
+                aspect_ratio 		= vehicle.aspect_ratio,
+                job_summary         = service.job_summary,
+                job_desc            = service.job_desc,
+                job_symptoms        = service.job_symptoms,
+                job_features        = service.job_features,
+                time                = service.time,
+                price_active        = service.price_active,
+                priority            = service.priority,
+                make 				= vehicle.make,
+                model 				= vehicle.model,
+                default_components  = final_obj,
+                optional_components = Parts.optional_components,
+                total_part          = Parts.total_price,
+                total_labour        = (service.total_price),
+                total_discount      = 0)
+                serv.save()
+            else:
+                obj = {}
+                obj['name'] = service.job_name
+                obj['action'] = "Labour"
+                obj['quantity'] = "1"
+                obj['unit_price'] = service.total_price
+                obj['price'] = service.total_price
+                obj['category'] = "Labour"
+                obj['price_comp'] = service.total_price_comp
+
+                serv = Services(
+                city 			    = service.city,
+                vendor              = service.vendor,
+                car_bike 			= service.car_bike,
+                service_cat			= service.service_cat,
+                job_name 	        = service.job_name,
+                job_sub_cat         = service.job_sub_cat,
+                type                = service.type,
+                total_price         = (service.total_price),
+                total_price_comp    = (service.total_price_comp),
+                doorstep            = service.doorstep,
+                year 				= vehicle.year,
+                fuel_type 			= vehicle.fuel_type,
+                full_veh_name 		= vehicle.full_veh_name,
+                aspect_ratio 		= vehicle.aspect_ratio,
+                job_summary         = service.job_summary,
+                job_desc            = service.job_desc,
+                job_symptoms        = service.job_symptoms,
+                job_features        = service.job_features,
+                time                = service.time,
+                price_active        = service.price_active,
+                priority            = service.priority,
+                make 				= vehicle.make,
+                model 				= vehicle.model,
+                default_components  = [obj],
+                optional_components = [],
+                total_part          = 0,
+                total_labour        = (service.total_price),
+                total_discount      = 0)
+                serv.save()
