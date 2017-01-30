@@ -4016,7 +4016,7 @@ def get_type_make(request):
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
-def get_make_model(request):
+def get_make_model_old(request):
     vehicle_type = get_param(request, 'vehicle_type', None)
     make_id = get_param(request,'make_id',None)
     # model_id = get_param(request,'model_id',None)
@@ -4050,6 +4050,44 @@ def get_make_model(request):
     obj['counter'] = 1
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def get_make_model(request):
+    vehicle_type = get_param(request, 'vehicle_type', None)
+    make_id = get_param(request,'make_id',None)
+    # model_id = get_param(request,'model_id',None)
+    obj = {}
+
+    obj['status'] = False
+    obj['result'] = []
+
+    # vehicle = None
+    # make = None
+    # car_bike = None
+    VehObjs = Vehicle.objects.filter(car_bike = vehicle_type, make = make_id).order_by('model')
+    for veh in VehObjs:
+        obj['result'].append({
+            'id' :            veh.id,
+            'make':           veh.make,
+            'model' :         veh.model,
+            # 'year' :          veh.year
+            'fuel_type' :     veh.fuel_type,
+            'full_veh_name' : veh.model + "("+ veh.fuel_type+")"
+            # 'full_veh_name':  veh.full_veh_name
+            # 'aspect_ratio' :  veh.aspect_ratio
+            # 'size' :          veh.size
+            # 'car_bike' :      veh.car_bike
+            # 'engine_oil' :    veh.engine_oil
+            # 'active' :        veh.active
+        } )
+
+    # obj['result'] = {v['model']:v for v in obj['result']}.values()
+    obj['result'] = sorted(obj['result'], key=operator.itemgetter('make','model'))
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
 
 def get_jobs_vehicle(request):
     make_id = get_param(request,'make_id',None)
@@ -4302,6 +4340,7 @@ def send_otp_new(request):
     otpdatetime = datetime.datetime.now()
     message = "Your ClickGarage one time password is " + str(otp) + ". Please enter the same to complete your mobile verification."
     message = message.replace(" ","+")
+
     newFlag = False
     username = None
     findOtp     = Otp.objects.filter(mobile=phn)
@@ -4320,7 +4359,7 @@ def send_otp_new(request):
             updated = otpdatetime)
         cc.save()
 
-    # mviews.send_otp(phn,message)
+    mviews.send_otp(phn,message)
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
@@ -4492,7 +4531,7 @@ def create_check_user(name,number):
 
 
 def place_booking(user_id, name, number, email, reg_number, address, locality, city, order_list, make, veh_type, model,
-                  fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source, booking_flag):
+                  fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary):
     if booking_flag:
         status = "Confirmed"
     else:
@@ -4517,6 +4556,8 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
     if email not in user.email_list:
         user.email_list.append(email)
     user.save()
+
+
 
     # update booking id
 
@@ -4555,64 +4596,68 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
                  # lead_follow_up_date = follow_up_date,
                  estimate_history    =estimate_history)
     tt.save()
-    mviews.send_booking_confirm(email=email,name=name,time=time_str,date=date,booking_id=booking_id,number=number)
+    mviews.send_booking_confirm(email=email,name=name,booking_id=booking_id,number=number, service_list= int_summary, car_bike=veh_type)
+    # mviews.send_booking_confirm(email=email,name=name,time=time_str,date=date,booking_id=booking_id,number=number)
+    # print int_summary
+    # for data in int_summary:
+    #     print data['category']
     return {'Status': "Order Placed", 'booking_id': str(tt.id)}
-
-def send_otp_booking(request):
-    name = get_param(request, 'name', None)
-    number = get_param(request, 'number', None)
-    email = get_param(request, 'email', None)
-    reg_number = get_param(request, 'reg_number', None)
-    address = get_param(request, 'address', None)
-    locality = get_param(request, 'locality', None)
-    city = get_param(request, 'city', None)
-    order_list = get_param(request, 'order_list', None)
-    if order_list:
-        order_list = json.loads(order_list)
-    else:
-        order_list = []
-    make = get_param(request, 'make', None)
-    veh_type = get_param(request, 'veh_type', None)
-    model = get_param(request, 'model', None)
-    fuel = get_param(request, 'fuel', None)
-    date = get_param(request, 'date', None)
-    time_str = get_param(request, 'time', None)
-    comment = get_param(request, 'comment', None)
-    is_paid = get_param(request, 'is_paid', None)
-    paid_amt = get_param(request, 'paid_amt', None)
-    coupon = get_param(request, 'coupon', None)
-    price_total = get_param(request, 'price_total', None)
-    onetp = get_param(request,'otp',None)
-    source = get_param(request,'source',None)
-    booking_flag = False
-    oldformat = date
-    datetimeobject = datetime.datetime.strptime(oldformat, '%d-%m-%Y')
-    newformat = datetimeobject.strftime('%Y-%m-%d')
-    date =newformat
-
-    booking = ''
-    obj = checkOTP_new(onetp, number)
-    if obj['status']:
-        user = create_check_user(name,number)
-        if not request.user or request.user.is_anonymous():
-            user.backend = 'django.contrib.auth.backends.ModelBackend'
-            login(request, user)
-        booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city, order_list, make,
-                                veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source,booking_flag)
-        obj['result'] = {}
-        obj['result']['userid'] = request.user.id
-        obj['result']['booking'] = booking
-        if request.user.first_name and len(request.user.first_name):
-            obj['result']['username'] = request.user.first_name
-        else:
-            obj['result']['username'] = request.user.username
-        obj['result']['auth'] = True
-    else:
-        obj['status'] = True
-        obj['result'] = {}
-        obj['result']['auth'] = False
-        obj['result']['msg'] = obj['msg']
-    return HttpResponse(json.dumps(obj), content_type='application/json')
+#
+# def send_otp_booking(request):
+#     name = get_param(request, 'name', None)
+#     number = get_param(request, 'number', None)
+#     email = get_param(request, 'email', None)
+#     reg_number = get_param(request, 'reg_number', None)
+#     address = get_param(request, 'address', None)
+#     locality = get_param(request, 'locality', None)
+#     city = get_param(request, 'city', None)
+#     order_list = get_param(request, 'order_list', None)
+#     if order_list:
+#         order_list = json.loads(order_list)
+#     else:
+#         order_list = []
+#     make = get_param(request, 'make', None)
+#     veh_type = get_param(request, 'veh_type', None)
+#     model = get_param(request, 'model', None)
+#     fuel = get_param(request, 'fuel', None)
+#     date = get_param(request, 'date', None)
+#     time_str = get_param(request, 'time', None)
+#     comment = get_param(request, 'comment', None)
+#     is_paid = get_param(request, 'is_paid', None)
+#     paid_amt = get_param(request, 'paid_amt', None)
+#     coupon = get_param(request, 'coupon', None)
+#     price_total = get_param(request, 'price_total', None)
+#     onetp = get_param(request,'otp',None)
+#     source = get_param(request,'source',None)
+#     booking_flag = False
+#     oldformat = date
+#     datetimeobject = datetime.datetime.strptime(oldformat, '%d-%m-%Y')
+#     newformat = datetimeobject.strftime('%Y-%m-%d')
+#     date =newformat
+#
+#     booking = ''
+#     obj = checkOTP_new(onetp, number)
+#     if obj['status']:
+#         user = create_check_user(name,number)
+#         if not request.user or request.user.is_anonymous():
+#             user.backend = 'django.contrib.auth.backends.ModelBackend'
+#             login(request, user)
+#         booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city, order_list, make,
+#                                 veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source,booking_flag)
+#         obj['result'] = {}
+#         obj['result']['userid'] = request.user.id
+#         obj['result']['booking'] = booking
+#         if request.user.first_name and len(request.user.first_name):
+#             obj['result']['username'] = request.user.first_name
+#         else:
+#             obj['result']['username'] = request.user.username
+#         obj['result']['auth'] = True
+#     else:
+#         obj['status'] = True
+#         obj['result'] = {}
+#         obj['result']['auth'] = False
+#         obj['result']['msg'] = obj['msg']
+#     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 def set_cookie(response, key, value, days_expire = 7):
     if days_expire is None:
@@ -5370,6 +5415,13 @@ def send_booking(request):
         order_list = json.loads(order_list)
     else:
         order_list = []
+    job_summary_int = get_param(request, 'int_summary', None)
+
+    if job_summary_int:
+        job_summary_int = json.loads(job_summary_int)
+    else:
+        job_summary_int= []
+
     make = get_param(request, 'make', None)
     veh_type = get_param(request, 'veh_type', None)
     model = get_param(request, 'model', None)
@@ -5398,7 +5450,12 @@ def send_booking(request):
     # datetimeobject = datetime.datetime.strptime(oldformat_f, '%d-%m-%Y')
     # newformat_f = datetimeobject.strftime('%Y-%m-%d')
     # follow_up_date = newformat_f
+    # obj2 = {}
     obj2 = {}
+    obj2['status'] = False
+    obj2['result'] = []
+
+
     obj = checkOTP_new(onetp, number)
     if request.user.is_authenticated():
         if request.user.is_b2b:
@@ -5409,7 +5466,7 @@ def send_booking(request):
             booking = place_booking(str(request.user.id), name, number, email, reg_number, address, locality, city, order_list,
                                     make,
                                     veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
-                                    price_total, source, booking_flag)
+                                    price_total, source, booking_flag,job_summary_int)
         elif request.user.is_staff or request.user.is_admin or request.user.is_agent:
             if booking_flag_user == "True":
                 booking_flag = True
@@ -5427,7 +5484,7 @@ def send_booking(request):
                                     order_list,
                                     make,
                                     veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
-                                    price_total, source, booking_flag)
+                                    price_total, source, booking_flag,job_summary_int)
         else:
             booking_flag = False
             if request.user.contact_no == number:
@@ -5435,13 +5492,13 @@ def send_booking(request):
                                         order_list,
                                         make,
                                         veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
-                                        price_total, source, booking_flag)
+                                        price_total, source, booking_flag,job_summary_int)
             elif obj['status']:
                 booking = place_booking(str(request.user.id), name, number, email, reg_number, address, locality, city,
                                         order_list,
                                         make,
                                         veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
-                                        price_total, source, booking_flag)
+                                        price_total, source, booking_flag,job_summary_int)
         obj2['result'] = {}
         obj2['result']['userid'] = user.id
         obj2['result']['booking'] = booking
@@ -5454,17 +5511,20 @@ def send_booking(request):
         login(request, user)
         booking_flag = False
         booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city, order_list, make,
-                                veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source,booking_flag)
+                                veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source,booking_flag,job_summary_int)
         obj2['result'] = {}
         obj2['result']['userid'] = user.id
         obj2['result']['booking'] = booking
         obj2['result']['auth'] = True
         obj2['result']['msg'] = obj['msg']
     else:
-        obj2['status'] = True
         obj2['result'] = {}
         obj2['result']['auth'] = False
         obj2['result']['msg'] = obj['msg']
+
+    obj2['status'] = True
+    obj2['counter'] = 1
+    obj2['msg'] = "Success"
     return HttpResponse(json.dumps(obj2), content_type='application/json')
 
 

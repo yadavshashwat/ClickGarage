@@ -1560,25 +1560,39 @@ def loadServiceLabour(fileName):
 def CreateJobList():
     AllVehicle = Vehicle.objects.all()
     for vehicle in AllVehicle:
-        print vehicle.full_veh_name
+        # print vehicle.full_veh_name
         # print vehicle.type
         # print vehicle.car_bike
         AllService = ServiceLabour.objects.filter(type = vehicle.type, car_bike = vehicle.car_bike)
         for service in AllService:
             # print service.job_name
+
             Parts = ServicePart.objects.filter(
-                city             =service.city              ,
-                vendor           =service.vendor            ,
-                make             = vehicle.make             ,
-                model            = vehicle.model            ,
-                year             = vehicle.year             ,
-                fuel_type        = vehicle.fuel_type        ,
-                full_veh_name    = vehicle.full_veh_name    ,
-                type             = vehicle.type             ,
-                car_bike         = vehicle.car_bike         ,
-                service_cat      = service.service_cat      ,
-                job_name         = service.job_name         ,
-                doorstep         = service.doorstep)
+                city=service.city,
+                vendor=service.vendor,
+                make=vehicle.make,
+                model=vehicle.model,
+                year=vehicle.year,
+                fuel_type=vehicle.fuel_type,
+                # full_veh_name=vehicle.full_veh_name,
+                type=vehicle.type,
+                car_bike=vehicle.car_bike,
+                service_cat=service.service_cat,
+                job_name=service.job_name,
+                # doorstep=service.doorstep
+            )
+
+            # if vehicle.car_bike == "Bike":
+            #     print vehicle.make
+            #     print vehicle.model
+            #     print vehicle.fuel_type
+            #     print Parts
+            #     print service.city
+            #     print service.vendor
+            #     print vehicle.year
+
+
+
             if len(Parts):
                 Parts = Parts[0]
                 # print Parts.total_price

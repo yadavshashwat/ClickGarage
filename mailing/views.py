@@ -7895,7 +7895,7 @@ def send_lead(firstname,lastname, number,email, car_bike, make, model, fuel_type
 	conn = boto.ses.connect_to_region(region,aws_access_key_id=aws_access,aws_secret_access_key=aws_secret)
 	result = conn.send_raw_email(msg.as_string())
 
-def send_booking_confirm(email,name,time,date,booking_id,number):
+def send_booking_confirm(email,name,booking_id,number,service_list,car_bike):
 	me = from_address
 	you = email
 
@@ -7905,14 +7905,16 @@ def send_booking_confirm(email,name,time,date,booking_id,number):
 	msg['From'] = me
 	msg['To'] = you
 
-	html = "Hi "+name+"Your booking with ClickGarage has been confirmed. Pick up time selected by you is "+time+" on "+date+"For further details please contact "+helpline_number+" and quote your booking reference id :"+str(booking_id)+"."
+	html = html_to_send(name, booking_id, service_list, car_bike)
+
+	# html = "Hi "+name+"Your booking with ClickGarage has been confirmed. Pick up time selected by you is "+time+" on "+date+"For further details please contact "+helpline_number+" and quote your booking reference id :"+str(booking_id)+"."
 
 	script = MIMEText(html, 'html')
 	msg.attach(script)
 	conn = boto.ses.connect_to_region(region,aws_access_key_id=aws_access,aws_secret_access_key=aws_secret)
 	result = conn.send_raw_email(msg.as_string())
 
-	message = "Hi "+ name +"! Your ClickGarage appointment has been confirmed. Appointment date: " +date + ", Time: "  + time  + ". For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(booking_id) + "."
+	message = "Hi "+ name +"! Your ClickGarage order has been placed. You will recieve a call shortly to confirm the order. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(booking_id) + "."
 	message = message.replace(" ","+")
 	send_trans_sms(number,message)
 
@@ -7920,3 +7922,1550 @@ def send_booking_to_agent(agent_name, agent_num, cust_num,date,time,booking_id,c
 	message = "Hi " + agent_name + "! You have been assigned a ClickGarage booking. | Booking ID:"+str(booking_id)+" | Date:" + date + " | Time: " + time + "| Name:"+ cust_name + "("+cust_num+")| Vehicle:"+ vehicle +"| Requests: "+comments+" | Amount: "+total+" | Address: "+address
 	message = message.replace(" ", "+")
 	send_trans_sms(agent_num, message)
+
+def html_to_send(name, booking_id, service_list,car_bike):
+
+	doorstep_list = []
+	category_list = []
+	# doorstep = "1"
+	# service_cat = "Cleaning"
+	summary_html2 = "<table style = 'border: 1px solid; width: 100%; border-collapse: collapse;'><tr style = 'border: 1px solid;'><th>Job name</th><th>Amount</th></tr>"
+	for serv in service_list:
+		if serv['category']:
+			category_list.append(str(serv['category']))
+		if serv['doorstep']:
+			doorstep_list.append(str(serv['doorstep']))
+		summary_html2 = summary_html2 + "<tr><td>" + serv['job_name'] + "</td><td>Rs. &nbsp;" + str(serv['price_total']) + "</td></tr>"
+
+	print doorstep_list
+	print category_list
+
+	if "0" in doorstep_list:
+		doorstep = "0"
+		if "Servicing" in category_list or "Repairing" in category_list or "Denting" in category_list or "Emergency" in category_list:
+			service_cat = "Other"
+		elif "Cleaning" in category_list:
+			service_cat = "Cleaning"
+		elif "Subscription" in category_list:
+			service_cat = "Subscription"
+	else:
+		doorstep = "1"
+		if "Cleaning" in category_list:
+			service_cat = "Cleaning"
+		else:
+			service_cat = "Other"
+
+	summary_html2 = summary_html2 + "</table>"
+	summary_html = str(summary_html2)
+	# print summary_html
+	# print doorstep
+	# print service_cat
+	booking_id = str(booking_id)
+	html = ""
+	if car_bike == "Car":
+		if doorstep == "1" and service_cat == "Cleaning":
+			# html = "1 Cleaning"
+			html = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" data-dnd="true">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+  <!--[if !mso]><!-->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+  <!--<![endif]-->
+
+  <!--[if (gte mso 9)|(IE)]><style type="text/css">
+  table {border-collapse: collapse;}
+  table, td {mso-table-lspace: 0pt;mso-table-rspace: 0pt;}
+  img {-ms-interpolation-mode: bicubic;}
+  </style>
+  <![endif]-->
+  <style type="text/css">
+  body {
+    color: #000000;
+  }
+  body a {
+    color: #1188e6;
+    text-decoration: none;
+  }
+  p { margin: 0; padding: 0; }
+  table[class="wrapper"] {
+    width:100% !important;
+    table-layout: fixed;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+  img[class="max-width"] {
+    max-width: 100% !important;
+  }
+  @media screen and (max-width:480px) {
+    .preheader .rightColumnContent,
+    .footer .rightColumnContent {
+        text-align: left !important;
+    }
+    .preheader .rightColumnContent div,
+    .preheader .rightColumnContent span,
+    .footer .rightColumnContent div,
+    .footer .rightColumnContent span {
+      text-align: left !important;
+    }
+    .preheader .rightColumnContent,
+    .preheader .leftColumnContent {
+      font-size: 80% !important;
+      padding: 5px 0;
+    }
+    table[class="wrapper-mobile"] {
+      width: 100% !important;
+      table-layout: fixed;
+    }
+    img[class="max-width"] {
+      height: auto !important;
+    }
+    a[class="bulletproof-button"] {
+      display: block !important;
+      width: auto !important;
+      font-size: 80%;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+    // 2 columns
+    #templateColumns{
+        width:100% !important;
+    }
+
+    .templateColumnContainer{
+        display:block !important;
+        width:100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+  }
+  </style>
+  <style>
+  body, p, div { font-family: arial,sans-serif; }
+</style>
+
+</head>
+<body yahoofix="true" style="min-width: 100%; margin: 0; padding: 0; font-size: 14pxpx; font-family: arial,sans-serif; color: #000000; background-color: #FFFFFF; color: #000000;" data-attributes='%7B%22dropped%22%3Atrue%2C%22bodybackground%22%3A%22%23FFFFFF%22%2C%22bodyfontname%22%3A%22arial%2Csans-serif%22%2C%22bodytextcolor%22%3A%22%23000000%22%2C%22bodylinkcolor%22%3A%22%231188e6%22%2C%22bodyfontsize%22%3A%2214px%22%7D'>
+  <center class="wrapper">
+    <div class="webkit">
+      <table cellpadding="0" cellspacing="0" border="0" width="100%" class="wrapper" bgcolor="#FFFFFF">
+      <tr><td valign="top" bgcolor="#FFFFFF" width="100%">
+      <!--[if (gte mso 9)|(IE)]>
+      <table width="600" align="center" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td>
+          <![endif]-->
+            <table width="100%" role="content-container" class="outer" data-attributes='%7B%22dropped%22%3Atrue%2C%22containerpadding%22%3A%220%2C0%2C0%2C0%22%2C%22containerwidth%22%3A600%2C%22containerbackground%22%3A%22%23FFFFFF%22%7D' align="center" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td width="100%"><table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td>
+                    <!--[if (gte mso 9)|(IE)]>
+                      <table width="600" align="center" cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                          <td>
+                            <![endif]-->
+                              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width:600px;" align="center">
+                                <tr><td role="modules-container" style="padding: 0px 0px 0px 0px; color: #000000; text-align: left;" bgcolor="#FFFFFF" width="100%" align="left">
+                                  <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" style="display:none !important; visibility:hidden; opacity:0; color:transparent; height:0; width:0;" class="module preheader preheader-hide" role="module" data-type="preheader">
+  <tr><td role="module-content"><p></p></td></tr>
+</table>
+<table class="module" role="module" data-type="wysiwyg" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div>
+
+</div></td></tr></table>
+<table role="module" data-type="image" border="0" align="center" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" class="wrapper" data-attributes='%7B%22child%22%3Afalse%2C%22link%22%3A%22%22%2C%22width%22%3A%22600%22%2C%22height%22%3A%22107%22%2C%22imagebackground%22%3A%22%23FFFFFF%22%2C%22url%22%3A%22https%3A//marketing-image-production.s3.amazonaws.com/uploads/bb5c8b37fb8b5c18fa56b1adbdf4ea31daedb73c1df75bc47974c47504873b3b58f73a89ce248498a65fd30bb1dbf308b456ef84787f9c516588b95bb4e21728.jpg%22%2C%22alt_text%22%3A%22%22%2C%22dropped%22%3Atrue%2C%22imagemargin%22%3A%220%2C0%2C0%2C0%22%2C%22alignment%22%3A%22%22%2C%22responsive%22%3Atrue%7D'>
+<tr>
+  <td style="font-size:6px;line-height:10px;background-color:#FFFFFF;padding: 0px 0px 0px 0px;" valign="top" align="" role="module-content"><!--[if mso]>
+<center>
+<table width="600" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+  <tr>
+    <td width="600" valign="top">
+<![endif]-->
+
+  <img class="max-width"  width="600"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/bb5c8b37fb8b5c18fa56b1adbdf4ea31daedb73c1df75bc47974c47504873b3b58f73a89ce248498a65fd30bb1dbf308b456ef84787f9c516588b95bb4e21728.jpg" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 600px !important; width: 100% !important; height: auto !important; " />
+
+<!--[if mso]>
+</td></tr></table>
+</center>
+<![endif]--></td>
+</tr>
+</table><table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A30%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 30px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C12%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """+name+"""<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Booking (ID: """+booking_id+""") has been placed. We will call you shortly to confirm the pick-up time.&nbsp;</div> </td>
+</tr>
+</table>
+<table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A16%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 16px 0px;" bgcolor="#ffffff"></td></tr></table>
+
+"""+summary_html+"""
+<!-- <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" role="module" data-type="columns" data-attributes='%7B%22dropped%22%3Atrue%2C%22columns%22%3A2%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22cellpadding%22%3A0%2C%22containerbackground%22%3A%22%22%7D'>
+  <tr><td style="padding: 0px 0px 0px 0px;" bgcolor="">
+    <table class="columns--container-table" border="0" cellpadding="0" cellspacing="0" align="center" width="100%">
+      <tr role="module-content">
+        <td style="padding: 0px 0px 0px 0px" role="column-0" align="center" valign="top" width="50%" height="100%" class="templateColumnContainer column-drop-area ">
+  <table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div>Test1</div> </td>
+</tr>
+</table>
+
+</td><td style="padding: 0px 0px 0px 0px" role="column-1" align="center" valign="top" width="50%" height="100%" class="templateColumnContainer column-drop-area ">
+  <table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: right;">Test2</div> </td>
+</tr>
+</table>
+
+</td>
+      </tr>
+    </table>
+  </td></tr>
+</table><table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A30%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 30px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table class="module" role="module" data-type="divider" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%2C%22linecolor%22%3A%22%23000000%22%2C%22height%22%3A5%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff">
+  <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" height="5"  style="font-size: 5px; line-height: 5px;">
+    <tr><td bgcolor="#000000">&nbsp;</td></tr>
+  </table>
+</td></tr></table> -->
+<table class="module" role="module" data-type="wysiwyg" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22padding%22%3A%227%2C0%2C6%2C0%22%2C%22containerbackground%22%3A%22%2309a2dc%22%7D'>
+<tr><td role="module-content" style="padding: 7px 0px 6px 0px;" bgcolor="#09a2dc"><div style="text-align: center;"><span style="color:#FFFFFF;"><strong>How it works?</strong></span></div> </td></tr></table>
+<table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A18%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 18px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" role="module" data-type="columns" data-attributes='%7B%22dropped%22%3Atrue%2C%22columns%22%3A3%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22cellpadding%22%3A0%2C%22containerbackground%22%3A%22%22%7D'>
+  <tr><td style="padding: 0px 0px 0px 0px;" bgcolor="">
+    <table class="columns--container-table" border="0" cellpadding="0" cellspacing="0" align="center" width="100%">
+      <tr role="module-content">
+        <td style="padding: 0px 0px 0px 0px" role="column-0" align="center" valign="top" width="33.333333333333336%" height="100%" class="templateColumnContainer column-drop-area ">
+  <table role="module" data-type="image" border="0" align="center" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" class="wrapper" data-attributes='%7B%22child%22%3Afalse%2C%22link%22%3A%22%22%2C%22width%22%3A%2264%22%2C%22height%22%3A%2264%22%2C%22imagebackground%22%3A%22%23FFFFFF%22%2C%22url%22%3A%22https%3A//marketing-image-production.s3.amazonaws.com/uploads/1d92b75b2550e6ccc6203c39a146b5f62f858e7228b3802abec61c6f437a526b62ec0d3bc9a095bdf93bdd7fdc7a0876060745a23542e3049ae3fd10b307149e.png%22%2C%22alt_text%22%3A%22%22%2C%22dropped%22%3Atrue%2C%22imagemargin%22%3A%220%2C0%2C0%2C0%22%2C%22alignment%22%3A%22center%22%2C%22responsive%22%3Atrue%7D'>
+<tr>
+  <td style="font-size:6px;line-height:10px;background-color:#FFFFFF;padding: 0px 0px 0px 0px;" valign="top" align="center" role="module-content"><!--[if mso]>
+<center>
+<table width="64" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+  <tr>
+    <td width="64" valign="top">
+<![endif]-->
+
+  <img class="max-width"  width="64"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/1d92b75b2550e6ccc6203c39a146b5f62f858e7228b3802abec61c6f437a526b62ec0d3bc9a095bdf93bdd7fdc7a0876060745a23542e3049ae3fd10b307149e.png" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 64px !important; width: 100% !important; height: auto !important; " />
+
+<!--[if mso]>
+</td></tr></table>
+</center>
+<![endif]--></td>
+</tr>
+</table><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%227%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 7px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: center;"><span style="font-size:14px;">ClickGarage cleaning experts drop by at the location, equipped with machines</span></div> </td>
+</tr>
+</table>
+
+</td><td style="padding: 0px 0px 0px 0px" role="column-1" align="center" valign="top" width="33.333333333333336%" height="100%" class="templateColumnContainer column-drop-area ">
+  <table role="module" data-type="image" border="0" align="center" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" class="wrapper" data-attributes='%7B%22child%22%3Afalse%2C%22link%22%3A%22%22%2C%22width%22%3A%2264%22%2C%22height%22%3A%2264%22%2C%22imagebackground%22%3A%22%23FFFFFF%22%2C%22url%22%3A%22https%3A//marketing-image-production.s3.amazonaws.com/uploads/ec61f78aabe6c9ef7c0d4c6ab0b05351c6a4420134709a36c78bc0e0e2204a71b285e3879cbfdaaf9ed198103ecd8227d99554eb20ef5b393d726613a7da1978.png%22%2C%22alt_text%22%3A%22%22%2C%22dropped%22%3Atrue%2C%22imagemargin%22%3A%220%2C0%2C0%2C0%22%2C%22alignment%22%3A%22center%22%2C%22responsive%22%3Atrue%7D'>
+<tr>
+  <td style="font-size:6px;line-height:10px;background-color:#FFFFFF;padding: 0px 0px 0px 0px;" valign="top" align="center" role="module-content"><!--[if mso]>
+<center>
+<table width="64" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+  <tr>
+    <td width="64" valign="top">
+<![endif]-->
+
+  <img class="max-width"  width="64"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/ec61f78aabe6c9ef7c0d4c6ab0b05351c6a4420134709a36c78bc0e0e2204a71b285e3879cbfdaaf9ed198103ecd8227d99554eb20ef5b393d726613a7da1978.png" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 64px !important; width: 100% !important; height: auto !important; " />
+
+<!--[if mso]>
+</td></tr></table>
+</center>
+<![endif]--></td>
+</tr>
+</table><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%227%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 7px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: center;"><span style="font-size:14px;">Requested cleaning services will be done at the doorstep itself</span></div> </td>
+</tr>
+</table>
+
+</td><td style="padding: 0px 0px 0px 0px" role="column-2" align="center" valign="top" width="33.333333333333336%" height="100%" class="templateColumnContainer column-drop-area ">
+  <table role="module" data-type="image" border="0" align="center" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" class="wrapper" data-attributes='%7B%22child%22%3Afalse%2C%22link%22%3A%22%22%2C%22width%22%3A%2264%22%2C%22height%22%3A%2264%22%2C%22imagebackground%22%3A%22%23FFFFFF%22%2C%22url%22%3A%22https%3A//marketing-image-production.s3.amazonaws.com/uploads/55b10b7fd6a9126ce4fed75b853ab45cab0e8ab8b21105981058d15459ee14576a4be83cc2c55fce010ab66d1ef0b1a82240346a230ef2533c24b18c7ef1e9cc.png%22%2C%22alt_text%22%3A%22%22%2C%22dropped%22%3Atrue%2C%22imagemargin%22%3A%220%2C0%2C0%2C0%22%2C%22alignment%22%3A%22center%22%2C%22responsive%22%3Atrue%7D'>
+<tr>
+  <td style="font-size:6px;line-height:10px;background-color:#FFFFFF;padding: 0px 0px 0px 0px;" valign="top" align="center" role="module-content"><!--[if mso]>
+<center>
+<table width="64" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+  <tr>
+    <td width="64" valign="top">
+<![endif]-->
+
+  <img class="max-width"  width="64"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/55b10b7fd6a9126ce4fed75b853ab45cab0e8ab8b21105981058d15459ee14576a4be83cc2c55fce010ab66d1ef0b1a82240346a230ef2533c24b18c7ef1e9cc.png" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 64px !important; width: 100% !important; height: auto !important; " />
+
+<!--[if mso]>
+</td></tr></table>
+</center>
+<![endif]--></td>
+</tr>
+</table><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%227%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 7px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: center;"><span style="font-size:14px;">Make payments through multiple payment options avaialble</span></div> </td>
+</tr>
+</table>
+
+</td>
+      </tr>
+    </table>
+  </td></tr>
+</table><table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A30%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 30px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" class="module footer" role="module" data-type="footer" data-attributes='%7B%22dropped%22%3Atrue%2C%22columns%22%3A1%2C%22padding%22%3A%2210%2C5%2C10%2C5%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+  <tr><td style="padding: 10px 5px 10px 5px;" bgcolor="#ffffff">
+    <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%">
+      <tr role="module-content">
+
+        <td align="center" valign="top" width="100%" height="100%" class="templateColumnContainer">
+          <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%">
+            <tr>
+              <td class="leftColumnContent" role="column-one" height="100%" style="height:100%;"><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="font-size:12px;line-height:150%;margin:0;text-align:center;">This email was sent by: ClickGarage (Sui Generis Innovations Private Limited), &nbsp;W-22, Green Park, New Delhi | To unsubscribe click: <a href="[Unsubscribe]">here</a></div> </td>
+</tr>
+</table>
+</td>
+            </tr>
+          </table>
+        </td>
+
+      </tr>
+    </table>
+  </td></tr>
+</table>
+
+                                </tr></td>
+                              </table>
+                            <!--[if (gte mso 9)|(IE)]>
+                          </td>
+                        </td>
+                      </table>
+                    <![endif]-->
+                    </td>
+                  </tr>
+                </table></td>
+              </tr>
+            </table>
+          <!--[if (gte mso 9)|(IE)]>
+          </td>
+        </tr>
+      </table>
+      <![endif]-->
+      </tr></td>
+      </table>
+    </div>
+  </center>
+</body>
+</html>"""
+		elif doorstep == "0" and service_cat == "Cleaning":
+			# html = "0 Cleaning"
+			html = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" data-dnd="true">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+  <!--[if !mso]><!-->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+  <!--<![endif]-->
+
+  <!--[if (gte mso 9)|(IE)]><style type="text/css">
+  table {border-collapse: collapse;}
+  table, td {mso-table-lspace: 0pt;mso-table-rspace: 0pt;}
+  img {-ms-interpolation-mode: bicubic;}
+  </style>
+  <![endif]-->
+  <style type="text/css">
+  body {
+    color: #000000;
+  }
+  body a {
+    color: #1188e6;
+    text-decoration: none;
+  }
+  p { margin: 0; padding: 0; }
+  table[class="wrapper"] {
+    width:100% !important;
+    table-layout: fixed;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+  img[class="max-width"] {
+    max-width: 100% !important;
+  }
+  @media screen and (max-width:480px) {
+    .preheader .rightColumnContent,
+    .footer .rightColumnContent {
+        text-align: left !important;
+    }
+    .preheader .rightColumnContent div,
+    .preheader .rightColumnContent span,
+    .footer .rightColumnContent div,
+    .footer .rightColumnContent span {
+      text-align: left !important;
+    }
+    .preheader .rightColumnContent,
+    .preheader .leftColumnContent {
+      font-size: 80% !important;
+      padding: 5px 0;
+    }
+    table[class="wrapper-mobile"] {
+      width: 100% !important;
+      table-layout: fixed;
+    }
+    img[class="max-width"] {
+      height: auto !important;
+    }
+    a[class="bulletproof-button"] {
+      display: block !important;
+      width: auto !important;
+      font-size: 80%;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+    // 2 columns
+    #templateColumns{
+        width:100% !important;
+    }
+
+    .templateColumnContainer{
+        display:block !important;
+        width:100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+  }
+  </style>
+  <style>
+  body, p, div { font-family: arial,sans-serif; }
+</style>
+
+</head>
+<body yahoofix="true" style="min-width: 100%; margin: 0; padding: 0; font-size: 14pxpx; font-family: arial,sans-serif; color: #000000; background-color: #FFFFFF; color: #000000;" data-attributes='%7B%22dropped%22%3Atrue%2C%22bodybackground%22%3A%22%23FFFFFF%22%2C%22bodyfontname%22%3A%22arial%2Csans-serif%22%2C%22bodytextcolor%22%3A%22%23000000%22%2C%22bodylinkcolor%22%3A%22%231188e6%22%2C%22bodyfontsize%22%3A%2214px%22%7D'>
+  <center class="wrapper">
+    <div class="webkit">
+      <table cellpadding="0" cellspacing="0" border="0" width="100%" class="wrapper" bgcolor="#FFFFFF">
+      <tr><td valign="top" bgcolor="#FFFFFF" width="100%">
+      <!--[if (gte mso 9)|(IE)]>
+      <table width="600" align="center" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td>
+          <![endif]-->
+            <table width="100%" role="content-container" class="outer" data-attributes='%7B%22dropped%22%3Atrue%2C%22containerpadding%22%3A%220%2C0%2C0%2C0%22%2C%22containerwidth%22%3A600%2C%22containerbackground%22%3A%22%23FFFFFF%22%7D' align="center" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td width="100%"><table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td>
+                    <!--[if (gte mso 9)|(IE)]>
+                      <table width="600" align="center" cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                          <td>
+                            <![endif]-->
+                              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width:600px;" align="center">
+                                <tr><td role="modules-container" style="padding: 0px 0px 0px 0px; color: #000000; text-align: left;" bgcolor="#FFFFFF" width="100%" align="left">
+                                  <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" style="display:none !important; visibility:hidden; opacity:0; color:transparent; height:0; width:0;" class="module preheader preheader-hide" role="module" data-type="preheader">
+  <tr><td role="module-content"><p></p></td></tr>
+</table>
+<table class="module" role="module" data-type="wysiwyg" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div>
+
+</div></td></tr></table>
+<table role="module" data-type="image" border="0" align="center" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" class="wrapper" data-attributes='%7B%22child%22%3Afalse%2C%22link%22%3A%22%22%2C%22width%22%3A%22600%22%2C%22height%22%3A%22107%22%2C%22imagebackground%22%3A%22%23FFFFFF%22%2C%22url%22%3A%22https%3A//marketing-image-production.s3.amazonaws.com/uploads/bb5c8b37fb8b5c18fa56b1adbdf4ea31daedb73c1df75bc47974c47504873b3b58f73a89ce248498a65fd30bb1dbf308b456ef84787f9c516588b95bb4e21728.jpg%22%2C%22alt_text%22%3A%22%22%2C%22dropped%22%3Atrue%2C%22imagemargin%22%3A%220%2C0%2C0%2C0%22%2C%22alignment%22%3A%22%22%2C%22responsive%22%3Atrue%7D'>
+<tr>
+  <td style="font-size:6px;line-height:10px;background-color:#FFFFFF;padding: 0px 0px 0px 0px;" valign="top" align="" role="module-content"><!--[if mso]>
+<center>
+<table width="600" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+  <tr>
+    <td width="600" valign="top">
+<![endif]-->
+
+  <img class="max-width"  width="600"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/bb5c8b37fb8b5c18fa56b1adbdf4ea31daedb73c1df75bc47974c47504873b3b58f73a89ce248498a65fd30bb1dbf308b456ef84787f9c516588b95bb4e21728.jpg" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 600px !important; width: 100% !important; height: auto !important; " />
+
+<!--[if mso]>
+</td></tr></table>
+</center>
+<![endif]--></td>
+</tr>
+</table><table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A30%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 30px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C12%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """+name+"""<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Booking (ID:"""+booking_id+""" ) has been placed. We will call you shortly to confirm the pick-up time.&nbsp;</div> </td>
+</tr>
+</table>
+"""+summary_html+"""
+<!-- <table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A16%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 16px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" role="module" data-type="columns" data-attributes='%7B%22dropped%22%3Atrue%2C%22columns%22%3A2%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22cellpadding%22%3A0%2C%22containerbackground%22%3A%22%22%7D'>
+  <tr><td style="padding: 0px 0px 0px 0px;" bgcolor="">
+    <table class="columns--container-table" border="0" cellpadding="0" cellspacing="0" align="center" width="100%">
+      <tr role="module-content">
+        <td style="padding: 0px 0px 0px 0px" role="column-0" align="center" valign="top" width="50%" height="100%" class="templateColumnContainer column-drop-area ">
+  <table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div>Test1</div> </td>
+</tr>
+</table>
+
+</td><td style="padding: 0px 0px 0px 0px" role="column-1" align="center" valign="top" width="50%" height="100%" class="templateColumnContainer column-drop-area ">
+  <table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: right;">Test2</div> </td>
+</tr>
+</table>
+
+</td>
+      </tr>
+    </table>
+  </td></tr>
+</table> -->
+<table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A30%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 30px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table class="module" role="module" data-type="divider" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%2C%22linecolor%22%3A%22%23000000%22%2C%22height%22%3A5%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff">
+  <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" height="5"  style="font-size: 5px; line-height: 5px;">
+    <tr><td bgcolor="#000000">&nbsp;</td></tr>
+  </table>
+</td></tr></table>
+<table class="module" role="module" data-type="wysiwyg" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22padding%22%3A%227%2C0%2C6%2C0%22%2C%22containerbackground%22%3A%22%2309a2dc%22%7D'>
+<tr><td role="module-content" style="padding: 7px 0px 6px 0px;" bgcolor="#09a2dc"><div style="text-align: center;"><span style="color:#FFFFFF;"><strong>How it works?</strong></span></div> </td></tr></table>
+<table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A18%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 18px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" role="module" data-type="columns" data-attributes='%7B%22dropped%22%3Atrue%2C%22columns%22%3A3%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22cellpadding%22%3A0%2C%22containerbackground%22%3A%22%22%7D'>
+  <tr><td style="padding: 0px 0px 0px 0px;" bgcolor="">
+    <table class="columns--container-table" border="0" cellpadding="0" cellspacing="0" align="center" width="100%">
+      <tr role="module-content">
+        <td style="padding: 0px 0px 0px 0px" role="column-0" align="center" valign="top" width="33.333333333333336%" height="100%" class="templateColumnContainer column-drop-area ">
+  <table role="module" data-type="image" border="0" align="center" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" class="wrapper" data-attributes='%7B%22child%22%3Afalse%2C%22link%22%3A%22%22%2C%22width%22%3A%2264%22%2C%22height%22%3A%2264%22%2C%22imagebackground%22%3A%22%23FFFFFF%22%2C%22url%22%3A%22https%3A//marketing-image-production.s3.amazonaws.com/uploads/1d92b75b2550e6ccc6203c39a146b5f62f858e7228b3802abec61c6f437a526b62ec0d3bc9a095bdf93bdd7fdc7a0876060745a23542e3049ae3fd10b307149e.png%22%2C%22alt_text%22%3A%22%22%2C%22dropped%22%3Atrue%2C%22imagemargin%22%3A%220%2C0%2C0%2C0%22%2C%22alignment%22%3A%22center%22%2C%22responsive%22%3Atrue%7D'>
+<tr>
+  <td style="font-size:6px;line-height:10px;background-color:#FFFFFF;padding: 0px 0px 0px 0px;" valign="top" align="center" role="module-content"><!--[if mso]>
+<center>
+<table width="64" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+  <tr>
+    <td width="64" valign="top">
+<![endif]-->
+
+  <img class="max-width"  width="64"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/053f97d2e85838a5153c372de959b8db51bda14a450df439ce1209206ae437f66a0d9ae9e3786472a3ffab4cddcc75729188e0f18619105453fdf8544fcc2436.png" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 64px !important; width: 100% !important; height: auto !important; " />
+
+<!--[if mso]>
+</td></tr></table>
+</center>
+<![endif]--></td>
+</tr>
+</table><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%227%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 7px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: center;"><span style="font-size:14px;">ClickGarage experts drop by at the location to pick the vehicle</span></div> </td>
+</tr>
+</table>
+
+</td><td style="padding: 0px 0px 0px 0px" role="column-1" align="center" valign="top" width="33.333333333333336%" height="100%" class="templateColumnContainer column-drop-area ">
+  <table role="module" data-type="image" border="0" align="center" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" class="wrapper" data-attributes='%7B%22child%22%3Afalse%2C%22link%22%3A%22%22%2C%22width%22%3A%2264%22%2C%22height%22%3A%2264%22%2C%22imagebackground%22%3A%22%23FFFFFF%22%2C%22url%22%3A%22https%3A//marketing-image-production.s3.amazonaws.com/uploads/ec61f78aabe6c9ef7c0d4c6ab0b05351c6a4420134709a36c78bc0e0e2204a71b285e3879cbfdaaf9ed198103ecd8227d99554eb20ef5b393d726613a7da1978.png%22%2C%22alt_text%22%3A%22%22%2C%22dropped%22%3Atrue%2C%22imagemargin%22%3A%220%2C0%2C0%2C0%22%2C%22alignment%22%3A%22center%22%2C%22responsive%22%3Atrue%7D'>
+<tr>
+  <td style="font-size:6px;line-height:10px;background-color:#FFFFFF;padding: 0px 0px 0px 0px;" valign="top" align="center" role="module-content"><!--[if mso]>
+<center>
+<table width="64" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+  <tr>
+    <td width="64" valign="top">
+<![endif]-->
+
+  <img class="max-width"  width="64"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/ec61f78aabe6c9ef7c0d4c6ab0b05351c6a4420134709a36c78bc0e0e2204a71b285e3879cbfdaaf9ed198103ecd8227d99554eb20ef5b393d726613a7da1978.png" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 64px !important; width: 100% !important; height: auto !important; " />
+
+<!--[if mso]>
+</td></tr></table>
+</center>
+<![endif]--></td>
+</tr>
+</table><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%227%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 7px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: center;"><span style="font-size:14px;">Requested cleaning services will be done at the workshop</span></div> </td>
+</tr>
+</table>
+
+</td><td style="padding: 0px 0px 0px 0px" role="column-2" align="center" valign="top" width="33.333333333333336%" height="100%" class="templateColumnContainer column-drop-area ">
+  <table role="module" data-type="image" border="0" align="center" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" class="wrapper" data-attributes='%7B%22child%22%3Afalse%2C%22link%22%3A%22%22%2C%22width%22%3A%2264%22%2C%22height%22%3A%2264%22%2C%22imagebackground%22%3A%22%23FFFFFF%22%2C%22url%22%3A%22https%3A//marketing-image-production.s3.amazonaws.com/uploads/55b10b7fd6a9126ce4fed75b853ab45cab0e8ab8b21105981058d15459ee14576a4be83cc2c55fce010ab66d1ef0b1a82240346a230ef2533c24b18c7ef1e9cc.png%22%2C%22alt_text%22%3A%22%22%2C%22dropped%22%3Atrue%2C%22imagemargin%22%3A%220%2C0%2C0%2C0%22%2C%22alignment%22%3A%22center%22%2C%22responsive%22%3Atrue%7D'>
+<tr>
+  <td style="font-size:6px;line-height:10px;background-color:#FFFFFF;padding: 0px 0px 0px 0px;" valign="top" align="center" role="module-content"><!--[if mso]>
+<center>
+<table width="64" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+  <tr>
+    <td width="64" valign="top">
+<![endif]-->
+
+  <img class="max-width"  width="64"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/55b10b7fd6a9126ce4fed75b853ab45cab0e8ab8b21105981058d15459ee14576a4be83cc2c55fce010ab66d1ef0b1a82240346a230ef2533c24b18c7ef1e9cc.png" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 64px !important; width: 100% !important; height: auto !important; " />
+
+<!--[if mso]>
+</td></tr></table>
+</center>
+<![endif]--></td>
+</tr>
+</table><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%227%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 7px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: center;"><span style="font-size:14px;">Make payments through multiple payment options avaialble</span></div> </td>
+</tr>
+</table>
+
+</td>
+      </tr>
+    </table>
+  </td></tr>
+</table><table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A30%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 30px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" class="module footer" role="module" data-type="footer" data-attributes='%7B%22dropped%22%3Atrue%2C%22columns%22%3A1%2C%22padding%22%3A%2210%2C5%2C10%2C5%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+  <tr><td style="padding: 10px 5px 10px 5px;" bgcolor="#ffffff">
+    <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%">
+      <tr role="module-content">
+
+        <td align="center" valign="top" width="100%" height="100%" class="templateColumnContainer">
+          <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%">
+            <tr>
+              <td class="leftColumnContent" role="column-one" height="100%" style="height:100%;"><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="font-size:12px;line-height:150%;margin:0;text-align:center;">This email was sent by: ClickGarage (Sui Generis Innovations Private Limited), &nbsp;W-22, Green Park, New Delhi | To unsubscribe click: <a href="[Unsubscribe]">here</a></div> </td>
+</tr>
+</table>
+</td>
+            </tr>
+          </table>
+        </td>
+
+      </tr>
+    </table>
+  </td></tr>
+</table>
+
+                                </tr></td>
+                              </table>
+                            <!--[if (gte mso 9)|(IE)]>
+                          </td>
+                        </td>
+                      </table>
+                    <![endif]-->
+                    </td>
+                  </tr>
+                </table></td>
+              </tr>
+            </table>
+          <!--[if (gte mso 9)|(IE)]>
+          </td>
+        </tr>
+      </table>
+      <![endif]-->
+      </tr></td>
+      </table>
+    </div>
+  </center>
+</body>
+</html>"""
+		elif doorstep == "1":
+			# html = "1 Other"
+			html = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" data-dnd="true">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+  <!--[if !mso]><!-->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+  <!--<![endif]-->
+
+  <!--[if (gte mso 9)|(IE)]><style type="text/css">
+  table {border-collapse: collapse;}
+  table, td {mso-table-lspace: 0pt;mso-table-rspace: 0pt;}
+  img {-ms-interpolation-mode: bicubic;}
+  </style>
+  <![endif]-->
+  <style type="text/css">
+  body {
+    color: #000000;
+  }
+  body a {
+    color: #1188e6;
+    text-decoration: none;
+  }
+  p { margin: 0; padding: 0; }
+  table[class="wrapper"] {
+    width:100% !important;
+    table-layout: fixed;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+  img[class="max-width"] {
+    max-width: 100% !important;
+  }
+  @media screen and (max-width:480px) {
+    .preheader .rightColumnContent,
+    .footer .rightColumnContent {
+        text-align: left !important;
+    }
+    .preheader .rightColumnContent div,
+    .preheader .rightColumnContent span,
+    .footer .rightColumnContent div,
+    .footer .rightColumnContent span {
+      text-align: left !important;
+    }
+    .preheader .rightColumnContent,
+    .preheader .leftColumnContent {
+      font-size: 80% !important;
+      padding: 5px 0;
+    }
+    table[class="wrapper-mobile"] {
+      width: 100% !important;
+      table-layout: fixed;
+    }
+    img[class="max-width"] {
+      height: auto !important;
+    }
+    a[class="bulletproof-button"] {
+      display: block !important;
+      width: auto !important;
+      font-size: 80%;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+    // 2 columns
+    #templateColumns{
+        width:100% !important;
+    }
+
+    .templateColumnContainer{
+        display:block !important;
+        width:100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+  }
+  </style>
+  <style>
+  body, p, div { font-family: arial,sans-serif; }
+</style>
+
+</head>
+<body yahoofix="true" style="min-width: 100%; margin: 0; padding: 0; font-size: 14pxpx; font-family: arial,sans-serif; color: #000000; background-color: #FFFFFF; color: #000000;" data-attributes='%7B%22dropped%22%3Atrue%2C%22bodybackground%22%3A%22%23FFFFFF%22%2C%22bodyfontname%22%3A%22arial%2Csans-serif%22%2C%22bodytextcolor%22%3A%22%23000000%22%2C%22bodylinkcolor%22%3A%22%231188e6%22%2C%22bodyfontsize%22%3A%2214px%22%7D'>
+  <center class="wrapper">
+    <div class="webkit">
+      <table cellpadding="0" cellspacing="0" border="0" width="100%" class="wrapper" bgcolor="#FFFFFF">
+      <tr><td valign="top" bgcolor="#FFFFFF" width="100%">
+      <!--[if (gte mso 9)|(IE)]>
+      <table width="600" align="center" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td>
+          <![endif]-->
+            <table width="100%" role="content-container" class="outer" data-attributes='%7B%22dropped%22%3Atrue%2C%22containerpadding%22%3A%220%2C0%2C0%2C0%22%2C%22containerwidth%22%3A600%2C%22containerbackground%22%3A%22%23FFFFFF%22%7D' align="center" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td width="100%"><table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td>
+                    <!--[if (gte mso 9)|(IE)]>
+                      <table width="600" align="center" cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                          <td>
+                            <![endif]-->
+                              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width:600px;" align="center">
+                                <tr><td role="modules-container" style="padding: 0px 0px 0px 0px; color: #000000; text-align: left;" bgcolor="#FFFFFF" width="100%" align="left">
+                                  <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" style="display:none !important; visibility:hidden; opacity:0; color:transparent; height:0; width:0;" class="module preheader preheader-hide" role="module" data-type="preheader">
+  <tr><td role="module-content"><p></p></td></tr>
+</table>
+<table class="module" role="module" data-type="wysiwyg" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div>
+
+</div></td></tr></table>
+<table role="module" data-type="image" border="0" align="center" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" class="wrapper" data-attributes='%7B%22child%22%3Afalse%2C%22link%22%3A%22%22%2C%22width%22%3A%22600%22%2C%22height%22%3A%22107%22%2C%22imagebackground%22%3A%22%23FFFFFF%22%2C%22url%22%3A%22https%3A//marketing-image-production.s3.amazonaws.com/uploads/bb5c8b37fb8b5c18fa56b1adbdf4ea31daedb73c1df75bc47974c47504873b3b58f73a89ce248498a65fd30bb1dbf308b456ef84787f9c516588b95bb4e21728.jpg%22%2C%22alt_text%22%3A%22%22%2C%22dropped%22%3Atrue%2C%22imagemargin%22%3A%220%2C0%2C0%2C0%22%2C%22alignment%22%3A%22%22%2C%22responsive%22%3Atrue%7D'>
+<tr>
+  <td style="font-size:6px;line-height:10px;background-color:#FFFFFF;padding: 0px 0px 0px 0px;" valign="top" align="" role="module-content"><!--[if mso]>
+<center>
+<table width="600" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+  <tr>
+    <td width="600" valign="top">
+<![endif]-->
+
+  <img class="max-width"  width="600"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/bb5c8b37fb8b5c18fa56b1adbdf4ea31daedb73c1df75bc47974c47504873b3b58f73a89ce248498a65fd30bb1dbf308b456ef84787f9c516588b95bb4e21728.jpg" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 600px !important; width: 100% !important; height: auto !important; " />
+
+<!--[if mso]>
+</td></tr></table>
+</center>
+<![endif]--></td>
+</tr>
+</table><table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A30%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 30px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C12%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """+name+"""<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Booking (ID: """+booking_id+""") has been placed. We will call you shortly to confirm the pick-up time.&nbsp;</div> </td>
+</tr>
+</table>
+"""+summary_html+"""
+<!-- <table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A16%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 16px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" role="module" data-type="columns" data-attributes='%7B%22dropped%22%3Atrue%2C%22columns%22%3A2%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22cellpadding%22%3A0%2C%22containerbackground%22%3A%22%22%7D'>
+  <tr><td style="padding: 0px 0px 0px 0px;" bgcolor="">
+    <table class="columns--container-table" border="0" cellpadding="0" cellspacing="0" align="center" width="100%">
+      <tr role="module-content">
+        <td style="padding: 0px 0px 0px 0px" role="column-0" align="center" valign="top" width="50%" height="100%" class="templateColumnContainer column-drop-area ">
+  <table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div>Test1</div> </td>
+</tr>
+</table>
+
+</td><td style="padding: 0px 0px 0px 0px" role="column-1" align="center" valign="top" width="50%" height="100%" class="templateColumnContainer column-drop-area ">
+  <table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: right;">Test2</div> </td>
+</tr>
+</table>
+
+</td>
+      </tr>
+    </table>
+  </td></tr>
+</table>
+ -->
+ <table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A30%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 30px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table class="module" role="module" data-type="divider" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%2C%22linecolor%22%3A%22%23000000%22%2C%22height%22%3A5%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff">
+  <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" height="5"  style="font-size: 5px; line-height: 5px;">
+    <tr><td bgcolor="#000000">&nbsp;</td></tr>
+  </table>
+</td></tr></table>
+<table class="module" role="module" data-type="wysiwyg" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22padding%22%3A%227%2C0%2C6%2C0%22%2C%22containerbackground%22%3A%22%2309a2dc%22%7D'>
+<tr><td role="module-content" style="padding: 7px 0px 6px 0px;" bgcolor="#09a2dc"><div style="text-align: center;"><span style="color:#FFFFFF;"><strong>How it works?</strong></span></div> </td></tr></table>
+<table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A18%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 18px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" role="module" data-type="columns" data-attributes='%7B%22dropped%22%3Atrue%2C%22columns%22%3A3%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22cellpadding%22%3A0%2C%22containerbackground%22%3A%22%22%7D'>
+  <tr><td style="padding: 0px 0px 0px 0px;" bgcolor="">
+    <table class="columns--container-table" border="0" cellpadding="0" cellspacing="0" align="center" width="100%">
+      <tr role="module-content">
+        <td style="padding: 0px 0px 0px 0px" role="column-0" align="center" valign="top" width="33.333333333333336%" height="100%" class="templateColumnContainer column-drop-area ">
+  <table role="module" data-type="image" border="0" align="center" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" class="wrapper" data-attributes='%7B%22child%22%3Afalse%2C%22link%22%3A%22%22%2C%22width%22%3A%2264%22%2C%22height%22%3A%2264%22%2C%22imagebackground%22%3A%22%23FFFFFF%22%2C%22url%22%3A%22https%3A//marketing-image-production.s3.amazonaws.com/uploads/053f97d2e85838a5153c372de959b8db51bda14a450df439ce1209206ae437f66a0d9ae9e3786472a3ffab4cddcc75729188e0f18619105453fdf8544fcc2436.png%22%2C%22alt_text%22%3A%22%22%2C%22dropped%22%3Atrue%2C%22imagemargin%22%3A%220%2C0%2C0%2C0%22%2C%22alignment%22%3A%22center%22%2C%22responsive%22%3Atrue%7D'>
+<tr>
+  <td style="font-size:6px;line-height:10px;background-color:#FFFFFF;padding: 0px 0px 0px 0px;" valign="top" align="center" role="module-content"><!--[if mso]>
+<center>
+<table width="64" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+  <tr>
+    <td width="64" valign="top">
+<![endif]-->
+
+  <img class="max-width"  width="64"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/053f97d2e85838a5153c372de959b8db51bda14a450df439ce1209206ae437f66a0d9ae9e3786472a3ffab4cddcc75729188e0f18619105453fdf8544fcc2436.png" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 64px !important; width: 100% !important; height: auto !important; " />
+
+<!--[if mso]>
+</td></tr></table>
+</center>
+<![endif]--></td>
+</tr>
+</table><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%227%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 7px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: center;"><span style="font-size:14px;">ClickGarage experts will drop by at the location, equipped with necessary equipment</span></div> </td>
+</tr>
+</table>
+
+</td><td style="padding: 0px 0px 0px 0px" role="column-1" align="center" valign="top" width="33.333333333333336%" height="100%" class="templateColumnContainer column-drop-area ">
+  <table role="module" data-type="image" border="0" align="center" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" class="wrapper" data-attributes='%7B%22child%22%3Afalse%2C%22link%22%3A%22%22%2C%22width%22%3A%2264%22%2C%22height%22%3A%2264%22%2C%22imagebackground%22%3A%22%23FFFFFF%22%2C%22url%22%3A%22https%3A//marketing-image-production.s3.amazonaws.com/uploads/1b4d8b4136d64f9409faf669c7c17e25f9ef8fe11ba5ae96d173f84254f3af4c6f33e243c45bb8715bf981d370d2c3c2f12093e81a0bf5eb70822526ba835877.png%22%2C%22alt_text%22%3A%22%22%2C%22dropped%22%3Atrue%2C%22imagemargin%22%3A%220%2C0%2C0%2C0%22%2C%22alignment%22%3A%22center%22%2C%22responsive%22%3Atrue%7D'>
+<tr>
+  <td style="font-size:6px;line-height:10px;background-color:#FFFFFF;padding: 0px 0px 0px 0px;" valign="top" align="center" role="module-content"><!--[if mso]>
+<center>
+<table width="64" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+  <tr>
+    <td width="64" valign="top">
+<![endif]-->
+
+  <img class="max-width"  width="64"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/1b4d8b4136d64f9409faf669c7c17e25f9ef8fe11ba5ae96d173f84254f3af4c6f33e243c45bb8715bf981d370d2c3c2f12093e81a0bf5eb70822526ba835877.png" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 64px !important; width: 100% !important; height: auto !important; " />
+
+<!--[if mso]>
+</td></tr></table>
+</center>
+<![endif]--></td>
+</tr>
+</table><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%227%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 7px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: center;"><span style="font-size:14px;">Post inspection job will be performed at the location</span></div> </td>
+</tr>
+</table>
+
+</td><td style="padding: 0px 0px 0px 0px" role="column-2" align="center" valign="top" width="33.333333333333336%" height="100%" class="templateColumnContainer column-drop-area ">
+  <table role="module" data-type="image" border="0" align="center" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" class="wrapper" data-attributes='%7B%22child%22%3Afalse%2C%22link%22%3A%22%22%2C%22width%22%3A%2264%22%2C%22height%22%3A%2264%22%2C%22imagebackground%22%3A%22%23FFFFFF%22%2C%22url%22%3A%22https%3A//marketing-image-production.s3.amazonaws.com/uploads/55b10b7fd6a9126ce4fed75b853ab45cab0e8ab8b21105981058d15459ee14576a4be83cc2c55fce010ab66d1ef0b1a82240346a230ef2533c24b18c7ef1e9cc.png%22%2C%22alt_text%22%3A%22%22%2C%22dropped%22%3Atrue%2C%22imagemargin%22%3A%220%2C0%2C0%2C0%22%2C%22alignment%22%3A%22center%22%2C%22responsive%22%3Atrue%7D'>
+<tr>
+  <td style="font-size:6px;line-height:10px;background-color:#FFFFFF;padding: 0px 0px 0px 0px;" valign="top" align="center" role="module-content"><!--[if mso]>
+<center>
+<table width="64" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+  <tr>
+    <td width="64" valign="top">
+<![endif]-->
+
+  <img class="max-width"  width="64"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/55b10b7fd6a9126ce4fed75b853ab45cab0e8ab8b21105981058d15459ee14576a4be83cc2c55fce010ab66d1ef0b1a82240346a230ef2533c24b18c7ef1e9cc.png" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 64px !important; width: 100% !important; height: auto !important; " />
+
+<!--[if mso]>
+</td></tr></table>
+</center>
+<![endif]--></td>
+</tr>
+</table><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%227%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 7px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: center;"><span style="font-size:14px;">Make payments through multiple payment options avaialble</span></div> </td>
+</tr>
+</table>
+
+</td>
+      </tr>
+    </table>
+  </td></tr>
+</table><table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A30%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 30px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" class="module footer" role="module" data-type="footer" data-attributes='%7B%22dropped%22%3Atrue%2C%22columns%22%3A1%2C%22padding%22%3A%2210%2C5%2C10%2C5%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+  <tr><td style="padding: 10px 5px 10px 5px;" bgcolor="#ffffff">
+    <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%">
+      <tr role="module-content">
+
+        <td align="center" valign="top" width="100%" height="100%" class="templateColumnContainer">
+          <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%">
+            <tr>
+              <td class="leftColumnContent" role="column-one" height="100%" style="height:100%;"><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="font-size:12px;line-height:150%;margin:0;text-align:center;">This email was sent by: ClickGarage (Sui Generis Innovations Private Limited), &nbsp;W-22, Green Park, New Delhi | To unsubscribe click: <a href="[Unsubscribe]">here</a></div> </td>
+</tr>
+</table>
+</td>
+            </tr>
+          </table>
+        </td>
+
+      </tr>
+    </table>
+  </td></tr>
+</table>
+
+                                </tr></td>
+                              </table>
+                            <!--[if (gte mso 9)|(IE)]>
+                          </td>
+                        </td>
+                      </table>
+                    <![endif]-->
+                    </td>
+                  </tr>
+                </table></td>
+              </tr>
+            </table>
+          <!--[if (gte mso 9)|(IE)]>
+          </td>
+        </tr>
+      </table>
+      <![endif]-->
+      </tr></td>
+      </table>
+    </div>
+  </center>
+</body>
+</html>"""
+		elif doorstep == "0":
+			# html = "0 Other"
+			html = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" data-dnd="true">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+  <!--[if !mso]><!-->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+  <!--<![endif]-->
+
+  <!--[if (gte mso 9)|(IE)]><style type="text/css">
+  table {border-collapse: collapse;}
+  table, td {mso-table-lspace: 0pt;mso-table-rspace: 0pt;}
+  img {-ms-interpolation-mode: bicubic;}
+  </style>
+  <![endif]-->
+  <style type="text/css">
+  body {
+    color: #000000;
+  }
+  body a {
+    color: #1188e6;
+    text-decoration: none;
+  }
+  p { margin: 0; padding: 0; }
+  table[class="wrapper"] {
+    width:100% !important;
+    table-layout: fixed;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+  img[class="max-width"] {
+    max-width: 100% !important;
+  }
+  @media screen and (max-width:480px) {
+    .preheader .rightColumnContent,
+    .footer .rightColumnContent {
+        text-align: left !important;
+    }
+    .preheader .rightColumnContent div,
+    .preheader .rightColumnContent span,
+    .footer .rightColumnContent div,
+    .footer .rightColumnContent span {
+      text-align: left !important;
+    }
+    .preheader .rightColumnContent,
+    .preheader .leftColumnContent {
+      font-size: 80% !important;
+      padding: 5px 0;
+    }
+    table[class="wrapper-mobile"] {
+      width: 100% !important;
+      table-layout: fixed;
+    }
+    img[class="max-width"] {
+      height: auto !important;
+    }
+    a[class="bulletproof-button"] {
+      display: block !important;
+      width: auto !important;
+      font-size: 80%;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+    // 2 columns
+    #templateColumns{
+        width:100% !important;
+    }
+
+    .templateColumnContainer{
+        display:block !important;
+        width:100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+  }
+  </style>
+  <style>
+  body, p, div { font-family: arial,sans-serif; }
+</style>
+
+</head>
+<body yahoofix="true" style="min-width: 100%; margin: 0; padding: 0; font-size: 14pxpx; font-family: arial,sans-serif; color: #000000; background-color: #FFFFFF; color: #000000;" data-attributes='%7B%22dropped%22%3Atrue%2C%22bodybackground%22%3A%22%23FFFFFF%22%2C%22bodyfontname%22%3A%22arial%2Csans-serif%22%2C%22bodytextcolor%22%3A%22%23000000%22%2C%22bodylinkcolor%22%3A%22%231188e6%22%2C%22bodyfontsize%22%3A%2214px%22%7D'>
+  <center class="wrapper">
+    <div class="webkit">
+      <table cellpadding="0" cellspacing="0" border="0" width="100%" class="wrapper" bgcolor="#FFFFFF">
+      <tr><td valign="top" bgcolor="#FFFFFF" width="100%">
+      <!--[if (gte mso 9)|(IE)]>
+      <table width="600" align="center" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td>
+          <![endif]-->
+            <table width="100%" role="content-container" class="outer" data-attributes='%7B%22dropped%22%3Atrue%2C%22containerpadding%22%3A%220%2C0%2C0%2C0%22%2C%22containerwidth%22%3A600%2C%22containerbackground%22%3A%22%23FFFFFF%22%7D' align="center" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td width="100%"><table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td>
+                    <!--[if (gte mso 9)|(IE)]>
+                      <table width="600" align="center" cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                          <td>
+                            <![endif]-->
+                              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width:600px;" align="center">
+                                <tr><td role="modules-container" style="padding: 0px 0px 0px 0px; color: #000000; text-align: left;" bgcolor="#FFFFFF" width="100%" align="left">
+                                  <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" style="display:none !important; visibility:hidden; opacity:0; color:transparent; height:0; width:0;" class="module preheader preheader-hide" role="module" data-type="preheader">
+  <tr><td role="module-content"><p></p></td></tr>
+</table>
+<table class="module" role="module" data-type="wysiwyg" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div>
+
+</div></td></tr></table>
+<table role="module" data-type="image" border="0" align="center" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" class="wrapper" data-attributes='%7B%22child%22%3Afalse%2C%22link%22%3A%22%22%2C%22width%22%3A%22600%22%2C%22height%22%3A%22107%22%2C%22imagebackground%22%3A%22%23FFFFFF%22%2C%22url%22%3A%22https%3A//marketing-image-production.s3.amazonaws.com/uploads/bb5c8b37fb8b5c18fa56b1adbdf4ea31daedb73c1df75bc47974c47504873b3b58f73a89ce248498a65fd30bb1dbf308b456ef84787f9c516588b95bb4e21728.jpg%22%2C%22alt_text%22%3A%22%22%2C%22dropped%22%3Atrue%2C%22imagemargin%22%3A%220%2C0%2C0%2C0%22%2C%22alignment%22%3A%22%22%2C%22responsive%22%3Atrue%7D'>
+<tr>
+  <td style="font-size:6px;line-height:10px;background-color:#FFFFFF;padding: 0px 0px 0px 0px;" valign="top" align="" role="module-content"><!--[if mso]>
+<center>
+<table width="600" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+  <tr>
+    <td width="600" valign="top">
+<![endif]-->
+
+  <img class="max-width"  width="600"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/bb5c8b37fb8b5c18fa56b1adbdf4ea31daedb73c1df75bc47974c47504873b3b58f73a89ce248498a65fd30bb1dbf308b456ef84787f9c516588b95bb4e21728.jpg" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 600px !important; width: 100% !important; height: auto !important; " />
+
+<!--[if mso]>
+</td></tr></table>
+</center>
+<![endif]--></td>
+</tr>
+</table><table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A30%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 30px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C12%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """+name+"""<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Booking (ID: """+booking_id+""" ) has been placed. We will call you shortly to confirm the pick-up time.&nbsp;</div> </td>
+</tr>
+</table>
+"""+summary_html+"""
+<!-- <table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A16%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 16px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" role="module" data-type="columns" data-attributes='%7B%22dropped%22%3Atrue%2C%22columns%22%3A2%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22cellpadding%22%3A0%2C%22containerbackground%22%3A%22%22%7D'>
+  <tr><td style="padding: 0px 0px 0px 0px;" bgcolor="">
+    <table class="columns--container-table" border="0" cellpadding="0" cellspacing="0" align="center" width="100%">
+      <tr role="module-content">
+        <td style="padding: 0px 0px 0px 0px" role="column-0" align="center" valign="top" width="50%" height="100%" class="templateColumnContainer column-drop-area ">
+  <table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div>Test1</div> </td>
+</tr>
+</table>
+
+</td><td style="padding: 0px 0px 0px 0px" role="column-1" align="center" valign="top" width="50%" height="100%" class="templateColumnContainer column-drop-area ">
+  <table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: right;">Test2</div> </td>
+</tr>
+</table>
+
+</td>
+      </tr>
+    </table>
+  </td></tr>
+</table> -->
+<table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A30%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 30px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table class="module" role="module" data-type="divider" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%2C%22linecolor%22%3A%22%23000000%22%2C%22height%22%3A5%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff">
+  <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" height="5"  style="font-size: 5px; line-height: 5px;">
+    <tr><td bgcolor="#000000">&nbsp;</td></tr>
+  </table>
+</td></tr></table>
+<table class="module" role="module" data-type="wysiwyg" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22padding%22%3A%227%2C0%2C6%2C0%22%2C%22containerbackground%22%3A%22%2309a2dc%22%7D'>
+<tr><td role="module-content" style="padding: 7px 0px 6px 0px;" bgcolor="#09a2dc"><div style="text-align: center;"><span style="color:#FFFFFF;"><strong>How it works?</strong></span></div> </td></tr></table>
+<table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A18%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 18px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" role="module" data-type="columns" data-attributes='%7B%22dropped%22%3Atrue%2C%22columns%22%3A3%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22cellpadding%22%3A0%2C%22containerbackground%22%3A%22%22%7D'>
+  <tr><td style="padding: 0px 0px 0px 0px;" bgcolor="">
+    <table class="columns--container-table" border="0" cellpadding="0" cellspacing="0" align="center" width="100%">
+      <tr role="module-content">
+        <td style="padding: 0px 0px 0px 0px" role="column-0" align="center" valign="top" width="33.333333333333336%" height="100%" class="templateColumnContainer column-drop-area ">
+  <table role="module" data-type="image" border="0" align="center" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" class="wrapper" data-attributes='%7B%22child%22%3Afalse%2C%22link%22%3A%22%22%2C%22width%22%3A%2264%22%2C%22height%22%3A%2264%22%2C%22imagebackground%22%3A%22%23FFFFFF%22%2C%22url%22%3A%22https%3A//marketing-image-production.s3.amazonaws.com/uploads/053f97d2e85838a5153c372de959b8db51bda14a450df439ce1209206ae437f66a0d9ae9e3786472a3ffab4cddcc75729188e0f18619105453fdf8544fcc2436.png%22%2C%22alt_text%22%3A%22%22%2C%22dropped%22%3Atrue%2C%22imagemargin%22%3A%220%2C0%2C0%2C0%22%2C%22alignment%22%3A%22center%22%2C%22responsive%22%3Atrue%7D'>
+<tr>
+  <td style="font-size:6px;line-height:10px;background-color:#FFFFFF;padding: 0px 0px 0px 0px;" valign="top" align="center" role="module-content"><!--[if mso]>
+<center>
+<table width="64" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+  <tr>
+    <td width="64" valign="top">
+<![endif]-->
+
+  <img class="max-width"  width="64"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/053f97d2e85838a5153c372de959b8db51bda14a450df439ce1209206ae437f66a0d9ae9e3786472a3ffab4cddcc75729188e0f18619105453fdf8544fcc2436.png" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 64px !important; width: 100% !important; height: auto !important; " />
+
+<!--[if mso]>
+</td></tr></table>
+</center>
+<![endif]--></td>
+</tr>
+</table><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%227%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 7px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: center;"><span style="font-size:14px;">Post inspection, the vehicle will be picked up by the mechanic</span></div> </td>
+</tr>
+</table>
+
+</td><td style="padding: 0px 0px 0px 0px" role="column-1" align="center" valign="top" width="33.333333333333336%" height="100%" class="templateColumnContainer column-drop-area ">
+  <table role="module" data-type="image" border="0" align="center" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" class="wrapper" data-attributes='%7B%22child%22%3Afalse%2C%22link%22%3A%22%22%2C%22width%22%3A%2264%22%2C%22height%22%3A%2264%22%2C%22imagebackground%22%3A%22%23FFFFFF%22%2C%22url%22%3A%22https%3A//marketing-image-production.s3.amazonaws.com/uploads/1b4d8b4136d64f9409faf669c7c17e25f9ef8fe11ba5ae96d173f84254f3af4c6f33e243c45bb8715bf981d370d2c3c2f12093e81a0bf5eb70822526ba835877.png%22%2C%22alt_text%22%3A%22%22%2C%22dropped%22%3Atrue%2C%22imagemargin%22%3A%220%2C0%2C0%2C0%22%2C%22alignment%22%3A%22center%22%2C%22responsive%22%3Atrue%7D'>
+<tr>
+  <td style="font-size:6px;line-height:10px;background-color:#FFFFFF;padding: 0px 0px 0px 0px;" valign="top" align="center" role="module-content"><!--[if mso]>
+<center>
+<table width="64" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+  <tr>
+    <td width="64" valign="top">
+<![endif]-->
+
+  <img class="max-width"  width="64"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/1b4d8b4136d64f9409faf669c7c17e25f9ef8fe11ba5ae96d173f84254f3af4c6f33e243c45bb8715bf981d370d2c3c2f12093e81a0bf5eb70822526ba835877.png" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 64px !important; width: 100% !important; height: auto !important; " />
+
+<!--[if mso]>
+</td></tr></table>
+</center>
+<![endif]--></td>
+</tr>
+</table><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%227%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 7px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: center;"><span style="font-size:14px;">Car will be delivered post servicing</span></div> </td>
+</tr>
+</table>
+
+</td><td style="padding: 0px 0px 0px 0px" role="column-2" align="center" valign="top" width="33.333333333333336%" height="100%" class="templateColumnContainer column-drop-area ">
+  <table role="module" data-type="image" border="0" align="center" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" class="wrapper" data-attributes='%7B%22child%22%3Afalse%2C%22link%22%3A%22%22%2C%22width%22%3A%2264%22%2C%22height%22%3A%2264%22%2C%22imagebackground%22%3A%22%23FFFFFF%22%2C%22url%22%3A%22https%3A//marketing-image-production.s3.amazonaws.com/uploads/55b10b7fd6a9126ce4fed75b853ab45cab0e8ab8b21105981058d15459ee14576a4be83cc2c55fce010ab66d1ef0b1a82240346a230ef2533c24b18c7ef1e9cc.png%22%2C%22alt_text%22%3A%22%22%2C%22dropped%22%3Atrue%2C%22imagemargin%22%3A%220%2C0%2C0%2C0%22%2C%22alignment%22%3A%22center%22%2C%22responsive%22%3Atrue%7D'>
+<tr>
+  <td style="font-size:6px;line-height:10px;background-color:#FFFFFF;padding: 0px 0px 0px 0px;" valign="top" align="center" role="module-content"><!--[if mso]>
+<center>
+<table width="64" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+  <tr>
+    <td width="64" valign="top">
+<![endif]-->
+
+  <img class="max-width"  width="64"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/55b10b7fd6a9126ce4fed75b853ab45cab0e8ab8b21105981058d15459ee14576a4be83cc2c55fce010ab66d1ef0b1a82240346a230ef2533c24b18c7ef1e9cc.png" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 64px !important; width: 100% !important; height: auto !important; " />
+
+<!--[if mso]>
+</td></tr></table>
+</center>
+<![endif]--></td>
+</tr>
+</table><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%227%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 7px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: center;"><span style="font-size:14px;">Make payments through multiple payment options avaialble</span></div> </td>
+</tr>
+</table>
+
+</td>
+      </tr>
+    </table>
+  </td></tr>
+</table><table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A30%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 30px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" class="module footer" role="module" data-type="footer" data-attributes='%7B%22dropped%22%3Atrue%2C%22columns%22%3A1%2C%22padding%22%3A%2210%2C5%2C10%2C5%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+  <tr><td style="padding: 10px 5px 10px 5px;" bgcolor="#ffffff">
+    <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%">
+      <tr role="module-content">
+
+        <td align="center" valign="top" width="100%" height="100%" class="templateColumnContainer">
+          <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%">
+            <tr>
+              <td class="leftColumnContent" role="column-one" height="100%" style="height:100%;"><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="font-size:12px;line-height:150%;margin:0;text-align:center;">This email was sent by: ClickGarage (Sui Generis Innovations Private Limited), &nbsp;W-22, Green Park, New Delhi | To unsubscribe click: <a href="[Unsubscribe]">here</a></div> </td>
+</tr>
+</table>
+</td>
+            </tr>
+          </table>
+        </td>
+
+      </tr>
+    </table>
+  </td></tr>
+</table>
+
+                                </tr></td>
+                              </table>
+                            <!--[if (gte mso 9)|(IE)]>
+                          </td>
+                        </td>
+                      </table>
+                    <![endif]-->
+                    </td>
+                  </tr>
+                </table></td>
+              </tr>
+            </table>
+          <!--[if (gte mso 9)|(IE)]>
+          </td>
+        </tr>
+      </table>
+      <![endif]-->
+      </tr></td>
+      </table>
+    </div>
+  </center>
+</body>
+</html>"""
+		else:
+			# html=  "0 Other"
+			html = """"""
+	if car_bike == "Bike":
+		# html = "1 Other"
+		html = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" data-dnd="true">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+  <!--[if !mso]><!-->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+  <!--<![endif]-->
+
+  <!--[if (gte mso 9)|(IE)]><style type="text/css">
+  table {border-collapse: collapse;}
+  table, td {mso-table-lspace: 0pt;mso-table-rspace: 0pt;}
+  img {-ms-interpolation-mode: bicubic;}
+  </style>
+  <![endif]-->
+  <style type="text/css">
+  body {
+    color: #000000;
+  }
+  body a {
+    color: #1188e6;
+    text-decoration: none;
+  }
+  p { margin: 0; padding: 0; }
+  table[class="wrapper"] {
+    width:100% !important;
+    table-layout: fixed;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+  img[class="max-width"] {
+    max-width: 100% !important;
+  }
+  @media screen and (max-width:480px) {
+    .preheader .rightColumnContent,
+    .footer .rightColumnContent {
+        text-align: left !important;
+    }
+    .preheader .rightColumnContent div,
+    .preheader .rightColumnContent span,
+    .footer .rightColumnContent div,
+    .footer .rightColumnContent span {
+      text-align: left !important;
+    }
+    .preheader .rightColumnContent,
+    .preheader .leftColumnContent {
+      font-size: 80% !important;
+      padding: 5px 0;
+    }
+    table[class="wrapper-mobile"] {
+      width: 100% !important;
+      table-layout: fixed;
+    }
+    img[class="max-width"] {
+      height: auto !important;
+    }
+    a[class="bulletproof-button"] {
+      display: block !important;
+      width: auto !important;
+      font-size: 80%;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+    // 2 columns
+    #templateColumns{
+        width:100% !important;
+    }
+
+    .templateColumnContainer{
+        display:block !important;
+        width:100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+  }
+  </style>
+  <style>
+  body, p, div { font-family: arial,sans-serif; }
+</style>
+
+</head>
+<body yahoofix="true" style="min-width: 100%; margin: 0; padding: 0; font-size: 14pxpx; font-family: arial,sans-serif; color: #000000; background-color: #FFFFFF; color: #000000;" data-attributes='%7B%22dropped%22%3Atrue%2C%22bodybackground%22%3A%22%23FFFFFF%22%2C%22bodyfontname%22%3A%22arial%2Csans-serif%22%2C%22bodytextcolor%22%3A%22%23000000%22%2C%22bodylinkcolor%22%3A%22%231188e6%22%2C%22bodyfontsize%22%3A%2214px%22%7D'>
+  <center class="wrapper">
+    <div class="webkit">
+      <table cellpadding="0" cellspacing="0" border="0" width="100%" class="wrapper" bgcolor="#FFFFFF">
+      <tr><td valign="top" bgcolor="#FFFFFF" width="100%">
+      <!--[if (gte mso 9)|(IE)]>
+      <table width="600" align="center" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td>
+          <![endif]-->
+            <table width="100%" role="content-container" class="outer" data-attributes='%7B%22dropped%22%3Atrue%2C%22containerpadding%22%3A%220%2C0%2C0%2C0%22%2C%22containerwidth%22%3A600%2C%22containerbackground%22%3A%22%23FFFFFF%22%7D' align="center" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td width="100%"><table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td>
+                    <!--[if (gte mso 9)|(IE)]>
+                      <table width="600" align="center" cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                          <td>
+                            <![endif]-->
+                              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width:600px;" align="center">
+                                <tr><td role="modules-container" style="padding: 0px 0px 0px 0px; color: #000000; text-align: left;" bgcolor="#FFFFFF" width="100%" align="left">
+                                  <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" style="display:none !important; visibility:hidden; opacity:0; color:transparent; height:0; width:0;" class="module preheader preheader-hide" role="module" data-type="preheader">
+  <tr><td role="module-content"><p></p></td></tr>
+</table>
+<table class="module" role="module" data-type="wysiwyg" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div>
+
+</div></td></tr></table>
+<table role="module" data-type="image" border="0" align="center" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" class="wrapper" data-attributes='%7B%22child%22%3Afalse%2C%22link%22%3A%22%22%2C%22width%22%3A%22600%22%2C%22height%22%3A%22107%22%2C%22imagebackground%22%3A%22%23FFFFFF%22%2C%22url%22%3A%22https%3A//marketing-image-production.s3.amazonaws.com/uploads/bb5c8b37fb8b5c18fa56b1adbdf4ea31daedb73c1df75bc47974c47504873b3b58f73a89ce248498a65fd30bb1dbf308b456ef84787f9c516588b95bb4e21728.jpg%22%2C%22alt_text%22%3A%22%22%2C%22dropped%22%3Atrue%2C%22imagemargin%22%3A%220%2C0%2C0%2C0%22%2C%22alignment%22%3A%22%22%2C%22responsive%22%3Atrue%7D'>
+<tr>
+  <td style="font-size:6px;line-height:10px;background-color:#FFFFFF;padding: 0px 0px 0px 0px;" valign="top" align="" role="module-content"><!--[if mso]>
+<center>
+<table width="600" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+  <tr>
+    <td width="600" valign="top">
+<![endif]-->
+
+  <img class="max-width"  width="600"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/bb5c8b37fb8b5c18fa56b1adbdf4ea31daedb73c1df75bc47974c47504873b3b58f73a89ce248498a65fd30bb1dbf308b456ef84787f9c516588b95bb4e21728.jpg" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 600px !important; width: 100% !important; height: auto !important; " />
+
+<!--[if mso]>
+</td></tr></table>
+</center>
+<![endif]--></td>
+</tr>
+</table><table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A30%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 30px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C12%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """+name+"""<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Booking (ID: """+booking_id+""" ) has been placed. We will call you shortly to confirm the pick-up time.&nbsp;</div> </td>
+</tr>
+</table>
+"""+summary_html+"""s
+<!-- <table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A16%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 16px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" role="module" data-type="columns" data-attributes='%7B%22dropped%22%3Atrue%2C%22columns%22%3A2%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22cellpadding%22%3A0%2C%22containerbackground%22%3A%22%22%7D'>
+  <tr><td style="padding: 0px 0px 0px 0px;" bgcolor="">
+    <table class="columns--container-table" border="0" cellpadding="0" cellspacing="0" align="center" width="100%">
+      <tr role="module-content">
+        <td style="padding: 0px 0px 0px 0px" role="column-0" align="center" valign="top" width="50%" height="100%" class="templateColumnContainer column-drop-area ">
+  <table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div>Test1</div> </td>
+</tr>
+</table>
+
+</td><td style="padding: 0px 0px 0px 0px" role="column-1" align="center" valign="top" width="50%" height="100%" class="templateColumnContainer column-drop-area ">
+  <table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: right;">Test2</div> </td>
+</tr>
+</table>
+
+</td>
+      </tr>
+    </table>
+  </td></tr>
+</table> -->
+<table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A30%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 30px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table class="module" role="module" data-type="divider" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%2C%22linecolor%22%3A%22%23000000%22%2C%22height%22%3A5%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff">
+  <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" height="5"  style="font-size: 5px; line-height: 5px;">
+    <tr><td bgcolor="#000000">&nbsp;</td></tr>
+  </table>
+</td></tr></table>
+<table class="module" role="module" data-type="wysiwyg" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22padding%22%3A%227%2C0%2C6%2C0%22%2C%22containerbackground%22%3A%22%2309a2dc%22%7D'>
+<tr><td role="module-content" style="padding: 7px 0px 6px 0px;" bgcolor="#09a2dc"><div style="text-align: center;"><span style="color:#FFFFFF;"><strong>How it works?</strong></span></div> </td></tr></table>
+<table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A18%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 18px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" role="module" data-type="columns" data-attributes='%7B%22dropped%22%3Atrue%2C%22columns%22%3A3%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22cellpadding%22%3A0%2C%22containerbackground%22%3A%22%22%7D'>
+  <tr><td style="padding: 0px 0px 0px 0px;" bgcolor="">
+    <table class="columns--container-table" border="0" cellpadding="0" cellspacing="0" align="center" width="100%">
+      <tr role="module-content">
+        <td style="padding: 0px 0px 0px 0px" role="column-0" align="center" valign="top" width="33.333333333333336%" height="100%" class="templateColumnContainer column-drop-area ">
+  <table role="module" data-type="image" border="0" align="center" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" class="wrapper" data-attributes='%7B%22child%22%3Afalse%2C%22link%22%3A%22%22%2C%22width%22%3A%2264%22%2C%22height%22%3A%2264%22%2C%22imagebackground%22%3A%22%23FFFFFF%22%2C%22url%22%3A%22https%3A//marketing-image-production.s3.amazonaws.com/uploads/053f97d2e85838a5153c372de959b8db51bda14a450df439ce1209206ae437f66a0d9ae9e3786472a3ffab4cddcc75729188e0f18619105453fdf8544fcc2436.png%22%2C%22alt_text%22%3A%22%22%2C%22dropped%22%3Atrue%2C%22imagemargin%22%3A%220%2C0%2C0%2C0%22%2C%22alignment%22%3A%22center%22%2C%22responsive%22%3Atrue%7D'>
+<tr>
+  <td style="font-size:6px;line-height:10px;background-color:#FFFFFF;padding: 0px 0px 0px 0px;" valign="top" align="center" role="module-content"><!--[if mso]>
+<center>
+<table width="64" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+  <tr>
+    <td width="64" valign="top">
+<![endif]-->
+
+  <img class="max-width"  width="64"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/053f97d2e85838a5153c372de959b8db51bda14a450df439ce1209206ae437f66a0d9ae9e3786472a3ffab4cddcc75729188e0f18619105453fdf8544fcc2436.png" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 64px !important; width: 100% !important; height: auto !important; " />
+
+<!--[if mso]>
+</td></tr></table>
+</center>
+<![endif]--></td>
+</tr>
+</table><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%227%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 7px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: center;"><span style="font-size:14px;">The mechanic will come at your doorstep to service the bike</span></div> </td>
+</tr>
+</table>
+
+</td><td style="padding: 0px 0px 0px 0px" role="column-1" align="center" valign="top" width="33.333333333333336%" height="100%" class="templateColumnContainer column-drop-area ">
+  <table role="module" data-type="image" border="0" align="center" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" class="wrapper" data-attributes='%7B%22child%22%3Afalse%2C%22link%22%3A%22%22%2C%22width%22%3A%2264%22%2C%22height%22%3A%2264%22%2C%22imagebackground%22%3A%22%23FFFFFF%22%2C%22url%22%3A%22https%3A//marketing-image-production.s3.amazonaws.com/uploads/6208f848e060459d8872150c747fff02076140624262ccd194a717da3ba377033820fbbc8e550ccee1fd72a69d65f1cf93c0b97abe185e33991c1fded2d8d780.png%22%2C%22alt_text%22%3A%22%22%2C%22dropped%22%3Atrue%2C%22imagemargin%22%3A%220%2C0%2C0%2C0%22%2C%22alignment%22%3A%22center%22%2C%22responsive%22%3Atrue%7D'>
+<tr>
+  <td style="font-size:6px;line-height:10px;background-color:#FFFFFF;padding: 0px 0px 0px 0px;" valign="top" align="center" role="module-content"><!--[if mso]>
+<center>
+<table width="64" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+  <tr>
+    <td width="64" valign="top">
+<![endif]-->
+
+  <img class="max-width"  width="64"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/6208f848e060459d8872150c747fff02076140624262ccd194a717da3ba377033820fbbc8e550ccee1fd72a69d65f1cf93c0b97abe185e33991c1fded2d8d780.png" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 64px !important; width: 100% !important; height: auto !important; " />
+
+<!--[if mso]>
+</td></tr></table>
+</center>
+<![endif]--></td>
+</tr>
+</table><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%227%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 7px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: center;"><span style="font-size:14px;">Bike will be delivered post-servicing</span></div> </td>
+</tr>
+</table>
+
+</td><td style="padding: 0px 0px 0px 0px" role="column-2" align="center" valign="top" width="33.333333333333336%" height="100%" class="templateColumnContainer column-drop-area ">
+  <table role="module" data-type="image" border="0" align="center" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" class="wrapper" data-attributes='%7B%22child%22%3Afalse%2C%22link%22%3A%22%22%2C%22width%22%3A%2264%22%2C%22height%22%3A%2264%22%2C%22imagebackground%22%3A%22%23FFFFFF%22%2C%22url%22%3A%22https%3A//marketing-image-production.s3.amazonaws.com/uploads/55b10b7fd6a9126ce4fed75b853ab45cab0e8ab8b21105981058d15459ee14576a4be83cc2c55fce010ab66d1ef0b1a82240346a230ef2533c24b18c7ef1e9cc.png%22%2C%22alt_text%22%3A%22%22%2C%22dropped%22%3Atrue%2C%22imagemargin%22%3A%220%2C0%2C0%2C0%22%2C%22alignment%22%3A%22center%22%2C%22responsive%22%3Atrue%7D'>
+<tr>
+  <td style="font-size:6px;line-height:10px;background-color:#FFFFFF;padding: 0px 0px 0px 0px;" valign="top" align="center" role="module-content"><!--[if mso]>
+<center>
+<table width="64" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+  <tr>
+    <td width="64" valign="top">
+<![endif]-->
+
+  <img class="max-width"  width="64"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/55b10b7fd6a9126ce4fed75b853ab45cab0e8ab8b21105981058d15459ee14576a4be83cc2c55fce010ab66d1ef0b1a82240346a230ef2533c24b18c7ef1e9cc.png" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 64px !important; width: 100% !important; height: auto !important; " />
+
+<!--[if mso]>
+</td></tr></table>
+</center>
+<![endif]--></td>
+</tr>
+</table><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%227%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 7px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: center;"><span style="font-size:14px;">Make payments through multiple payment options avaialble</span></div> </td>
+</tr>
+</table>
+
+</td>
+      </tr>
+    </table>
+  </td></tr>
+</table><table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A30%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 30px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" class="module footer" role="module" data-type="footer" data-attributes='%7B%22dropped%22%3Atrue%2C%22columns%22%3A1%2C%22padding%22%3A%2210%2C5%2C10%2C5%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+  <tr><td style="padding: 10px 5px 10px 5px;" bgcolor="#ffffff">
+    <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%">
+      <tr role="module-content">
+
+        <td align="center" valign="top" width="100%" height="100%" class="templateColumnContainer">
+          <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%">
+            <tr>
+              <td class="leftColumnContent" role="column-one" height="100%" style="height:100%;"><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>
+  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="font-size:12px;line-height:150%;margin:0;text-align:center;">This email was sent by: ClickGarage (Sui Generis Innovations Private Limited), &nbsp;W-22, Green Park, New Delhi | To unsubscribe click: <a href="[Unsubscribe]">here</a></div> </td>
+</tr>
+</table>
+</td>
+            </tr>
+          </table>
+        </td>
+
+      </tr>
+    </table>
+  </td></tr>
+</table>
+
+                                </tr></td>
+                              </table>
+                            <!--[if (gte mso 9)|(IE)]>
+                          </td>
+                        </td>
+                      </table>
+                    <![endif]-->
+                    </td>
+                  </tr>
+                </table></td>
+              </tr>
+            </table>
+          <!--[if (gte mso 9)|(IE)]>
+          </td>
+        </tr>
+      </table>
+      <![endif]-->
+      </tr></td>
+      </table>
+    </div>
+  </center>
+</body>
+</html>"""
+
+	return html
