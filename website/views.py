@@ -51,7 +51,7 @@ ad_landing_map = {
 }
 
 # Create your views here.
-def index(request):
+def index_old(request):
 
     selectedCarName = request.COOKIES.get('clgacarname')
     selectedCarID = request.COOKIES.get('clgacarid')
@@ -1373,7 +1373,7 @@ def advert(request):
     })
     return HttpResponse(template.render(context))
 
-def index_new(request):
+def index(request):
     template = loader.get_template('revamp/index.html')
     context = RequestContext(request, {
     })
