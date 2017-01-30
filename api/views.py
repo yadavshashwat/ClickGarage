@@ -4753,7 +4753,7 @@ def set_password_otp(request):
             login(request, user)
             obj['result']['auth'] = True
             obj['result']['pass'] = pass2
-            message = "Success!"
+            message = "Success"
         else:
             obj['result']['auth'] = False
             message = objtp['msg']
@@ -4770,10 +4770,10 @@ def set_password_otp(request):
         set_cookie(response, "c_user_first_name", user.first_name)
         set_cookie(response, "c_user_last_name", user.last_name)
         set_cookie(response, "c_user_number", user.contact_no)
-        set_cookie(response, "c_user_email", user.email_list[0])
-        set_cookie(response, "c_user_address", user.user_saved_address[0]['address'])
-        set_cookie(response, "c_user_locality", user.user_saved_address[0]['locality'])
-        set_cookie(response, "c_user_city", user.user_saved_address[0]['city'])
+        # set_cookie(response, "c_user_email", user.email_list[0])
+        # set_cookie(response, "c_user_address", user.user_saved_address[0]['address'])
+        # set_cookie(response, "c_user_locality", user.user_saved_address[0]['locality'])
+        # set_cookie(response, "c_user_city", user.user_saved_address[0]['city'])
     return response
 
 def sign_up_otp(request):
@@ -4797,7 +4797,7 @@ def sign_up_otp(request):
         obj['result']['userid'] = user.id
         obj['result']['username'] = user.username
         obj['result']['auth'] = True
-        message = "Success!"
+        message = "Success"
     else:
         obj['result']['auth'] = False
         message = objtp['msg']
@@ -4810,10 +4810,10 @@ def sign_up_otp(request):
         set_cookie(response, "c_user_first_name", user.first_name)
         set_cookie(response, "c_user_last_name", user.last_name)
         set_cookie(response, "c_user_number", user.contact_no)
-        set_cookie(response, "c_user_email", user.email_list[0])
-        set_cookie(response, "c_user_address", user.user_saved_address[0]['address'])
-        set_cookie(response, "c_user_locality", user.user_saved_address[0]['locality'])
-        set_cookie(response, "c_user_city", user.user_saved_address[0]['city'])
+        # set_cookie(response, "c_user_email", user.email_list[0])
+        # set_cookie(response, "c_user_address", user.user_saved_address[0]['address'])
+        # set_cookie(response, "c_user_locality", user.user_saved_address[0]['locality'])
+        # set_cookie(response, "c_user_city", user.user_saved_address[0]['city'])
     return response
 
 def logout_view(request):
