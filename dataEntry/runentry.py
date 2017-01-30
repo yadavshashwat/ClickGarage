@@ -1521,14 +1521,14 @@ def loadServiceLabour(fileName):
                     findService.job_name = job_name
                     findService.job_sub_cat = job_sub_cat
                     findService.type = type
-                    findService.total_price = float(total_price)
+                    findService.total_price = round(float(total_price),0)
                     findService.doorstep = doorstep
                     findService.job_summary = job_summary
                     findService.time = time
                     findService.job_desc = job_desc
                     findService.job_symptoms = job_symptoms
                     findService.job_features = job_features
-                    findService.total_price_comp = float(total_price_comp)
+                    findService.total_price_comp = round(float(total_price_comp),0)
                     findService.price_active = price_active
                     findService.priority = priority
                     findService.save()
@@ -1543,14 +1543,14 @@ def loadServiceLabour(fileName):
                         job_name        = job_name          ,
                         job_sub_cat     = job_sub_cat      ,
                         type            = type              ,
-                        total_price         = float(total_price)             ,
+                        total_price         = round(float(total_price),0)             ,
                         doorstep            = doorstep          ,
                         job_summary         = job_summary       ,
                         time                = time              ,
                         job_desc            = job_desc          ,
                         job_symptoms        = job_symptoms      ,
                         job_features        = job_features      ,
-                        total_price_comp   = float(total_price_comp)        ,
+                        total_price_comp   = round(float(total_price_comp),0)        ,
                         price_active       = price_active            ,
                         priority     = priority
                     )
@@ -1617,8 +1617,8 @@ def CreateJobList():
                 job_name 	        = service.job_name,
                 job_sub_cat         = service.job_sub_cat,
                 type                = service.type,
-                total_price         = (service.total_price + Parts.total_price),
-                total_price_comp    = (service.total_price_comp + Parts.total_price_comp),
+                total_price         = round((service.total_price + Parts.total_price),0),
+                total_price_comp    = round((service.total_price_comp + Parts.total_price_comp),0),
                 doorstep            = service.doorstep,
                 year 				= vehicle.year,
                 fuel_type 			= vehicle.fuel_type,
@@ -1657,8 +1657,8 @@ def CreateJobList():
                 job_name 	        = service.job_name,
                 job_sub_cat         = service.job_sub_cat,
                 type                = service.type,
-                total_price         = (service.total_price),
-                total_price_comp    = (service.total_price_comp),
+                total_price         = round((service.total_price),0),
+                total_price_comp    = round((service.total_price_comp),0),
                 doorstep            = service.doorstep,
                 year 				= vehicle.year,
                 fuel_type 			= vehicle.fuel_type,
@@ -1676,6 +1676,6 @@ def CreateJobList():
                 default_components  = [obj],
                 optional_components = [],
                 total_part          = 0,
-                total_labour        = (service.total_price),
+                total_labour        = round((service.total_price),0),
                 total_discount      = 0)
                 serv.save()
