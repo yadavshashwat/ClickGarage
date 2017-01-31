@@ -4719,16 +4719,13 @@ def verify_otp_password_cookie(request):
         set_cookie(response, "c_user_first_name", user.first_name)
         set_cookie(response, "c_user_last_name", user.last_name)
         set_cookie(response, "c_user_number", user.contact_no)
-        set_cookie(response, "c_user_email", user.email_list[0])
-        set_cookie(response, "c_user_address", user.user_saved_address[0]['address'])
-        set_cookie(response, "c_user_locality", user.user_saved_address[0]['locality'])
-        set_cookie(response, "c_user_city", user.user_saved_address[0]['city'])
-    # local.clearKey('c_user_email');
-    # local.clearKey('c_user_address');
-    # local.clearKey('c_user_locality');
-    # local.clearKey('c_user_city');
-
-    # finally:
+        try:
+            set_cookie(response, "c_user_email", user.email_list[0])
+            set_cookie(response, "c_user_address", user.user_saved_address[0]['address'])
+            set_cookie(response, "c_user_locality", user.user_saved_address[0]['locality'])
+            set_cookie(response, "c_user_city", user.user_saved_address[0]['city'])
+        except:
+            None
     return response
 
 def set_password_otp(request):
@@ -4770,10 +4767,13 @@ def set_password_otp(request):
         set_cookie(response, "c_user_first_name", user.first_name)
         set_cookie(response, "c_user_last_name", user.last_name)
         set_cookie(response, "c_user_number", user.contact_no)
-        # set_cookie(response, "c_user_email", user.email_list[0])
-        # set_cookie(response, "c_user_address", user.user_saved_address[0]['address'])
-        # set_cookie(response, "c_user_locality", user.user_saved_address[0]['locality'])
-        # set_cookie(response, "c_user_city", user.user_saved_address[0]['city'])
+        try:
+            set_cookie(response, "c_user_email", user.email_list[0])
+            set_cookie(response, "c_user_address", user.user_saved_address[0]['address'])
+            set_cookie(response, "c_user_locality", user.user_saved_address[0]['locality'])
+            set_cookie(response, "c_user_city", user.user_saved_address[0]['city'])
+        except:
+            None
     return response
 
 def sign_up_otp(request):
@@ -4810,10 +4810,13 @@ def sign_up_otp(request):
         set_cookie(response, "c_user_first_name", user.first_name)
         set_cookie(response, "c_user_last_name", user.last_name)
         set_cookie(response, "c_user_number", user.contact_no)
-        # set_cookie(response, "c_user_email", user.email_list[0])
-        # set_cookie(response, "c_user_address", user.user_saved_address[0]['address'])
-        # set_cookie(response, "c_user_locality", user.user_saved_address[0]['locality'])
-        # set_cookie(response, "c_user_city", user.user_saved_address[0]['city'])
+        try:
+            set_cookie(response, "c_user_email", user.email_list[0])
+            set_cookie(response, "c_user_address", user.user_saved_address[0]['address'])
+            set_cookie(response, "c_user_locality", user.user_saved_address[0]['locality'])
+            set_cookie(response, "c_user_city", user.user_saved_address[0]['city'])
+        except:
+            None
     return response
 
 def logout_view(request):
