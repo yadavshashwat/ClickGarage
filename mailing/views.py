@@ -7896,6 +7896,7 @@ def send_lead(firstname,lastname, number,email, car_bike, make, model, fuel_type
 	result = conn.send_raw_email(msg.as_string())
 
 def send_booking_confirm(email,name,booking_id,number,service_list,car_bike):
+	print email
 	me = from_address
 	you = email
 
@@ -7937,8 +7938,8 @@ def html_to_send(name, booking_id, service_list,car_bike):
 			doorstep_list.append(str(serv['doorstep']))
 		summary_html2 = summary_html2 + "<tr><td>" + serv['job_name'] + "</td><td>Rs. &nbsp;" + str(serv['price_total']) + "</td></tr>"
 
-	print doorstep_list
-	print category_list
+	# print doorstep_list
+	# print category_list
 
 	if "0" in doorstep_list:
 		doorstep = "0"
@@ -9304,7 +9305,7 @@ def html_to_send(name, booking_id, service_list,car_bike):
   <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """+name+"""<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Booking (ID: """+booking_id+""" ) has been placed. We will call you shortly to confirm the pick-up time.&nbsp;</div> </td>
 </tr>
 </table>
-"""+summary_html+"""s
+"""+summary_html+"""
 <!-- <table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A16%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
 <tr><td role="module-content" style="padding: 0px 0px 16px 0px;" bgcolor="#ffffff"></td></tr></table>
 <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" role="module" data-type="columns" data-attributes='%7B%22dropped%22%3Atrue%2C%22columns%22%3A2%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22cellpadding%22%3A0%2C%22containerbackground%22%3A%22%22%7D'>

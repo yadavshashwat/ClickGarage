@@ -4532,6 +4532,9 @@ def create_check_user(name,number):
 
 def place_booking(user_id, name, number, email, reg_number, address, locality, city, order_list, make, veh_type, model,
                   fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary):
+
+    print email
+
     if booking_flag:
         status = "Confirmed"
     else:
@@ -5424,7 +5427,6 @@ def send_booking(request):
         job_summary_int = json.loads(job_summary_int)
     else:
         job_summary_int= []
-
     make = get_param(request, 'make', None)
     veh_type = get_param(request, 'veh_type', None)
     model = get_param(request, 'model', None)
@@ -5440,6 +5442,9 @@ def send_booking(request):
     source = get_param(request,'source',None)
     booking_flag_user = get_param(request,'flag',None)
     # follow_up_date = get_param(request,'follow',None)
+    # print email
+    # print order_list
+
 
     # if follow_up_date == None:
     #     follow_up_date = date
@@ -5448,7 +5453,7 @@ def send_booking(request):
     datetimeobject = datetime.datetime.strptime(oldformat, '%d-%m-%Y')
     newformat = datetimeobject.strftime('%Y-%m-%d')
     date =newformat
-
+    # print email
     # oldformat_f = follow_up_date
     # datetimeobject = datetime.datetime.strptime(oldformat_f, '%d-%m-%Y')
     # newformat_f = datetimeobject.strftime('%Y-%m-%d')
@@ -5462,13 +5467,13 @@ def send_booking(request):
     obj = checkOTP_new(onetp, number)
     if request.user.is_authenticated():
         if request.user.is_b2b:
+            user = request.user
             booking_flag = True
             name = request.user.first_name +' ' +request.user.last_name
             number = request.user.contact_no
             email = request.user.email
             booking = place_booking(str(request.user.id), name, number, email, reg_number, address, locality, city, order_list,
-                                    make,
-                                    veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
+                                    make, veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
                                     price_total, source, booking_flag,job_summary_int)
         elif request.user.is_staff or request.user.is_admin or request.user.is_agent:
             if booking_flag_user == "True":
@@ -5489,14 +5494,17 @@ def send_booking(request):
                                     veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
                                     price_total, source, booking_flag,job_summary_int)
         else:
+            print email
+            user = request.user
             booking_flag = False
             if request.user.contact_no == number:
+                # print email
                 booking = place_booking(str(request.user.id), name, number, email, reg_number, address, locality, city,
-                                        order_list,
-                                        make,
-                                        veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
+                                        order_list, make,veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
                                         price_total, source, booking_flag,job_summary_int)
             elif obj['status']:
+                # print email
+                user = create_check_user(name, number)
                 booking = place_booking(str(request.user.id), name, number, email, reg_number, address, locality, city,
                                         order_list,
                                         make,
