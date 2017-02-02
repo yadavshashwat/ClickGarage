@@ -4714,6 +4714,9 @@ def verify_otp_password_cookie(request):
             obj['result']['auth'] = False
     obj['result']['msg'] = message
     obj['status'] = True
+    obj['result']['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent,
+                          'staff': request.user.is_staff}
+
     response = HttpResponse(json.dumps(obj), content_type='application/json')
     # try:
     # print (user.is_authenticated())

@@ -223,7 +223,7 @@ def history(request):
         return redirect("../?logReq=True")
 
 
-def adminpanel(request):
+def adminpanel_old(request):
     template = loader.get_template('website/adminpanel.html')
     coupon_flag = False
 
@@ -1381,11 +1381,12 @@ def index(request):
 
 def get_quote(request,veh_type='',veh='',service=''):
     template = loader.get_template('revamp/order.html')
-    # display_name = veh.replace('_',' ')
+    display_name = veh.replace('-',' ').replace('_',' ')
+
     context = RequestContext(request,locals())
     return HttpResponse(template.render(context))
 
-def newadmin(request):
+def adminpanel(request):
     template = loader.get_template('revamp/admin.html')
     context = RequestContext(request, {
     })
