@@ -11,7 +11,9 @@ from email.MIMEBase import MIMEBase
 from email import Encoders
 
 helpline_number = "9555950000"
+escalation_number = "7290001281"
 key = "ab33f626-fba5-4bff-9a2b-68a7e9eed43c"
+# ab33f626-fba5-4bff-9a2b-68a7e9eed43c
 sendername = "CLKGRG"
 staffmails = ["shashwat@clickgarage.in", "bhuvan@clickgarage.in","bookings@clickgarage.in", "rajiv@clickgarage.in","amit.kumar@clickgarage.in"]
 booking_mail = ["bookings@clickgarage.in"]
@@ -7919,8 +7921,49 @@ def send_booking_confirm(email,name,booking_id,number,service_list,car_bike):
 	message = message.replace(" ","+")
 	send_trans_sms(number,message)
 
-def send_booking_to_agent(agent_name, agent_num, cust_num,date,time,booking_id,cust_name, comments, total, address,vehicle ):
-	message = "Hi " + agent_name + "! You have been assigned a ClickGarage booking. | Booking ID:"+str(booking_id)+" | Date:" + date + " | Time: " + time + "| Name:"+ cust_name + "("+cust_num+")| Vehicle:"+ vehicle +"| Requests: "+comments+" | Amount: "+total+" | Address: "+address
+def send_sms_customer(name,number,booking_id,date,time,agent_details = None,estimate=None, status=None, status2=None):
+	if status =="Confirmed":
+		message = "Hi " + name + "! Your ClickGarage order has been confirmed for "+ str(time) + " on " + str(date) +". You will recieve the agent details shortly. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
+			booking_id) + "."
+		message = message.replace(" ", "+")
+		send_trans_sms(number, message)
+	if status == "Assigned":
+		message = "Hi " + name + "! Our Agent "+agent_details+ " has been assigned for your order. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
+			booking_id) + "."
+		message = message.replace(" ", "+")
+		send_trans_sms(number, message)
+	if status =="Agent Left":
+		message = "Hi " + name + "! Our Agent " + str(agent_details) + " has left and is on his way for your booking. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(booking_id)
+		message = message.replace(" ", "+")
+		send_trans_sms(number, message)
+	if status == "Reached Workshop":
+		message = "Hi " + name + "! Your vehicle has reached the workshop. You will recieve and updated estimate post inspection. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
+			booking_id) + "."
+		message = message.replace(" ", "+")
+		send_trans_sms(number, message)
+	if status == "Estimate Shared":
+		message = "Hi " + name + "! We have done the complete inspection. Your updated estimate post inspection is Rs."+str(estimate) + ". if there is any discrepency or for any further assistance, please contact us on " + helpline_number + " and quote your booking ID: " +str(booking_id) + "."
+		# print message
+		message = message.replace(" ", "+")
+		send_trans_sms(number, message)
+	if status == "Job Complete" and status2=="Escalation":
+		message = "Hi " + name + "! Your order is complete. We apologize for the incovenience caused. If you require any further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
+			booking_id) + "."
+		message = message.replace(" ", "+")
+		send_trans_sms(number, message)
+	if status =="Job Complete" and status2==None:
+		message = "Hi " + name + "! Your order is complete. If you require any further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
+			booking_id) + "."
+		message = message.replace(" ", "+")
+		send_trans_sms(number, message)
+	if status == "Escalation":
+		message = "Hi " + name + "! We apologize for the inconvenience caused. We are taking necessary action to solve the issue. If you require any further assistance, directly call our escaltion number : " + escalation_number + " and quote your booking ID: " + str(
+			booking_id) + "."
+		message = message.replace(" ", "+")
+		send_trans_sms(number, message)
+
+def send_sms_agent(agent_name, agent_num, cust_num,date,time,booking_id,cust_name, comments, total, address,vehicle ):
+	message = "Hi " + agent_name + "! You have been assigned a ClickGarage booking. | Booking ID:"+str(booking_id)+" | Date:" + str(date) + " | Time: " + str(time) + "| Name:"+ cust_name + "("+cust_num+")| Vehicle:"+ vehicle +"| Requests: "+comments+" | Amount: "+total+" | Address: "+address
 	message = message.replace(" ", "+")
 	send_trans_sms(agent_num, message)
 
