@@ -2434,44 +2434,44 @@ def cancel_booking(request):
     # mviews.send_cancel_final(username,useremail,booking_id)
 
 
-# def fetch_all_booking(request):
-#     obj = {}
-#     obj['status'] = False
-#     obj['result'] = []
-#     cust_id = None
-#     # if random_req_auth(request) or (request.user and request.user.is_authenticated()):
-#     #     cust_id = request.user.id
-#
-#
-#     tranObjs = Transactions.objects.all()
-#             #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
-#     for trans in tranObjs:
-#         obj['result'].append({
-#                             'tran_id'          :trans.id
-#                             ,'booking_id'       :trans.booking_id
-#                             ,'trans_timestamp'  :trans.trans_timestamp
-#                             ,'cust_id'          :trans.cust_id
-#                             ,'cust_name'        :trans.cust_name
-#                             ,'cust_brand'       :trans.cust_brand
-#                             ,'cust_carname'     :trans.cust_carname
-#                             ,'cust_carnumber'   :trans.cust_carnumber
-#                             ,'cust_number'      :trans.cust_number
-#                             ,'cust_email'       :trans.cust_email
-#                             ,'cust_pickup_add'  :trans.cust_pickup_add
-#                             ,'cust_drop_add'    :trans.cust_drop_add
-#                             ,'service_items'    :trans.service_items
-#                             ,'price_total'      :trans.price_total
-#                             ,'date_booking'     :trans.date_booking
-#                             ,'time_booking'     :trans.time_booking
-#                             ,'amount_paid'      :trans.amount_paid
-#                             ,'status'           :trans.status
-#                             ,'comments'         :trans.comments} )
-#         obj['status'] = True
-#         obj['counter'] = 1
-#         obj['msg'] = "Success"
-#         return HttpResponse(json.dumps(obj), content_type='application/json')
-#     else:
-#         return HttpResponse(json.dumps(obj), content_type='application/json')
+def fetch_all_booking(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    cust_id = None
+    # if random_req_auth(request) or (request.user and request.user.is_authenticated()):
+    #     cust_id = request.user.id
+
+
+    tranObjs = Transactions.objects.all()
+            #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
+    for trans in tranObjs:
+        obj['result'].append({
+                            'tran_id'          :trans.id
+                            ,'booking_id'       :trans.booking_id
+                            ,'trans_timestamp'  :trans.trans_timestamp
+                            ,'cust_id'          :trans.cust_id
+                            ,'cust_name'        :trans.cust_name
+                            ,'cust_brand'       :trans.cust_brand
+                            ,'cust_carname'     :trans.cust_carname
+                            ,'cust_carnumber'   :trans.cust_carnumber
+                            ,'cust_number'      :trans.cust_number
+                            ,'cust_email'       :trans.cust_email
+                            ,'cust_pickup_add'  :trans.cust_pickup_add
+                            ,'cust_drop_add'    :trans.cust_drop_add
+                            ,'service_items'    :trans.service_items
+                            ,'price_total'      :trans.price_total
+                            ,'date_booking'     :trans.date_booking
+                            ,'time_booking'     :trans.time_booking
+                            ,'amount_paid'      :trans.amount_paid
+                            ,'status'           :trans.status
+                            ,'comments'         :trans.comments} )
+        obj['status'] = True
+        obj['counter'] = 1
+        obj['msg'] = "Success"
+        return HttpResponse(json.dumps(obj), content_type='application/json')
+    else:
+        return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
 # if request.user and request.user.is_authenticated():
@@ -2500,7 +2500,7 @@ def cancel_booking(request):
 #      #     obj['msg'] = "Success"
 #
 #      #mviews.send_cancel_email([email,"bookings@clickgarage.in"],tran.cust_name,tran.booking_id)booking_id
-
+#
 # return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
@@ -2714,12 +2714,7 @@ def fetch_all_booking(request):
     obj['result'] = []
     tranObjs =[]
     # cust_id = None
-    # if random_req_auth(request) or (request.user and request.user.is_authenticated()):
-    #     cust_id = request.user.id
-
-    # if cust_id:
-
-    if request.user.email in staffmails:
+    if request.user.is_staff:
         tranObjs = Transactions.objects.all().order_by('-booking_id')
         #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
     for trans in tranObjs:
@@ -4560,10 +4555,6 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
         user.email_list.append(email)
     user.save()
 
-
-
-    # update booking id
-
     booking_id = 100000
     tran_len = len(Bookings.objects.all())
     if tran_len:
@@ -4579,7 +4570,7 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
                  cust_model             =model           ,
                  cust_vehicle_type      =veh_type        ,
                  cust_fuel_varient      =fuel            ,
-                 cust_regnumber         =reg_number      ,
+                 cust_regnumber         =reg_number.upper()      ,
                  cust_number            =number           ,
                  cust_email             =email            ,
                  cust_address           =address          ,
@@ -4600,10 +4591,6 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
                  estimate_history    =estimate_history)
     tt.save()
     mviews.send_booking_confirm(email=email,name=name,booking_id=booking_id,number=number, service_list= int_summary, car_bike=veh_type)
-    # mviews.send_booking_confirm(email=email,name=name,time=time_str,date=date,booking_id=booking_id,number=number)
-    # print int_summary
-    # for data in int_summary:
-    #     print data['category']
     return {'Status': "Order Placed", 'booking_id': str(tt.id)}
 #
 # def send_otp_booking(request):
@@ -4888,18 +4875,49 @@ def view_all_bookings(request):
     obj['result'] = []
     booking_id = get_param(request, 'b_id', None)
     lead_booking = get_param(request, 'lead_booking', None)
+    sort = get_param(request, 'sort', None)
+    date = get_param(request,'date',None)
+    status = get_param(request,'status',None)
+    name = get_param(request, 'name', None)
+    reg_number = get_param(request,'reg',None)
+    veh_type = get_param(request,'veh_type',None)
 
-    if booking_id == None:
-        tranObjs = Bookings.objects.all().order_by('-booking_id')
+    if booking_id == None or booking_id =="":
+        if sort != None:
+            if sort == "Booking ID":
+                tranObjs = Bookings.objects.all().order_by('-booking_id')
+            if sort == "Name":
+                tranObjs = Bookings.objects.all().order_by('cust_name')
+            if sort == "Status":
+                tranObjs = Bookings.objects.all().order_by('status')
+        else:
+            tranObjs = Bookings.objects.all().order_by('-booking_id')
     else:
         tranObjs = Bookings.objects.filter(booking_id=booking_id)
 
     if lead_booking =="Lead":
-        tranObjs = tranObjs.filter(booking_flag = False).order_by('-booking_id')
+        tranObjs = tranObjs.filter(booking_flag = False)
     elif lead_booking =="Booking":
-        tranObjs = tranObjs.filter(booking_flag = True).order_by('-booking_id')
+        tranObjs = tranObjs.filter(booking_flag = True)
     else:
         tranObjs = tranObjs
+
+    if status != None and status != "":
+        tranObjs = tranObjs.filter(status=status)
+
+    if name != None and name != "":
+        tranObjs = tranObjs.filter(cust_name=name)
+
+    if reg_number != None:
+        tranObjs = tranObjs.filter(cust_regnumber=reg_number)
+
+    if date != None and date != "":
+        # year =
+        tranObjs = tranObjs.filter(date_booking=date)
+        # tranObjs = tranObjs.filter(date_booking=datetime.date(year, 1, 1))
+
+    if veh_type != None and veh_type != "" :
+        tranObjs = tranObjs.filter(cust_vehicle_type=veh_type)
 
     for trans in tranObjs:
         oldformat_b = str(trans.date_booking)
@@ -4911,6 +4929,28 @@ def view_all_bookings(request):
         #     oldformat_f = oldformat_b
         # datetimeobject = datetime.datetime.strptime(oldformat_f, '%Y-%m-%d')
         # newformat_f = datetimeobject.strftime('%d-%m-%Y')
+
+        if trans.status == "Lead" 			:
+            status_next = "Confirmed"
+        if trans.status =="Confirmed"			:
+            status_next = "Assigned"
+        if trans.status =="Assigned"			:
+            status_next = "Agent Left"
+        if trans.status =="Agent Left"			:
+            status_next = "Reached Workshop"
+        if trans.status =="Reached Workshop" 	:
+            status_next = "Estimate Shared"
+        if trans.status =="Estimate Shared" 	:
+            status_next = "Job Completed"
+        if trans.status =="Job Completed"		:
+            status_next = "Feedback Taken"
+        if trans.status =="Feedback Taken" 	:
+            status_next = "Cancelled"
+        if trans.status =="Cancelled" 			:
+            status_next = "Escalation"
+        if trans.status== "Escalation" 		:
+            status_next = "Job Completed"
+
         if trans.agent != "":
             agent = fetch_user(trans.agent)
             agent_name = agent['result'][0]['first_name']
@@ -4950,7 +4990,8 @@ def view_all_bookings(request):
             'source': trans.source,
             'agent': trans.agent,
             'estimate_history': trans.estimate_history,
-            'agent_details': agent_details
+            'agent_details': agent_details,
+            'status_next':status_next
         })
     obj['status'] = True
     obj['counter'] = 1
@@ -5247,11 +5288,12 @@ def update_agent(request):
     # service_breakup = ""
     # for item in estimate:
     #     service_breakup = service_breakup + item['name'] +"-"+item['price']+" "
-
-    mviews.send_booking_to_agent(agent_name, agent_num, cust_num, date, time, booking_id, cust_name, comments,
-                             total, address,vehicle)
-    booking.status = "Assigned"
     booking.save()
+    change_status_actual(booking_id=booking_id,status_id="Assigned")
+    # mviews.send_sms_agent(agent_name, agent_num, cust_num, date, time, booking_id, cust_name, comments,
+    #                          total, address,vehicle)
+    # booking.status = "Assigned"
+    # booking.save()
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
@@ -5541,9 +5583,6 @@ def send_booking(request):
     obj2['msg'] = "Success"
     return HttpResponse(json.dumps(obj2), content_type='application/json')
 
-
-
-
 # 1. Lead - Lead
 # 2. Booking - Confirmed
 # 3. Assign Vendor - Assigned
@@ -5555,59 +5594,95 @@ def send_booking(request):
 # 9. Cancelled - Cancelled
 # 10. Escalation - Escalation
 
+
 def change_status(request):
     obj = {}
     obj['status'] = False
     obj['result'] = []
     booking_id = get_param(request, 'b_id', None)
     status_id = get_param(request,'status_id',None)
+    change_status_actual(booking_id=booking_id,status_id=status_id)
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    obj['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent,
+                          'staff': request.user.is_staff}
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+def change_status_actual(booking_id,status_id):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
     booking = Bookings.objects.filter(booking_id=booking_id)[0]
     if status_id != None:
         old_status = booking.status
+        booking.status = status_id
+
         if (status_id == "Confirmed" and old_status == "Lead"):
             booking.booking_flag = True
-            booking.status = "Confirmed"
-        #       send sms to customer
-        #       send email to customer
-        # if(status_id == "Assigned" and old_status == "Confirmed"):
-        #     # send_sms to vendor
-        #     # send sms to customer about agent
-        # if(status_id == "Agent Left"  and old_status == "Assigned"):
-        #     # send_sms to customer about Agent being on its way
-        #
-        # if (status_id == "Reached Workshop" and old_status == "Agent Left"):
-        #     # send_sms to customer about vehicle reaching the workshop
-        #
-        # if (status_id == "Estimate Shared" and old_status == "Reached Workshop"):
-        #     # send email to customer about estimate breakup
-        #     # send_sms to customer about estimate and in case discrepency call clickgarage no. also tell him about payment methods possible
-        #
-        # if (status_id == "Job Completed" and old_status == "Escalation"):
-        #     # send email to customer about bill reciept and an apology note
-        #     # send_sms to customer about escalation handling and sorry
-        #
-        # if (status_id == "Job Completed" and old_status != "Escalation"):
-        #     # send email to customer about bill reciept and a thank you note
-        #     # send_sms to customer about job completion and feedback
-        #     # add a lead to the leads data base with follow_up_date as (bike - 60 days , car (bill_amount < 2000) - 30 days, car (bill_amount> 2000) 90 days
-        #
-        # if (status_id == "Feedback Taken" and old_status == "Job Completed"):
+            # booking.status = "Confirmed"
+            mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking,booking.time_booking,status="Confirmed")
+
+        if (status_id == "Assigned"):
+            agent = fetch_user(booking.agent)
+            agent_name = agent['result'][0]['first_name']
+            agent_num = agent['result'][0]['phone']
+            agent_details = agent_name + " - " + agent_num
+            vehicle = booking.cust_make +" "+booking.cust_model+" "+booking.cust_fuel_varient
+            address = booking.cust_address +", "+booking.cust_locality+", "+booking.cust_city
+            mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking,booking.time_booking,agent_details,status="Assigned")
+            mviews.send_sms_agent(agent_name, agent_num, booking.cust_number, booking.date_booking, booking.time_booking, booking.booking_id, booking.cust_name, booking.comments ,
+                                  booking.price_total, address, vehicle)
+
+        if(status_id == "Agent Left"  and old_status == "Assigned"):
+            agent = fetch_user(booking.agent)
+            agent_name = agent['result'][0]['first_name']
+            agent_num = agent['result'][0]['phone']
+            agent_details = agent_name + " - " + agent_num
+            mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,status="Agent Left")
+
+
+        if (status_id == "Reached Workshop"):
+            mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,status="Reached Workshop")
+
+        if (status_id == "Estimate Shared"):
+            # send email to customer about estimate breakup
+            mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,estimate=booking.price_total,status="Estimate Shared")
+
+        if (status_id == "Job Completed" and old_status == "Escalation"):
+            # send email to customer about bill reciept and an apology note
+            mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,estimate=booking.price_total,status="Job Completed", status2 ="Escalation")
+
+        if (status_id == "Job Completed" and old_status != "Escalation"):
+            # send email to customer about bill reciept and a thank you note
+
+            mviews.send_sms_customer(booking.cust_name, booking.cust_number, booking.booking_id, booking.date_booking,
+                                 booking.time_booking, estimate=booking.price_total,
+                                 status="Job Completed")
+            # add a lead to the leads data base with follow_up_date as (bike - 60 days , car (bill_amount < 2000) - 30 days, car (bill_amount> 2000) 90 days
+
+        if (status_id == "Feedback Taken" and old_status == "Job Completed"):
+            None
         #     # send thankyou to the customer
         #     # if positive send sharing links and referral links
         #     # send_sms to customer about vehicle reaching the workshop
-        # if (status_id == "Cancelled"):
+        if (status_id == "Cancelled"):
+            None
         #     # send sms saying sorry to let you go
         #     # send email to the customer about cancellation
-        # elif (status_id == "Escalation"):
+
+        if (status_id == "Escalation"):
+            mviews.send_sms_customer(booking.cust_name, booking.cust_number, booking.booking_id, booking.date_booking,
+                                     booking.time_booking, estimate=booking.price_total,
+                                     status="Escalation")
         #     # send sms to customer that sorry something happend we will take care of the same - Share number of agent diretly to sort his problems
         #     # send a sorry note to the customer over email
-
 
     booking.save()
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
-    obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
@@ -5646,9 +5721,6 @@ def get_all_models(request):
     obj['counter'] = 1
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
-
-
-
 
 def get_all_jobs(request):
     obj = {}
@@ -5764,31 +5836,3 @@ def get_all_part(request):
     obj['counter'] = 1
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
