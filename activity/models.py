@@ -118,6 +118,7 @@ class CGUserNew(AbstractUser):
     user_saved_address = ListField(DictField())
     user_veh_list = ListField(DictField())
     agent_details = DictField()
+    # email_primary = models.CharField(max_length=100, default=None, null=True)
     email_list = ListField(models.CharField(max_length=200))
 
     # car_ids = ListField(models.CharField(max_length=200))
