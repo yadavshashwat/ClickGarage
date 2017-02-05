@@ -5655,8 +5655,10 @@ def change_status_actual(booking_id,status_id):
         old_status = booking.status
         booking.status = status_id
 
-        if (status_id == "Confirmed" and old_status == "Lead"):
+        if (status_id !="Lead"):
             booking.booking_flag = True
+
+        if (status_id == "Confirmed" and old_status == "Lead"):
             # booking.status = "Confirmed"
             mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking,booking.time_booking,status="Confirmed")
 
