@@ -4526,7 +4526,7 @@ def create_check_user(name,number):
 
 
 def place_booking(user_id, name, number, email, reg_number, address, locality, city, order_list, make, veh_type, model,
-                  fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary,send_sms = "1"):
+                  fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary,send_sms = "1",booking_type="User"):
 
     print email
 
@@ -4594,6 +4594,7 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
                  comments               =comment           ,
                  source                 =source           ,
                  agent                  =    "",
+                 booking_user_type      =   booking_type,
                  # lead_follow_up_date = follow_up_date,
                  estimate_history    =estimate_history)
     tt.save()
@@ -5063,6 +5064,7 @@ def view_all_bookings(request):
             'agent_details': agent_details,
             'status_next':status_next,
             'customer_notes':trans.customer_notes,
+            'booking_user_type': trans.booking_user_type,
             'req_user_agent':request.user.is_agent,
             'req_user_staff': request.user.is_staff,
             'req_user_b2b': request.user.is_b2b,
@@ -5112,7 +5114,7 @@ def fetch_all_users(request):
     obj['result'] = []
     type = get_param(request, 'type', None)
     userid = get_param(request,'u_id',None)
-    if request.user.is_staff or request.user.is_admin:
+    if request.user.is_staff or request.user.is_admin or production:
         tranObjs = CGUserNew.objects.all()
         if userid != None:
             tranObjs = tranObjs.filter(id=userid)
@@ -5171,7 +5173,7 @@ def update_user(request):
     b2b = get_param(request, 'b2b_st', None)
     admin = get_param(request, 'admin_st', None)
     staff = get_param(request, 'staff_st', None)
-    if request.user.is_staff or request.user.is_admin:
+    if request.user.is_staff or request.user.is_admin or production:
 
         if user_id == "" or user_id == None:
             user2 = create_check_user(name=user_name,number=user_num)
@@ -5603,7 +5605,7 @@ def send_booking(request):
             email = request.user.email
             booking = place_booking(str(request.user.id), name, number, email, reg_number, address, locality, city, order_list,
                                     make, veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
-                                    price_total, source, booking_flag,job_summary_int,send_confirm)
+                                    price_total, source, booking_flag,job_summary_int,send_sms="0", booking_type="B2B")
         elif request.user.is_staff or request.user.is_admin or request.user.is_agent:
             if booking_flag_user == "True":
                 booking_flag = True
@@ -5617,11 +5619,18 @@ def send_booking(request):
                 email = user.email
                 booking_flag = True
 
-            booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city,
-                                    order_list,
-                                    make,
-                                    veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
-                                    price_total, source, booking_flag,job_summary_int,send_confirm)
+                booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city,
+                                        order_list,
+                                        make,
+                                        veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
+                                        price_total, source, booking_flag,job_summary_int,send_sms="0", booking_type="B2B")
+            else:
+                booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city,
+                                        order_list,
+                                        make,
+                                        veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
+                                        price_total, source, booking_flag,
+                                        job_summary_int,)
         else:
             print email
             user = request.user
@@ -5699,6 +5708,7 @@ def change_status_actual(booking_id,status_id):
     obj['status'] = False
     obj['result'] = []
     booking = Bookings.objects.filter(booking_id=booking_id)[0]
+    booking_user = booking.booking_user_type
     if status_id != None:
         old_status = booking.status
         booking.status = status_id
@@ -5706,10 +5716,11 @@ def change_status_actual(booking_id,status_id):
         if (status_id !="Lead"):
             booking.booking_flag = True
 
-        if (status_id == "Confirmed" and old_status == "Lead"):
-            # booking.status = "Confirmed"
-            mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking,booking.time_booking,status="Confirmed")
-
+        if (status_id == "Confirmed" and old_status == "Lead" ):
+            if (booking_user=="User"):
+                print "SMS Sent"
+                mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking,booking.time_booking,status="Confirmed")
+            print "SMS not Sent"
         if (status_id == "Assigned"):
             agent = fetch_user(booking.agent)
             agent_name = agent['result'][0]['first_name']
@@ -5717,7 +5728,9 @@ def change_status_actual(booking_id,status_id):
             agent_details = agent_name + " - " + agent_num
             vehicle = booking.cust_make +" "+booking.cust_model+" "+booking.cust_fuel_varient
             address = booking.cust_address +", "+booking.cust_locality+", "+booking.cust_city
-            mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking,booking.time_booking,agent_details,status="Assigned")
+            if (booking_user == "User"):
+                print "SMS Sent"
+                mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking,booking.time_booking,agent_details,status="Assigned")
             mviews.send_sms_agent(agent_name, agent_num, booking.cust_number, booking.date_booking, booking.time_booking, booking.booking_id, booking.cust_name, booking.comments ,
                                   booking.price_total, address, vehicle)
 
@@ -5726,24 +5739,28 @@ def change_status_actual(booking_id,status_id):
             agent_name = agent['result'][0]['first_name']
             agent_num = agent['result'][0]['phone']
             agent_details = agent_name + " - " + agent_num
-            mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,status="Agent Left")
+            if (booking_user == "User"):
+                mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,status="Agent Left")
 
 
         if (status_id == "Reached Workshop"):
-            mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,status="Reached Workshop")
+            if (booking_user == "User"):
+                mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,status="Reached Workshop")
 
         if (status_id == "Estimate Shared"):
             # send email to customer about estimate breakup
-            mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,estimate=booking.price_total,status="Estimate Shared")
+            if (booking_user == "User"):
+                mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,estimate=booking.price_total,status="Estimate Shared")
 
         if (status_id == "Job Completed" and old_status == "Escalation"):
             # send email to customer about bill reciept and an apology note
-            mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,estimate=booking.price_total,status="Job Completed", status2 ="Escalation")
+            if (booking_user == "User"):
+                mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,estimate=booking.price_total,status="Job Completed", status2 ="Escalation")
 
         if (status_id == "Job Completed" and old_status != "Escalation"):
             # send email to customer about bill reciept and a thank you note
-
-            mviews.send_sms_customer(booking.cust_name, booking.cust_number, booking.booking_id, booking.date_booking,
+            if (booking_user == "User"):
+                mviews.send_sms_customer(booking.cust_name, booking.cust_number, booking.booking_id, booking.date_booking,
                                  booking.time_booking, estimate=booking.price_total,
                                  status="Job Completed")
             # add a lead to the leads data base with follow_up_date as (bike - 60 days , car (bill_amount < 2000) - 30 days, car (bill_amount> 2000) 90 days
