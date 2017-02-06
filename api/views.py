@@ -4889,28 +4889,75 @@ def view_all_bookings(request):
     name = get_param(request, 'name', None)
     reg_number = get_param(request,'reg',None)
     veh_type = get_param(request,'veh_type',None)
-
-    if booking_id == None or booking_id =="":
-        # print "no id"
-        if sort != None and sort != "":
-            if sort == "Booking ID":
-                # print "booking sort"
-                tranObjs = Bookings.objects.all().order_by('-booking_id')
-            if sort == "Name":
-                # print "name sort"
-                tranObjs = Bookings.objects.all().order_by('cust_name')
-            if sort == "Status":
-                # print "status sort"
-                tranObjs = Bookings.objects.all().order_by('status')
+    if request.user.is_admin or request.user.is_staff:
+        if booking_id == None or booking_id =="":
+            # print "no id"
+            if sort != None and sort != "":
+                if sort == "Booking ID":
+                    # print "booking sort"
+                    tranObjs = Bookings.objects.all().order_by('-booking_id')
+                if sort == "Name":
+                    # print "name sort"
+                    tranObjs = Bookings.objects.all().order_by('cust_name')
+                if sort == "Status":
+                    # print "status sort"
+                    tranObjs = Bookings.objects.all().order_by('status')
+                else:
+                    # print "other sort"
+                    tranObjs = Bookings.objects.all().order_by('-booking_id')
             else:
-                # print "other sort"
+                # print "no sort"
                 tranObjs = Bookings.objects.all().order_by('-booking_id')
         else:
-            # print "no sort"
-            tranObjs = Bookings.objects.all().order_by('-booking_id')
+            # print "booking id filter"
+            tranObjs = Bookings.objects.filter(booking_id=booking_id)
+    elif request.user.is_b2b:
+        if booking_id == None or booking_id == "":
+            # print "no id"
+            if sort != None and sort != "":
+                if sort == "Booking ID":
+                    # print "booking sort"
+                    tranObjs = Bookings.objects.filter(cust_id=request.user.id).order_by('-booking_id')
+                if sort == "Name":
+                    # print "name sort"
+                    tranObjs = Bookings.objects.filter(cust_id=request.user.id).order_by('cust_name')
+                if sort == "Status":
+                    # print "status sort"
+                    tranObjs = Bookings.objects.filter(cust_id=request.user.id).order_by('status')
+                else:
+                    # print "other sort"
+                    tranObjs = Bookings.objects.filter(cust_id=request.user.id).order_by('-booking_id')
+            else:
+                # print "no sort"
+                tranObjs = Bookings.objects.filter(cust_id=request.user.id).order_by('-booking_id')
+        else:
+            # print "booking id filter"
+            tranObjs = Bookings.objects.filter(booking_id=booking_id)
+
+    elif request.user.is_agent:
+        if booking_id == None or booking_id == "":
+            # print "no id"
+            if sort != None and sort != "":
+                if sort == "Booking ID":
+                    # print "booking sort"
+                    tranObjs = Bookings.objects.filter(agent=request.user.id).order_by('-booking_id')
+                if sort == "Name":
+                    # print "name sort"
+                    tranObjs = Bookings.objects.filter(agent=request.user.id).order_by('cust_name')
+                if sort == "Status":
+                    # print "status sort"
+                    tranObjs = Bookings.objects.filter(agent=request.user.id).order_by('status')
+                else:
+                    # print "other sort"
+                    tranObjs = Bookings.objects.filter(agent=request.user.id).order_by('-booking_id')
+            else:
+                # print "no sort"
+                tranObjs = Bookings.objects.filter(agent=request.user.id).order_by('-booking_id')
+        else:
+            # print "booking id filter"
+            tranObjs = Bookings.objects.filter(booking_id=booking_id)
     else:
-        # print "booking id filter"
-        tranObjs = Bookings.objects.filter(booking_id=booking_id)
+        tranObjs=None
 
     if lead_booking =="Lead":
         # print "Lead"
@@ -5065,44 +5112,43 @@ def fetch_all_users(request):
     obj['result'] = []
     type = get_param(request, 'type', None)
     userid = get_param(request,'u_id',None)
+    if request.user.is_staff or request.user.is_admin:
+        tranObjs = CGUserNew.objects.all()
+        if userid != None:
+            tranObjs = tranObjs.filter(id=userid)
 
-    tranObjs = CGUserNew.objects.all()
+        if type != None:
+            if type == "agent":
+                tranObjs = tranObjs.filter(is_agent=True)
+            elif type == "b2b":
+                tranObjs = tranObjs.filter(is_b2b=True)
+            elif type == "user":
+                tranObjs = tranObjs.filter(is_user=True)
+            elif type == "admin":
+                tranObjs = tranObjs.filter(is_admin=True)
+            elif type == "staff":
+                tranObjs = tranObjs.filter(is_admin=True)
+            # else:
+            #     tranObjs = CGUserNew.objects.all()
 
-    if userid != None:
-        tranObjs = tranObjs.filter(id=userid)
+        for trans in tranObjs:
+            obj['result'].append({
+                'id'   :trans.id
+                ,'email_list':trans.email_list
+                , 'email_primary': trans.email
+                ,'phone':trans.contact_no
+                ,'uname':trans.username
+                ,'first_name':trans.first_name
+                ,'last_name':trans.last_name
+                ,'agent': trans.is_agent
+                , 'user': trans.is_user
+                , 'admin': trans.is_admin
+                ,'staff': trans.is_staff
+                ,'b2b': trans.is_b2b
+                , 'user_address': trans.user_saved_address
+                , 'user_vehicles': trans.user_veh_list
 
-    if type != None:
-        if type == "agent":
-            tranObjs = tranObjs.filter(is_agent=True)
-        elif type == "b2b":
-            tranObjs = tranObjs.filter(is_b2b=True)
-        elif type == "user":
-            tranObjs = tranObjs.filter(is_user=True)
-        elif type == "admin":
-            tranObjs = tranObjs.filter(is_admin=True)
-        elif type == "staff":
-            tranObjs = tranObjs.filter(is_admin=True)
-        # else:
-        #     tranObjs = CGUserNew.objects.all()
-
-    for trans in tranObjs:
-        obj['result'].append({
-            'id'   :trans.id
-            ,'email_list':trans.email_list
-            , 'email_primary': trans.email
-            ,'phone':trans.contact_no
-            ,'uname':trans.username
-            ,'first_name':trans.first_name
-            ,'last_name':trans.last_name
-            ,'agent': trans.is_agent
-            , 'user': trans.is_user
-            , 'admin': trans.is_admin
-            ,'staff': trans.is_staff
-            ,'b2b': trans.is_b2b
-            , 'user_address': trans.user_saved_address
-            , 'user_vehicles': trans.user_veh_list
-
-        })
+            })
     obj['status'] = True
     obj['counter'] = 1
     obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
@@ -5125,12 +5171,14 @@ def update_user(request):
     b2b = get_param(request, 'b2b_st', None)
     admin = get_param(request, 'admin_st', None)
     staff = get_param(request, 'staff_st', None)
-    if user_id == "" or user_id == None:
-        user2 = create_check_user(name=user_name,number=user_num)
-    else:
-        user2 = CGUserNew.objects.filter(id=user_id)[0]
-    if production or request.user.is_admin:
+    if request.user.is_staff or request.user.is_admin:
+
+        if user_id == "" or user_id == None:
+            user2 = create_check_user(name=user_name,number=user_num)
+        else:
+            user2 = CGUserNew.objects.filter(id=user_id)[0]
         address2 = {'address': user_add, 'locality': user_loc, 'city': user_city}
+
         if address2 not in user2.user_saved_address:
             user2.user_saved_address.append(address2)
         if user_email not in user2.email_list:
@@ -5367,40 +5415,40 @@ def add_modify_coupon(request):
     datetimeobject = datetime.datetime.strptime(oldformat_e, '%d-%m-%Y')
     newformat_e = datetimeobject.strftime('%Y-%m-%d')
     expiry_date = newformat_e
+    if request.user.is_staff or request.user.is_admin:
 
+        if active == "true":
+            active_n = True
+        else:
+            active_n = False
 
-    if active == "true":
-        active_n = True
-    else:
-        active_n = False
-
-    findCoupon = CouponNew.objects.filter(coupon_code = coupon_code)
-    if len(findCoupon):
-        findCoupon = findCoupon[0]
-        findCoupon.date_start = date_start
-        findCoupon.expiry_date = expiry_date
-        findCoupon.type = type
-        findCoupon.active = active_n
-        findCoupon.message = message
-        findCoupon.category = category
-        findCoupon.value = value
-        findCoupon.car_bike = car_bike
-        findCoupon.cap = cap
-        findCoupon.save()
-    else:
-        coupon = CouponNew(
-            datetime_created= datetime_created,
-            coupon_code=coupon_code,
-            date_start=date_start,
-            expiry_date=expiry_date,
-            type=type,
-            active=True,
-            message=message,
-            category=category,
-            value=value,
-            car_bike=car_bike,
-            cap=cap)
-        coupon.save()
+        findCoupon = CouponNew.objects.filter(coupon_code = coupon_code)
+        if len(findCoupon):
+            findCoupon = findCoupon[0]
+            findCoupon.date_start = date_start
+            findCoupon.expiry_date = expiry_date
+            findCoupon.type = type
+            findCoupon.active = active_n
+            findCoupon.message = message
+            findCoupon.category = category
+            findCoupon.value = value
+            findCoupon.car_bike = car_bike
+            findCoupon.cap = cap
+            findCoupon.save()
+        else:
+            coupon = CouponNew(
+                datetime_created= datetime_created,
+                coupon_code=coupon_code,
+                date_start=date_start,
+                expiry_date=expiry_date,
+                type=type,
+                active=True,
+                message=message,
+                category=category,
+                value=value,
+                car_bike=car_bike,
+                cap=cap)
+            coupon.save()
     obj['status'] = True
     obj['result'] = "Success"
     obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
@@ -5411,35 +5459,35 @@ def view_all_coupons(request):
     obj['status'] = False
     obj['result'] = []
     coupon_id = get_param(request, 'c_id', None)
+    if request.user.is_staff or request.user.is_admin:
+        if coupon_id == None:
+            coupons = CouponNew.objects.all()
+        else:
+            coupons = CouponNew.objects.filter(id=coupon_id)
 
-    if coupon_id == None:
-        coupons = CouponNew.objects.all()
-    else:
-        coupons = CouponNew.objects.filter(id=coupon_id)
+        for coupon in coupons:
+            oldformat_s = str(coupon.date_start)
+            datetimeobject = datetime.datetime.strptime(oldformat_s,'%Y-%m-%d')
+            newformat_s = datetimeobject.strftime('%d-%m-%Y')
 
-    for coupon in coupons:
-        oldformat_s = str(coupon.date_start)
-        datetimeobject = datetime.datetime.strptime(oldformat_s,'%Y-%m-%d')
-        newformat_s = datetimeobject.strftime('%d-%m-%Y')
+            oldformat_e = str(coupon.expiry_date)
+            datetimeobject = datetime.datetime.strptime(oldformat_e, '%Y-%m-%d')
+            newformat_e = datetimeobject.strftime('%d-%m-%Y')
 
-        oldformat_e = str(coupon.expiry_date)
-        datetimeobject = datetime.datetime.strptime(oldformat_e, '%Y-%m-%d')
-        newformat_e = datetimeobject.strftime('%d-%m-%Y')
-
-        obj['result'].append({
-            'id'   :coupon.id
-            ,'datetime_created': coupon.datetime_created
-            ,'date_start': newformat_s
-            ,'expiry_date': newformat_e
-            ,'type': coupon.type
-            ,'active': coupon.active
-            ,'message': coupon.message
-            ,'coupon_code': coupon.coupon_code
-            ,'category': coupon.category
-            ,'value': coupon.value
-            ,'car_bike': coupon.car_bike
-            ,'cap': coupon.cap
-        })
+            obj['result'].append({
+                'id'   :coupon.id
+                ,'datetime_created': coupon.datetime_created
+                ,'date_start': newformat_s
+                ,'expiry_date': newformat_e
+                ,'type': coupon.type
+                ,'active': coupon.active
+                ,'message': coupon.message
+                ,'coupon_code': coupon.coupon_code
+                ,'category': coupon.category
+                ,'value': coupon.value
+                ,'car_bike': coupon.car_bike
+                ,'cap': coupon.cap
+            })
     obj['status'] = True
     obj['counter'] = 1
     obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
