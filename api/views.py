@@ -4526,7 +4526,12 @@ def create_check_user(name,number):
 
 
 def place_booking(user_id, name, number, email, reg_number, address, locality, city, order_list, make, veh_type, model,
-                  fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary,send_sms = "1",booking_type="User"):
+                  fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary,send_sms = "1",booking_type="User",booking_user_name=None,booking_user_number=None):
+
+    if booking_user_name==None:
+        booking_user_name=name
+    if booking_user_number==None:
+        booking_user_number=number
 
     print email
 
@@ -4595,6 +4600,8 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
                  source                 =source           ,
                  agent                  =    "",
                  booking_user_type      =   booking_type,
+                 booking_user_name      = booking_user_name,
+                 booking_user_number = booking_user_number,
                  # lead_follow_up_date = follow_up_date,
                  estimate_history    =estimate_history)
     tt.save()
@@ -5069,6 +5076,8 @@ def view_all_bookings(request):
             'req_user_staff': request.user.is_staff,
             'req_user_b2b': request.user.is_b2b,
             'req_user_admin': request.user.is_admin,
+            'booking_user_name': trans.booking_user_name,
+            'booking_user_number': trans.booking_user_number,
 
         })
     obj['status'] = True
@@ -5600,12 +5609,12 @@ def send_booking(request):
         if request.user.is_b2b:
             user = request.user
             booking_flag = True
-            name = request.user.first_name +' ' +request.user.last_name
-            number = request.user.contact_no
-            email = request.user.email
-            booking = place_booking(str(request.user.id), name, number, email, reg_number, address, locality, city, order_list,
+            name1 = request.user.first_name +' ' +request.user.last_name
+            number1 = request.user.contact_no
+            email1 = request.user.email
+            booking = place_booking(str(request.user.id), name1, number1, email1, reg_number, address, locality, city, order_list,
                                     make, veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
-                                    price_total, source, booking_flag,job_summary_int,send_sms="0", booking_type="B2B")
+                                    price_total, source, booking_flag,job_summary_int,send_sms="0", booking_type="B2B",booking_user_name=name,booking_user_number=number)
         elif request.user.is_staff or request.user.is_admin or request.user.is_agent:
             if booking_flag_user == "True":
                 booking_flag = True

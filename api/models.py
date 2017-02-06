@@ -514,6 +514,9 @@ class Bookings(models.Model):
     estimate_history        = ListField(DictField())
     customer_notes          = models.CharField(max_length=500, null=True)
     booking_user_type       = models.CharField(max_length=500, default="User", null=True)
+    booking_user_name       = models.CharField(max_length=200)
+    booking_user_number     = models.CharField(max_length=200)
+
     # int_job_summary         = ListField(DictField(), null=True)
 
 class Messages(models.Model):
