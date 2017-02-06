@@ -5570,7 +5570,7 @@ def send_booking(request):
     price_total = get_param(request, 'price_total', None)
     onetp = get_param(request,'otp',None)
     source = get_param(request,'source',None)
-    booking_flag_user = get_param(request,'flag',None)
+    booking_flag_user = get_param(request,'flag',"True")
     send_confirm = get_param(request,'send_confirm',"1")
     # follow_up_date = get_param(request,'follow',None)
     # print email
@@ -5630,7 +5630,7 @@ def send_booking(request):
                                         make,
                                         veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
                                         price_total, source, booking_flag,
-                                        job_summary_int,)
+                                        job_summary_int,send_sms=send_confirm)
         else:
             print email
             user = request.user
