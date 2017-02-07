@@ -73,12 +73,14 @@ urlpatterns = patterns('',
 
 # website revamp
 
-    url(r'^/advert/Car/', 'website.views.advert', name='advert'),
+    # url(r'^/Car/', 'website.views.advert', name='advert'),
     # url(r'^index/', 'website.views.index_new', name='index_new'),
     url(r'^get_quote/', 'website.views.get_quote', name='get_quote'),
-    url(r'^(?P<veh_type>[a-zA-Z0-9\-_ ]+)/(?P<veh>[a-zA-Z0-9\-_ ]+)/$', 'website.views.get_quote', name='get_quote'),
-    url(r'^(?P<veh_type>[a-zA-Z0-9\-_ ]+)/(?P<veh>[a-zA-Z0-9\-_ ]+)/(?P<service>[a-zA-Z0-9\-_ ]+)/$', 'website.views.get_quote', name='get_quote'),
-    url(r'^(?P<veh_type>[a-zA-Z0-9\-_ ]+)/(?P<veh>[a-zA-Z0-9\-_ ]+)/checkout/$', 'website.views.get_quote',name='get_quote'),
+    # url(r'^/Book/(?P<service>[a-zA-Z0-9\-_ ]+)/$', 'website.views.advert', name='advert'),
+    url(r'^Book/(?P<veh_type>[a-zA-Z0-9\-_ ]+)/(?P<veh>[a-zA-Z0-9\-_ ]+)/$', 'website.views.get_quote', name='get_quote'),
+    url(r'^Book/(?P<veh_type>[a-zA-Z0-9\-_ ]+)/(?P<veh>[a-zA-Z0-9\-_ ]+)/(?P<service>[a-zA-Z0-9\-_ ]+)/$', 'website.views.get_quote', name='get_quote'),
+    url(r'^Book/(?P<veh_type>[a-zA-Z0-9\-_ ]+)/(?P<veh>[a-zA-Z0-9\-_ ]+)/checkout/$', 'website.views.get_quote',name='get_quote'),
     url(r'^adminpanel/', 'website.views.adminpanel', name='adminpanel'),
-
-                    )
+    # url(r'^/Book/(?P<service>[a-zA-Z0-9\-_ ]+)/$', 'website.views.advert',name='advert'),
+    url(r'^Service/(?P<veh_type>[a-zA-Z0-9\-_ ]+)/(?P<service>[a-zA-Z0-9\-_ ]+)/$', 'website.views.advert', name='advert'),
+)

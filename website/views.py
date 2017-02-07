@@ -1367,10 +1367,9 @@ import_uploader = AjaxFileUploader()
 # <----- revamp code ------>
 
 
-def advert(request):
+def advert(request,service='',veh_type=''):
     template = loader.get_template('revamp/advert.html')
-    context = RequestContext(request, {
-    })
+    context = RequestContext(request ,locals())
     return HttpResponse(template.render(context))
 
 def index(request):

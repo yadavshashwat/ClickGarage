@@ -141,8 +141,7 @@ urlpatterns = [
     url(r'view_all_coupons/$', 'api.views.view_all_coupons', name='view_all_coupons'),
     url(r'check_coupon/$', 'api.views.check_coupon', name='check_coupon'),
     url(r'send_booking/$', 'api.views.send_booking', name='send_booking'),
-
-
+    url(r'send_lead/$', 'api.views.send_lead', name='send_lead'),
 
     # Website Api Check
     url(r'get_all_models/$', 'api.views.get_all_models', name='get_all_models'),

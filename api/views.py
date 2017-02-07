@@ -4261,7 +4261,6 @@ def post_lead(request):
 
     # phone = phone1
     firstname = get_param(request, 'firstname', None)
-    lastname = get_param(request, 'lastname', None)
     car_bike = get_param(request, 'car_bike', None)
     make = get_param(request, 'make', None)
     model = get_param(request, 'model', None)
@@ -4401,7 +4400,13 @@ def create_check_user(name,number):
                 name = name.split(' ')
                 user_new.first_name = name[0]
                 if len(name) > 1:
-                    user_new.last_name = name[1]
+                    lname = ""
+                    for i in range(1, len(name)):
+                        if i == 1 :
+                            lname = name[i]
+                        else:
+                            lname = lname + " " + name[i]
+                    user_new.last_name = lname
             user_new.save()
             return user_new
 
@@ -4528,10 +4533,7 @@ def create_check_user(name,number):
 def place_booking(user_id, name, number, email, reg_number, address, locality, city, order_list, make, veh_type, model,
                   fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary,send_sms = "1",booking_type="User",booking_user_name=None,booking_user_number=None):
 
-    if booking_user_name==None:
-        booking_user_name=name
-    if booking_user_number==None:
-        booking_user_number=number
+
 
     print email
 
@@ -4541,8 +4543,24 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
     city = cleanstring(city).title()
     reg_number = cleanstring(reg_number).upper()
 
+    if booking_user_name == None:
+        booking_user_name = name
+    if booking_user_number == None:
+        booking_user_number = number
+
     if booking_flag:
         status = "Confirmed"
+        user = CGUserNew.objects.filter(id=user_id)[0]
+        address2 = {'address':address, 'locality':locality, 'city':city}
+        if address2 not in user.user_saved_address:
+            user.user_saved_address.append(address2)
+        vehicle = {'type':veh_type,'make':make,'model':model,'fuel':fuel,"reg_num":reg_number}
+        if vehicle not in user.user_veh_list:
+            user.user_veh_list.append(vehicle)
+        if email not in user.email_list:
+            user.email_list.append(email)
+        user.email = email
+        user.save()
     else:
         status = "Lead"
     # update estimate history
@@ -4555,17 +4573,6 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
                          'work_estimate': order_list}]
 
     # update user
-    user = CGUserNew.objects.filter(id=user_id)[0]
-    address2 = {'address':address, 'locality':locality, 'city':city}
-    if address2 not in user.user_saved_address:
-        user.user_saved_address.append(address2)
-    vehicle = {'type':veh_type,'make':make,'model':model,'fuel':fuel,"reg_num":reg_number}
-    if vehicle not in user.user_veh_list:
-        user.user_veh_list.append(vehicle)
-    if email not in user.email_list:
-        user.email_list.append(email)
-    user.email = email
-    user.save()
 
     booking_id = 100000
     tran_len = len(Bookings.objects.all())
@@ -5003,6 +5010,7 @@ def view_all_bookings(request):
         # print "veh type"
         tranObjs = tranObjs.filter(cust_vehicle_type=veh_type)
 
+    status_next = ""
     for trans in tranObjs:
         oldformat_b = str(trans.date_booking)
         datetimeobject = datetime.datetime.strptime(oldformat_b, '%Y-%m-%d')
@@ -5188,13 +5196,27 @@ def update_user(request):
             user2 = create_check_user(name=user_name,number=user_num)
         else:
             user2 = CGUserNew.objects.filter(id=user_id)[0]
+
         address2 = {'address': user_add, 'locality': user_loc, 'city': user_city}
+
 
         if address2 not in user2.user_saved_address:
             user2.user_saved_address.append(address2)
         if user_email not in user2.email_list:
             user2.email_list.append(user_email)
         user2.email = user_email
+
+        if user_name:
+            user_name = user_name.split(' ')
+            user2.first_name = user_name[0]
+            if len(user_name) > 1:
+                lname = ""
+                for i in range(1, len(user_name)):
+                    if i == 1:
+                        lname = user_name[i]
+                    else:
+                        lname = lname + " " + user_name[i]
+                user2.last_name = lname
 
         if agent == "true":
             user2.is_agent = True
@@ -5231,10 +5253,47 @@ def update_booking(request):
     time_n = get_param(request,'time',None)
     date_n = get_param(request, 'date', None)
     notes_n = get_param(request,'note',None)
+    amount_paid = get_param(request, 'amount_paid', None)
+    name = get_param(request, 'name', None)
+    number = get_param(request, 'number', None)
+    address = get_param(request, 'address', None)
+    locality = get_param(request, 'locality', None)
+    city = get_param(request, 'city', None)
+    source = get_param(request, 'source', None)
+
     booking = Bookings.objects.filter(booking_id=booking_id)[0]
 
     # if agent_id != None and agent_id != "":
     #     booking.agent = agent_id
+    if amount_paid != None:
+        booking.amount_paid = amount_paid
+
+    if source != None:
+        booking.source = source
+
+    if name != None:
+        if  (booking.booking_user_name ==  booking.cust_name):
+            booking.booking_user_name = name
+            booking.cust_name = name
+        else:
+            booking.booking_user_name = name
+
+    if number != None:
+        if (booking.booking_user_name == booking.cust_name):
+            booking.booking_user_number = number
+            booking.cust_number = number
+        else:
+            booking.booking_user_number = number
+
+    if address != None:
+        booking.cust_address = address
+
+    if locality != None:
+        booking.cust_locality = locality
+
+    if city != None:
+        booking.cust_city = city
+
 
     if reg_number_n != None:
         booking.cust_regnumber = reg_number_n
@@ -5253,46 +5312,10 @@ def update_booking(request):
         booking.date_booking = date_n
     if notes_n != None:
         booking.customer_notes = notes_n
-    # if estimate != None:
-    #     old_estimate = booking.service_items
-    #     new_estimate_timestamp = time.time()
-    #     estimate_by_id = request.user.id
-    #     estimate_by_number = request.user.contact_no
-    #     estimate_by_name = request.user.first_name + " " + request.user.last_name
-    #     estimate = json.loads(estimate)
-    #     booking.service_items = estimate
-    #     total_price = 0
-    #     total_part = 0
-    #     total_labour = 0
-    #     total_discount = 0
-    #     # print estimate
-    #     for item in estimate:
-    #         # print item
-    #         if item['type']=="Part":
-    #             total_price = total_price + float(item['price'])
-    #             total_part = total_part + float(item['price'])
-    #         elif item['type']=="Labour":
-    #             total_price = total_price + float(item['price'])
-    #             total_labour = total_labour + float(item['price'])
-    #         elif item['type'] == "Discount":
-    #             total_price = total_price - float(item['price'])
-    #             total_discount = total_discount + float(item['price'])
-    #     booking.price_total = str(total_price)
-    #     booking.price_labour = str(total_labour)
-    #     booking.price_part = str(total_part)
-    #     booking.price_discount = str(total_discount)
-        # print total_price
-        # print total_labour
-        # print total_discount
-        # print total_part
-        # a = booking.estimate_history.append({"timestamp": new_estimate_timestamp, "change_by_userid" : estimate_by_id, "change_by_number": estimate_by_number, "change_by_name":  estimate_by_name, 'estimate':old_estimate})
-        # print a
+
     if email_n != None:
         booking.cust_email = email_n
-        user = CGUserNew.objects.filter(id=booking.cust_id)[0]
-        if email_n not in user.email_list:
-            user.email_list.append(email_n)
-        user.save()
+
 
     booking.save()
     obj['status'] = True
@@ -5393,12 +5416,6 @@ def update_agent(request):
     obj['msg'] = "Success"
     obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
     return HttpResponse(json.dumps(obj), content_type='application/json')
-
-
-
-
-
-
 
 
 def add_modify_coupon(request):
@@ -5581,6 +5598,8 @@ def send_booking(request):
     source = get_param(request,'source',None)
     booking_flag_user = get_param(request,'flag',"True")
     send_confirm = get_param(request,'send_confirm',"1")
+    booking_user_name = get_param(request,'booking_user_name',None)
+    booking_user_number = get_param(request,'booking_user_number',None)
     # follow_up_date = get_param(request,'follow',None)
     # print email
     # print order_list
@@ -5605,16 +5624,17 @@ def send_booking(request):
 
 
     obj = checkOTP_new(onetp, number)
+
     if request.user.is_authenticated():
         if request.user.is_b2b:
             user = request.user
             booking_flag = True
-            name1 = request.user.first_name +' ' +request.user.last_name
-            number1 = request.user.contact_no
-            email1 = request.user.email
-            booking = place_booking(str(request.user.id), name1, number1, email1, reg_number, address, locality, city, order_list,
+            name = request.user.first_name +' ' +request.user.last_name
+            number = request.user.contact_no
+            email = request.user.email
+            booking = place_booking(str(request.user.id), name, number, email, reg_number, address, locality, city, order_list,
                                     make, veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
-                                    price_total, source, booking_flag,job_summary_int,send_sms="0", booking_type="B2B",booking_user_name=name,booking_user_number=number)
+                                    price_total, "B2B", booking_flag,job_summary_int,send_sms="0", booking_type="B2B",booking_user_name=booking_user_name,booking_user_number=booking_user_number)
         elif request.user.is_staff or request.user.is_admin or request.user.is_agent:
             if booking_flag_user == "True":
                 booking_flag = True
@@ -5632,7 +5652,7 @@ def send_booking(request):
                                         order_list,
                                         make,
                                         veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
-                                        price_total, source, booking_flag,job_summary_int,send_sms="0", booking_type="B2B")
+                                        price_total, "B2B", booking_flag,job_summary_int,send_sms="0", booking_type="B2B",booking_user_name=booking_user_name,booking_user_number=booking_user_number)
             else:
                 booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city,
                                         order_list,
@@ -5727,6 +5747,18 @@ def change_status_actual(booking_id,status_id):
 
         if (status_id == "Confirmed" and old_status == "Lead" ):
             if (booking_user=="User"):
+                user = create_check_user(booking.cust_name,booking.cust_number)
+                address2 = {'address': booking.cust_address, 'locality': booking.cust_locality, 'city': booking.cust_city}
+                if address2 not in user.user_saved_address:
+                    user.user_saved_address.append(address2)
+                vehicle = {'type': booking.cust_vehicle_type, 'make': booking.cust_make, 'model': booking.cust_model, 'fuel': booking.cust_fuel_varient, "reg_num": booking.cust_regnumber}
+                if vehicle not in user.user_veh_list:
+                    user.user_veh_list.append(vehicle)
+                if booking.cust_email not in user.email_list:
+                    user.email_list.append(booking.cust_email)
+                user.email = booking.cust_email
+                user.save()
+
                 print "SMS Sent"
                 mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking,booking.time_booking,status="Confirmed")
             print "SMS not Sent"
@@ -5796,6 +5828,62 @@ def change_status_actual(booking_id,status_id):
     obj['counter'] = 1
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def send_lead(request):
+    name = get_param(request, 'name', None)
+    number = get_param(request, 'number', None)
+    email = get_param(request, 'email', None)
+    reg_number = get_param(request, 'reg_number', None)
+    address = get_param(request, 'address', None)
+    locality = get_param(request, 'locality', None)
+    city = get_param(request, 'city', None)
+    order_list = get_param(request, 'order_list', None)
+
+    if order_list:
+        order_list = json.loads(order_list)
+    else:
+        order_list = []
+    job_summary_int = get_param(request, 'int_summary', None)
+
+    if job_summary_int:
+        job_summary_int = json.loads(job_summary_int)
+    else:
+        job_summary_int = []
+    make = get_param(request, 'make', None)
+    veh_type = get_param(request, 'veh_type', None)
+    model = get_param(request, 'model', None)
+    fuel = get_param(request, 'fuel', None)
+    date = get_param(request, 'date', None)
+    time_str = get_param(request, 'time', None)
+    comment = get_param(request, 'comment', None)
+    is_paid = get_param(request, 'is_paid', None)
+    paid_amt = get_param(request, 'paid_amt', None)
+    coupon = get_param(request, 'coupon', None)
+    price_total = get_param(request, 'price_total', None)
+    source = get_param(request, 'source', None)
+    send_confirm = get_param(request, 'send_confirm', "1")
+
+    oldformat = date
+    datetimeobject = datetime.datetime.strptime(oldformat, '%d-%m-%Y')
+    newformat = datetimeobject.strftime('%Y-%m-%d')
+    date = newformat
+
+    obj2 = {}
+    obj2['status'] = False
+    obj2['result'] = []
+
+    booking_flag = False
+
+    booking = place_booking('', name, number, email, reg_number, address, locality, city, order_list,
+                            make, veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
+                            price_total, source, booking_flag, job_summary_int, send_sms=send_confirm)
+    obj2['result'] = {}
+    obj2['result']['userid'] = 'None'
+    obj2['result']['booking'] = booking
+    obj2['status'] = True
+    obj2['counter'] = 1
+    obj2['msg'] = "Success"
+    return HttpResponse(json.dumps(obj2), content_type='application/json')
 
 
 # <<---- Checking Code ---->>

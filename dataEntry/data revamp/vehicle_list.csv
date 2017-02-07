@@ -498,7 +498,7 @@ Ford,Fusion,NA,Diesel,Ford Fusion (Diesel),NA,Sedan,Car,NA,1
 Ford,Fusion,NA,Petrol,Ford Fusion (Petrol),NA,Sedan,Car,NA,1
 Ford,Ikon,NA,Diesel,Ford Ikon (Diesel),NA,Sedan,Car,NA,1
 Ford,Ikon,NA,Petrol,Ford Ikon (Petrol),NA,Sedan,Car,NA,1
-Honda,Accord,NA,Petrol,Honda Accord (Petrol),NA,Premium Luxury,Car,NA,1
+Honda,Accord,NA,Petrol,Honda Accord (Petrol),NA,Sedan,Car,NA,1
 Honda,Civic,NA,Petrol,Honda Civic (Petrol),NA,Sedan,Car,NA,1
 Honda,CRV,NA,Diesel,Honda CRV (Diesel),NA,SUV,Car,NA,1
 Honda,Jazz,NA,Petrol,Honda Jazz (Petrol),NA,Hatchback,Car,NA,1
@@ -567,5 +567,3 @@ Volkswagen,Phaeton,NA,Diesel,Volkswagen Phaeton (Diesel),NA,Sedan,Car,NA,1
 Volkswagen,Touareg,NA,Diesel,Volkswagen Touareg (Diesel),NA,Sedan,Car,NA,1
 Volkswagen,Wagon,NA,Diesel,Volkswagen Wagon (Diesel),NA,Sedan,Car,NA,1
 Maruti Suzuki,Grand Vitara,NA,Petrol,Maruti Suzuki Grand Vitara (Petrol),NA,SUV,Car,NA,1
-,,,,,,,,,
-,,,,,,,,,

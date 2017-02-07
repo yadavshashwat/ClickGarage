@@ -1407,6 +1407,7 @@ def loadServiceParts(fileName):
                 obj['price'] = price
                 obj['category'] = part_cat
                 obj['price_comp'] = price_comp
+                obj['type'] = "Part"
 
                 # price_float_t = 0
                 # price_float_c = 0
@@ -1440,6 +1441,7 @@ def loadServiceParts(fileName):
                 obj['price'] = price
                 obj['category'] = part_cat
                 obj['price_comp'] = price_comp
+                obj['type'] = type
 
                 price_float_t_2 = 0
                 price_float_c_2 = 0
@@ -1604,6 +1606,7 @@ def CreateJobList():
                 obj['price'] = service.total_price
                 obj['category'] = "Labour"
                 obj['price_comp'] = service.total_price_comp
+                obj['type'] = "Labour"
                 # print obj
                 # final_obj = []
                 final_obj = Parts.default_components
@@ -1648,6 +1651,7 @@ def CreateJobList():
                 obj['price'] = service.total_price
                 obj['category'] = "Labour"
                 obj['price_comp'] = service.total_price_comp
+                obj['type'] = "Labour"
 
                 serv = Services(
                 city 			    = service.city,
