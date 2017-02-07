@@ -5190,6 +5190,12 @@ def update_user(request):
     b2b = get_param(request, 'b2b_st', None)
     admin = get_param(request, 'admin_st', None)
     staff = get_param(request, 'staff_st', None)
+
+    user_name = cleanstring(user_name).title()
+    user_add = cleanstring(user_add).title()
+    user_loc = cleanstring(user_loc).title()
+    user_city = cleanstring(user_city).title()
+
     if request.user.is_staff or request.user.is_admin or production:
 
         if user_id == "" or user_id == None:
@@ -5262,6 +5268,12 @@ def update_booking(request):
     source = get_param(request, 'source', None)
 
     booking = Bookings.objects.filter(booking_id=booking_id)[0]
+
+    name = cleanstring(name).title()
+    address = cleanstring(address).title()
+    locality = cleanstring(locality).title()
+    city = cleanstring(city).title()
+    reg_number_n = cleanstring(reg_number_n).upper()
 
     # if agent_id != None and agent_id != "":
     #     booking.agent = agent_id
