@@ -39,6 +39,8 @@ def send_sms(type,to,message):
 	url = "http://sms.hspsms.com/sendSMS?username=clickgarage&message="+ message + "&sendername=" + sendername+ "&smstype=" + type + "&numbers=" + to + "&apikey=" + key
 	r = urllib2.urlopen(url)
 
+
+
 def send_trans_sms(to, message):
 	url = "http://sms.hspsms.com/sendSMS?username=clickgarage&message=" + message + "&sendername=" + sendername + "&smstype=TRANS&numbers=" + to + "&apikey=" + key
 	r = urllib2.urlopen(url)
@@ -7862,8 +7864,24 @@ region ='us-west-2'
 aws_access='AKIAJNAYBONVQTNTSLZQ'
 aws_secret='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'
 
+
+import requests
+import json
+
+def send_sms_2factor(to,message):
+	url = "http://2factor.in/API/V1/e5fd3098-a453-11e6-a40f-00163ef91450/ADDON_SERVICES/SEND/TSMS"
+	payload = {
+		"From":"CLKGRG",
+		"To": to	   ,
+		"Msg":message
+	}
+	response = requests.request("GET", url, data = json.dumps(payload))
+	print(response.text)
+
+
+
 def send_otp(to,message):
-	send_sms("TRANS",to,message)
+	send_sms_2factor(to,message)
 
 def send_message(firstname,lastname,number,email,message):
 	me = "info@clickgarage.in"
@@ -7918,54 +7936,54 @@ def send_booking_confirm(email,name,booking_id,number,service_list,car_bike):
 	result = conn.send_raw_email(msg.as_string())
 
 	message = "Hi "+ name +"! Your ClickGarage order has been placed. You will recieve a call shortly to confirm the order. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(booking_id) + "."
-	message = message.replace(" ","+")
-	send_trans_sms(number,message)
+	# message = message.replace(" ","+")
+	send_sms_2factor(number,message)
 
 def send_sms_customer(name,number,booking_id,date,time,agent_details = None,estimate=None, status=None, status2=None):
 	if status =="Confirmed":
 		message = "Hi " + name + "! Your ClickGarage order has been confirmed for "+ str(time) + " on " + str(date) +". You will recieve the agent details shortly. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
 			booking_id) + "."
-		message = message.replace(" ", "+")
-		send_trans_sms(number, message)
+		# message = message.replace(" ", "+")
+		send_sms_2factor(number, message)
 	if status == "Assigned":
 		message = "Hi " + name + "! Our Agent "+agent_details+ " has been assigned for your order. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
 			booking_id) + "."
-		message = message.replace(" ", "+")
-		send_trans_sms(number, message)
+		# message = message.replace(" ", "+")
+		send_sms_2factor(number, message)
 	if status =="Agent Left":
 		message = "Hi " + name + "! Our Agent " + str(agent_details) + " has left and is on his way for your booking. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(booking_id)
-		message = message.replace(" ", "+")
-		send_trans_sms(number, message)
+		# message = message.replace(" ", "+")
+		send_sms_2factor(number, message)
 	if status == "Reached Workshop":
 		message = "Hi " + name + "! Your vehicle has reached the workshop. You will recieve and updated estimate post inspection. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
 			booking_id) + "."
-		message = message.replace(" ", "+")
-		send_trans_sms(number, message)
+		# message = message.replace(" ", "+")
+		send_sms_2factor(number, message)
 	if status == "Estimate Shared":
 		message = "Hi " + name + "! We have done the complete inspection. Your updated estimate post inspection is Rs."+str(estimate) + ". if there is any discrepency or for any further assistance, please contact us on " + helpline_number + " and quote your booking ID: " +str(booking_id) + "."
 		# print message
-		message = message.replace(" ", "+")
-		send_trans_sms(number, message)
+		# message = message.replace(" ", "+")
+		send_sms_2factor(number, message)
 	if status == "Job Complete" and status2=="Escalation":
 		message = "Hi " + name + "! Your order is complete. We apologize for the incovenience caused. If you require any further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
 			booking_id) + "."
-		message = message.replace(" ", "+")
-		send_trans_sms(number, message)
+		# message = message.replace(" ", "+")
+		send_sms_2factor(number, message)
 	if status =="Job Complete" and status2==None:
 		message = "Hi " + name + "! Your order is complete. If you require any further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
 			booking_id) + "."
-		message = message.replace(" ", "+")
-		send_trans_sms(number, message)
+		# message = message.replace(" ", "+")
+		send_sms_2factor(number, message)
 	if status == "Escalation":
 		message = "Hi " + name + "! We apologize for the inconvenience caused. We are taking necessary action to solve the issue. If you require any further assistance, directly call our escaltion number : " + escalation_number + " and quote your booking ID: " + str(
 			booking_id) + "."
-		message = message.replace(" ", "+")
-		send_trans_sms(number, message)
+		# message = message.replace(" ", "+")
+		send_sms_2factor(number, message)
 
 def send_sms_agent(agent_name, agent_num, cust_num,date,time,booking_id,cust_name, comments, total, address,vehicle ):
 	message = "Hi " + agent_name + "! You have been assigned a ClickGarage booking. | Booking ID:"+str(booking_id)+" | Date:" + str(date) + " | Time: " + str(time) + "| Name:"+ cust_name + "("+cust_num+")| Vehicle:"+ vehicle +"| Requests: "+comments+" | Amount: "+total+" | Address: "+address
-	message = message.replace(" ", "+")
-	send_trans_sms(agent_num, message)
+	# message = message.replace(" ", "+")
+	send_sms_2factor(agent_num, message)
 
 def html_to_send(name, booking_id, service_list,car_bike):
 
