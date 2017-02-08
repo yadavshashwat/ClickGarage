@@ -4537,11 +4537,13 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
 
     print email
 
+
     name = cleanstring(name).title()
     address = cleanstring(address).title()
     locality = cleanstring(locality).title()
     city = cleanstring(city).title()
     reg_number = cleanstring(reg_number).upper()
+    booking_user_name = cleanstring(booking_user_name).title()
 
     if booking_user_name == None:
         booking_user_name = name
