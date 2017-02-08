@@ -5784,7 +5784,7 @@ def change_status_actual(booking_id,status_id):
             if (booking_user == "User"):
                 print "SMS Sent"
                 mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking,booking.time_booking,agent_details,status="Assigned")
-            mviews.send_sms_agent(agent_name, agent_num, booking.cust_number, booking.date_booking, booking.time_booking, booking.booking_id, booking.cust_name, booking.comments ,
+            mviews.send_sms_agent(agent_name, agent_num, booking.booking_user_number, booking.date_booking, booking.time_booking, booking.booking_id, booking.booking_user_name, booking.comments ,
                                   booking.price_total, address, vehicle)
 
         if(status_id == "Agent Left"  and old_status == "Assigned"):
