@@ -7900,7 +7900,7 @@ def send_message(firstname,lastname,number,email,message):
 	result = conn.send_raw_email(msg.as_string())
 
 def send_lead(firstname,lastname, number,email, car_bike, make, model, fuel_type, additional, service_category,locality,address,date_requested,time_requested):
-	me = "info@clickgarage.in"
+	me = "bookings@clickgarage.in"
 	you = staffmails
 	# Create message container - the correct MIME type is multipart/alternative.
 	msg = MIMEMultipart('alternative')
@@ -7914,6 +7914,22 @@ def send_lead(firstname,lastname, number,email, car_bike, make, model, fuel_type
 
 	conn = boto.ses.connect_to_region(region,aws_access_key_id=aws_access,aws_secret_access_key=aws_secret)
 	result = conn.send_raw_email(msg.as_string())
+def send_booking(firstname,lastname, number,email, car_bike, make, model, fuel_type, additional, service_category,locality,address,date_requested,time_requested):
+	me = "bookings@clickgarage.in"
+	you = staffmails
+	# Create message container - the correct MIME type is multipart/alternative.
+	msg = MIMEMultipart('alternative')
+	msg['Subject'] = "New Lead/Booking"
+	msg['From'] = me
+	msg['To'] = ', '.join(you)
+
+	message = "Name: " + firstname + " " + lastname + " | Phone: " + number+ " | Email: " + email +" | Car/Bike : " + car_bike+ " | Vehicle : " + make + " " + model + " " + fuel_type + " | Additional :" + additional + " | Service Category : " + service_category + " | Locality : " + locality + " | Address : "+address+" | Date :" + date_requested +" | Time :" + time_requested
+	script = MIMEText(message, 'html')
+	msg.attach(script)
+
+	conn = boto.ses.connect_to_region(region,aws_access_key_id=aws_access,aws_secret_access_key=aws_secret)
+	result = conn.send_raw_email(msg.as_string())
+
 
 def send_booking_confirm(email,name,booking_id,number,service_list,car_bike):
 	print email
