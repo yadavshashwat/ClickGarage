@@ -4543,12 +4543,13 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
     locality = cleanstring(locality).title()
     city = cleanstring(city).title()
     reg_number = cleanstring(reg_number).upper()
-    booking_user_name = cleanstring(booking_user_name).title()
+
 
     if booking_user_name == None:
         booking_user_name = name
     if booking_user_number == None:
         booking_user_number = number
+    booking_user_name = cleanstring(booking_user_name).title()
 
     if booking_flag:
         status = "Confirmed"
@@ -4563,6 +4564,7 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
             user.email_list.append(email)
         user.email = email
         user.save()
+
     else:
         status = "Lead"
     # update estimate history
