@@ -1408,6 +1408,7 @@ def loadServiceParts(fileName):
                 obj['category'] = part_cat
                 obj['price_comp'] = price_comp
                 obj['type'] = "Part"
+                obj['settlement_cat'] = "Part"
 
                 # price_float_t = 0
                 # price_float_c = 0
@@ -1441,7 +1442,8 @@ def loadServiceParts(fileName):
                 obj['price'] = price
                 obj['category'] = part_cat
                 obj['price_comp'] = price_comp
-                obj['type'] = type
+                obj['type'] = "Part"
+                obj['settlement_cat'] = "Part"
 
                 price_float_t_2 = 0
                 price_float_c_2 = 0
@@ -1500,6 +1502,7 @@ def loadServiceLabour(fileName):
                 price_active        = cleanstring(service[14])
                 total_price_comp    = cleanstring(service[15])
                 priority            = cleanstring(service[16])
+                settlement_cat      = cleanstring(service[17])
             # print type
                 findService = ServiceLabour.objects.filter(
                                 city        =city,
@@ -1554,7 +1557,8 @@ def loadServiceLabour(fileName):
                         job_features        = job_features      ,
                         total_price_comp   = round(float(total_price_comp),0)        ,
                         price_active       = price_active            ,
-                        priority     = priority
+                        priority     = priority,
+                        settlement_cat = settlement_cat
                     )
                     print serv
                     serv.save()
@@ -1602,11 +1606,12 @@ def CreateJobList():
                 obj['name'] = service.job_name
                 obj['action'] = "Labour"
                 obj['quantity'] = "1"
-                obj['unit_price'] = service.total_price
-                obj['price'] = service.total_price
+                obj['unit_price'] = str(service.total_price)
+                obj['price'] = str(service.total_price)
                 obj['category'] = "Labour"
-                obj['price_comp'] = service.total_price_comp
+                obj['price_comp'] = str(service.total_price_comp)
                 obj['type'] = "Labour"
+                obj['settlement_cat'] = service.settlement_cat
                 # print obj
                 # final_obj = []
                 final_obj = Parts.default_components
@@ -1652,6 +1657,7 @@ def CreateJobList():
                 obj['category'] = "Labour"
                 obj['price_comp'] = service.total_price_comp
                 obj['type'] = "Labour"
+                obj['settlement_cat'] = service.settlement_cat
 
                 serv = Services(
                 city 			    = service.city,
@@ -1683,3 +1689,33 @@ def CreateJobList():
                 total_labour        = round((service.total_price),0),
                 total_discount      = 0)
                 serv.save()
+
+def settlementCat():
+    bookings = Bookings.objects.all()
+    for booking in bookings:
+        items = booking.service_items
+        items_new = []
+        print booking.booking_id
+        for item in items:
+            try:
+                obj= {"name": item['name'],
+                        "price": item['price'],
+                        "type": item['type'],
+                        "settlement_cat":item['settlement_cat']
+                      }
+                # print "Exist"
+            except:
+                try:
+                    obj = {"name": item['name'],
+                            "price": item['price'],
+                            "type": item['type'],
+                            "settlement_cat":item['type']}
+                except:
+                    obj = {"name": item['name'],
+                           "price": item['price'],
+                           "type": "Labour",
+                           "settlement_cat": "Labour"}
+                # print "Doesn't Exist"
+            items_new.append(obj)
+        booking.service_items = items_new
+        booking.save()

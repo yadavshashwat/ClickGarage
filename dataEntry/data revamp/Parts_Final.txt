@@ -442,7 +442,7 @@ Gurgaon	ClickGarage	Ford	Fusion	NA	Diesel	Ford Fusion (Diesel)	Sedan	Car	Servici
 Gurgaon	ClickGarage	Ford	Fusion	NA	Petrol	Ford Fusion (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Coolant	Parts/ Fluids Replaced	NA	200	500	NA	750	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Diesel	Ford Ikon (Diesel)	Sedan	Car	Servicing	Comprehensive Service	0	Coolant	Parts/ Fluids Replaced	NA	200	500	NA	750	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Petrol	Ford Ikon (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Coolant	Parts/ Fluids Replaced	NA	200	500	NA	750	Default
-Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Premium Luxury	Car	Servicing	Comprehensive Service	0	Coolant	Parts/ Fluids Replaced	NA	200	500	NA	750	Default
+Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Coolant	Parts/ Fluids Replaced	NA	200	500	NA	750	Default
 Gurgaon	ClickGarage	Honda	Civic	NA	Petrol	Honda Civic (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Coolant	Parts/ Fluids Replaced	NA	200	500	NA	750	Default
 Gurgaon	ClickGarage	Honda	CRV	NA	Diesel	Honda CRV (Diesel)	SUV	Car	Servicing	Comprehensive Service	0	Coolant	Parts/ Fluids Replaced	NA	200	500	NA	750	Default
 Gurgaon	ClickGarage	Honda	Jazz	NA	Petrol	Honda Jazz (Petrol)	Hatchback	Car	Servicing	Comprehensive Service	0	Coolant	Parts/ Fluids Replaced	NA	200	500	NA	750	Default
@@ -698,7 +698,7 @@ Gurgaon	ClickGarage	Ford	Fusion	NA	Diesel	Ford Fusion (Diesel)	Sedan	Car	Servici
 Gurgaon	ClickGarage	Ford	Fusion	NA	Petrol	Ford Fusion (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Power Steering Oil	Fluids Topped-up	NA	290	58	NA	80	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Diesel	Ford Ikon (Diesel)	Sedan	Car	Servicing	Comprehensive Service	0	Power Steering Oil	Fluids Topped-up	NA	290	58	NA	80	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Petrol	Ford Ikon (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Power Steering Oil	Fluids Topped-up	NA	290	58	NA	80	Default
-Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Premium Luxury	Car	Servicing	Comprehensive Service	0	Power Steering Oil	Fluids Topped-up	NA	290	58	NA	80	Default
+Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Power Steering Oil	Fluids Topped-up	NA	290	58	NA	80	Default
 Gurgaon	ClickGarage	Honda	Civic	NA	Petrol	Honda Civic (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Power Steering Oil	Fluids Topped-up	NA	290	58	NA	80	Default
 Gurgaon	ClickGarage	Honda	CRV	NA	Diesel	Honda CRV (Diesel)	SUV	Car	Servicing	Comprehensive Service	0	Power Steering Oil	Fluids Topped-up	NA	290	58	NA	80	Default
 Gurgaon	ClickGarage	Honda	Jazz	NA	Petrol	Honda Jazz (Petrol)	Hatchback	Car	Servicing	Comprehensive Service	0	Power Steering Oil	Fluids Topped-up	NA	290	58	NA	80	Default
@@ -955,7 +955,7 @@ Gurgaon	ClickGarage	Ford	Fusion	NA	Diesel	Ford Fusion (Diesel)	Sedan	Car	Servici
 Gurgaon	ClickGarage	Ford	Fusion	NA	Petrol	Ford Fusion (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Brake & Clutch Fluid	Parts/ Fluids Replaced	NA	412	206	NA	180	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Diesel	Ford Ikon (Diesel)	Sedan	Car	Servicing	Comprehensive Service	0	Brake & Clutch Fluid	Parts/ Fluids Replaced	NA	412	206	NA	180	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Petrol	Ford Ikon (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Brake & Clutch Fluid	Parts/ Fluids Replaced	NA	412	206	NA	180	Default
-Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Premium Luxury	Car	Servicing	Comprehensive Service	0	Brake & Clutch Fluid	Parts/ Fluids Replaced	NA	412	206	NA	180	Default
+Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Brake & Clutch Fluid	Parts/ Fluids Replaced	NA	412	206	NA	180	Default
 Gurgaon	ClickGarage	Honda	Civic	NA	Petrol	Honda Civic (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Brake & Clutch Fluid	Parts/ Fluids Replaced	NA	412	206	NA	180	Default
 Gurgaon	ClickGarage	Honda	CRV	NA	Diesel	Honda CRV (Diesel)	SUV	Car	Servicing	Comprehensive Service	0	Brake & Clutch Fluid	Parts/ Fluids Replaced	NA	412	206	NA	180	Default
 Gurgaon	ClickGarage	Honda	Jazz	NA	Petrol	Honda Jazz (Petrol)	Hatchback	Car	Servicing	Comprehensive Service	0	Brake & Clutch Fluid	Parts/ Fluids Replaced	NA	412	206	NA	180	Default
@@ -1211,7 +1211,7 @@ Gurgaon	ClickGarage	Ford	Fusion	NA	Diesel	Ford Fusion (Diesel)	Sedan	Car	Servici
 Gurgaon	ClickGarage	Ford	Fusion	NA	Petrol	Ford Fusion (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Windhield Washer Fluid	Fluids Topped-up	NA	30	30	NA	60	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Diesel	Ford Ikon (Diesel)	Sedan	Car	Servicing	Comprehensive Service	0	Windhield Washer Fluid	Fluids Topped-up	NA	30	30	NA	60	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Petrol	Ford Ikon (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Windhield Washer Fluid	Fluids Topped-up	NA	30	30	NA	60	Default
-Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Premium Luxury	Car	Servicing	Comprehensive Service	0	Windhield Washer Fluid	Fluids Topped-up	NA	30	30	NA	60	Default
+Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Windhield Washer Fluid	Fluids Topped-up	NA	30	30	NA	60	Default
 Gurgaon	ClickGarage	Honda	Civic	NA	Petrol	Honda Civic (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Windhield Washer Fluid	Fluids Topped-up	NA	30	30	NA	60	Default
 Gurgaon	ClickGarage	Honda	CRV	NA	Diesel	Honda CRV (Diesel)	SUV	Car	Servicing	Comprehensive Service	0	Windhield Washer Fluid	Fluids Topped-up	NA	30	30	NA	60	Default
 Gurgaon	ClickGarage	Honda	Jazz	NA	Petrol	Honda Jazz (Petrol)	Hatchback	Car	Servicing	Comprehensive Service	0	Windhield Washer Fluid	Fluids Topped-up	NA	30	30	NA	60	Default
@@ -1467,7 +1467,7 @@ Gurgaon	ClickGarage	Ford	Fusion	NA	Diesel	Ford Fusion (Diesel)	Sedan	Car	Servici
 Gurgaon	ClickGarage	Ford	Fusion	NA	Petrol	Ford Fusion (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Battery Water	Fluids Topped-up	NA	40	40	NA	60	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Diesel	Ford Ikon (Diesel)	Sedan	Car	Servicing	Comprehensive Service	0	Battery Water	Fluids Topped-up	NA	40	40	NA	60	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Petrol	Ford Ikon (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Battery Water	Fluids Topped-up	NA	40	40	NA	60	Default
-Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Premium Luxury	Car	Servicing	Comprehensive Service	0	Battery Water	Fluids Topped-up	NA	40	40	NA	60	Default
+Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Battery Water	Fluids Topped-up	NA	40	40	NA	60	Default
 Gurgaon	ClickGarage	Honda	Civic	NA	Petrol	Honda Civic (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Battery Water	Fluids Topped-up	NA	40	40	NA	60	Default
 Gurgaon	ClickGarage	Honda	CRV	NA	Diesel	Honda CRV (Diesel)	SUV	Car	Servicing	Comprehensive Service	0	Battery Water	Fluids Topped-up	NA	40	40	NA	60	Default
 Gurgaon	ClickGarage	Honda	Jazz	NA	Petrol	Honda Jazz (Petrol)	Hatchback	Car	Servicing	Comprehensive Service	0	Battery Water	Fluids Topped-up	NA	40	40	NA	60	Default
@@ -1723,7 +1723,7 @@ Gurgaon	ClickGarage	Ford	Fusion	NA	Diesel	Ford Fusion (Diesel)	Sedan	Car	Servici
 Gurgaon	ClickGarage	Ford	Fusion	NA	Petrol	Ford Fusion (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Brake Spray	Parts/ Fluids Replaced	4	30	120	NA	240	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Diesel	Ford Ikon (Diesel)	Sedan	Car	Servicing	Comprehensive Service	0	Brake Spray	Parts/ Fluids Replaced	4	30	120	NA	240	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Petrol	Ford Ikon (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Brake Spray	Parts/ Fluids Replaced	4	30	120	NA	240	Default
-Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Premium Luxury	Car	Servicing	Comprehensive Service	0	Brake Spray	Parts/ Fluids Replaced	4	30	120	NA	240	Default
+Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Brake Spray	Parts/ Fluids Replaced	4	30	120	NA	240	Default
 Gurgaon	ClickGarage	Honda	Civic	NA	Petrol	Honda Civic (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Brake Spray	Parts/ Fluids Replaced	4	30	120	NA	240	Default
 Gurgaon	ClickGarage	Honda	CRV	NA	Diesel	Honda CRV (Diesel)	SUV	Car	Servicing	Comprehensive Service	0	Brake Spray	Parts/ Fluids Replaced	4	30	120	NA	240	Default
 Gurgaon	ClickGarage	Honda	Jazz	NA	Petrol	Honda Jazz (Petrol)	Hatchback	Car	Servicing	Comprehensive Service	0	Brake Spray	Parts/ Fluids Replaced	4	30	120	NA	240	Default
@@ -1979,7 +1979,7 @@ Gurgaon	ClickGarage	Ford	Fusion	NA	Diesel	Ford Fusion (Diesel)	Sedan	Car	Servici
 Gurgaon	ClickGarage	Ford	Fusion	NA	Petrol	Ford Fusion (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Caliper Greasing	Parts/ Fluids Replaced	NA	150	150	NA	250	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Diesel	Ford Ikon (Diesel)	Sedan	Car	Servicing	Comprehensive Service	0	Caliper Greasing	Parts/ Fluids Replaced	NA	150	150	NA	250	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Petrol	Ford Ikon (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Caliper Greasing	Parts/ Fluids Replaced	NA	150	150	NA	250	Default
-Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Premium Luxury	Car	Servicing	Comprehensive Service	0	Caliper Greasing	Parts/ Fluids Replaced	NA	150	150	NA	250	Default
+Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Caliper Greasing	Parts/ Fluids Replaced	NA	150	150	NA	250	Default
 Gurgaon	ClickGarage	Honda	Civic	NA	Petrol	Honda Civic (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Caliper Greasing	Parts/ Fluids Replaced	NA	150	150	NA	250	Default
 Gurgaon	ClickGarage	Honda	CRV	NA	Diesel	Honda CRV (Diesel)	SUV	Car	Servicing	Comprehensive Service	0	Caliper Greasing	Parts/ Fluids Replaced	NA	150	150	NA	250	Default
 Gurgaon	ClickGarage	Honda	Jazz	NA	Petrol	Honda Jazz (Petrol)	Hatchback	Car	Servicing	Comprehensive Service	0	Caliper Greasing	Parts/ Fluids Replaced	NA	150	150	NA	250	Default
@@ -2245,7 +2245,7 @@ Gurgaon	ClickGarage	Ford	Fusion	NA	Diesel	Ford Fusion (Diesel)	Sedan	Car	Servici
 Gurgaon	ClickGarage	Ford	Fusion	NA	Petrol	Ford Fusion (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Oil Filter	Parts/ Fluids Replaced	1	260	260	NA	324	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Diesel	Ford Ikon (Diesel)	Sedan	Car	Servicing	Comprehensive Service	0	Oil Filter	Parts/ Fluids Replaced	1	298	298	NA	372	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Petrol	Ford Ikon (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Oil Filter	Parts/ Fluids Replaced	1	280	280	NA	350	Default
-Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Premium Luxury	Car	Servicing	Comprehensive Service	0	Oil Filter	Parts/ Fluids Replaced	1	120	120	NA	150	Default
+Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Oil Filter	Parts/ Fluids Replaced	1	120	120	NA	150	Default
 Gurgaon	ClickGarage	Honda	Civic	NA	Petrol	Honda Civic (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Oil Filter	Parts/ Fluids Replaced	1	120	120	NA	150	Default
 Gurgaon	ClickGarage	Honda	CRV	NA	Diesel	Honda CRV (Diesel)	SUV	Car	Servicing	Comprehensive Service	0	Oil Filter	Parts/ Fluids Replaced	1	316	316	NA	395	Default
 Gurgaon	ClickGarage	Honda	Jazz	NA	Petrol	Honda Jazz (Petrol)	Hatchback	Car	Servicing	Comprehensive Service	0	Oil Filter	Parts/ Fluids Replaced	1	120	120	NA	150	Default
@@ -2501,7 +2501,7 @@ Gurgaon	ClickGarage	Ford	Fusion	NA	Diesel	Ford Fusion (Diesel)	Sedan	Car	Servici
 Gurgaon	ClickGarage	Ford	Fusion	NA	Petrol	Ford Fusion (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Air Filter	Parts/ Fluids Replaced	1	176	176	NA	220	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Diesel	Ford Ikon (Diesel)	Sedan	Car	Servicing	Comprehensive Service	0	Air Filter	Parts/ Fluids Replaced	1	585	585	NA	731	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Petrol	Ford Ikon (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Air Filter	Parts/ Fluids Replaced	1	585	585	NA	731	Default
-Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Premium Luxury	Car	Servicing	Comprehensive Service	0	Air Filter	Parts/ Fluids Replaced	1	1154	1154	NA	1442	Default
+Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Air Filter	Parts/ Fluids Replaced	1	1154	1154	NA	1442	Default
 Gurgaon	ClickGarage	Honda	Civic	NA	Petrol	Honda Civic (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Air Filter	Parts/ Fluids Replaced	1	866	866	NA	1082	Default
 Gurgaon	ClickGarage	Honda	CRV	NA	Diesel	Honda CRV (Diesel)	SUV	Car	Servicing	Comprehensive Service	0	Air Filter	Parts/ Fluids Replaced	1	236	236	NA	295	Default
 Gurgaon	ClickGarage	Honda	Jazz	NA	Petrol	Honda Jazz (Petrol)	Hatchback	Car	Servicing	Comprehensive Service	0	Air Filter	Parts/ Fluids Replaced	1	386	386	NA	482	Default
@@ -2757,7 +2757,7 @@ Gurgaon	ClickGarage	Ford	Fusion	NA	Diesel	Ford Fusion (Diesel)	Sedan	Car	Servici
 Gurgaon	ClickGarage	Ford	Fusion	NA	Petrol	Ford Fusion (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Fuel Filter	Parts/ Fluids Replaced	1	402	402	NA	502	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Diesel	Ford Ikon (Diesel)	Sedan	Car	Servicing	Comprehensive Service	0	Fuel Filter	Parts/ Fluids Replaced	1	1200	1200	NA	1500	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Petrol	Ford Ikon (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Fuel Filter	Parts/ Fluids Replaced	1	328	328	NA	410	Default
-Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Premium Luxury	Car	Servicing	Comprehensive Service	0	Fuel Filter	Parts/ Fluids Replaced	1	2396	2396	NA	2994	Default
+Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Fuel Filter	Parts/ Fluids Replaced	1	2396	2396	NA	2994	Default
 Gurgaon	ClickGarage	Honda	Civic	NA	Petrol	Honda Civic (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Fuel Filter	Parts/ Fluids Replaced	1	3537	3537	NA	4421	Default
 Gurgaon	ClickGarage	Honda	CRV	NA	Diesel	Honda CRV (Diesel)	SUV	Car	Servicing	Comprehensive Service	0	Fuel Filter	Parts/ Fluids Replaced	1	1056	1056	NA	1320	Default
 Gurgaon	ClickGarage	Honda	Jazz	NA	Petrol	Honda Jazz (Petrol)	Hatchback	Car	Servicing	Comprehensive Service	0	Fuel Filter	Parts/ Fluids Replaced	1	591	591	NA	738	Default
@@ -3014,7 +3014,7 @@ Gurgaon	ClickGarage	Ford	Fusion	NA	Diesel	Ford Fusion (Diesel)	Sedan	Car	Servici
 Gurgaon	ClickGarage	Ford	Fusion	NA	Petrol	Ford Fusion (Petrol)	Sedan	Car	Servicing	Standard Service	0	Engine Oil	Replaced	4.5	320	1440	Mineral	1665	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Diesel	Ford Ikon (Diesel)	Sedan	Car	Servicing	Standard Service	0	Engine Oil	Replaced	4	320	1280	Mineral	1480	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Petrol	Ford Ikon (Petrol)	Sedan	Car	Servicing	Standard Service	0	Engine Oil	Replaced	4.5	320	1440	Mineral	1665	Default
-Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Premium Luxury	Car	Servicing	Standard Service	0	Engine Oil	Replaced	4.5	320	1440	Mineral	1665	Default
+Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Sedan	Car	Servicing	Standard Service	0	Engine Oil	Replaced	4.5	320	1440	Mineral	1665	Default
 Gurgaon	ClickGarage	Honda	Civic	NA	Petrol	Honda Civic (Petrol)	Sedan	Car	Servicing	Standard Service	0	Engine Oil	Replaced	4	320	1280	Mineral	1480	Default
 Gurgaon	ClickGarage	Honda	CRV	NA	Diesel	Honda CRV (Diesel)	SUV	Car	Servicing	Standard Service	0	Engine Oil	Replaced	4.5	320	1440	Mineral	1665	Default
 Gurgaon	ClickGarage	Honda	Jazz	NA	Petrol	Honda Jazz (Petrol)	Hatchback	Car	Servicing	Standard Service	0	Engine Oil	Replaced	4	320	1280	Mineral	1480	Default
@@ -3270,7 +3270,7 @@ Gurgaon	ClickGarage	Ford	Fusion	NA	Diesel	Ford Fusion (Diesel)	Sedan	Car	Servici
 Gurgaon	ClickGarage	Ford	Fusion	NA	Petrol	Ford Fusion (Petrol)	Sedan	Car	Servicing	Standard Service	0	Coolant	Top Up	NA	200	300	NA	600	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Diesel	Ford Ikon (Diesel)	Sedan	Car	Servicing	Standard Service	0	Coolant	Top Up	NA	200	300	NA	600	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Petrol	Ford Ikon (Petrol)	Sedan	Car	Servicing	Standard Service	0	Coolant	Top Up	NA	200	300	NA	600	Default
-Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Premium Luxury	Car	Servicing	Standard Service	0	Coolant	Top Up	NA	200	300	NA	600	Default
+Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Sedan	Car	Servicing	Standard Service	0	Coolant	Top Up	NA	200	300	NA	600	Default
 Gurgaon	ClickGarage	Honda	Civic	NA	Petrol	Honda Civic (Petrol)	Sedan	Car	Servicing	Standard Service	0	Coolant	Top Up	NA	200	300	NA	600	Default
 Gurgaon	ClickGarage	Honda	CRV	NA	Diesel	Honda CRV (Diesel)	SUV	Car	Servicing	Standard Service	0	Coolant	Top Up	NA	200	300	NA	600	Default
 Gurgaon	ClickGarage	Honda	Jazz	NA	Petrol	Honda Jazz (Petrol)	Hatchback	Car	Servicing	Standard Service	0	Coolant	Top Up	NA	200	300	NA	600	Default
@@ -3526,7 +3526,7 @@ Gurgaon	ClickGarage	Ford	Fusion	NA	Diesel	Ford Fusion (Diesel)	Sedan	Car	Servici
 Gurgaon	ClickGarage	Ford	Fusion	NA	Petrol	Ford Fusion (Petrol)	Sedan	Car	Servicing	Standard Service	0	Power Steering Oil	Top Up	NA	290	58	NA	80	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Diesel	Ford Ikon (Diesel)	Sedan	Car	Servicing	Standard Service	0	Power Steering Oil	Top Up	NA	290	58	NA	80	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Petrol	Ford Ikon (Petrol)	Sedan	Car	Servicing	Standard Service	0	Power Steering Oil	Top Up	NA	290	58	NA	80	Default
-Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Premium Luxury	Car	Servicing	Standard Service	0	Power Steering Oil	Top Up	NA	290	58	NA	80	Default
+Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Sedan	Car	Servicing	Standard Service	0	Power Steering Oil	Top Up	NA	290	58	NA	80	Default
 Gurgaon	ClickGarage	Honda	Civic	NA	Petrol	Honda Civic (Petrol)	Sedan	Car	Servicing	Standard Service	0	Power Steering Oil	Top Up	NA	290	58	NA	80	Default
 Gurgaon	ClickGarage	Honda	CRV	NA	Diesel	Honda CRV (Diesel)	SUV	Car	Servicing	Standard Service	0	Power Steering Oil	Top Up	NA	290	58	NA	80	Default
 Gurgaon	ClickGarage	Honda	Jazz	NA	Petrol	Honda Jazz (Petrol)	Hatchback	Car	Servicing	Standard Service	0	Power Steering Oil	Top Up	NA	290	58	NA	80	Default
@@ -3782,7 +3782,7 @@ Gurgaon	ClickGarage	Ford	Fusion	NA	Diesel	Ford Fusion (Diesel)	Sedan	Car	Servici
 Gurgaon	ClickGarage	Ford	Fusion	NA	Petrol	Ford Fusion (Petrol)	Sedan	Car	Servicing	Standard Service	0	Brake & Clutch Fluid	Replaced	NA	412	206	NA	180	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Diesel	Ford Ikon (Diesel)	Sedan	Car	Servicing	Standard Service	0	Brake & Clutch Fluid	Replaced	NA	412	206	NA	180	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Petrol	Ford Ikon (Petrol)	Sedan	Car	Servicing	Standard Service	0	Brake & Clutch Fluid	Replaced	NA	412	206	NA	180	Default
-Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Premium Luxury	Car	Servicing	Standard Service	0	Brake & Clutch Fluid	Replaced	NA	412	206	NA	180	Default
+Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Sedan	Car	Servicing	Standard Service	0	Brake & Clutch Fluid	Replaced	NA	412	206	NA	180	Default
 Gurgaon	ClickGarage	Honda	Civic	NA	Petrol	Honda Civic (Petrol)	Sedan	Car	Servicing	Standard Service	0	Brake & Clutch Fluid	Replaced	NA	412	206	NA	180	Default
 Gurgaon	ClickGarage	Honda	CRV	NA	Diesel	Honda CRV (Diesel)	SUV	Car	Servicing	Standard Service	0	Brake & Clutch Fluid	Replaced	NA	412	206	NA	180	Default
 Gurgaon	ClickGarage	Honda	Jazz	NA	Petrol	Honda Jazz (Petrol)	Hatchback	Car	Servicing	Standard Service	0	Brake & Clutch Fluid	Replaced	NA	412	206	NA	180	Default
@@ -4038,7 +4038,7 @@ Gurgaon	ClickGarage	Ford	Fusion	NA	Diesel	Ford Fusion (Diesel)	Sedan	Car	Servici
 Gurgaon	ClickGarage	Ford	Fusion	NA	Petrol	Ford Fusion (Petrol)	Sedan	Car	Servicing	Standard Service	0	Windhield Washer Fluid	Top Up	NA	30	30	NA	60	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Diesel	Ford Ikon (Diesel)	Sedan	Car	Servicing	Standard Service	0	Windhield Washer Fluid	Top Up	NA	30	30	NA	60	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Petrol	Ford Ikon (Petrol)	Sedan	Car	Servicing	Standard Service	0	Windhield Washer Fluid	Top Up	NA	30	30	NA	60	Default
-Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Premium Luxury	Car	Servicing	Standard Service	0	Windhield Washer Fluid	Top Up	NA	30	30	NA	60	Default
+Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Sedan	Car	Servicing	Standard Service	0	Windhield Washer Fluid	Top Up	NA	30	30	NA	60	Default
 Gurgaon	ClickGarage	Honda	Civic	NA	Petrol	Honda Civic (Petrol)	Sedan	Car	Servicing	Standard Service	0	Windhield Washer Fluid	Top Up	NA	30	30	NA	60	Default
 Gurgaon	ClickGarage	Honda	CRV	NA	Diesel	Honda CRV (Diesel)	SUV	Car	Servicing	Standard Service	0	Windhield Washer Fluid	Top Up	NA	30	30	NA	60	Default
 Gurgaon	ClickGarage	Honda	Jazz	NA	Petrol	Honda Jazz (Petrol)	Hatchback	Car	Servicing	Standard Service	0	Windhield Washer Fluid	Top Up	NA	30	30	NA	60	Default
@@ -4295,7 +4295,7 @@ Gurgaon	ClickGarage	Ford	Fusion	NA	Diesel	Ford Fusion (Diesel)	Sedan	Car	Servici
 Gurgaon	ClickGarage	Ford	Fusion	NA	Petrol	Ford Fusion (Petrol)	Sedan	Car	Servicing	Standard Service	0	Battery Water	Top Up	NA	40	40	NA	60	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Diesel	Ford Ikon (Diesel)	Sedan	Car	Servicing	Standard Service	0	Battery Water	Top Up	NA	40	40	NA	60	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Petrol	Ford Ikon (Petrol)	Sedan	Car	Servicing	Standard Service	0	Battery Water	Top Up	NA	40	40	NA	60	Default
-Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Premium Luxury	Car	Servicing	Standard Service	0	Battery Water	Top Up	NA	40	40	NA	60	Default
+Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Sedan	Car	Servicing	Standard Service	0	Battery Water	Top Up	NA	40	40	NA	60	Default
 Gurgaon	ClickGarage	Honda	Civic	NA	Petrol	Honda Civic (Petrol)	Sedan	Car	Servicing	Standard Service	0	Battery Water	Top Up	NA	40	40	NA	60	Default
 Gurgaon	ClickGarage	Honda	CRV	NA	Diesel	Honda CRV (Diesel)	SUV	Car	Servicing	Standard Service	0	Battery Water	Top Up	NA	40	40	NA	60	Default
 Gurgaon	ClickGarage	Honda	Jazz	NA	Petrol	Honda Jazz (Petrol)	Hatchback	Car	Servicing	Standard Service	0	Battery Water	Top Up	NA	40	40	NA	60	Default
@@ -4550,7 +4550,7 @@ Gurgaon	ClickGarage	Ford	Fusion	NA	Diesel	Ford Fusion (Diesel)	Sedan	Car	Servici
 Gurgaon	ClickGarage	Ford	Fusion	NA	Petrol	Ford Fusion (Petrol)	Sedan	Car	Servicing	Standard Service	0	Brake Spray	Replaced	4	30	120	NA	240	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Diesel	Ford Ikon (Diesel)	Sedan	Car	Servicing	Standard Service	0	Brake Spray	Replaced	4	30	120	NA	240	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Petrol	Ford Ikon (Petrol)	Sedan	Car	Servicing	Standard Service	0	Brake Spray	Replaced	4	30	120	NA	240	Default
-Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Premium Luxury	Car	Servicing	Standard Service	0	Brake Spray	Replaced	4	30	120	NA	240	Default
+Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Sedan	Car	Servicing	Standard Service	0	Brake Spray	Replaced	4	30	120	NA	240	Default
 Gurgaon	ClickGarage	Honda	Civic	NA	Petrol	Honda Civic (Petrol)	Sedan	Car	Servicing	Standard Service	0	Brake Spray	Replaced	4	30	120	NA	240	Default
 Gurgaon	ClickGarage	Honda	CRV	NA	Diesel	Honda CRV (Diesel)	SUV	Car	Servicing	Standard Service	0	Brake Spray	Replaced	4	30	120	NA	240	Default
 Gurgaon	ClickGarage	Honda	Jazz	NA	Petrol	Honda Jazz (Petrol)	Hatchback	Car	Servicing	Standard Service	0	Brake Spray	Replaced	4	30	120	NA	240	Default
@@ -4807,7 +4807,7 @@ Gurgaon	ClickGarage	Ford	Fusion	NA	Diesel	Ford Fusion (Diesel)	Sedan	Car	Servici
 Gurgaon	ClickGarage	Ford	Fusion	NA	Petrol	Ford Fusion (Petrol)	Sedan	Car	Servicing	Standard Service	0	Caliper Greasing	Replaced	NA	150	150	NA	250	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Diesel	Ford Ikon (Diesel)	Sedan	Car	Servicing	Standard Service	0	Caliper Greasing	Replaced	NA	150	150	NA	250	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Petrol	Ford Ikon (Petrol)	Sedan	Car	Servicing	Standard Service	0	Caliper Greasing	Replaced	NA	150	150	NA	250	Default
-Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Premium Luxury	Car	Servicing	Standard Service	0	Caliper Greasing	Replaced	NA	150	150	NA	250	Default
+Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Sedan	Car	Servicing	Standard Service	0	Caliper Greasing	Replaced	NA	150	150	NA	250	Default
 Gurgaon	ClickGarage	Honda	Civic	NA	Petrol	Honda Civic (Petrol)	Sedan	Car	Servicing	Standard Service	0	Caliper Greasing	Replaced	NA	150	150	NA	250	Default
 Gurgaon	ClickGarage	Honda	CRV	NA	Diesel	Honda CRV (Diesel)	SUV	Car	Servicing	Standard Service	0	Caliper Greasing	Replaced	NA	150	150	NA	250	Default
 Gurgaon	ClickGarage	Honda	Jazz	NA	Petrol	Honda Jazz (Petrol)	Hatchback	Car	Servicing	Standard Service	0	Caliper Greasing	Replaced	NA	150	150	NA	250	Default
@@ -5073,7 +5073,7 @@ Gurgaon	ClickGarage	Ford	Fusion	NA	Diesel	Ford Fusion (Diesel)	Sedan	Car	Servici
 Gurgaon	ClickGarage	Ford	Fusion	NA	Petrol	Ford Fusion (Petrol)	Sedan	Car	Servicing	Standard Service	0	Oil Filter	Replaced	1	260	260	NA	324	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Diesel	Ford Ikon (Diesel)	Sedan	Car	Servicing	Standard Service	0	Oil Filter	Replaced	1	298	298	NA	372	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Petrol	Ford Ikon (Petrol)	Sedan	Car	Servicing	Standard Service	0	Oil Filter	Replaced	1	280	280	NA	350	Default
-Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Premium Luxury	Car	Servicing	Standard Service	0	Oil Filter	Replaced	1	120	120	NA	150	Default
+Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Sedan	Car	Servicing	Standard Service	0	Oil Filter	Replaced	1	120	120	NA	150	Default
 Gurgaon	ClickGarage	Honda	Civic	NA	Petrol	Honda Civic (Petrol)	Sedan	Car	Servicing	Standard Service	0	Oil Filter	Replaced	1	120	120	NA	150	Default
 Gurgaon	ClickGarage	Honda	CRV	NA	Diesel	Honda CRV (Diesel)	SUV	Car	Servicing	Standard Service	0	Oil Filter	Replaced	1	316	316	NA	395	Default
 Gurgaon	ClickGarage	Honda	Jazz	NA	Petrol	Honda Jazz (Petrol)	Hatchback	Car	Servicing	Standard Service	0	Oil Filter	Replaced	1	120	120	NA	150	Default
@@ -5329,7 +5329,7 @@ Gurgaon	ClickGarage	Ford	Fusion	NA	Diesel	Ford Fusion (Diesel)	Sedan	Car	Servici
 Gurgaon	ClickGarage	Ford	Fusion	NA	Petrol	Ford Fusion (Petrol)	Sedan	Car	Servicing	Standard Service	0	Air Filter	Replaced	1	176	176	NA	220	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Diesel	Ford Ikon (Diesel)	Sedan	Car	Servicing	Standard Service	0	Air Filter	Replaced	1	585	585	NA	731	Default
 Gurgaon	ClickGarage	Ford	Ikon	NA	Petrol	Ford Ikon (Petrol)	Sedan	Car	Servicing	Standard Service	0	Air Filter	Replaced	1	585	585	NA	731	Default
-Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Premium Luxury	Car	Servicing	Standard Service	0	Air Filter	Replaced	1	1154	1154	NA	1442	Default
+Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Sedan	Car	Servicing	Standard Service	0	Air Filter	Replaced	1	1154	1154	NA	1442	Default
 Gurgaon	ClickGarage	Honda	Civic	NA	Petrol	Honda Civic (Petrol)	Sedan	Car	Servicing	Standard Service	0	Air Filter	Replaced	1	866	866	NA	1082	Default
 Gurgaon	ClickGarage	Honda	CRV	NA	Diesel	Honda CRV (Diesel)	SUV	Car	Servicing	Standard Service	0	Air Filter	Replaced	1	236	236	NA	295	Default
 Gurgaon	ClickGarage	Honda	Jazz	NA	Petrol	Honda Jazz (Petrol)	Hatchback	Car	Servicing	Standard Service	0	Air Filter	Replaced	1	386	386	NA	482	Default
@@ -6043,7 +6043,7 @@ Gurgaon	ClickGarage	Ford	Fusion	NA	Diesel	Ford Fusion (Diesel)	Sedan	Car	Servici
 Gurgaon	ClickGarage	Ford	Fusion	NA	Petrol	Ford Fusion (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Engine Oil	Parts/ Fluids Replaced	4.5	900	4050	Synthetic	5175	Optional
 Gurgaon	ClickGarage	Ford	Ikon	NA	Diesel	Ford Ikon (Diesel)	Sedan	Car	Servicing	Comprehensive Service	0	Engine Oil	Parts/ Fluids Replaced	4	900	3600	Synthetic	4600	Optional
 Gurgaon	ClickGarage	Ford	Ikon	NA	Petrol	Ford Ikon (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Engine Oil	Parts/ Fluids Replaced	4.5	900	4050	Synthetic	5175	Optional
-Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Premium Luxury	Car	Servicing	Comprehensive Service	0	Engine Oil	Parts/ Fluids Replaced	4.5	900	4050	Synthetic	5175	Optional
+Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Engine Oil	Parts/ Fluids Replaced	4.5	900	4050	Synthetic	5175	Optional
 Gurgaon	ClickGarage	Honda	Civic	NA	Petrol	Honda Civic (Petrol)	Sedan	Car	Servicing	Comprehensive Service	0	Engine Oil	Parts/ Fluids Replaced	4	900	3600	Synthetic	4600	Optional
 Gurgaon	ClickGarage	Honda	CRV	NA	Diesel	Honda CRV (Diesel)	SUV	Car	Servicing	Comprehensive Service	0	Engine Oil	Parts/ Fluids Replaced	4.5	900	4050	Synthetic	5175	Optional
 Gurgaon	ClickGarage	Honda	Jazz	NA	Petrol	Honda Jazz (Petrol)	Hatchback	Car	Servicing	Comprehensive Service	0	Engine Oil	Parts/ Fluids Replaced	4	900	3600	Synthetic	4600	Optional
@@ -6271,7 +6271,7 @@ Gurgaon	ClickGarage	Ford	Fusion	NA	Diesel	Ford Fusion (Diesel)	Sedan	Car	Servici
 Gurgaon	ClickGarage	Ford	Fusion	NA	Petrol	Ford Fusion (Petrol)	Sedan	Car	Servicing	Standard Service	0	Engine Oil	Replaced	4.5	900	4050	Synthetic	5175	Optional
 Gurgaon	ClickGarage	Ford	Ikon	NA	Diesel	Ford Ikon (Diesel)	Sedan	Car	Servicing	Standard Service	0	Engine Oil	Replaced	4	900	3600	Synthetic	4600	Optional
 Gurgaon	ClickGarage	Ford	Ikon	NA	Petrol	Ford Ikon (Petrol)	Sedan	Car	Servicing	Standard Service	0	Engine Oil	Replaced	4.5	900	4050	Synthetic	5175	Optional
-Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Premium Luxury	Car	Servicing	Standard Service	0	Engine Oil	Replaced	4.5	900	4050	Synthetic	5175	Optional
+Gurgaon	ClickGarage	Honda	Accord	NA	Petrol	Honda Accord (Petrol)	Sedan	Car	Servicing	Standard Service	0	Engine Oil	Replaced	4.5	900	4050	Synthetic	5175	Optional
 Gurgaon	ClickGarage	Honda	Civic	NA	Petrol	Honda Civic (Petrol)	Sedan	Car	Servicing	Standard Service	0	Engine Oil	Replaced	4	900	3600	Synthetic	4600	Optional
 Gurgaon	ClickGarage	Honda	CRV	NA	Diesel	Honda CRV (Diesel)	SUV	Car	Servicing	Standard Service	0	Engine Oil	Replaced	4.5	900	4050	Synthetic	5175	Optional
 Gurgaon	ClickGarage	Honda	Jazz	NA	Petrol	Honda Jazz (Petrol)	Hatchback	Car	Servicing	Standard Service	0	Engine Oil	Replaced	4	900	3600	Synthetic	4600	Optional

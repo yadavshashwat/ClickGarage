@@ -400,6 +400,7 @@ class ServiceLabour(models.Model):
     time                = models.CharField(max_length=50)
     price_active        = models.CharField(max_length=20)
     priority            = models.CharField(max_length=50)
+    settlement_cat      = models.CharField(max_length=50)
 
 class ServicePart(models.Model):
     city 				= models.CharField(max_length=200)
