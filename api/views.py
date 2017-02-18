@@ -5809,7 +5809,7 @@ def change_status_actual(booking_id,status_id):
                 print "SMS Sent"
                 mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking,booking.time_booking,status="Confirmed")
             print "SMS not Sent"
-        if (status_id == "Assigned"):
+        if (status_id == "Assigned" and old_status == "Confirmed" ):
             agent = fetch_user(booking.agent)
             agent_name = agent['result'][0]['first_name']
             agent_num = agent['result'][0]['phone']
