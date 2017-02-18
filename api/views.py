@@ -4609,10 +4609,11 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
                  status                 =status            ,
                  comments               =comment           ,
                  source                 =source           ,
-                 agent                  =    "",
+                 agent                  =    ""             ,
                  booking_user_type      =   booking_type,
                  booking_user_name      = booking_user_name,
-                 booking_user_number = booking_user_number,
+                 booking_user_number    =  booking_user_number,
+                 date_delivery = date,
                  # lead_follow_up_date = follow_up_date,
                  estimate_history    =estimate_history)
     tt.save()
@@ -4904,7 +4905,8 @@ def view_all_bookings(request):
     booking_id = get_param(request, 'b_id', None)
     lead_booking = get_param(request, 'lead_booking', None)
     sort = get_param(request, 'sort', None)
-    date = get_param(request,'date',None)
+    date = get_param(request,'date', None)
+    del_date = get_param(request, 'del_date', None)
     status = get_param(request,'status',None)
     name = get_param(request, 'name', None)
     reg_number = get_param(request,'reg',None)
@@ -5006,10 +5008,20 @@ def view_all_bookings(request):
         year = date[6:10]
         month = date[3:5]
         day = date[0:2]
-        print year
-        print month
-        print day
+        # print year
+        # print month
+        # print day
         tranObjs = tranObjs.filter(date_booking=datetime.date(int(year), int(month), int(day)))
+
+    if del_date != None and del_date != "":
+        # print "date filter"
+        year_del = del_date[6:10]
+        month_del = del_date[3:5]
+        day_del = del_date[0:2]
+        print year_del
+        print month_del
+        print day_del
+        tranObjs = tranObjs.filter(date_delivery=datetime.date(int(year_del), int(month_del), int(day_del)))
 
     if veh_type != None and veh_type != "" :
         # print "veh type"
@@ -5020,6 +5032,14 @@ def view_all_bookings(request):
         oldformat_b = str(trans.date_booking)
         datetimeobject = datetime.datetime.strptime(oldformat_b, '%Y-%m-%d')
         newformat_b = datetimeobject.strftime('%d-%m-%Y')
+
+        if trans.date_delivery is None:
+            oldformat_d = str(trans.date_booking)
+        else:
+            oldformat_d = str(trans.date_delivery)
+
+        datetimeobject = datetime.datetime.strptime(oldformat_d, '%Y-%m-%d')
+        newformat_d = datetimeobject.strftime('%d-%m-%Y')
 
         if trans.status == "Lead" 			:
             status_next = "Confirmed"
@@ -5085,6 +5105,7 @@ def view_all_bookings(request):
             'status_next':status_next,
             'customer_notes':trans.customer_notes,
             'booking_user_type': trans.booking_user_type,
+            'delivery_date':newformat_d,
             'req_user_agent':request.user.is_agent,
             'req_user_staff': request.user.is_staff,
             'req_user_b2b': request.user.is_b2b,
@@ -5271,6 +5292,7 @@ def update_booking(request):
     locality = get_param(request, 'locality', None)
     city = get_param(request, 'city', None)
     source = get_param(request, 'source', None)
+    date_delivery = get_param(request, 'date_del', None)
 
     booking = Bookings.objects.filter(booking_id=booking_id)[0]
 
@@ -5327,6 +5349,14 @@ def update_booking(request):
         newformat = datetimeobject.strftime('%Y-%m-%d')
         date_n = newformat
         booking.date_booking = date_n
+
+    if date_delivery != None:
+        oldformat_2 = date_delivery
+        datetimeobject2 = datetime.datetime.strptime(oldformat_2, '%d-%m-%Y')
+        newformat_2 = datetimeobject2.strftime('%Y-%m-%d')
+        date_delivery = newformat_2
+        booking.date_delivery = date_delivery
+
     if notes_n != None:
         booking.customer_notes = notes_n
 
@@ -5621,7 +5651,6 @@ def send_booking(request):
     # print email
     # print order_list
 
-
     # if follow_up_date == None:
     #     follow_up_date = date
 
@@ -5677,6 +5706,7 @@ def send_booking(request):
                                         veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
                                         price_total, source, booking_flag,
                                         job_summary_int,send_sms=send_confirm)
+
         else:
             print email
             user = request.user

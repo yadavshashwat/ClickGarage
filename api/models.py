@@ -505,6 +505,7 @@ class Bookings(models.Model):
     price_discount          = models.CharField(max_length=200,null=True)
     date_booking            = models.DateField()
     time_booking            = models.CharField(max_length=200)
+    date_delivery           = models.DateField(null=True)
     is_paid                 = models.BooleanField()
     amount_paid             = models.CharField(max_length=200, null=True)
     coupon                  = models.CharField(max_length=200, null=True)
