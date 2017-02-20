@@ -88,8 +88,8 @@ urlpatterns = patterns('',
     url(r'^brands/', 'website.views.brands', name='brands'),
     # url(r'^estimates/', 'website.views.estimates', name='estimates'),
     url(r'^service-schedules/', 'website.views.serviceschedule', name='serviceschedule'),
-    url(r'^Service-Type/(?P<service>[a-zA-Z0-9\-_ ]+)/$', 'website.views.services', name='services'),
-                       # url(r'^services/', 'website.views.services', name='services'),
+    url(r'^services/', 'website.views.services', name='services'),
+    # url(r'^services/', 'website.views.services', name='services'),
     # url(r'^reviews/', 'website.views.reviews', name='reviews'),
     url(r'^service-warranty/', 'website.views.servicewarranty', name='servicewarranty'),
     url(r'^privacy/', 'website.views.privacy', name='privacy'),
@@ -101,6 +101,7 @@ urlpatterns = patterns('',
     url(r'^cancel/', 'website.views.cancel', name='cancel'),
     url(r'^tnc/', 'website.views.tnc', name='tnc'),
     url(r'^sitemap/', 'website.views.sitemap', name='sitemap'),
+   url(r'^contactus/', 'website.views.contactus', name='contactus'),
 
                        )
 

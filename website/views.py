@@ -1497,3 +1497,10 @@ def services(request,service=''):
     template = loader.get_template('revamp/services.html')
     context = RequestContext(request ,locals())
     return HttpResponse(template.render(context))
+
+
+def contactus(request):
+    template = loader.get_template('revamp/contactus.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
