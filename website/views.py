@@ -173,29 +173,29 @@ def ad_landing_bikes(request, service):
     })
     return HttpResponse(template.render(context))
 
-def privacy(request):
-    # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))
-    template = loader.get_template('website/privacy.html')
-    context = RequestContext(request, {
-    })
-    return HttpResponse(template.render(context))
-
-
-def cancel(request):
-    # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))
-    template = loader.get_template('website/cancel.html')
-    context = RequestContext(request, {
-    })
-    return HttpResponse(template.render(context))
-
-
-
-def contact(request):
-    # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))
-    template = loader.get_template('website/contact.html')
-    context = RequestContext(request, {
-    })
-    return HttpResponse(template.render(context))
+# def privacy(request):
+#     # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))
+#     template = loader.get_template('website/privacy.html')
+#     context = RequestContext(request, {
+#     })
+#     return HttpResponse(template.render(context))
+#
+#
+# def cancel(request):
+#     # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))
+#     template = loader.get_template('website/cancel.html')
+#     context = RequestContext(request, {
+#     })
+#     return HttpResponse(template.render(context))
+#
+#
+#
+# def contact(request):
+#     # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))
+#     template = loader.get_template('website/contact.html')
+#     context = RequestContext(request, {
+#     })
+#     return HttpResponse(template.render(context))
 
 
 def history(request):
@@ -237,19 +237,14 @@ def adminpanel_old(request):
     return HttpResponse(template.render(context))
 
 
-def sitemap(request):
-    template = loader.get_template('website/sitemap.html')
-    context = RequestContext(request, {
-    })
-    return HttpResponse(template.render(context))
 
 
-def tnc(request):
-    # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))
-    template = loader.get_template('website/tnc.html')
-    context = RequestContext(request, {
-    })
-    return HttpResponse(template.render(context))
+# def tnc(request):
+#     # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))
+#     template = loader.get_template('website/tnc.html')
+#     context = RequestContext(request, {
+#     })
+#     return HttpResponse(template.render(context))
 
 #def serviceSchedule(request):
 #    # template = loader.get_template(os.path.join(settings.TEMPLATES.DIRS, 'templates/website/index.html'))
@@ -1381,9 +1376,9 @@ def index(request):
 def get_quote(request,veh_type='',veh='',service=''):
     template = loader.get_template('revamp/order.html')
     display_name = veh.replace('-',' ').replace('_',' ')
-
     context = RequestContext(request,locals())
     return HttpResponse(template.render(context))
+
 
 def adminpanel(request):
     template = loader.get_template('revamp/admin.html')
@@ -1391,3 +1386,114 @@ def adminpanel(request):
     })
     return HttpResponse(template.render(context))
 
+def howitworks(request):
+    template = loader.get_template('revamp/howitworks.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+
+def faq(request):
+    template = loader.get_template('revamp/faq.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+def whyclickgarage(request):
+    template = loader.get_template('revamp/whyclickgarage.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+def howitworks(request):
+    template = loader.get_template('revamp/howitworks.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+def aboutclickgarage(request):
+    template = loader.get_template('revamp/aboutclickgarage.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+
+def press(request):
+    template = loader.get_template('revamp/press.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+def careers(request):
+    template = loader.get_template('revamp/careers.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+
+def cities(request):
+    template = loader.get_template('revamp/cities.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+
+def brands(request):
+    template = loader.get_template('revamp/brands.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+
+def blog(request):
+    template = loader.get_template('revamp/blog.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+
+def partners(request):
+    template = loader.get_template('revamp/partners.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+
+def serviceschedule(request):
+    template = loader.get_template('revamp/serviceschedule.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+def servicewarranty(request):
+    template = loader.get_template('revamp/servicewarranty.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+def privacy(request):
+    template = loader.get_template('revamp/privacy.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+def tnc(request):
+    template = loader.get_template('revamp/tnc.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+
+def cancel(request):
+    template = loader.get_template('revamp/cancel.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+
+def signuppartner(request):
+    template = loader.get_template('revamp/signuppartner.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+
+def fleetservicing(request):
+    template = loader.get_template('revamp/fleetservicing.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+
+def sitemap(request):
+    template = loader.get_template('revamp/sitemap.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+
+def services(request,service=''):
+    template = loader.get_template('revamp/services.html')
+    context = RequestContext(request ,locals())
+    return HttpResponse(template.render(context))

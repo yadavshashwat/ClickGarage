@@ -5805,7 +5805,6 @@ def change_status_actual(booking_id,status_id):
                     user.email_list.append(booking.cust_email)
                 user.email = booking.cust_email
                 user.save()
-
                 print "SMS Sent"
                 mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking,booking.time_booking,status="Confirmed")
             print "SMS not Sent"
@@ -5932,21 +5931,25 @@ def send_lead(request):
     obj2['msg'] = "Success"
     return HttpResponse(json.dumps(obj2), content_type='application/json')
 
-
-# <<---- Checking Code ---->>
 def get_all_models(request):
-    # vehicle_type = get_param(request, 'vehicle_type', None)
+    vehicle_type = get_param(request, 'vehicle_type', None)
     # make_id = get_param(request,'make_id',None)
     # model_id = get_param(request,'model_id',None)
     obj = {}
-
     obj['status'] = False
     obj['result'] = []
+    if vehicle_type == None:
+        VehObjs = Vehicle.objects.all().order_by('make')
+    elif vehicle_type == "Car":
+        VehObjs = Vehicle.objects.filter(car_bike="Car").order_by('make')
+    elif vehicle_type == "Bike":
+        VehObjs = Vehicle.objects.filter(car_bike="Bike").order_by('make')
+    else:
+        VehObjs = Vehicle.objects.all().order_by('make')
 
     # vehicle = None
     # make = None
     # car_bike = None
-    VehObjs = Vehicle.objects.all()
     for veh in VehObjs:
         obj['result'].append({
             'id' :            veh.id,
@@ -5968,6 +5971,9 @@ def get_all_models(request):
     obj['counter'] = 1
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+# <<---- Checking Code ---->>
 
 def get_all_jobs(request):
     obj = {}
