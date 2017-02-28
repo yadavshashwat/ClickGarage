@@ -1386,6 +1386,24 @@ def adminpanel(request):
     })
     return HttpResponse(template.render(context))
 
+def adminpanel(request):
+    template = loader.get_template('revamp/admin.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+
+def billing(request):
+    template = loader.get_template('revamp/bills.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+
+
+
+
+
+
+
 def howitworks(request):
     template = loader.get_template('revamp/howitworks.html')
     context = RequestContext(request, {

@@ -101,7 +101,8 @@ urlpatterns = patterns('',
     url(r'^cancel/', 'website.views.cancel', name='cancel'),
     url(r'^tnc/', 'website.views.tnc', name='tnc'),
     url(r'^sitemap/', 'website.views.sitemap', name='sitemap'),
-   url(r'^contactus/', 'website.views.contactus', name='contactus'),
+    url(r'^contactus/', 'website.views.contactus', name='contactus'),
+    url(r'^bills/', 'website.views.billing', name='bills'),
 
                        )
 

@@ -4903,6 +4903,7 @@ def view_all_bookings(request):
     obj['status'] = False
     obj['result'] = []
     booking_id = get_param(request, 'b_id', None)
+    data_id = get_param(request, 'data_id', None)
     lead_booking = get_param(request, 'lead_booking', None)
     sort = get_param(request, 'sort', None)
     date = get_param(request,'date', None)
@@ -4911,8 +4912,10 @@ def view_all_bookings(request):
     name = get_param(request, 'name', None)
     reg_number = get_param(request,'reg',None)
     veh_type = get_param(request,'veh_type',None)
+    data_id = get_param(request,'data_id',None)
+
     if request.user.is_admin or request.user.is_staff:
-        if booking_id == None or booking_id =="":
+        if (booking_id == None or booking_id ==""):
             # print "no id"
             if sort != None and sort != "":
                 if sort == "Booking ID":
@@ -5002,6 +5005,8 @@ def view_all_bookings(request):
     if reg_number != None and reg_number != "":
         # print "filter reg number"
         tranObjs = tranObjs.filter(cust_regnumber=reg_number)
+    if data_id != None and data_id != "":
+        tranObjs = tranObjs.filter(id=data_id)
 
     if date != None and date != "":
         # print "date filter"
@@ -5065,11 +5070,47 @@ def view_all_bookings(request):
         if trans.agent != "":
             agent = fetch_user(trans.agent)
             agent_name = agent['result'][0]['first_name']
+            full_agent_name = agent['result'][0]['first_name'] +' ' + agent['result'][0]['last_name']
             agent_num = agent['result'][0]['phone']
             agent_details = agent_name +" - "+agent_num
+            agent_address = agent['result'][0]['user_address']
+            agent_locality = agent['result'][0]['user_locality']
+            agent_city = agent['result'][0]['user_city']
+            agent_vat = agent['result'][0]['agent_vat']
+            agent_cin = agent['result'][0]['agent_cin']
+            agent_stax = agent['result'][0]['agent_stax']
+            agent_state = agent['result'][0]['user_state']
+            if agent_state:
+                taxes = get_tax(agent_state)
+                vat_part = taxes['result'][0]['vat_parts']
+                vat_consumable = taxes['result'][0]['vat_consumables']
+                vat_lube = taxes['result'][0]['vat_lube']
+                service_tax = taxes['result'][0]['service_tax']
+            else:
+                vat_parts = 0
+                vat_consumable = 0
+                vat_lube = 0
+                service_tax = 0
         else:
+            agent_name = "NA"
+            full_agent_name = "NA"
+            agent_num = "NA"
+            agent_address = "NA"
+            agent_locality = "NA"
+            agent_city = "NA"
+            agent_vat = "NA"
+            agent_cin = "NA"
+            agent_stax = "NA"
             agent_details = "Not Assigned"
+            agent_state = "NA"
+            vat_parts = 0
+            vat_consumable = 0
+            vat_lube = 0
+            service_tax = 0
+
+
         obj['result'].append({
+            'id':trans.id,
             'booking_flag': trans.booking_flag,
             'booking_id': trans.booking_id,
             'booking_timestamp': trans.booking_timestamp,
@@ -5100,6 +5141,18 @@ def view_all_bookings(request):
             'comments': trans.comments,
             'source': trans.source,
             'agent': trans.agent,
+            'agent_name':full_agent_name,
+            'agent_address': agent_address,
+            'agent_locality': agent_locality,
+            'agent_city':agent_city,
+            'agent_state': agent_state,
+            'vat_part' : vat_part,
+            'vat_consumable': vat_consumable,
+            'vat_lube': vat_lube,
+            'service_tax': service_tax,
+            'agent_vat': agent_vat,
+            'agent_cin':agent_cin,
+            'agent_stax': agent_stax,
             'estimate_history': trans.estimate_history,
             'agent_details': agent_details,
             'status_next':status_next,
@@ -5139,10 +5192,18 @@ def fetch_user(user_id):
             ,'agent': trans.is_agent
             , 'user': trans.is_user
             , 'admin': trans.is_admin
-            ,'staff': trans.is_staff
-            ,'b2b': trans.is_b2b
-            , 'user_address': trans.user_saved_address
+            , 'staff': trans.is_staff
+            , 'b2b': trans.is_b2b
+            , 'user_address_list': trans.user_saved_address
             , 'user_vehicles': trans.user_veh_list
+            , 'user_state':trans.user_state
+            , 'agent_cin': trans.agent_cin
+            , 'agent_vat': trans.agent_vat
+            , 'agent_stax': trans.agent_stax
+            ,  'user_address':trans.user_address
+            , 'user_locality': trans.user_locality
+            , 'user_city': trans.user_city
+            , 'user_state': trans.user_state
 
         })
     obj['status'] = True
@@ -5180,7 +5241,7 @@ def fetch_all_users(request):
             obj['result'].append({
                 'id'   :trans.id
                 ,'email_list':trans.email_list
-                , 'email_primary': trans.email
+                ,'email_primary': trans.email
                 ,'phone':trans.contact_no
                 ,'uname':trans.username
                 ,'first_name':trans.first_name
@@ -5192,6 +5253,10 @@ def fetch_all_users(request):
                 ,'b2b': trans.is_b2b
                 , 'user_address': trans.user_saved_address
                 , 'user_vehicles': trans.user_veh_list
+                , 'user_state': trans.user_state
+                , 'agent_cin': trans.agent_cin
+                , 'agent_stax': trans.agent_stax
+                , 'agent_vat': trans.agent_vat
 
             })
     obj['status'] = True
@@ -5212,28 +5277,46 @@ def update_user(request):
     user_add = get_param(request, 'user_add',None)
     user_loc = get_param(request, 'user_loc',None)
     user_city = get_param(request, 'user_city',None)
+    user_state = get_param(request, 'user_state', None)
     agent = get_param(request, 'agent_st', None)
     b2b = get_param(request, 'b2b_st', None)
     admin = get_param(request, 'admin_st', None)
     staff = get_param(request, 'staff_st', None)
-
+    agent_vat = get_param(request, 'agent_vat', None)
+    agent_stax = get_param(request, 'agent_stax', None)
+    agent_cin = get_param(request, 'agent_cin', None)
     user_name = cleanstring(user_name).title()
     user_add = cleanstring(user_add).title()
     user_loc = cleanstring(user_loc).title()
     user_city = cleanstring(user_city).title()
+    user_state = cleanstring(user_state).title()
 
     if request.user.is_staff or request.user.is_admin or production:
-
         if user_id == "" or user_id == None:
             user2 = create_check_user(name=user_name,number=user_num)
         else:
             user2 = CGUserNew.objects.filter(id=user_id)[0]
+        address2 = {'address': user_add, 'locality': user_loc, 'city': user_city, 'state' : user_state}
 
-        address2 = {'address': user_add, 'locality': user_loc, 'city': user_city}
+        if agent_vat:
+            user2.agent_vat = agent_vat
+        if agent_stax:
+            user2.agent_stax = agent_stax
+        if agent_cin:
+            user2.agent_cin = agent_cin
+        if user_state:
+            user2.user_state = user_state
 
+        if user_add:
+            user2.user_address =  user_add
+        if user_loc:
+            user2.user_locality = user_loc
+        if user_city:
+            user2.user_city = user_city
 
         if address2 not in user2.user_saved_address:
             user2.user_saved_address.append(address2)
+
         if user_email not in user2.email_list:
             user2.email_list.append(user_email)
         user2.email = user_email
@@ -5972,6 +6055,46 @@ def get_all_models(request):
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+def get_tax(state):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    taxObjs = Taxes.objects.filter(state=state)
+    for tax in taxObjs:
+        obj['result'].append({
+            'state': tax.state,
+            'vat_parts': tax.vat_parts,
+            'vat_consumables': tax.vat_consumable,
+            'vat_lube': tax.vat_lubes,
+            'service_tax': tax.service_tax,
+        })
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return obj
+
+def get_all_taxes(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    taxObjs = Taxes.objects.all()
+
+    for tax in taxObjs:
+        obj['result'].append({
+            'state':tax.state               ,
+            'vat_parts':tax.vat_parts             ,
+            'vat_consumables':tax.vat_consumable               ,
+            'vat_lube':tax.vat_lubes              ,
+            'service_tax':tax.service_tax               ,
+
+        })
+
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
 
 # <<---- Checking Code ---->>
 
@@ -6056,9 +6179,11 @@ def get_all_labour(request):
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+
+
+
 def get_all_part(request):
     obj = {}
-
     obj['status'] = False
     obj['result'] = []
     jobObjs = ServicePart.objects.all()

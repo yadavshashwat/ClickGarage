@@ -1719,3 +1719,33 @@ def settlementCat():
             items_new.append(obj)
         booking.service_items = items_new
         booking.save()
+
+def loadTaxes(fileName):
+    with open(path+'/data revamp/'+fileName, 'rU') as csvfile:
+        taxData = csv.reader(csvfile, delimiter=',', quotechar='|')
+        for tax in taxData:
+            state               = cleanstring(tax[0])
+            vat_parts           = cleanstring(tax[1])
+            vat_lubes           = cleanstring(tax[2])
+            vat_consumable      = cleanstring(tax[3])
+            service_tax         = cleanstring(tax[4])
+            findTax = Taxes.objects.filter(state=state)
+            if len(findTax):
+                findTax = findTax[0]
+                findTax.state          = state
+                findTax.vat_parts      = vat_parts
+                findTax.vat_lubes      = vat_lubes
+                findTax.vat_consumable = vat_consumable
+                findTax.service_tax = service_tax
+                findTax.save()
+            else:
+                tax = Taxes(state=state,
+                                     vat_parts=vat_parts,
+                                     vat_lubes=vat_lubes,
+                                     vat_consumable=vat_consumable,
+                                     service_tax=service_tax)
+                tax.save()
+
+
+
+

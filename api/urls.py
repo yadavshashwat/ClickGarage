@@ -148,5 +148,6 @@ urlpatterns = [
     url(r'get_all_jobs/$', 'api.views.get_all_jobs', name='get_all_jobs'),
     url(r'get_all_labour/$', 'api.views.get_all_labour', name='get_all_labour'),
     url(r'get_all_part/$', 'api.views.get_all_part', name='get_all_part'),
+    url(r'get_all_taxes/$', 'api.views.get_all_taxes', name='get_all_taxes'),
 
 ]

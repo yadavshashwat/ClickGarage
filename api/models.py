@@ -550,8 +550,12 @@ class CouponNew(models.Model):
     cap                 = models.FloatField(null=True)
 
 
-
-
+class Taxes(models.Model):
+    state             = models.CharField(max_length=200)
+    vat_parts         = models.CharField(max_length=50)
+    vat_lubes            = models.CharField(max_length=50)
+    vat_consumable = models.CharField(max_length=50)
+    service_tax = models.CharField(max_length=50)
 
 
 
