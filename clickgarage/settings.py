@@ -208,9 +208,9 @@ AUTHENTICATION_BACKENDS = (
 #social auth variable starts
 # LOGIN_URL = '/login/'
 
-LOGOUT_URL = 'http://www.clickgarage.in/'
+LOGOUT_URL = 'https://www.clickgarage.in/'
 
-LOGIN_REDIRECT_URL = 'http://www.clickgarage.in/'
+LOGIN_REDIRECT_URL = 'https://www.clickgarage.in/'
 
 LOGIN_ERORR_URL = '/'
 

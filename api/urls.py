@@ -142,6 +142,7 @@ urlpatterns = [
     url(r'check_coupon/$', 'api.views.check_coupon', name='check_coupon'),
     url(r'send_booking/$', 'api.views.send_booking', name='send_booking'),
     url(r'send_lead/$', 'api.views.send_lead', name='send_lead'),
+    url(r'generate_bill/$', 'api.views.generate_bill', name='generate_bill'),
 
     # Website Api Check
     url(r'get_all_models/$', 'api.views.get_all_models', name='get_all_models'),
@@ -149,5 +150,6 @@ urlpatterns = [
     url(r'get_all_labour/$', 'api.views.get_all_labour', name='get_all_labour'),
     url(r'get_all_part/$', 'api.views.get_all_part', name='get_all_part'),
     url(r'get_all_taxes/$', 'api.views.get_all_taxes', name='get_all_taxes'),
+    url(r'view_all_bills/$', 'api.views.view_all_bills', name='view_all_bills'),
 
 ]
