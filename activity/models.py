@@ -127,7 +127,9 @@ class CGUserNew(AbstractUser):
     # email = models.CharField(max_length=200)
     # agent_details = DictField()
     # email_primary = models.CharField(max_length=100, default=None, null=True)
+    clickgarage_flag = models.BooleanField()
     email_list = ListField(models.CharField(max_length=200))
+    owner_user = ListField(models.CharField(max_length=200))
 
     # car_ids = ListField(models.CharField(max_length=200))
 

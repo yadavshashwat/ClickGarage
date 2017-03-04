@@ -28,6 +28,7 @@ from dataEntry.runentry import carMakers, cleanstring
 from activity import views as ac_vi
 from mailing import views as mviews
 from api import tasks as tasks
+from wkhtmltopdf import WKHtmlToPdf
 
 
 from activity.models import Transactions, CGUser, CGUserNew
@@ -4531,7 +4532,7 @@ def create_check_user(name,number):
 
 
 def place_booking(user_id, name, number, email, reg_number, address, locality, city, order_list, make, veh_type, model,
-                  fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary,send_sms = "1",booking_type="User",booking_user_name=None,booking_user_number=None):
+                  fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary,send_sms = "1",booking_type="User",booking_user_name=None,booking_user_number=None, owner="clickgarage"):
 
 
 
@@ -4543,7 +4544,10 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
     locality = cleanstring(locality).title()
     city = cleanstring(city).title()
     reg_number = cleanstring(reg_number).upper()
-
+    if owner == "clickgarage":
+        clickgarage_flag = True
+    else:
+        clickgarage_flag = False
 
     if booking_user_name == None:
         booking_user_name = name
@@ -4615,7 +4619,9 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
                  booking_user_number    =  booking_user_number,
                  date_delivery = date,
                  # lead_follow_up_date = follow_up_date,
-                 estimate_history    =estimate_history)
+                 estimate_history    =estimate_history,
+                 clickgarage_flag = clickgarage_flag,
+                 booking_owner = owner)
     tt.save()
     if send_sms == "1":
         mviews.send_booking_confirm(email=email,name=name,booking_id=booking_id,number=number, service_list= int_summary, car_bike=veh_type)
@@ -5087,7 +5093,7 @@ def view_all_bookings(request):
                 vat_lube = taxes['result'][0]['vat_lube']
                 service_tax = taxes['result'][0]['service_tax']
             else:
-                vat_parts = 0
+                vat_part = 0
                 vat_consumable = 0
                 vat_lube = 0
                 service_tax = 0
@@ -5103,7 +5109,7 @@ def view_all_bookings(request):
             agent_stax = "NA"
             agent_details = "Not Assigned"
             agent_state = "NA"
-            vat_parts = 0
+            vat_part = 0
             vat_consumable = 0
             vat_lube = 0
             service_tax = 0
@@ -5165,7 +5171,11 @@ def view_all_bookings(request):
             'req_user_admin': request.user.is_admin,
             'booking_user_name': trans.booking_user_name,
             'booking_user_number': trans.booking_user_number,
-
+            'bill_id': trans.bill_id,
+            'bill_generation_flag': trans.bill_generation_flag,
+            'payment_status': trans.payment_status,
+            'clickgarage_flag': trans.clickgarage_flag,
+            'booking_owner': trans.booking_owner,
         })
     obj['status'] = True
     obj['counter'] = 1
@@ -5764,7 +5774,22 @@ def send_booking(request):
             booking = place_booking(str(request.user.id), name, number, email, reg_number, address, locality, city, order_list,
                                     make, veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
                                     price_total, "B2B", booking_flag,job_summary_int,send_sms="0", booking_type="B2B",booking_user_name=booking_user_name,booking_user_number=booking_user_number)
-        elif request.user.is_staff or request.user.is_admin or request.user.is_agent:
+
+        elif request.user.is_agent:
+            if booking_flag_user == "True":
+                booking_flag = True
+            else:
+                booking_flag = False
+            user = create_check_user(name, number)
+            if request.user.id not in user.owner_user:
+                user.owner_user.append(request.user.id)
+            booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city,
+                                    order_list,make, veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
+                                    price_total, source, booking_flag,
+                                    job_summary_int, send_sms=send_confirm,owner=request.user.id)
+
+
+        elif request.user.is_staff or request.user.is_admin:
             if booking_flag_user == "True":
                 booking_flag = True
             else:
@@ -5782,6 +5807,7 @@ def send_booking(request):
                                         make,
                                         veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
                                         price_total, "B2B", booking_flag,job_summary_int,send_sms="0", booking_type="B2B",booking_user_name=booking_user_name,booking_user_number=booking_user_number)
+
             else:
                 booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city,
                                         order_list,
@@ -5933,7 +5959,14 @@ def change_status_actual(booking_id,status_id):
                 mviews.send_sms_customer(booking.cust_name, booking.cust_number, booking.booking_id, booking.date_booking,
                                  booking.time_booking, estimate=booking.price_total,
                                  status="Job Completed")
-            # add a lead to the leads data base with follow_up_date as (bike - 60 days , car (bill_amount < 2000) - 30 days, car (bill_amount> 2000) 90 days
+
+                # date_today = datetime.date.today() + datetime.timedelta(days=90)
+                # new_lead = place_booking(booking.cust_id, booking.cust_name, booking.cust_number, booking.cust_email, booking.cust_regnumber, booking.cust_address,booking.cust_locality , booking.cust_city, booking.service_items,
+                #                          booking.cust_make, booking.cust_vehicle_type,booking.cust_model, booking.cust_fuel_varient, str(date_today), "9:30-12:30", "Servicing/Repir", False, "0", "NA",
+                #                         "0", "Repeat Customer", False, "NA", send_sms="0")
+
+
+                # add a lead to the leads data base with follow_up_date as (bike - 60 days , car (bill_amount < 2000) - 30 days, car (bill_amount> 2000) 90 days
 
         if (status_id == "Feedback Taken" and old_status == "Job Completed"):
             None
@@ -6094,9 +6127,119 @@ def get_all_taxes(request):
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+def generate_bill(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    data_id                 = get_param(request, 'data_id', None)
+    bill_owner              = get_param(request,'bill_owner',None)
+    total_amount            = get_param(request,'total_amount',None)
+    part_amount             = get_param(request,'part_amount',None)
+    lube_amount             = get_param(request,'lube_amount',None)
+    consumable_amount       = get_param(request,'consumable_amount',None)
+    labour_amount           = get_param(request, 'labour_amount', None)
+    vat_part                = get_param(request, 'vat_part', None)
+    vat_lube                = get_param(request, 'vat_lube', None)
+    vat_consumable          = get_param(request, 'vat_consumable', None)
+    service_tax             = get_param(request, 'service_tax', None)
+    payment_status          = get_param(request, 'payment_status', None)
+    amount_paid             = get_param(request, 'amount_paid', None)
+    payment_mode            = get_param(request, 'payment_mode', None)
+    booking                 = Bookings.objects.filter(id=data_id)[0]
+    components              = booking.service_items
+    booking_id              = data_id
+    date_today = datetime.date.today()
+    clickgarage_flag = booking.clickgarage_flag
+    status = "Generated"
+    invoice_number = 1000
+    tran_len = len(Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner))
+    if tran_len:
+        tran = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner).aggregate(Max('invoice_number'))
+        invoice_number = int(tran['invoice_number__max'] + 1)
+    billsobjs = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner, booking_id =data_id)
+    for bill in billsobjs:
+        bill.status = "Cancelled"
+        bill.save()
+
+    tt = Bills(clickgarage_flag     = clickgarage_flag
+               , invoice_number     = invoice_number
+               , total_amount       = total_amount
+               , part_amount        = part_amount
+               , lube_amount        = lube_amount
+               , consumable_amount  =consumable_amount
+               , labour_amount      =labour_amount
+               , vat_part           =vat_part
+               , vat_lube           =vat_lube
+               , vat_consumable     =vat_consumable
+               , service_tax        =service_tax
+               , componenents       =components
+               , status             =status
+               , booking_id         =booking_id
+               , date_created       = date_today
+               , time_stamp         =   time.time()
+               , owner              =   bill_owner
+               , file_name          = 'Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
+               , payment_status     = payment_status
+               , amount_paid        =amount_paid
+               , payment_mode       =payment_mode
+           )
+    tt.save()
+    from wkhtmltopdf import WKHtmlToPdf
+
+    WKHtmlToPdf(url='/bills/'+data_id, output_file='/../example.pdf')
 
 
-# <<---- Checking Code ---->>
+    tt2 = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner,invoice_number = invoice_number)[0]
+    booking.bill_id                 = tt2.id
+    booking.bill_generation_flag    = True
+    booking.save()
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    obj['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b,
+                          'agent': request.user.is_agent, 'staff': request.user.is_staff}
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+        # <<---- Checking Code ---->>
+def view_all_bills(request):
+    obj = {}
+
+    obj['status'] = False
+    obj['result'] = []
+    jobObjs = Bills.objects.all()
+
+    for job in jobObjs:
+        obj['result'].append({
+            'clickgarage_flag ': job.clickgarage_flag,
+            'invoice_number   ': job.invoice_number,
+            'total_amount     ': job.total_amount,
+            'part_amount      ': job.part_amount,
+            'lube_amount      ': job.lube_amount,
+            'consumable_amount': job.consumable_amount,
+            'labour_amount    ': job.labour_amount,
+            'vat_part         ': job.vat_part,
+            'vat_lube         ': job.vat_lube,
+            'vat_consumable   ': job.vat_consumable,
+            'service_tax      ': job.service_tax,
+            'componenents     ': job.componenents,
+            'status           ': job.status,
+            'booking_id       ': job.booking_id,
+            'date_created     ': str(job.date_created),
+            # 'date_modified    ': str(job.date_modified),
+            'time_stamp       ': job.time_stamp,
+            'owner            ': job.owner,
+            'file_name        ': job.file_name,
+            'payment_status   ': job.payment_status,
+            'amount_paid      ': job.amount_paid,
+            'payment_mode     ': job.payment_mode
+        })
+
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
 
 def get_all_jobs(request):
     obj = {}
