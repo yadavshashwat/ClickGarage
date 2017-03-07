@@ -29,6 +29,7 @@ from activity import views as ac_vi
 from mailing import views as mviews
 from api import tasks as tasks
 from wkhtmltopdf import WKHtmlToPdf
+from django.db.models import Q
 
 
 from activity.models import Transactions, CGUser, CGUserNew
@@ -3730,7 +3731,7 @@ def send_otp(request):
     otp = random.randint(1000, 9999)
     otpdatetime = datetime.datetime.now()
     message = "Your ClickGarage one time password is " + str(otp) + ". Please enter the same to complete your mobile verification."
-    message = message.replace(" ","+")
+    # message = message.replace(" ","+")
     newFlag = False
     username = None
     # print message
@@ -4390,6 +4391,11 @@ def checkOTP_new(onetp, mobile):
 
     return {'msg': msg, 'status': check}
 
+
+
+
+
+
 def create_check_user(name,number):
     if number:
         users = CGUserNew.objects.filter(contact_no=number)
@@ -4411,6 +4417,38 @@ def create_check_user(name,number):
             user_new.save()
             return user_new
 
+def create_check_user_modified(name,number,owner):
+    if number:
+        users = CGUserNew.objects.filter(contact_no=number)
+        if len(users):
+            if owner == "ClickGarage":
+                users[0].clickgarage_flag = True
+            else:
+                if owner not in users[0].owner_user:
+                    users[0].owner_user.append(owner)
+                users[0].save()
+            return users[0]
+        else:
+            user_new = CGUserNew(username=number,contact_no=number)
+            if name:
+                name = name.split(' ')
+                user_new.first_name = name[0]
+                if len(name) > 1:
+                    lname = ""
+                    for i in range(1, len(name)):
+                        if i == 1 :
+                            lname = name[i]
+                        else:
+                            lname = lname + " " + name[i]
+                    user_new.last_name = lname
+            if owner == "ClickGarage":
+                user_new.clickgarage_flag = True
+            else:
+                user_new.clickgarage_flag = False
+                if owner not in user_new.owner_user:
+                    user_new.owner_user.append(owner)
+            user_new.save()
+            return user_new
 # def place_lead(request):
 #     if request.user.is_authenticated():
 #         name        = get_param(request, 'name', None)
@@ -4532,7 +4570,7 @@ def create_check_user(name,number):
 
 
 def place_booking(user_id, name, number, email, reg_number, address, locality, city, order_list, make, veh_type, model,
-                  fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary,send_sms = "1",booking_type="User",booking_user_name=None,booking_user_number=None, owner="clickgarage"):
+                  fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary,send_sms = "1",booking_type="User",booking_user_name=None,booking_user_number=None, owner="ClickGarage"):
 
 
 
@@ -4544,10 +4582,15 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
     locality = cleanstring(locality).title()
     city = cleanstring(city).title()
     reg_number = cleanstring(reg_number).upper()
-    if owner == "clickgarage":
+    # WMS Modification Start
+    if owner == "ClickGarage":
         clickgarage_flag = True
+        agent = ""
+
     else:
         clickgarage_flag = False
+        agent = owner
+    # WMS Modification End
 
     if booking_user_name == None:
         booking_user_name = name
@@ -4556,7 +4599,10 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
     booking_user_name = cleanstring(booking_user_name).title()
 
     if booking_flag:
-        status = "Confirmed"
+        if owner == "ClickGarage":
+            status = "Confirmed"
+        else:
+            status = "Assigned"
         user = CGUserNew.objects.filter(id=user_id)[0]
         address2 = {'address':address, 'locality':locality, 'city':city}
         if address2 not in user.user_saved_address:
@@ -4568,7 +4614,6 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
             user.email_list.append(email)
         user.email = email
         user.save()
-
     else:
         status = "Lead"
     # update estimate history
@@ -4613,7 +4658,7 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
                  status                 =status            ,
                  comments               =comment           ,
                  source                 =source           ,
-                 agent                  =    ""             ,
+                 agent                  =    agent             ,
                  booking_user_type      =   booking_type,
                  booking_user_name      = booking_user_name,
                  booking_user_number    =  booking_user_number,
@@ -4971,19 +5016,19 @@ def view_all_bookings(request):
             if sort != None and sort != "":
                 if sort == "Booking ID":
                     # print "booking sort"
-                    tranObjs = Bookings.objects.filter(agent=request.user.id).order_by('-booking_id')
+                    tranObjs = Bookings.objects.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id)).order_by('-booking_id')
                 if sort == "Name":
                     # print "name sort"
-                    tranObjs = Bookings.objects.filter(agent=request.user.id).order_by('cust_name')
+                    tranObjs = Bookings.objects.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id)).order_by('cust_name')
                 if sort == "Status":
                     # print "status sort"
-                    tranObjs = Bookings.objects.filter(agent=request.user.id).order_by('status')
+                    tranObjs = Bookings.objects.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id)).order_by('status')
                 else:
                     # print "other sort"
-                    tranObjs = Bookings.objects.filter(agent=request.user.id).order_by('-booking_id')
+                    tranObjs = Bookings.objects.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id)).order_by('-booking_id')
             else:
                 # print "no sort"
-                tranObjs = Bookings.objects.filter(agent=request.user.id).order_by('-booking_id')
+                tranObjs = Bookings.objects.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id)).order_by('-booking_id')
         else:
             # print "booking id filter"
             tranObjs = Bookings.objects.filter(booking_id=booking_id)
@@ -5052,7 +5097,7 @@ def view_all_bookings(request):
         datetimeobject = datetime.datetime.strptime(oldformat_d, '%Y-%m-%d')
         newformat_d = datetimeobject.strftime('%d-%m-%Y')
 
-        if trans.status == "Lead" 			:
+        if trans.status == "Lead" 			    :
             status_next = "Confirmed"
         if trans.status =="Confirmed"			:
             status_next = "Assigned"
@@ -5114,6 +5159,57 @@ def view_all_bookings(request):
             vat_lube = 0
             service_tax = 0
 
+        if trans.bill_id != "":
+            bill = Bills.objects.filter(id = trans.bill_id)[0]
+            components = bill.components
+            payment_mode = bill.payment_mode
+            date_created = str(bill.date_created)
+            invoice_number = bill.invoice_number
+            bill_notes = bill.notes
+            bill_state = bill.state
+            bill_vat_part_percent = bill.vat_part_percent
+            bill_vat_lube_percent = bill.vat_lube_percent
+            bill_vat_consumable_percent = bill.vat_consumable_percent
+            bill_service_tax_percent = bill.service_tax_percent
+            bill_agent_name = bill.agent_name
+            bill_agent_address = bill.agent_address
+            bill_agent_locality =  bill.agent_locality
+            bill_agent_city = bill.agent_city
+            bill_agent_vat_no = bill.agent_vat_no
+            bill_agent_cin = bill.agent_cin
+            bill_agent_stax = bill.agent_stax
+            bill_cust_name = bill.cust_name
+            bill_cust_address = bill.cust_address
+            bill_cust_locality = bill.cust_locality
+            bill_cust_city = bill.cust_city
+            bill_reg_number  =  bill.reg_number
+            bill_make = bill.make
+            bill_model = bill.model
+        else:
+            components = ""
+            payment_mode = ""
+            date_created = ""
+            invoice_number = ""
+            bill_notes = ""
+            bill_state = ""
+            bill_vat_part_percent = ""
+            bill_vat_lube_percent = ""
+            bill_vat_consumable_percent = ""
+            bill_service_tax_percent = ""
+            bill_agent_name = ""
+            bill_agent_address = ""
+            bill_agent_locality = ""
+            bill_agent_city = ""
+            bill_agent_vat_no = ""
+            bill_agent_cin = ""
+            bill_agent_stax = ""
+            bill_cust_name = ""
+            bill_cust_address = ""
+            bill_cust_locality = ""
+            bill_cust_city = ""
+            bill_reg_number = ""
+            bill_make = ""
+            bill_model = ""
 
         obj['result'].append({
             'id':trans.id,
@@ -5152,30 +5248,54 @@ def view_all_bookings(request):
             'agent_locality': agent_locality,
             'agent_city':agent_city,
             'agent_state': agent_state,
-            'vat_part' : vat_part,
-            'vat_consumable': vat_consumable,
-            'vat_lube': vat_lube,
-            'service_tax': service_tax,
-            'agent_vat': agent_vat,
-            'agent_cin':agent_cin,
-            'agent_stax': agent_stax,
-            'estimate_history': trans.estimate_history,
-            'agent_details': agent_details,
-            'status_next':status_next,
-            'customer_notes':trans.customer_notes,
-            'booking_user_type': trans.booking_user_type,
-            'delivery_date':newformat_d,
-            'req_user_agent':request.user.is_agent,
-            'req_user_staff': request.user.is_staff,
-            'req_user_b2b': request.user.is_b2b,
-            'req_user_admin': request.user.is_admin,
-            'booking_user_name': trans.booking_user_name,
+            'vat_part'            : vat_part,
+            'vat_consumable'     : vat_consumable,
+            'vat_lube'           : vat_lube,
+            'service_tax'        : service_tax,
+            'agent_vat'          : agent_vat,
+            'agent_cin'          :agent_cin,
+            'agent_stax'         : agent_stax,
+            'estimate_history'   : trans.estimate_history,
+            'agent_details'      : agent_details,
+            'status_next'        :status_next,
+            'customer_notes'     :trans.customer_notes,
+            'booking_user_type'  : trans.booking_user_type,
+            'delivery_date'      :newformat_d,
+            'req_user_agent'     :request.user.is_agent,
+            'req_user_staff'     : request.user.is_staff,
+            'req_user_b2b'       : request.user.is_b2b,
+            'req_user_admin'     : request.user.is_admin,
+            'booking_user_name'  : trans.booking_user_name,
             'booking_user_number': trans.booking_user_number,
-            'bill_id': trans.bill_id,
-            'bill_generation_flag': trans.bill_generation_flag,
-            'payment_status': trans.payment_status,
-            'clickgarage_flag': trans.clickgarage_flag,
-            'booking_owner': trans.booking_owner,
+            'bill_id'               : trans.bill_id,
+            'bill_generation_flag'  : trans.bill_generation_flag,
+            'payment_status'        : trans.payment_status,
+            'clickgarage_flag'  : trans.clickgarage_flag,
+            'booking_owner'     : trans.booking_owner,
+            'bill_components'   : components,
+            'bill_payment_mode' : payment_mode,
+            'bill_date_created' : date_created,
+            'invoice_number'    : invoice_number,
+            'bill_notes'        :bill_notes,
+            'bill_state' : bill_state,
+            'bill_vat_part_percent' : bill_vat_part_percent,
+            'bill_vat_lube_percent' : bill_vat_lube_percent,
+            'bill_vat_consumable_percent' : bill_vat_consumable_percent,
+            'bill_service_tax_percent' : bill_service_tax_percent,
+            'bill_agent_name' : bill_agent_name,
+            'bill_agent_address' : bill_agent_address,
+            'bill_agent_locality' : bill_agent_locality,
+            'bill_agent_city' : bill_agent_city,
+            'bill_agent_vat_no' : bill_agent_vat_no,
+            'bill_agent_cin' : bill_agent_cin,
+            'bill_agent_stax' : bill_agent_stax,
+            'bill_cust_name' : bill_cust_name,
+            'bill_cust_address' : bill_cust_address,
+            'bill_cust_locality': bill_cust_locality,
+            'bill_cust_city': bill_cust_city,
+            'bill_reg_number': bill_reg_number,
+            'bill_make': bill_make,
+            'bill_model': bill_model,
         })
     obj['status'] = True
     obj['counter'] = 1
@@ -5213,7 +5333,6 @@ def fetch_user(user_id):
             ,  'user_address':trans.user_address
             , 'user_locality': trans.user_locality
             , 'user_city': trans.user_city
-            , 'user_state': trans.user_state
 
         })
     obj['status'] = True
@@ -5228,47 +5347,59 @@ def fetch_all_users(request):
     obj['result'] = []
     type = get_param(request, 'type', None)
     userid = get_param(request,'u_id',None)
-    if request.user.is_staff or request.user.is_admin or production:
-        tranObjs = CGUserNew.objects.all()
-        if userid != None:
-            tranObjs = tranObjs.filter(id=userid)
 
-        if type != None:
-            if type == "agent":
-                tranObjs = tranObjs.filter(is_agent=True)
-            elif type == "b2b":
-                tranObjs = tranObjs.filter(is_b2b=True)
-            elif type == "user":
-                tranObjs = tranObjs.filter(is_user=True)
-            elif type == "admin":
-                tranObjs = tranObjs.filter(is_admin=True)
-            elif type == "staff":
-                tranObjs = tranObjs.filter(is_admin=True)
-            # else:
+    # WMS Modification Start
+    tranObjs = None
+
+    if request.user.is_staff or request.user.is_admin:
+        tranObjs = CGUserNew.objects.all()
+
+    if request.user.is_agent:
+        tranObjs = CGUserNew.objects.filter(owner_user=request.user.id)
+
+    # WMS Modification End
+    if userid != None:
+        tranObjs = tranObjs.filter(id=userid)
+
+    if type != None:
+        if type == "agent":
+            tranObjs = tranObjs.filter(is_agent=True)
+        elif type == "b2b":
+            tranObjs = tranObjs.filter(is_b2b=True)
+        elif type == "user":
+            tranObjs = tranObjs.filter(is_user=True)
+        elif type == "admin":
+            tranObjs = tranObjs.filter(is_admin=True)
+        elif type == "staff":
+            tranObjs = tranObjs.filter(is_admin=True)
+        # else:
             #     tranObjs = CGUserNew.objects.all()
 
-        for trans in tranObjs:
-            obj['result'].append({
-                'id'   :trans.id
-                ,'email_list':trans.email_list
-                ,'email_primary': trans.email
-                ,'phone':trans.contact_no
-                ,'uname':trans.username
-                ,'first_name':trans.first_name
-                ,'last_name':trans.last_name
-                ,'agent': trans.is_agent
-                , 'user': trans.is_user
-                , 'admin': trans.is_admin
-                ,'staff': trans.is_staff
-                ,'b2b': trans.is_b2b
-                , 'user_address': trans.user_saved_address
-                , 'user_vehicles': trans.user_veh_list
-                , 'user_state': trans.user_state
-                , 'agent_cin': trans.agent_cin
-                , 'agent_stax': trans.agent_stax
-                , 'agent_vat': trans.agent_vat
+    for trans in tranObjs:
+        obj['result'].append({
+            'id'   :trans.id
+            ,'email_list':trans.email_list
+            ,'email_primary': trans.email
+            ,'phone':trans.contact_no
+            ,'uname':trans.username
+            ,'first_name':trans.first_name
+            ,'last_name':trans.last_name
+            ,'agent': trans.is_agent
+            , 'user': trans.is_user
+            , 'admin': trans.is_admin
+            ,'staff': trans.is_staff
+            ,'b2b': trans.is_b2b
+            , 'user_address': trans.user_saved_address
+            , 'user_vehicles': trans.user_veh_list
+            , 'user_state': trans.user_state
+            , 'agent_cin': trans.agent_cin
+            , 'agent_stax': trans.agent_stax
+            , 'agent_vat': trans.agent_vat
+            ,'clickgarage_flag' : trans.clickgarage_flag
+            ,'email_list' : trans.email_list
+            , 'owner_user': trans.owner_user
 
-            })
+        })
     obj['status'] = True
     obj['counter'] = 1
     obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
@@ -5301,9 +5432,16 @@ def update_user(request):
     user_city = cleanstring(user_city).title()
     user_state = cleanstring(user_state).title()
 
-    if request.user.is_staff or request.user.is_admin or production:
+
+    # WMS Modification Start
+    if request.user.is_staff or request.user.is_admin or request.user.is_agent:
         if user_id == "" or user_id == None:
-            user2 = create_check_user(name=user_name,number=user_num)
+            if request.user.is_agent:
+                user2 = create_check_user_modified(name=user_name,number=user_num,owner=request.user.id)
+            else:
+                user2 = create_check_user(name=user_name,number=user_num)
+    # WMS Modification End
+
         else:
             user2 = CGUserNew.objects.filter(id=user_id)[0]
         address2 = {'address': user_add, 'locality': user_loc, 'city': user_city, 'state' : user_state}
@@ -5774,19 +5912,21 @@ def send_booking(request):
             booking = place_booking(str(request.user.id), name, number, email, reg_number, address, locality, city, order_list,
                                     make, veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
                                     price_total, "B2B", booking_flag,job_summary_int,send_sms="0", booking_type="B2B",booking_user_name=booking_user_name,booking_user_number=booking_user_number)
+        # WMS Modification Start
 
         elif request.user.is_agent:
             if booking_flag_user == "True":
                 booking_flag = True
             else:
                 booking_flag = False
-            user = create_check_user(name, number)
-            if request.user.id not in user.owner_user:
-                user.owner_user.append(request.user.id)
+            user = create_check_user_modified(name, number,request.user.id)
+            # if request.user.id not in user.owner_user:
+            #     user.owner_user.append(request.user.id)
             booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city,
                                     order_list,make, veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
                                     price_total, source, booking_flag,
                                     job_summary_int, send_sms=send_confirm,owner=request.user.id)
+        # WMS Modification End
 
 
         elif request.user.is_staff or request.user.is_admin:
@@ -5795,7 +5935,6 @@ def send_booking(request):
             else:
                 booking_flag = False
             user = create_check_user(name, number)
-
             if user.is_b2b:
                 name = user.first_name + ' ' + user.last_name
                 number = user.contact_no
@@ -5896,6 +6035,14 @@ def change_status_actual(booking_id,status_id):
     booking_user = booking.booking_user_type
     if status_id != None:
         old_status = booking.status
+
+        # WMS Modification Start
+        if booking.booking_owner != "ClickGarage":
+            if status_id == "Confirmed":
+                status_id = "Assigned"
+            else:
+                None
+        # WMS Modification End
         booking.status = status_id
 
         if (status_id !="Lead"):
@@ -5914,7 +6061,7 @@ def change_status_actual(booking_id,status_id):
                     user.email_list.append(booking.cust_email)
                 user.email = booking.cust_email
                 user.save()
-                print "SMS Sent"
+                # print "SMS Sent"
                 mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking,booking.time_booking,status="Confirmed")
             print "SMS not Sent"
         if (status_id == "Assigned" and old_status == "Confirmed" ):
@@ -5960,11 +6107,19 @@ def change_status_actual(booking_id,status_id):
                                  booking.time_booking, estimate=booking.price_total,
                                  status="Job Completed")
 
-                # date_today = datetime.date.today() + datetime.timedelta(days=90)
-                # new_lead = place_booking(booking.cust_id, booking.cust_name, booking.cust_number, booking.cust_email, booking.cust_regnumber, booking.cust_address,booking.cust_locality , booking.cust_city, booking.service_items,
-                #                          booking.cust_make, booking.cust_vehicle_type,booking.cust_model, booking.cust_fuel_varient, str(date_today), "9:30-12:30", "Servicing/Repir", False, "0", "NA",
-                #                         "0", "Repeat Customer", False, "NA", send_sms="0")
+                if booking.cust_vehicle_type == "Car":
+                    if booking.price_total >= 3500:
+                        date_today = datetime.date.today() + datetime.timedelta(days=180)
+                    elif booking.price_total >= 1500:
+                        date_today = datetime.date.today() + datetime.timedelta(days=90)
+                    else:
+                        date_today = datetime.date.today() + datetime.timedelta(days=30)
+                else:
+                    date_today = datetime.date.today() + datetime.timedelta(days=60)
 
+                new_lead = place_booking(booking.cust_id, booking.cust_name, booking.cust_number, booking.cust_email, booking.cust_regnumber, booking.cust_address,booking.cust_locality, booking.cust_city, booking.service_items,
+                                         booking.cust_make, booking.cust_vehicle_type,booking.cust_model, booking.cust_fuel_varient, str(date_today), "9:30-12:30", "Servicing/Repair - Reminder", False, "0", "NA",
+                                        "0", "Repeat Customer", False, "NA", send_sms="0")
 
                 # add a lead to the leads data base with follow_up_date as (bike - 60 days , car (bill_amount < 2000) - 30 days, car (bill_amount> 2000) 90 days
 
@@ -6145,9 +6300,61 @@ def generate_bill(request):
     payment_status          = get_param(request, 'payment_status', None)
     amount_paid             = get_param(request, 'amount_paid', None)
     payment_mode            = get_param(request, 'payment_mode', None)
+    notes = get_param(request, 'notes', None)
+
     booking                 = Bookings.objects.filter(id=data_id)[0]
     components              = booking.service_items
     booking_id              = data_id
+
+    if booking.agent != "":
+        agent = fetch_user(booking.agent)
+        agent_name = agent['result'][0]['first_name']
+        agent_num = agent['result'][0]['phone']
+        full_agent_name = agent['result'][0]['first_name'] + ' ' + agent['result'][0]['last_name']
+        agent_address = agent['result'][0]['user_address']
+        agent_locality = agent['result'][0]['user_locality']
+        agent_city = agent['result'][0]['user_city']
+        agent_vat_no = agent['result'][0]['agent_vat']
+        agent_cin = agent['result'][0]['agent_cin']
+        agent_stax = agent['result'][0]['agent_stax']
+        state = agent['result'][0]['user_state']
+        if state:
+            taxes = get_tax(state)
+            vat_part_percent = taxes['result'][0]['vat_parts']
+            vat_consumable_percent = taxes['result'][0]['vat_consumables']
+            vat_lube_percent = taxes['result'][0]['vat_lube']
+            service_tax_percent = taxes['result'][0]['service_tax']
+        else:
+            vat_part_percent = 0
+            vat_consumable_percent = 0
+            vat_lube_percent = 0
+            service_tax_percent = 0
+    else:
+        agent_name = "NA"
+        full_agent_name = "NA"
+        agent_num = "NA"
+        agent_address = "NA"
+        agent_locality = "NA"
+        agent_city = "NA"
+        state = "NA"
+        agent_vat_no = "NA"
+        agent_cin = "NA"
+        agent_stax = "NA"
+        agent_details = "Not Assigned"
+        agent_state = "NA"
+        vat_part_percent = 0
+        vat_consumable_percent = 0
+        vat_lube_percent = 0
+        service_tax_percent = 0
+
+    cust_name       = booking.cust_name
+    cust_address    = booking.cust_address
+    cust_locality   = booking.cust_locality
+    cust_city       = booking.cust_city
+    reg_number      = booking.cust_regnumber
+    make            = booking.cust_make
+    model           = booking.cust_model
+
     date_today = datetime.date.today()
     clickgarage_flag = booking.clickgarage_flag
     status = "Generated"
@@ -6172,9 +6379,9 @@ def generate_bill(request):
                , vat_lube           =vat_lube
                , vat_consumable     =vat_consumable
                , service_tax        =service_tax
-               , componenents       =components
+               , components         = components
                , status             =status
-               , booking_id         =booking_id
+               , booking_id         = booking_id
                , date_created       = date_today
                , time_stamp         =   time.time()
                , owner              =   bill_owner
@@ -6182,11 +6389,40 @@ def generate_bill(request):
                , payment_status     = payment_status
                , amount_paid        =amount_paid
                , payment_mode       =payment_mode
-           )
+               , notes              = notes
+               , state                  =state
+               , vat_part_percent       =vat_part_percent
+               , vat_lube_percent       =vat_lube_percent
+               , vat_consumable_percent =vat_consumable_percent
+               , service_tax_percent    =service_tax_percent
+               , agent_name             =full_agent_name
+               , agent_address          =agent_address
+               , agent_locality         =agent_locality
+               , agent_city             =agent_city
+               , agent_vat_no           =agent_vat_no
+               , agent_cin              =agent_cin
+               , agent_stax             =agent_stax
+               , cust_name              =cust_name
+               , cust_address           =cust_address
+               , cust_locality          =cust_locality
+               , cust_city              =cust_city
+               , reg_number             =reg_number
+               , make                   =make
+               , model                  =model
+               )
     tt.save()
-    from wkhtmltopdf import WKHtmlToPdf
 
-    WKHtmlToPdf(url='/bills/'+data_id, output_file='/../example.pdf')
+    # from wkhtmltopdf import WKHtmlToPdf
+    # wkhtmltopdf = WKHtmlToPdf(
+    #     url='local.clickgarage.in/bills/new/'+data_id+'#print',
+    #     output_file='/home/shashwat/Desktop/codebase/website/Bills/'+data_id+'.pdf',
+    #
+    # )
+    # wkhtmltopdf.render()
+
+    # wkhtmltopdf 'local.clickgarage.in/bills/new/'+data_id+'#print' '/home/shashwat/Desktop/codebase/website/Bills/'+data_id+'.pdf'
+
+    # WKHtmlToPdf(url=, output_file=)
 
 
     tt2 = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner,invoice_number = invoice_number)[0]
@@ -6200,39 +6436,93 @@ def generate_bill(request):
                           'agent': request.user.is_agent, 'staff': request.user.is_staff}
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+# def get_bill(bill_id):
+#     obj = {}
+#     obj['status'] = False
+#     obj['result'] = []
+#     jobObjs = Bills.objects.filter(id = bill_id)
+#
+#     for job in jobObjs:
+#         obj['result'].append({
+#             'id': job.id,
+#             'clickgarage_flag': job.clickgarage_flag,
+#             'invoice_number': job.invoice_number,
+#             'total_amount': job.total_amount,
+#             'part_amount': job.part_amount,
+#             'lube_amount': job.lube_amount,
+#             'consumable_amount': job.consumable_amount,
+#             'labour_amount': job.labour_amount,
+#             'vat_part': job.vat_part,
+#             'vat_lube': job.vat_lube,
+#             'vat_consumable': job.vat_consumable,
+#             'service_tax': job.service_tax,
+#             'componenents': job.componenents,
+#             'status': job.status,
+#             'booking_id': job.booking_id,
+#             'date_created': str(job.date_created),
+#             # 'date_modified    ': str(job.date_modified),
+#             'time_stamp': job.time_stamp,
+#             'owner': job.owner,
+#             'file_name': job.file_name,
+#             'payment_status': job.payment_status,
+#             'amount_paid': job.amount_paid,
+#             'payment_mode': job.payment_mode
+#         })
+#
+#     obj['status'] = True
+#     obj['counter'] = 1
+#     obj['msg'] = "Success"
+#     return HttpResponse(json.dumps(obj), content_type='application/json')
+
 
         # <<---- Checking Code ---->>
 def view_all_bills(request):
     obj = {}
-
     obj['status'] = False
     obj['result'] = []
     jobObjs = Bills.objects.all()
 
     for job in jobObjs:
         obj['result'].append({
-            'clickgarage_flag ': job.clickgarage_flag,
-            'invoice_number   ': job.invoice_number,
-            'total_amount     ': job.total_amount,
-            'part_amount      ': job.part_amount,
-            'lube_amount      ': job.lube_amount,
+            'id': job.id,
+            'clickgarage_flag': job.clickgarage_flag,
+            'invoice_number': job.invoice_number,
+            'total_amount': job.total_amount,
+            'part_amount': job.part_amount,
+            'lube_amount': job.lube_amount,
             'consumable_amount': job.consumable_amount,
-            'labour_amount    ': job.labour_amount,
-            'vat_part         ': job.vat_part,
-            'vat_lube         ': job.vat_lube,
-            'vat_consumable   ': job.vat_consumable,
-            'service_tax      ': job.service_tax,
-            'componenents     ': job.componenents,
-            'status           ': job.status,
-            'booking_id       ': job.booking_id,
-            'date_created     ': str(job.date_created),
+            'labour_amount': job.labour_amount,
+            'vat_part': job.vat_part,
+            'vat_lube': job.vat_lube,
+            'vat_consumable': job.vat_consumable,
+            'service_tax': job.service_tax,
+            'components': job.components,
+            'status': job.status,
+            'booking_id': job.booking_id,
+            'date_created': str(job.date_created),
             # 'date_modified    ': str(job.date_modified),
-            'time_stamp       ': job.time_stamp,
-            'owner            ': job.owner,
-            'file_name        ': job.file_name,
-            'payment_status   ': job.payment_status,
-            'amount_paid      ': job.amount_paid,
-            'payment_mode     ': job.payment_mode
+            'time_stamp': job.time_stamp,
+            'owner': job.owner,
+            'file_name': job.file_name,
+            'payment_status': job.payment_status,
+            'amount_paid': job.amount_paid,
+            'payment_mode': job.payment_mode,
+            'notes': job.notes,
+            'state': job.state,
+            'vat_part_percent': job.vat_part_percent,
+            'vat_lube_percent': job.vat_lube_percent,
+            'vat_consumable_percent': job.vat_consumable_percent,
+            'service_tax_percent': job.service_tax_percent,
+            'agent_name': job.agent_name,
+            'agent_address': job.agent_address,
+            'agent_locality': job.agent_locality,
+            'agent_city': job.agent_city,
+            'agent_vat_no': job.agent_vat_no,
+            'agent_cin': job.agent_cin,
+            'agent_stax': job.agent_stax,
+            'cust_name': job.cust_name,
+            'cust_address': job.cust_address
+
         })
 
     obj['status'] = True

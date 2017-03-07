@@ -1386,16 +1386,15 @@ def adminpanel(request):
     })
     return HttpResponse(template.render(context))
 
-def adminpanel(request):
-    template = loader.get_template('revamp/admin.html')
-    context = RequestContext(request, {
-    })
-    return HttpResponse(template.render(context))
+# def adminpanel(request):
+#     template = loader.get_template('revamp/admin.html')
+#     context = RequestContext(request, {
+#     })
+#     return HttpResponse(template.render(context))
 
-def billing(request):
+def billing(request,bill_type=''):
     template = loader.get_template('revamp/bills.html')
-    context = RequestContext(request, {
-    })
+    context = RequestContext(request ,locals())
     return HttpResponse(template.render(context))
 
 

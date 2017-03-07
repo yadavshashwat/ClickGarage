@@ -11,7 +11,7 @@ from email.MIMEBase import MIMEBase
 from email import Encoders
 
 helpline_number = "9555950000"
-escalation_number = "7290001281"
+escalation_number = "9899125443"
 key = "ab33f626-fba5-4bff-9a2b-68a7e9eed43c"
 # ab33f626-fba5-4bff-9a2b-68a7e9eed43c
 sendername = "CLKGRG"
@@ -33,6 +33,9 @@ from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import boto.ses
+from api.models import *
+from activity.models import Transactions, CGUser, CGUserNew
+
 
 
 def send_sms(type,to,message):
@@ -6803,9 +6806,6 @@ def send_adwords_mail(name,phone,service,definition):
 	server.quit()
 
 
-
-
-
 def send_mail(server_name,port,username,password,fromadd,toadd,subject,text):
 	msg = 'Subject: %s\n\n%s' % (subject, text)
 	#Change according to your settings
@@ -7878,6 +7878,16 @@ def send_sms_2factor(to,message):
 	response = requests.request("GET", url, data = json.dumps(payload))
 	print(response.text)
 
+def send_sms_2factor_EZY(to,message):
+	url = "http://2factor.in/API/V1/e5fd3098-a453-11e6-a40f-00163ef91450/ADDON_SERVICES/SEND/TSMS"
+	payload = {
+		"From":"EZYGRG",
+		"To": to	   ,
+		"Msg":message
+	}
+
+	response = requests.request("GET", url, data = json.dumps(payload))
+	print(response.text)
 
 
 def send_otp(to,message):
@@ -7956,50 +7966,105 @@ def send_booking_confirm(email,name,booking_id,number,service_list,car_bike):
 	else:
 		result = conn.send_raw_email(msg.as_string())
 
-	message = "Hi "+ name +"! Your ClickGarage order has been placed. You will recieve a call shortly to confirm the order. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(booking_id) + "."
-	# message = message.replace(" ","+")
-	send_sms_2factor(number,message)
+	booking = Bookings.objects.filter(booking_id=booking_id)[0]
+	print booking.agent
+	if booking.agent != "":
+		agent = CGUserNew.objects.filter(id = booking.agent)[0]
+		agent_name = agent.first_name
+		full_agent_name = agent.first_name + ' ' + agent.last_name
+		agent_num = agent.contact_no
+
+	if booking.clickgarage_flag == True:
+		message = "Hi " + name + "! Your ClickGarage order has been placed. You will recieve a call shortly to confirm the order. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
+			booking_id) + "."
+		send_sms_2factor(number, message)
+	else:
+		message = "Hi " + name + "! Your booking with " + full_agent_name + " has been confirmed for " + str(booking.time_booking) + " on " + str(booking.date_booking) + ".  For further assistance, please contact us on " + agent_num + " and quote your booking ID: " + str(
+			booking_id) + "."
+		print message
+		send_sms_2factor_EZY(number, message)
 
 def send_sms_customer(name,number,booking_id,date,time,agent_details = None,estimate=None, status=None, status2=None):
+	booking = Bookings.objects.filter(booking_id = booking_id)[0]
+	if booking.agent != "":
+		agent = CGUserNew.objects.filter(id = booking.agent)[0]
+		agent_name = agent.first_name
+		full_agent_name = agent.first_name + ' ' + agent.last_name
+		agent_num = agent.contact_no
 	if status =="Confirmed":
-		message = "Hi " + name + "! Your ClickGarage order has been confirmed for "+ str(time) + " on " + str(date) +". You will recieve the agent details shortly. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
-			booking_id) + "."
-		# message = message.replace(" ", "+")
-		send_sms_2factor(number, message)
+		if booking.clickgarage_flag == True:
+			message = "Hi " + name + "! Your ClickGarage order has been confirmed for "+ str(time) + " on " + str(date) +". You will recieve the agent details shortly. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
+				booking_id) + "."
+			send_sms_2factor(number, message)
+		else:
+			message = "Hi " + name + "! Your booking with"+ full_agent_name +" has been confirmed for " + str(time) + " on " + str(date) + ".  For further assistance, please contact us on " + agent_num + " and quote your booking ID: " + str(
+				booking_id) + "."
+			send_sms_2factor_EZY(number, message)
 	if status == "Assigned":
-		message = "Hi " + name + "! Our Agent "+agent_details+ " has been assigned for your order. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
-			booking_id) + "."
-		# message = message.replace(" ", "+")
-		send_sms_2factor(number, message)
+		if booking.clickgarage_flag == True:
+			message = "Hi " + name + "! Our Agent "+agent_details+ " has been assigned for your order. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
+				booking_id) + "."
+			send_sms_2factor(number, message)
 	if status =="Agent Left":
-		message = "Hi " + name + "! Our Agent " + str(agent_details) + " has left and is on his way for your booking. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(booking_id)
-		# message = message.replace(" ", "+")
-		send_sms_2factor(number, message)
+		if booking.clickgarage_flag == True:
+			message = "Hi " + name + "! Our engineer " + str(agent_details) + " has left and is on his way for your booking. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
+				booking_id)
+			send_sms_2factor(number, message)
+		else:
+			message = "Hi " + name + "! Our engineer has left and is on his way for your booking. For further assistance, please contact us on " + agent_num + " and quote your booking ID: " + str(
+				booking_id)
+			send_sms_2factor_EZY(number, message)
+
 	if status == "Reached Workshop":
-		message = "Hi " + name + "! Your vehicle has reached the workshop. You will recieve and updated estimate post inspection. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
-			booking_id) + "."
-		# message = message.replace(" ", "+")
-		send_sms_2factor(number, message)
+		if booking.clickgarage_flag == True:
+			message = "Hi " + name + "! Your vehicle has reached the workshop. You will recieve and updated estimate post inspection. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
+				booking_id) + "."
+			send_sms_2factor(number, message)
+		else:
+			message = "Hi " + name + "! Your vehicle has reached the workshop. You will recieve and updated estimate post inspection. For further assistance, please contact us on " + agent_num + " and quote your booking ID: " + str(
+				booking_id) + "."
+			send_sms_2factor_EZY(number, message)
 	if status == "Estimate Shared":
-		message = "Hi " + name + "! We have done the complete inspection. Your updated estimate post inspection is Rs."+str(estimate) + ". if there is any discrepency or for any further assistance, please contact us on " + helpline_number + " and quote your booking ID: " +str(booking_id) + "."
-		# print message
-		# message = message.replace(" ", "+")
-		send_sms_2factor(number, message)
+		if booking.clickgarage_flag == True:
+			message = "Hi " + name + "! We have done the complete inspection. Your updated estimate post inspection is Rs." + str(
+				estimate) + ". if there is any discrepency or for any further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
+				booking_id) + "."
+			send_sms_2factor(number, message)
+		else:
+			message = "Hi " + name + "! We have done the complete inspection. Your updated estimate post inspection is Rs." + str(
+				estimate) + ". if there is any discrepency or for any further assistance, please contact us on " + agent_num + " and quote your booking ID: " + str(
+				booking_id) + "."
+			send_sms_2factor_EZY(number, message)
+
 	if status == "Job Complete" and status2=="Escalation":
-		message = "Hi " + name + "! Your order is complete. We apologize for the incovenience caused. If you require any further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
-			booking_id) + "."
-		# message = message.replace(" ", "+")
-		send_sms_2factor(number, message)
+		if booking.clickgarage_flag == True:
+			message = "Hi " + name + "! Your order is complete. We apologize for the incovenience caused. If you require any further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
+				booking_id) + "."
+			send_sms_2factor(number, message)
+		else:
+			message = "Hi " + name + "! Your order is complete. We apologize for the incovenience caused. If you require any further assistance, please contact us on " + agent_num + " and quote your booking ID: " + str(
+				booking_id) + "."
+			send_sms_2factor_EZY(number, message)
+
 	if status =="Job Complete" and status2==None:
-		message = "Hi " + name + "! Your order is complete. If you require any further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
-			booking_id) + "."
-		# message = message.replace(" ", "+")
-		send_sms_2factor(number, message)
+		if booking.clickgarage_flag == True:
+			message = "Hi " + name + "! Your order is complete. If you require any further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
+				booking_id) + "."
+			send_sms_2factor(number, message)
+		else:
+			message = "Hi " + name + "! Your order is complete. If you require any further assistance, please contact us on " + agent_num + " and quote your booking ID: " + str(
+				booking_id) + "."
+			send_sms_2factor_EZY(number, message)
+
 	if status == "Escalation":
-		message = "Hi " + name + "! We apologize for the inconvenience caused. We are taking necessary action to solve the issue. If you require any further assistance, directly call our escaltion number : " + escalation_number + " and quote your booking ID: " + str(
-			booking_id) + "."
-		# message = message.replace(" ", "+")
-		send_sms_2factor(number, message)
+		if booking.clickgarage_flag == True:
+			message = "Hi " + name + "! We apologize for the inconvenience caused. We are taking necessary action to solve the issue. If you require any further assistance, directly call our escaltion number : " + escalation_number + " and quote your booking ID: " + str(
+				booking_id) + "."
+			send_sms_2factor(number, message)
+		else:
+			message = "Hi " + name + "! We apologize for the inconvenience caused. We are taking necessary action to solve the issue. If you require any further assistance, directly call our escaltion number : " + agent_num + " and quote your booking ID: " + str(
+				booking_id) + "."
+			send_sms_2factor_EZY(number, message)
 
 def send_sms_agent(agent_name, agent_num, cust_num,date,time,booking_id,cust_name, comments, total, address,vehicle ):
 	message = "Hi " + agent_name + "! You have been assigned a ClickGarage booking. | Booking ID:"+str(booking_id)+" | Date:" + str(date) + " | Time: " + str(time) + "| Name:"+ cust_name + "("+cust_num+")| Vehicle:"+ vehicle +"| Requests: "+comments+" | Amount: "+total+" | Address: "+address
