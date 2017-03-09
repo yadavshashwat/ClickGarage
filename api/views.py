@@ -6478,7 +6478,7 @@ def add_modify_subscription(request):
     obj = {}
     obj['status'] = False
     obj['result'] = []
-    subs_id                 = get_param(request, 'subs_id', None)
+    sub_id                 = get_param(request, 'sub_id', None)
     cust_fname              = get_param(request, 'cust_fname',None)
     cust_lname              = get_param(request, 'cust_lname',None)
     cust_num_p              = get_param(request, 'cust_num_p',None)
@@ -6524,7 +6524,12 @@ def add_modify_subscription(request):
         date_end = newformat_e
 
     if is_active == None:
-        is_active = False
+        active = False
+    else:
+        if is_active == "true":
+            active = True
+        else:
+            active = False
 
     cust_fname = cleanstring(cust_fname).title()
     cust_lname = cleanstring(cust_lname).title()
@@ -6535,7 +6540,7 @@ def add_modify_subscription(request):
 
     cust_full_name = cust_fname +' '+ cust_lname
     if request.user.is_staff or request.user.is_admin:
-        if subs_id == "" or subs_id == None:
+        if sub_id == "" or sub_id == None:
             user = create_check_user(name=cust_full_name,number=cust_num_p)
 
             address2 = {'address': cust_add, 'locality': cust_loc, 'city': cust_city}
@@ -6577,7 +6582,7 @@ def add_modify_subscription(request):
                                 ,package_name            = pack_name
                                 ,date_start              = date_start
                                 ,date_end                = date_end
-                                ,is_active               = is_active
+                                ,is_active               = active
                                 ,amount_paid             = paid_amt
                                 ,status                  = status
                                 ,comment                 = comment
@@ -6586,7 +6591,7 @@ def add_modify_subscription(request):
                                )
             tt.save()
         else:
-            sub = Subscriptions.objects.filter(subscription_id = subs_id)[0]
+            sub = Subscriptions.objects.filter(subscription_id = sub_id)[0]
             user = create_check_user(name=cust_full_name,number=cust_num_p)
 
             address2 = {'address': cust_add, 'locality': cust_loc, 'city': cust_city}
@@ -6639,7 +6644,7 @@ def add_modify_subscription(request):
             if date_veh_purchase:
                 sub.date_veh_purchase = date_veh_purchase
             if is_active:
-                sub.is_active = is_active
+                sub.is_active = active
             if paid_amt:
                 sub.amount_paid = paid_amt
             if status:
@@ -6658,8 +6663,34 @@ def view_all_subscription(request):
     obj = {}
     obj['status'] = False
     obj['result'] = []
-    jobObjs = Subscriptions.objects.all()
+    subs_id = get_param(request, 'subs_id', None)
+    if subs_id == None:
+        jobObjs = Subscriptions.objects.all()
+    else:
+        jobObjs = Subscriptions.objects.filter(id=subs_id)
+
     for job in jobObjs:
+        if job.date_veh_purchase != None:
+            oldformat_p = str(job.date_veh_purchase)
+            datetimeobject = datetime.datetime.strptime(oldformat_p, '%Y-%m-%d')
+            newformat_p = datetimeobject.strftime('%d-%m-%Y')
+        else:
+            newformat_p = "None"
+
+        if job.date_start  != None:
+            oldformat_s = str(job.date_start)
+            datetimeobject = datetime.datetime.strptime(oldformat_s, '%Y-%m-%d')
+            newformat_s = datetimeobject.strftime('%d-%m-%Y')
+        else:
+            newformat_s = "None"
+
+        if job.date_end != None:
+            oldformat_e = str(job.date_end)
+            datetimeobject = datetime.datetime.strptime(oldformat_e, '%Y-%m-%d')
+            newformat_e = datetimeobject.strftime('%d-%m-%Y')
+        else:
+            newformat_e = "None"
+
         obj['result'].append({
             'id': job.id,
             'booking_timestamp': job.booking_timestamp,
@@ -6682,9 +6713,9 @@ def view_all_subscription(request):
             'cust_state': job.cust_state,
             'subscription_type': job.subscription_type,
             'package_name': job.package_name,
-            'date_start': str(job.date_start),
-            'date_end': str(job.date_end),
-            'date_veh_purchase': str(job.date_veh_purchase),
+            'date_start': newformat_s,
+            'date_end': newformat_e,
+            'date_veh_purchase': newformat_p,
             'is_active': job.is_active,
             'amount_paid': job.amount_paid,
             'status': job.status,
@@ -6698,7 +6729,11 @@ def view_all_subscription(request):
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
+# def export_bookings():
+
+
     # <<---- Checking Code ---->>
+
 def view_all_bills(request):
     obj = {}
     obj['status'] = False
