@@ -75,7 +75,6 @@ urlpatterns = patterns('',
     url(r'^Book/(?P<veh_type>[a-zA-Z0-9\-_ ]+)/(?P<veh>[a-zA-Z0-9\-_ ]+)/checkout/$', 'website.views.get_quote',name='get_quote'),
     url(r'^adminpanel/', 'website.views.adminpanel', name='adminpanel'),
     url(r'^Service/(?P<veh_type>[a-zA-Z0-9\-_ ]+)/(?P<service>[a-zA-Z0-9\-_ ]+)/$', 'website.views.advert', name='advert'),
-
     url(r'^how-it-works/', 'website.views.howitworks', name='howitworks'),
     url(r'^why-clickgarage/', 'website.views.whyclickgarage', name='whyclickgarage'),
     url(r'^faq/', 'website.views.faq', name='faq'),
@@ -102,6 +101,7 @@ urlpatterns = patterns('',
     url(r'^tnc/', 'website.views.tnc', name='tnc'),
     url(r'^sitemap/', 'website.views.sitemap', name='sitemap'),
     url(r'^contactus/', 'website.views.contactus', name='contactus'),
+    url(r'^rsa/(?P<veh_type>[a-zA-Z0-9\-_ ]+)/', 'website.views.rsa', name='rsa'),
     url(r'^bills/(?P<bill_type>[a-zA-Z0-9\-_ ]+)/', 'website.views.billing', name='bills'),
                        )
 

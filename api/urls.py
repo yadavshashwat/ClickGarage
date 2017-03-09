@@ -143,7 +143,8 @@ urlpatterns = [
     url(r'send_booking/$', 'api.views.send_booking', name='send_booking'),
     url(r'send_lead/$', 'api.views.send_lead', name='send_lead'),
     url(r'generate_bill/$', 'api.views.generate_bill', name='generate_bill'),
-
+    url(r'add_modify_subscription/$', 'api.views.add_modify_subscription', name='add_modify_subscription'),
+    url(r'view_all_subscription/$', 'api.views.view_all_subscription', name='view_all_subscription'),
     # Website Api Check
     url(r'get_all_models/$', 'api.views.get_all_models', name='get_all_models'),
     url(r'get_all_jobs/$', 'api.views.get_all_jobs', name='get_all_jobs'),

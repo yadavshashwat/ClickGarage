@@ -1399,6 +1399,10 @@ def billing(request,bill_type=''):
 
 
 
+def rsa(request,veh_type=''):
+    template = loader.get_template('revamp/rsa.html')
+    context = RequestContext(request, locals())
+    return HttpResponse(template.render(context))
 
 
 

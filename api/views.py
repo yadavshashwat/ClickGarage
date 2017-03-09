@@ -6474,8 +6474,231 @@ def generate_bill(request):
 #     obj['msg'] = "Success"
 #     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+def add_modify_subscription(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    subs_id                 = get_param(request, 'subs_id', None)
+    cust_fname              = get_param(request, 'cust_fname',None)
+    cust_lname              = get_param(request, 'cust_lname',None)
+    cust_num_p              = get_param(request, 'cust_num_p',None)
+    cust_num_s              = get_param(request, 'cust_num_s',None)
+    cust_email              = get_param(request, 'cust_email',None)
+    cust_add                = get_param(request, 'cust_add',None)
+    cust_loc                = get_param(request, 'cust_loc',None)
+    cust_city               = get_param(request, 'cust_city',None)
+    cust_state              = get_param(request, 'cust_state', None)
+    make                    = get_param(request, 'make', None)
+    veh_type                = get_param(request, 'veh_type', None)
+    model                   = get_param(request, 'model', None)
+    fuel                    = get_param(request, 'fuel', None)
+    vehicle_vin             = get_param(request, 'vehicle_vin', None)
+    vehicle_regno           = get_param(request, 'vehicle_regno', None)
+    sub_type                = get_param(request, 'sub_type', None)
+    pack_name               = get_param(request, 'pack_name', None)
+    date_start              = get_param(request, 'date_start', None)
+    date_end                = get_param(request, 'date_end', None)
+    comment                 = get_param(request, 'comment', None)
+    is_active               = get_param(request, 'is_active', None)
+    paid_amt                = get_param(request, 'paid_amt', None)
+    source                  = get_param(request,'source',None)
+    status                  = get_param(request, 'status', None)
+    date_veh_purchase       = get_param(request, 'date_veh_purchase', None)
 
-        # <<---- Checking Code ---->>
+    if date_veh_purchase != None:
+        oldformat_p = date_veh_purchase
+        datetimeobject = datetime.datetime.strptime(oldformat_p, '%d-%m-%Y')
+        newformat_p = datetimeobject.strftime('%Y-%m-%d')
+        date_veh_purchase = newformat_p
+
+    if date_start != None:
+        oldformat_s = date_start
+        datetimeobject = datetime.datetime.strptime(oldformat_s, '%d-%m-%Y')
+        newformat_s = datetimeobject.strftime('%Y-%m-%d')
+        date_start = newformat_s
+
+    if date_end != None:
+        oldformat_e = date_end
+        datetimeobject = datetime.datetime.strptime(oldformat_e, '%d-%m-%Y')
+        newformat_e = datetimeobject.strftime('%Y-%m-%d')
+        date_end = newformat_e
+
+    if is_active == None:
+        is_active = False
+
+    cust_fname = cleanstring(cust_fname).title()
+    cust_lname = cleanstring(cust_lname).title()
+    cust_add = cleanstring(cust_add).title()
+    cust_loc = cleanstring(cust_loc).title()
+    cust_city = cleanstring(cust_city).title()
+    cust_state = cleanstring(cust_state).title()
+
+    cust_full_name = cust_fname +' '+ cust_lname
+    if request.user.is_staff or request.user.is_admin:
+        if subs_id == "" or subs_id == None:
+            user = create_check_user(name=cust_full_name,number=cust_num_p)
+
+            address2 = {'address': cust_add, 'locality': cust_loc, 'city': cust_city}
+            if address2 not in user.user_saved_address:
+                user.user_saved_address.append(address2)
+            vehicle = {'type': veh_type, 'make': make, 'model': model, 'fuel': fuel, "reg_num": vehicle_regno}
+            if vehicle not in user.user_veh_list:
+                user.user_veh_list.append(vehicle)
+            if cust_email not in user.email_list:
+                user.email_list.append(cust_email)
+            user.email = cust_email
+            user.save()
+            print is_active
+            subs_id = 100000
+            tran_len = len(Subscriptions.objects.all())
+            status = "Under Review"
+            if tran_len:
+                tran = Subscriptions.objects.all().aggregate(Max('subscription_id'))
+                subs_id = int(tran['subscription_id__max'] + 1)
+            tt = Subscriptions(booking_timestamp       = time.time()
+                                ,subscription_id         = subs_id
+                                ,cust_id                 = user.id
+                                ,cust_fname              = cust_fname
+                                ,cust_lname              = cust_lname
+                                ,cust_make               = make
+                                ,cust_model              = model
+                                ,cust_vehicle_type       = veh_type
+                                ,cust_fuel_varient       = fuel
+                                ,cust_regnumber          = vehicle_regno
+                                ,cust_vehicle_vin        = vehicle_vin
+                                ,cust_number_primary     = cust_num_p
+                                ,cust_number_secondary   = cust_num_s
+                                ,cust_email              = cust_email
+                                ,cust_address            = cust_add
+                                ,cust_locality           = cust_loc
+                                ,cust_city               = cust_city
+                               , cust_state              = cust_state
+                               ,subscription_type        = sub_type
+                                ,package_name            = pack_name
+                                ,date_start              = date_start
+                                ,date_end                = date_end
+                                ,is_active               = is_active
+                                ,amount_paid             = paid_amt
+                                ,status                  = status
+                                ,comment                 = comment
+                                ,source                  = source
+                                ,date_veh_purchase       = date_veh_purchase
+                               )
+            tt.save()
+        else:
+            sub = Subscriptions.objects.filter(subscription_id = subs_id)[0]
+            user = create_check_user(name=cust_full_name,number=cust_num_p)
+
+            address2 = {'address': cust_add, 'locality': cust_loc, 'city': cust_city}
+            if address2 not in user.user_saved_address:
+                user.user_saved_address.append(address2)
+            vehicle = {'type': veh_type, 'make': make, 'model': model, 'fuel': fuel, "reg_num": vehicle_regno}
+            if vehicle not in user.user_veh_list:
+                user.user_veh_list.append(vehicle)
+            if cust_email not in user.email_list:
+                user.email_list.append(cust_email)
+            user.email = cust_email
+            user.save()
+
+            if cust_fname:
+                sub.cust_fname = cust_fname
+            if cust_lname:
+                sub.cust_lname = cust_lname
+            if make:
+                sub.cust_make = make
+            if model:
+                sub.cust_model = model
+            if veh_type:
+                sub.cust_vehicle_type = veh_type
+            if fuel:
+                sub.cust_fuel_varient = fuel
+            if vehicle_regno:
+                sub.cust_regnumber = vehicle_regno
+            if vehicle_vin:
+                sub.cust_vehicle_vin = vehicle_vin
+            if cust_num_p:
+                sub.cust_number_primary = cust_num_p
+            if cust_num_s:
+                sub.cust_number_secondary = cust_num_s
+            if cust_email:
+                sub.cust_email = cust_email
+            if cust_add:
+                sub.cust_address = cust_add
+            if cust_loc:
+                sub.cust_locality = cust_loc
+            if cust_city:
+                sub.cust_city = cust_city
+            if cust_state:
+                sub.cust_state = cust_state
+            if sub_type:
+                sub.subscription_type = sub_type
+            if date_start:
+                sub.date_start = date_start
+            if date_end:
+                sub.date_end = date_end
+            if date_veh_purchase:
+                sub.date_veh_purchase = date_veh_purchase
+            if is_active:
+                sub.is_active = is_active
+            if paid_amt:
+                sub.amount_paid = paid_amt
+            if status:
+                sub.status = status
+            if comment:
+                sub.comment = comment
+            if source:
+                sub.source = source
+            sub.save()
+    obj['status'] = True
+    obj['result'] = "Success"
+    obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def view_all_subscription(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    jobObjs = Subscriptions.objects.all()
+    for job in jobObjs:
+        obj['result'].append({
+            'id': job.id,
+            'booking_timestamp': job.booking_timestamp,
+            'subscription_id': job.subscription_id,
+            'cust_id': job.cust_id,
+            'cust_fname': job.cust_fname,
+            'cust_lname': job.cust_lname,
+            'cust_make': job.cust_make,
+            'cust_model': job.cust_model,
+            'cust_vehicle_type': job.cust_vehicle_type,
+            'cust_fuel_varient': job.cust_fuel_varient,
+            'cust_regnumber': job.cust_regnumber,
+            'cust_vehicle_vin': job.cust_vehicle_vin,
+            'cust_number_primary': job.cust_number_primary,
+            'cust_number_secondary': job.cust_number_secondary,
+            'cust_email': job.cust_email,
+            'cust_address': job.cust_address,
+            'cust_locality': job.cust_locality,
+            'cust_city': job.cust_city,
+            'cust_state': job.cust_state,
+            'subscription_type': job.subscription_type,
+            'package_name': job.package_name,
+            'date_start': str(job.date_start),
+            'date_end': str(job.date_end),
+            'date_veh_purchase': str(job.date_veh_purchase),
+            'is_active': job.is_active,
+            'amount_paid': job.amount_paid,
+            'status': job.status,
+            'comment': job.comment,
+            'source': job.source
+        })
+
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+    # <<---- Checking Code ---->>
 def view_all_bills(request):
     obj = {}
     obj['status'] = False
