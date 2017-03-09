@@ -28,7 +28,7 @@ from dataEntry.runentry import carMakers, cleanstring
 from activity import views as ac_vi
 from mailing import views as mviews
 from api import tasks as tasks
-from wkhtmltopdf import WKHtmlToPdf
+# from wkhtmltopdf import WKHtmlToPdf
 from django.db.models import Q
 
 
