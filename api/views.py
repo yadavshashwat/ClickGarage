@@ -4954,7 +4954,6 @@ def view_all_bookings(request):
     obj['status'] = False
     obj['result'] = []
     booking_id = get_param(request, 'b_id', None)
-    data_id = get_param(request, 'data_id', None)
     lead_booking = get_param(request, 'lead_booking', None)
     sort = get_param(request, 'sort', None)
     date = get_param(request,'date', None)
@@ -4964,6 +4963,7 @@ def view_all_bookings(request):
     reg_number = get_param(request,'reg',None)
     veh_type = get_param(request,'veh_type',None)
     data_id = get_param(request,'data_id',None)
+    state = get_param(request,'state',None)
 
     if request.user.is_admin or request.user.is_staff:
         if (booking_id == None or booking_id ==""):
@@ -5102,8 +5102,8 @@ def view_all_bookings(request):
         if trans.status =="Confirmed"			:
             status_next = "Assigned"
         if trans.status =="Assigned"			:
-            status_next = "Agent Left"
-        if trans.status =="Agent Left"			:
+            status_next = "Engineer Left"
+        if trans.status =="Engineer Left"			:
             status_next = "Reached Workshop"
         if trans.status =="Reached Workshop" 	:
             status_next = "Estimate Shared"
@@ -5131,17 +5131,29 @@ def view_all_bookings(request):
             agent_cin = agent['result'][0]['agent_cin']
             agent_stax = agent['result'][0]['agent_stax']
             agent_state = agent['result'][0]['user_state']
-            if agent_state:
-                taxes = get_tax(agent_state)
-                vat_part = taxes['result'][0]['vat_parts']
-                vat_consumable = taxes['result'][0]['vat_consumables']
-                vat_lube = taxes['result'][0]['vat_lube']
-                service_tax = taxes['result'][0]['service_tax']
-            else:
+            if state == None or state == "" or trans.booking_owner != "ClickGarage":
+                if agent_state:
+                    taxes = get_tax(agent_state)
+                    vat_part = taxes['result'][0]['vat_parts']
+                    vat_consumable = taxes['result'][0]['vat_consumables']
+                    vat_lube = taxes['result'][0]['vat_lube']
+                    service_tax = taxes['result'][0]['service_tax']
+                else:
+                    vat_part = 0
+                    vat_consumable = 0
+                    vat_lube = 0
+                    service_tax = 0
+            elif state == "NA":
                 vat_part = 0
                 vat_consumable = 0
                 vat_lube = 0
                 service_tax = 0
+            else:
+                taxes = get_tax(state)
+                vat_part = taxes['result'][0]['vat_parts']
+                vat_consumable = taxes['result'][0]['vat_consumables']
+                vat_lube = taxes['result'][0]['vat_lube']
+                service_tax = taxes['result'][0]['service_tax']
         else:
             agent_name = "NA"
             full_agent_name = "NA"
@@ -5154,10 +5166,22 @@ def view_all_bookings(request):
             agent_stax = "NA"
             agent_details = "Not Assigned"
             agent_state = "NA"
-            vat_part = 0
-            vat_consumable = 0
-            vat_lube = 0
-            service_tax = 0
+            if state == None or state == "":
+                vat_part = 0
+                vat_consumable = 0
+                vat_lube = 0
+                service_tax = 0
+            elif state == "NA":
+                vat_part = 0
+                vat_consumable = 0
+                vat_lube = 0
+                service_tax = 0
+            else:
+                taxes = get_tax(state)
+                vat_part = taxes['result'][0]['vat_parts']
+                vat_consumable = taxes['result'][0]['vat_consumables']
+                vat_lube = taxes['result'][0]['vat_lube']
+                service_tax = taxes['result'][0]['service_tax']
 
         if trans.bill_id != "":
             bill = Bills.objects.filter(id = trans.bill_id)[0]
@@ -5185,6 +5209,7 @@ def view_all_bookings(request):
             bill_reg_number  =  bill.reg_number
             bill_make = bill.make
             bill_model = bill.model
+            bill_type  = bill.bill_type
         else:
             components = ""
             payment_mode = ""
@@ -5210,6 +5235,7 @@ def view_all_bookings(request):
             bill_reg_number = ""
             bill_make = ""
             bill_model = ""
+            bill_type = ""
 
         obj['result'].append({
             'id':trans.id,
@@ -5296,6 +5322,7 @@ def view_all_bookings(request):
             'bill_reg_number': bill_reg_number,
             'bill_make': bill_make,
             'bill_model': bill_model,
+            'bill_type':bill_type
         })
     obj['status'] = True
     obj['counter'] = 1
@@ -5612,39 +5639,42 @@ def update_estimate(request):
     booking = Bookings.objects.filter(booking_id=booking_id)[0]
 
     if estimate != None:
+
         old_estimate = booking.service_items
-        new_estimate_timestamp = time.time()
-        estimate_by_id = request.user.id
-        estimate_by_number = request.user.contact_no
-        estimate_by_name = request.user.first_name + " " + request.user.last_name
         estimate = json.loads(estimate)
-        booking.service_items = estimate
-        total_price = 0
-        total_part = 0
-        total_labour = 0
-        total_discount = 0
-        # print estimate
-        for item in estimate:
-            # print item
-            if item['type']=="Part":
-                total_price = total_price + float(item['price'])
-                total_part = total_part + float(item['price'])
-            elif item['type']=="Labour":
-                total_price = total_price + float(item['price'])
-                total_labour = total_labour + float(item['price'])
-            elif item['type'] == "Discount":
-                total_price = total_price - float(item['price'])
-                total_discount = total_discount + float(item['price'])
-        booking.price_total = str(total_price)
-        booking.price_labour = str(total_labour)
-        booking.price_part = str(total_part)
-        booking.price_discount = str(total_discount)
-        # print total_price
-        # print total_labour
-        # print total_discount
-        # print total_part
-        a = booking.estimate_history.append({"timestamp": new_estimate_timestamp, "change_by_userid" : estimate_by_id, "change_by_number": estimate_by_number, "change_by_name":  estimate_by_name, 'estimate':old_estimate})
-        print a
+        if estimate != old_estimate:
+            new_estimate_timestamp = time.time()
+            estimate_by_id = request.user.id
+            estimate_by_number = request.user.contact_no
+            estimate_by_name = request.user.first_name + " " + request.user.last_name
+
+            booking.service_items = estimate
+            total_price = 0
+            total_part = 0
+            total_labour = 0
+            total_discount = 0
+            # print estimate
+            for item in estimate:
+                # print item
+                if item['type']=="Part":
+                    total_price = total_price + float(item['price'])
+                    total_part = total_part + float(item['price'])
+                elif item['type']=="Labour":
+                    total_price = total_price + float(item['price'])
+                    total_labour = total_labour + float(item['price'])
+                elif item['type'] == "Discount":
+                    total_price = total_price - float(item['price'])
+                    total_discount = total_discount + float(item['price'])
+            booking.price_total = str(total_price)
+            booking.price_labour = str(total_labour)
+            booking.price_part = str(total_part)
+            booking.price_discount = str(total_discount)
+            # print total_price
+            # print total_labour
+            # print total_discount
+            # print total_part
+            a = booking.estimate_history.append({"timestamp": new_estimate_timestamp, "change_by_userid" : estimate_by_id, "change_by_number": estimate_by_number, "change_by_name":  estimate_by_name, 'estimate':old_estimate})
+            print a
 
     booking.save()
     obj['status'] = True
@@ -6077,13 +6107,13 @@ def change_status_actual(booking_id,status_id):
             mviews.send_sms_agent(agent_name, agent_num, booking.booking_user_number, booking.date_booking, booking.time_booking, booking.booking_id, booking.booking_user_name, booking.comments ,
                                   booking.price_total, address, vehicle)
 
-        if(status_id == "Agent Left"  and old_status == "Assigned"):
+        if(status_id == "Engineer Left"  and old_status == "Assigned"):
             agent = fetch_user(booking.agent)
             agent_name = agent['result'][0]['first_name']
             agent_num = agent['result'][0]['phone']
             agent_details = agent_name + " - " + agent_num
             if (booking_user == "User"):
-                mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,status="Agent Left")
+                mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,status="Engineer Left")
 
 
         if (status_id == "Reached Workshop"):
@@ -6286,7 +6316,7 @@ def generate_bill(request):
     obj = {}
     obj['status'] = False
     obj['result'] = []
-    data_id                 = get_param(request, 'data_id', None)
+    data_id                 = get_param(request,'data_id', None)
     bill_owner              = get_param(request,'bill_owner',None)
     total_amount            = get_param(request,'total_amount',None)
     part_amount             = get_param(request,'part_amount',None)
@@ -6299,53 +6329,78 @@ def generate_bill(request):
     service_tax             = get_param(request, 'service_tax', None)
     payment_status          = get_param(request, 'payment_status', None)
     amount_paid             = get_param(request, 'amount_paid', None)
-    payment_mode            = get_param(request, 'payment_mode', None)
+    payment_mode             = get_param(request, 'payment_mode', None)
+
+    full_agent_name         = get_param(request, 'full_agent_name', None)
+    agent_address           = get_param(request, 'agent_address', None)
+    agent_locality          = get_param(request, 'agent_locality', None)
+    agent_city              = get_param(request, 'agent_city', None)
+    agent_vat_no            = get_param(request, 'agent_vat_no', None)
+    agent_cin               = get_param(request, 'agent_cin', None)
+    agent_stax              = get_param(request, 'agent_stax', None)
+
+    bill_type               = get_param(request,'bill_type',None)
+    state                   = get_param(request, 'state', None)
+    vat_part_percent        = get_param(request, 'vat_part_percent', None)
+    vat_lube_percent        = get_param(request, 'vat_lube_percent', None)
+    vat_consumable_percent  = get_param(request, 'vat_consumable_percent', None)
+    service_tax_percent     = get_param(request, 'service_tax_percent', None)
+
+
     notes = get_param(request, 'notes', None)
 
     booking                 = Bookings.objects.filter(id=data_id)[0]
     components              = booking.service_items
     booking_id              = data_id
 
-    if booking.agent != "":
-        agent = fetch_user(booking.agent)
-        agent_name = agent['result'][0]['first_name']
-        agent_num = agent['result'][0]['phone']
-        full_agent_name = agent['result'][0]['first_name'] + ' ' + agent['result'][0]['last_name']
-        agent_address = agent['result'][0]['user_address']
-        agent_locality = agent['result'][0]['user_locality']
-        agent_city = agent['result'][0]['user_city']
-        agent_vat_no = agent['result'][0]['agent_vat']
-        agent_cin = agent['result'][0]['agent_cin']
-        agent_stax = agent['result'][0]['agent_stax']
-        state = agent['result'][0]['user_state']
-        if state:
-            taxes = get_tax(state)
-            vat_part_percent = taxes['result'][0]['vat_parts']
-            vat_consumable_percent = taxes['result'][0]['vat_consumables']
-            vat_lube_percent = taxes['result'][0]['vat_lube']
-            service_tax_percent = taxes['result'][0]['service_tax']
+    if state == None or state == "":
+        if booking.agent != "":
+            agent = fetch_user(booking.agent)
+            state = agent['result'][0]['user_state']
         else:
-            vat_part_percent = 0
-            vat_consumable_percent = 0
-            vat_lube_percent = 0
-            service_tax_percent = 0
-    else:
-        agent_name = "NA"
-        full_agent_name = "NA"
-        agent_num = "NA"
-        agent_address = "NA"
-        agent_locality = "NA"
-        agent_city = "NA"
-        state = "NA"
-        agent_vat_no = "NA"
-        agent_cin = "NA"
-        agent_stax = "NA"
-        agent_details = "Not Assigned"
-        agent_state = "NA"
-        vat_part_percent = 0
-        vat_consumable_percent = 0
-        vat_lube_percent = 0
-        service_tax_percent = 0
+            state = "NA"
+
+    # if booking.agent != "":
+    #     agent = fetch_user(booking.agent)
+    #     agent_name = agent['result'][0]['first_name']
+    #     agent_num = agent['result'][0]['phone']
+    #     full_agent_name = agent['result'][0]['first_name'] + ' ' + agent['result'][0]['last_name']
+    #     agent_address = agent['result'][0]['user_address']
+    #     agent_locality = agent['result'][0]['user_locality']
+    #     agent_city = agent['result'][0]['user_city']
+    #     agent_vat_no = agent['result'][0]['agent_vat']
+    #     agent_cin = agent['result'][0]['agent_cin']
+    #     agent_stax = agent['result'][0]['agent_stax']
+    #     state = agent['result'][0]['user_state']
+    #
+    #     if state:
+    #         taxes = get_tax(state)
+    #         vat_part_percent = taxes['result'][0]['vat_parts']
+    #         vat_consumable_percent = taxes['result'][0]['vat_consumables']
+    #         vat_lube_percent = taxes['result'][0]['vat_lube']
+    #         service_tax_percent = taxes['result'][0]['service_tax']
+    #     else:
+    #         vat_part_percent = 0
+    #         vat_consumable_percent = 0
+    #         vat_lube_percent = 0
+    #         service_tax_percent = 0
+    # else:
+    #     agent_name = "NA"
+    #     full_agent_name = "NA"
+    #     agent_num = "NA"
+    #     agent_address = "NA"
+    #     agent_locality = "NA"
+    #     agent_city = "NA"
+    #     state = "NA"
+    #     agent_vat_no = "NA"
+    #     agent_cin = "NA"
+    #     agent_stax = "NA"
+    #     agent_details = "Not Assigned"
+    #     agent_state = "NA"
+    #     vat_part_percent = 0
+    #     vat_consumable_percent = 0
+    #     vat_lube_percent = 0
+    #     service_tax_percent = 0
 
     cust_name       = booking.cust_name
     cust_address    = booking.cust_address
@@ -6359,76 +6414,78 @@ def generate_bill(request):
     clickgarage_flag = booking.clickgarage_flag
     status = "Generated"
     invoice_number = 1000
-    tran_len = len(Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner))
-    if tran_len:
-        tran = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner).aggregate(Max('invoice_number'))
-        invoice_number = int(tran['invoice_number__max'] + 1)
-    billsobjs = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner, booking_id =data_id)
-    for bill in billsobjs:
-        bill.status = "Cancelled"
-        bill.save()
+    if request.user.is_admin or request.user.is_staff or request.user.is_agent:
+        tran_len = len(Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner, bill_type = bill_type))
+        if tran_len:
+            tran = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner = bill_owner, bill_type = bill_type).aggregate(Max('invoice_number'))
+            invoice_number = int(tran['invoice_number__max'] + 1)
+        billsobjs = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner, booking_id =data_id)
+        for bill in billsobjs:
+            bill.status = "Cancelled"
+            bill.save()
 
-    tt = Bills(clickgarage_flag     = clickgarage_flag
-               , invoice_number     = invoice_number
-               , total_amount       = total_amount
-               , part_amount        = part_amount
-               , lube_amount        = lube_amount
-               , consumable_amount  =consumable_amount
-               , labour_amount      =labour_amount
-               , vat_part           =vat_part
-               , vat_lube           =vat_lube
-               , vat_consumable     =vat_consumable
-               , service_tax        =service_tax
-               , components         = components
-               , status             =status
-               , booking_id         = booking_id
-               , date_created       = date_today
-               , time_stamp         =   time.time()
-               , owner              =   bill_owner
-               , file_name          = 'Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
-               , payment_status     = payment_status
-               , amount_paid        =amount_paid
-               , payment_mode       =payment_mode
-               , notes              = notes
-               , state                  =state
-               , vat_part_percent       =vat_part_percent
-               , vat_lube_percent       =vat_lube_percent
-               , vat_consumable_percent =vat_consumable_percent
-               , service_tax_percent    =service_tax_percent
-               , agent_name             =full_agent_name
-               , agent_address          =agent_address
-               , agent_locality         =agent_locality
-               , agent_city             =agent_city
-               , agent_vat_no           =agent_vat_no
-               , agent_cin              =agent_cin
-               , agent_stax             =agent_stax
-               , cust_name              =cust_name
-               , cust_address           =cust_address
-               , cust_locality          =cust_locality
-               , cust_city              =cust_city
-               , reg_number             =reg_number
-               , make                   =make
-               , model                  =model
-               )
-    tt.save()
+        tt = Bills(clickgarage_flag     = clickgarage_flag
+                   , invoice_number     = invoice_number
+                   , total_amount       = total_amount
+                   , part_amount        = part_amount
+                   , lube_amount        = lube_amount
+                   , consumable_amount  =consumable_amount
+                   , labour_amount      =labour_amount
+                   , vat_part           =vat_part
+                   , vat_lube           =vat_lube
+                   , vat_consumable     =vat_consumable
+                   , service_tax        =service_tax
+                   , components         = components
+                   , status             =status
+                   , booking_id         = booking_id
+                   , date_created       = date_today
+                   , time_stamp         =   time.time()
+                   , owner              =   bill_owner
+                   , file_name          = 'Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
+                   , payment_status     = payment_status
+                   , amount_paid        = amount_paid
+                   , payment_mode       = payment_mode
+                   , notes              = notes
+                   , state                  =state
+                   , vat_part_percent       =vat_part_percent
+                   , vat_lube_percent       =vat_lube_percent
+                   , vat_consumable_percent =vat_consumable_percent
+                   , service_tax_percent    =service_tax_percent
+                   , agent_name             =full_agent_name
+                   , agent_address          =agent_address
+                   , agent_locality         =agent_locality
+                   , agent_city             =agent_city
+                   , agent_vat_no           =agent_vat_no
+                   , agent_cin              =agent_cin
+                   , agent_stax             =agent_stax
+                   , cust_name              =cust_name
+                   , cust_address           =cust_address
+                   , cust_locality          =cust_locality
+                   , cust_city              =cust_city
+                   , reg_number             =reg_number
+                   , make                   =make
+                   , model                  =model
+                   ,bill_type               = bill_type
+                   )
+        tt.save()
 
-    # from wkhtmltopdf import WKHtmlToPdf
-    # wkhtmltopdf = WKHtmlToPdf(
-    #     url='local.clickgarage.in/bills/new/'+data_id+'#print',
-    #     output_file='/home/shashwat/Desktop/codebase/website/Bills/'+data_id+'.pdf',
-    #
-    # )
-    # wkhtmltopdf.render()
+        # from wkhtmltopdf import WKHtmlToPdf
+        # wkhtmltopdf = WKHtmlToPdf(
+        #     url='local.clickgarage.in/bills/new/'+data_id+'#print',
+        #     output_file='/home/shashwat/Desktop/codebase/website/Bills/'+data_id+'.pdf',
+        #
+        # )
+        # wkhtmltopdf.render()
 
-    # wkhtmltopdf 'local.clickgarage.in/bills/new/'+data_id+'#print' '/home/shashwat/Desktop/codebase/website/Bills/'+data_id+'.pdf'
+        # wkhtmltopdf 'local.clickgarage.in/bills/new/'+data_id+'#print' '/home/shashwat/Desktop/codebase/website/Bills/'+data_id+'.pdf'
 
-    # WKHtmlToPdf(url=, output_file=)
+        # WKHtmlToPdf(url=, output_file=)
 
 
-    tt2 = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner,invoice_number = invoice_number)[0]
-    booking.bill_id                 = tt2.id
-    booking.bill_generation_flag    = True
-    booking.save()
+        tt2 = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner,invoice_number = invoice_number)[0]
+        booking.bill_id                 = tt2.id
+        booking.bill_generation_flag    = True
+        booking.save()
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
@@ -6779,7 +6836,8 @@ def view_all_bills(request):
             'agent_cin': job.agent_cin,
             'agent_stax': job.agent_stax,
             'cust_name': job.cust_name,
-            'cust_address': job.cust_address
+            'cust_address': job.cust_address,
+            'bill_type': job.bill_type
 
         })
 

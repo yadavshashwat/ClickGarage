@@ -597,6 +597,7 @@ class Bills(models.Model):
     reg_number                  = models.CharField(max_length=200)
     make                        = models.CharField(max_length=200)
     model                       = models.CharField(max_length=200)
+    bill_type                   = models.CharField(max_length=200)
 
 
 class Messages(models.Model):

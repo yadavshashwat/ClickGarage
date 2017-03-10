@@ -8005,7 +8005,7 @@ def send_sms_customer(name,number,booking_id,date,time,agent_details = None,esti
 			message = "Hi " + name + "! Our Agent "+agent_details+ " has been assigned for your order. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
 				booking_id) + "."
 			send_sms_2factor(number, message)
-	if status =="Agent Left":
+	if status =="Engineer Left":
 		if booking.clickgarage_flag == True:
 			message = "Hi " + name + "! Our engineer " + str(agent_details) + " has left and is on his way for your booking. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
 				booking_id)
