@@ -6424,28 +6424,28 @@ def generate_bill(request):
             bill.status = "Cancelled"
             bill.save()
 
-        tt = Bills(clickgarage_flag     = clickgarage_flag
-                   , invoice_number     = invoice_number
-                   , total_amount       = total_amount
-                   , part_amount        = part_amount
-                   , lube_amount        = lube_amount
-                   , consumable_amount  =consumable_amount
-                   , labour_amount      =labour_amount
-                   , vat_part           =vat_part
-                   , vat_lube           =vat_lube
-                   , vat_consumable     =vat_consumable
-                   , service_tax        =service_tax
-                   , components         = components
-                   , status             =status
-                   , booking_id         = booking_id
-                   , date_created       = date_today
-                   , time_stamp         =   time.time()
-                   , owner              =   bill_owner
-                   , file_name          = 'Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
-                   , payment_status     = payment_status
-                   , amount_paid        = amount_paid
-                   , payment_mode       = payment_mode
-                   , notes              = notes
+        tt = Bills(clickgarage_flag         = clickgarage_flag
+                   , invoice_number         = invoice_number
+                   , total_amount           = total_amount
+                   , part_amount            = part_amount
+                   , lube_amount            = lube_amount
+                   , consumable_amount      =consumable_amount
+                   , labour_amount          =labour_amount
+                   , vat_part               =vat_part
+                   , vat_lube               =vat_lube
+                   , vat_consumable         =vat_consumable
+                   , service_tax            =service_tax
+                   , components             = components
+                   , status                 =status
+                   , booking_id             = booking_id
+                   , date_created           = date_today
+                   , time_stamp             =   time.time()
+                   , owner                  =   bill_owner
+                   , file_name              = 'Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
+                   , payment_status         = payment_status
+                   , amount_paid            = amount_paid
+                   , payment_mode           = payment_mode
+                   , notes                  = notes
                    , state                  =state
                    , vat_part_percent       =vat_part_percent
                    , vat_lube_percent       =vat_lube_percent
