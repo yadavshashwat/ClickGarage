@@ -38,6 +38,7 @@ from activity.models import Transactions, CGUser, CGUserNew
 
 tempSecretKey = 'dmFydW5ndWxhdGlsaWtlc2dhbG91dGlrZWJhYg=='
 tempSecretParkwheel = 'dGhpcyBrZXkgaXMgZm9yIFBhcmt3aGVlbHM='
+superadmin = ["9717353148"]
 
 repair_map = {
     'diagnostics':{'name':'Diagnostics','detail':"I don't know what is wrong with my car"},
@@ -4241,7 +4242,7 @@ def add_job_cart(request):
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
-def get_location(request):
+def get_location2(request):
     location_id = get_param(request, 'location_id', None)
     location_delhi="28.6466773,76.813073"
     radius_m = "100000"
@@ -4255,6 +4256,27 @@ def get_location(request):
     obj['counter'] = 1
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def get_location(request):
+    location_id = get_param(request, 'location_id', None)
+    location_delhi="28.6466773,76.813073"
+    radius_m = "100000"
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    url = "https://maps.googleapis.com/maps/api/place/queryautocomplete/json?key="+ google_map_api_key+"&input="+location_id+"&location="+ location_delhi +"&radius="+radius_m
+
+    # url = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input="+location_id+"&types=geocode&language=en&location="+ location_delhi +"&radius="+radius_m+"&key="+ google_map_api_key
+    req = requests.get(url)
+    obj['result'] = req.json()
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+
+
 
 def post_lead(request):
     obj = {}
@@ -4747,11 +4769,13 @@ def verify_otp_password_cookie(request):
     message = ''
     obj['status'] = False
     obj['result'] = {}
+    login_flag = False
     cookieUserData = request.COOKIES.get('c_user_id')
     if cookieUserData:
         user = CGUserNew.objects.get(id=cookieUserData)
         user.backend = 'django.contrib.auth.backends.ModelBackend'
         login(request, user)
+        login_flag = True
         obj['result']['userid'] = user.id
         obj['result']['username'] = user.username
         obj['result']['auth'] = True
@@ -4762,12 +4786,14 @@ def verify_otp_password_cookie(request):
             user.backend = 'django.contrib.auth.backends.ModelBackend'
             if user.check_password(password):
                 login(request, user)
+                login_flag = True
                 obj['result']['userid'] = user.id
                 obj['result']['username'] = user.username
                 obj['result']['auth'] = True
                 message = "Success"
             elif objtp['status']:
                 login(request, user)
+                login_flag = True
                 obj['result']['userid'] = user.id
                 obj['result']['username'] = user.username
                 obj['result']['auth'] = True
@@ -4781,8 +4807,23 @@ def verify_otp_password_cookie(request):
             obj['result']['auth'] = False
     obj['result']['msg'] = message
     obj['status'] = True
-    obj['result']['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent,
-                          'staff': request.user.is_staff}
+    admin_status = None
+
+    # print request.user.username
+    if request.user.username in superadmin:
+        admin_status = True
+    else:
+        admin_status = request.user.is_admin
+    # print admin_status
+
+    if login_flag:
+        obj['result']['auth_rights'] = {'admin': admin_status, 'b2b': request.user.is_b2b,
+                                        'agent': request.user.is_agent,
+                                        'staff': request.user.is_staff}
+    else:
+        obj['result']['auth_rights'] = {'admin': False, 'b2b': False,
+                                        'agent': False,
+                                        'staff': False}
 
     response = HttpResponse(json.dumps(obj), content_type='application/json')
     # try:
@@ -4893,7 +4934,7 @@ def sign_up_otp(request):
     return response
 
 def logout_view(request):
-    path = get_param(request, 'path', None)
+    # path = get_param(request, 'path', None)
     logout(request)
     # return redirect(path)
 
@@ -5327,8 +5368,15 @@ def view_all_bookings(request):
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
-    obj['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent,
-                          'staff': request.user.is_staff}
+    # if request.user.is_anonymous:
+    #     obj['result']['auth_rights'] = {'admin': False, 'b2b': False,
+    #                                     'agent': False,
+    #                                     'staff': False}
+    # else:
+    # obj['result']['auth_rights'] = {'admin': request.user.is_admin,
+    #                                 'b2b': request.user.is_b2b,
+    #                                     'agent': request.user.is_agent,
+    #                                     'staff': request.user.is_staff}
 
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
@@ -5429,7 +5477,14 @@ def fetch_all_users(request):
         })
     obj['status'] = True
     obj['counter'] = 1
-    obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
+    # if request.user.is_anonymous:
+    #     obj['result']['auth_rights'] = {'admin': False, 'b2b': False,
+    #                                     'agent': False,
+    #                                     'staff': False}
+    # else:
+    # obj['result']['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b,
+    #                                     'agent': request.user.is_agent,
+    #                                     'staff': request.user.is_staff}
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
@@ -5626,7 +5681,7 @@ def update_booking(request):
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
-    obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
+    # obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 def update_estimate(request):
@@ -5680,7 +5735,7 @@ def update_estimate(request):
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
-    obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
+    # obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 def update_agent(request):
@@ -5722,7 +5777,7 @@ def update_agent(request):
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
-    obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
+    # obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
@@ -5789,7 +5844,7 @@ def add_modify_coupon(request):
             coupon.save()
     obj['status'] = True
     obj['result'] = "Success"
-    obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
+    # obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 def view_all_coupons(request):
@@ -5828,7 +5883,7 @@ def view_all_coupons(request):
             })
     obj['status'] = True
     obj['counter'] = 1
-    obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
+    # obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
@@ -5870,8 +5925,8 @@ def check_coupon(request):
 
     obj['status'] = True
     obj['msg'] = msg
-    obj['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent,
-                          'staff': request.user.is_staff}
+    # obj['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent,
+    #                       'staff': request.user.is_staff}
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 def send_booking(request):
@@ -6054,8 +6109,8 @@ def change_status(request):
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
-    obj['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent,
-                          'staff': request.user.is_staff}
+    # obj['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent,
+    #                       'staff': request.user.is_staff}
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
@@ -6502,8 +6557,8 @@ def generate_bill(request):
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
-    obj['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b,
-                          'agent': request.user.is_agent, 'staff': request.user.is_staff}
+    # obj['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b,
+    #                       'agent': request.user.is_agent, 'staff': request.user.is_staff}
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 import pdfkit
@@ -6731,7 +6786,7 @@ def add_modify_subscription(request):
             sub.save()
     obj['status'] = True
     obj['result'] = "Success"
-    obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
+    # obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 def view_all_subscription(request):
