@@ -4895,7 +4895,7 @@ def sign_up_otp(request):
 def logout_view(request):
     path = get_param(request, 'path', None)
     logout(request)
-    return redirect(path)
+    # return redirect(path)
 
 # Exotel calling start
 sid = "clickgarage1"
