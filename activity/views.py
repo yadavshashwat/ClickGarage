@@ -140,7 +140,7 @@ def logout_to_home(request):
             obj['result'] ={}
             obj['result']['auth'] = False
             return HttpResponse(json.dumps(obj), content_type='application/json')
-    return HttpResponseRedirect('http://www.clickgarage.in/')
+    return HttpResponseRedirect('https://www.clickgarage.in/')
 
 def create_user(username, email, password):
     user = CGUser(username=username, email=email)

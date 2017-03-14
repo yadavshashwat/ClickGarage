@@ -5726,6 +5726,8 @@ def update_agent(request):
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
+
+
 def add_modify_coupon(request):
     obj = {}
     obj['status'] = False
@@ -6469,6 +6471,10 @@ def generate_bill(request):
                    )
         tt.save()
 
+        # from weasyprint import HTML
+        # HTML('local.clickgarage.in/bills/new/'+data_id+'#print').write_pdf('/home/shashwat/Desktop/codebase/website/Bills/'+data_id+'.pdf')
+        # time.sleep(10)
+
         # from wkhtmltopdf import WKHtmlToPdf
         # wkhtmltopdf = WKHtmlToPdf(
         #     url='local.clickgarage.in/bills/new/'+data_id+'#print',
@@ -6486,12 +6492,24 @@ def generate_bill(request):
         booking.bill_id                 = tt2.id
         booking.bill_generation_flag    = True
         booking.save()
+
+
+        # url='http://local.clickgarage.in/bills/old/'+data_id+'#print'
+        # output_file='/home/shashwat/Desktop/codebase/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
+        # print url
+        # print_page(url=url,output=output_file)
+
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
     obj['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b,
                           'agent': request.user.is_agent, 'staff': request.user.is_staff}
     return HttpResponse(json.dumps(obj), content_type='application/json')
+
+import pdfkit
+
+# def print_page (url,output):
+#     pdfkit.from_url(url, output)
 
 # def get_bill(bill_id):
 #     obj = {}

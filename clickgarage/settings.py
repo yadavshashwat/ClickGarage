@@ -222,9 +222,9 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'nk0hnQ8_2AZhq3hyZS3rCrds'
 
 SOCIAL_AUTH_USER_MODEL = 'activity.CGUser'
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
-SOCIAL_AUTH_NEW_USER_REDIRECT_URL = 'http://www.clickgarage.in/'
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'http://www.clickgarage.in/'
-SOCIAL_AUTH_COMPLETE_URL_NAME = 'http://www.clickgarage.in/complete/'
+SOCIAL_AUTH_NEW_USER_REDIRECT_URL = 'https://www.clickgarage.in/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'https://www.clickgarage.in/'
+SOCIAL_AUTH_COMPLETE_URL_NAME = 'https://www.clickgarage.in/complete/'
 
 SOCIAL_AUTH_PIPELINE = (
     'activity.backends.clear_users',
