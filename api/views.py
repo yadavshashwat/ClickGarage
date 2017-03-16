@@ -6546,7 +6546,7 @@ def generate_bill(request):
         # wkhtmltopdf 'local.clickgarage.in/bills/new/'+data_id+'#print' '/home/shashwat/Desktop/codebase/website/Bills/'+data_id+'.pdf'
         import subprocess
         # http://local.clickgarage.in/bills/old/58ca6aa7c8ece612511ba1b1#print
-        cmd = 'wkhtmltopdf https://www.clickgarage.in/bills/new/'+data_id+'#print /home/shashwat/Desktop/codebase/website/Bills/'+data_id+'.pdf'
+        cmd = 'wkhtmltopdf https://www.clickgarage.in/bills/new/'+data_id+'#print /home/ubuntu/beta/website/templates/revamp/'+data_id+'.pdf'
         # WKHtmlToPdf(url=, output_file=)
         s = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
         ss = s.communicate()
