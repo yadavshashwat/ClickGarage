@@ -6544,8 +6544,12 @@ def generate_bill(request):
         # wkhtmltopdf.render()
 
         # wkhtmltopdf 'local.clickgarage.in/bills/new/'+data_id+'#print' '/home/shashwat/Desktop/codebase/website/Bills/'+data_id+'.pdf'
-
+        import subprocess
+        # http://local.clickgarage.in/bills/old/58ca6aa7c8ece612511ba1b1#print
+        cmd = 'wkhtmltopdf https://www.clickgarage.in/bills/new/'+data_id+'#print /home/shashwat/Desktop/codebase/website/Bills/'+data_id+'.pdf'
         # WKHtmlToPdf(url=, output_file=)
+        s = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        ss = s.communicate()
 
 
         tt2 = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner,invoice_number = invoice_number)[0]
@@ -6561,6 +6565,8 @@ def generate_bill(request):
 
     obj['status'] = True
     obj['counter'] = 1
+    obj['err'] = ss
+    obj['filename'] = '/home/shashwat/Desktop/codebase/website/Bills/'+data_id+'.pdf'
     obj['msg'] = "Success"
     # obj['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b,
     #                       'agent': request.user.is_agent, 'staff': request.user.is_staff}
