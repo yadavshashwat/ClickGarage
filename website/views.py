@@ -1362,7 +1362,7 @@ import_uploader = AjaxFileUploader()
 # <----- revamp code ------>
 
 
-def advert(request,service='',veh_type=''):
+def advert(request,service='',veh_type='',source=''):
     template = loader.get_template('revamp/advert.html')
     context = RequestContext(request ,locals())
     return HttpResponse(template.render(context))

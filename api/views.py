@@ -5473,7 +5473,11 @@ def fetch_all_users(request):
             ,'clickgarage_flag' : trans.clickgarage_flag
             ,'email_list' : trans.email_list
             , 'owner_user': trans.owner_user
-
+            , 'date_joined': str(trans.date_joined)
+            , 'user_address': trans.user_address
+            , 'user_locality':trans.user_locality
+            , 'user_city':trans.user_city
+            , 'user_state':trans.user_state
         })
     obj['status'] = True
     obj['counter'] = 1
