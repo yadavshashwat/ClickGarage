@@ -6208,8 +6208,9 @@ def change_status_actual(booking_id,status_id):
                 else:
                     date_today = datetime.date.today() + datetime.timedelta(days=60)
 
+                booking.date_delivery = datetime.date.today()
                 new_lead = place_booking(booking.cust_id, booking.cust_name, booking.cust_number, booking.cust_email, booking.cust_regnumber, booking.cust_address,booking.cust_locality, booking.cust_city, booking.service_items,
-                                         booking.cust_make, booking.cust_vehicle_type,booking.cust_model, booking.cust_fuel_varient, str(date_today), "9:30-12:30", "Servicing/Repair - Reminder", False, "0", "NA",
+                                         booking.cust_make, booking.cust_vehicle_type,booking.cust_model, booking.cust_fuel_varient, str(date_today), "9:30 AM - 12:30 PM", "Servicing/Repair - Reminder", False, "0", "NA",
                                         "0", "Repeat Customer", False, "NA", send_sms="0")
 
                 # add a lead to the leads data base with follow_up_date as (bike - 60 days , car (bill_amount < 2000) - 30 days, car (bill_amount> 2000) 90 days
