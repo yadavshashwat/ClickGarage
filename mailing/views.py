@@ -7974,9 +7974,12 @@ def send_booking_confirm(email,name,booking_id,number,service_list,car_bike):
 		full_agent_name = agent.first_name + ' ' + agent.last_name
 		agent_num = agent.contact_no
 
-	if booking.clickgarage_flag == True:
+	if booking.clickgarage_flag == True and booking.status != "Lead":
 		message = "Hi " + name + "! Your ClickGarage order has been placed. You will recieve a call shortly to confirm the order. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
 			booking_id) + "."
+		send_sms_2factor(number, message)
+	elif booking.clickgarage_flag == True and booking.status == "Lead":
+		message = "Hi " + name + "! Thank you for visiting ClickGarage! Your relationship manager will get in touch with you shortly to understand your requirements. Happy Motoring! Team ClickGarage."
 		send_sms_2factor(number, message)
 	else:
 		message = "Hi " + name + "! Your booking with " + full_agent_name + " has been confirmed for " + str(booking.time_booking) + " on " + str(booking.date_booking) + ".  For further assistance, please contact us on " + agent_num + " and quote your booking ID: " + str(

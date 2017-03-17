@@ -514,7 +514,6 @@ class Bookings(models.Model):
     # booking_flag = True if booking else False if lead
     booking_flag            = models.BooleanField()
     booking_id              = models.IntegerField()
-    # lead_follow_up_date     = models.DateField(null=True)
     booking_timestamp       = models.CharField(max_length=200)
     cust_id                 = models.CharField(max_length=200)
     cust_name               = models.CharField(max_length=200)
@@ -553,6 +552,8 @@ class Bookings(models.Model):
     payment_status          = models.CharField(max_length = 200)
     clickgarage_flag        = models.BooleanField(default=True)
     booking_owner           = models.CharField(max_length = 200,default="ClickGarage")
+    odometer                = models.IntegerField(null=True)
+
     # int_job_summary         = ListField(DictField(), null=True)
 
 class Bills(models.Model):

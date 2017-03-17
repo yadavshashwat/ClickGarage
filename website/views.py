@@ -1362,7 +1362,7 @@ import_uploader = AjaxFileUploader()
 # <----- revamp code ------>
 
 
-def advert(request,service='',veh_type='',source=''):
+def advert(request,service='',veh_type='', source=''):
     template = loader.get_template('revamp/advert.html')
     context = RequestContext(request ,locals())
     return HttpResponse(template.render(context))
@@ -1380,7 +1380,7 @@ def get_quote(request,veh_type='',veh='',service=''):
     return HttpResponse(template.render(context))
 
 
-def adminpanel(request):
+def adminpanel(request,cat_type='',id=''):
     template = loader.get_template('revamp/admin.html')
     context = RequestContext(request, {
     })

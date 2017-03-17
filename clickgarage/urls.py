@@ -34,7 +34,7 @@ urlpatterns = patterns('',
     url(r'^adminpanel_old/', 'website.views.adminpanel_old', name='adminpanel_old'),
     url(r'^$', 'website.views.index', name='index'),
 
-                       # url(r'^ajax-uploader/', include('ajaxuploader.urls', namespace='ajaxuploader', app_name='ajaxuploader')),
+    # url(r'^ajax-uploader/', include('ajaxuploader.urls', namespace='ajaxuploader', app_name='ajaxuploader')),
     # url(r'^logout/', views.logout_to_home, name='logout_to_home'),
     # url(r'', include('social_auth.urls')),
     # url(r'^index/',include('website.urls')),
@@ -74,7 +74,10 @@ urlpatterns = patterns('',
     url(r'^Book/(?P<veh_type>[a-zA-Z0-9\-_ ]+)/(?P<veh>[a-zA-Z0-9\-_ ]+)/(?P<service>[a-zA-Z0-9\-_ ]+)/$', 'website.views.get_quote', name='get_quote'),
     url(r'^Book/(?P<veh_type>[a-zA-Z0-9\-_ ]+)/(?P<veh>[a-zA-Z0-9\-_ ]+)/checkout/$', 'website.views.get_quote',name='get_quote'),
     url(r'^adminpanel/', 'website.views.adminpanel', name='adminpanel'),
+
     url(r'^Service/(?P<veh_type>[a-zA-Z0-9\-_ ]+)/(?P<service>[a-zA-Z0-9\-_ ]+)/(?P<source>[a-zA-Z0-9\-_ ]+)$', 'website.views.advert', name='advert'),
+    url(r'^Service/(?P<veh_type>[a-zA-Z0-9\-_ ]+)/(?P<service>[a-zA-Z0-9\-_ ]+)/','website.views.advert', name='advert'),
+
     url(r'^how-it-works/', 'website.views.howitworks', name='howitworks'),
     url(r'^why-clickgarage/', 'website.views.whyclickgarage', name='whyclickgarage'),
     url(r'^faq/', 'website.views.faq', name='faq'),
@@ -103,5 +106,7 @@ urlpatterns = patterns('',
     url(r'^contactus/', 'website.views.contactus', name='contactus'),
     url(r'^rsa/(?P<veh_type>[a-zA-Z0-9\-_ ]+)/', 'website.views.rsa', name='rsa'),
     url(r'^bills/(?P<bill_type>[a-zA-Z0-9\-_ ]+)/', 'website.views.billing', name='bills'),
-                       )
+    url(r'^ezgarage/', 'website.views.adminpanel', name='adminpanel'),
+    url(r'^adminpanel/(?P<cat_type>[a-zA-Z0-9\-_ ]+)/(?P<id>[a-zA-Z0-9\-_ ]+)/$', 'website.views.adminpanel', name='adminpanel'),
+    )
 
