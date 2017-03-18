@@ -5005,126 +5005,145 @@ def view_all_bookings(request):
     veh_type = get_param(request,'veh_type',None)
     data_id = get_param(request,'data_id',None)
     state = get_param(request,'state',None)
-
-    if request.user.is_admin or request.user.is_staff:
-        if (booking_id == None or booking_id ==""):
-            # print "no id"
-            if sort != None and sort != "":
-                if sort == "Booking ID":
-                    # print "booking sort"
+    if data_id == "" or data_id == None:
+        if request.user.is_admin or request.user.is_staff:
+            if (booking_id == None or booking_id ==""):
+                # print "no id"
+                if sort != None and sort != "":
+                    if sort == "Booking ID":
+                        # print "booking sort"
+                        tranObjs = Bookings.objects.all().order_by('-booking_id')
+                    if sort == "Name":
+                        # print "name sort"
+                        tranObjs = Bookings.objects.all().order_by('cust_name')
+                    if sort == "Status":
+                        # print "status sort"
+                        tranObjs = Bookings.objects.all().order_by('status')
+                    else:
+                        # print "other sort"
+                        tranObjs = Bookings.objects.all().order_by('-booking_id')
+                else:
+                    # print "no sort"
                     tranObjs = Bookings.objects.all().order_by('-booking_id')
-                if sort == "Name":
-                    # print "name sort"
-                    tranObjs = Bookings.objects.all().order_by('cust_name')
-                if sort == "Status":
-                    # print "status sort"
-                    tranObjs = Bookings.objects.all().order_by('status')
-                else:
-                    # print "other sort"
-                    tranObjs = Bookings.objects.all().order_by('-booking_id')
             else:
-                # print "no sort"
-                tranObjs = Bookings.objects.all().order_by('-booking_id')
-        else:
-            # print "booking id filter"
-            tranObjs = Bookings.objects.filter(booking_id=booking_id)
-    elif request.user.is_b2b:
-        if booking_id == None or booking_id == "":
-            # print "no id"
-            if sort != None and sort != "":
-                if sort == "Booking ID":
-                    # print "booking sort"
-                    tranObjs = Bookings.objects.filter(cust_id=request.user.id).order_by('-booking_id')
-                if sort == "Name":
-                    # print "name sort"
-                    tranObjs = Bookings.objects.filter(cust_id=request.user.id).order_by('cust_name')
-                if sort == "Status":
-                    # print "status sort"
-                    tranObjs = Bookings.objects.filter(cust_id=request.user.id).order_by('status')
+                # print "booking id filter"
+                tranObjs = Bookings.objects.filter(booking_id=booking_id)
+        elif request.user.is_b2b:
+            if booking_id == None or booking_id == "":
+                # print "no id"
+                if sort != None and sort != "":
+                    if sort == "Booking ID":
+                        # print "booking sort"
+                        tranObjs = Bookings.objects.filter(cust_id=request.user.id).order_by('-booking_id')
+                    if sort == "Name":
+                        # print "name sort"
+                        tranObjs = Bookings.objects.filter(cust_id=request.user.id).order_by('cust_name')
+                    if sort == "Status":
+                        # print "status sort"
+                        tranObjs = Bookings.objects.filter(cust_id=request.user.id).order_by('status')
+                    else:
+                        # print "other sort"
+                        tranObjs = Bookings.objects.filter(cust_id=request.user.id).order_by('-booking_id')
                 else:
-                    # print "other sort"
+                    # print "no sort"
                     tranObjs = Bookings.objects.filter(cust_id=request.user.id).order_by('-booking_id')
             else:
-                # print "no sort"
-                tranObjs = Bookings.objects.filter(cust_id=request.user.id).order_by('-booking_id')
-        else:
-            # print "booking id filter"
-            tranObjs = Bookings.objects.filter(booking_id=booking_id)
+                # print "booking id filter"
+                tranObjs = Bookings.objects.filter(booking_id=booking_id)
 
-    elif request.user.is_agent:
-        if booking_id == None or booking_id == "":
-            # print "no id"
-            if sort != None and sort != "":
-                if sort == "Booking ID":
-                    # print "booking sort"
-                    tranObjs = Bookings.objects.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id)).order_by('-booking_id')
-                if sort == "Name":
-                    # print "name sort"
-                    tranObjs = Bookings.objects.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id)).order_by('cust_name')
-                if sort == "Status":
-                    # print "status sort"
-                    tranObjs = Bookings.objects.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id)).order_by('status')
+        elif request.user.is_agent:
+            if booking_id == None or booking_id == "":
+                # print "no id"
+                if sort != None and sort != "":
+                    if sort == "Booking ID":
+                        # print "booking sort"
+                        tranObjs = Bookings.objects.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id)).order_by('-booking_id')
+                    if sort == "Name":
+                        # print "name sort"
+                        tranObjs = Bookings.objects.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id)).order_by('cust_name')
+                    if sort == "Status":
+                        # print "status sort"
+                        tranObjs = Bookings.objects.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id)).order_by('status')
+                    else:
+                        # print "other sort"
+                        tranObjs = Bookings.objects.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id)).order_by('-booking_id')
                 else:
-                    # print "other sort"
+                    # print "no sort"
                     tranObjs = Bookings.objects.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id)).order_by('-booking_id')
             else:
-                # print "no sort"
-                tranObjs = Bookings.objects.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id)).order_by('-booking_id')
+                # print "booking id filter"
+                tranObjs = Bookings.objects.filter(booking_id=booking_id)
         else:
-            # print "booking id filter"
-            tranObjs = Bookings.objects.filter(booking_id=booking_id)
+            tranObjs=None
+
+        if lead_booking =="Lead":
+            # print "Lead"
+            tranObjs = tranObjs.filter(booking_flag = False)
+        elif lead_booking =="Booking":
+            # print "Booking"
+            tranObjs = tranObjs.filter(booking_flag = True)
+        else:
+            # print "Other All"
+            tranObjs = tranObjs
+
+        if status != None and status !="":
+            # print "filter status"
+            tranObjs = tranObjs.filter(status=status)
+
+        if name != None and name != "":
+            # print "filter name"
+            tranObjs = tranObjs.filter(cust_name=name)
+
+        if reg_number != None and reg_number != "":
+            # print "filter reg number"
+            tranObjs = tranObjs.filter(cust_regnumber=reg_number)
+        if data_id != None and data_id != "":
+            tranObjs = tranObjs.filter(id=data_id)
+
+        if date != None and date != "":
+            # print "date filter"
+            year = date[6:10]
+            month = date[3:5]
+            day = date[0:2]
+            # print year
+            # print month
+            # print day
+            tranObjs = tranObjs.filter(date_booking=datetime.date(int(year), int(month), int(day)))
+
+        if del_date != None and del_date != "":
+            # print "date filter"
+            year_del = del_date[6:10]
+            month_del = del_date[3:5]
+            day_del = del_date[0:2]
+            print year_del
+            print month_del
+            print day_del
+            tranObjs = tranObjs.filter(date_delivery=datetime.date(int(year_del), int(month_del), int(day_del)))
+
+        if veh_type != None and veh_type != "" :
+            # print "veh type"
+            tranObjs = tranObjs.filter(cust_vehicle_type=veh_type)
+
+        status_next = ""
+
+        is_agent = request.user.is_agent
+        is_staff = request.user.is_staff
+        is_admin = request.user.is_admin
+        is_b2b = request.user.is_b2b
     else:
-        tranObjs=None
+        tranObjs = Bookings.objects.filter(id=data_id)
+        if request.user.is_authenticated():
+            is_agent = request.user.is_agent
+            is_staff = request.user.is_staff
+            is_admin = request.user.is_admin
+            is_b2b = request.user.is_b2b
+        else:
+            is_agent = False
+            is_staff = False
+            is_admin = False
+            is_b2b = False
 
-    if lead_booking =="Lead":
-        # print "Lead"
-        tranObjs = tranObjs.filter(booking_flag = False)
-    elif lead_booking =="Booking":
-        # print "Booking"
-        tranObjs = tranObjs.filter(booking_flag = True)
-    else:
-        # print "Other All"
-        tranObjs = tranObjs
 
-    if status != None and status !="":
-        # print "filter status"
-        tranObjs = tranObjs.filter(status=status)
-
-    if name != None and name != "":
-        # print "filter name"
-        tranObjs = tranObjs.filter(cust_name=name)
-
-    if reg_number != None and reg_number != "":
-        # print "filter reg number"
-        tranObjs = tranObjs.filter(cust_regnumber=reg_number)
-    if data_id != None and data_id != "":
-        tranObjs = tranObjs.filter(id=data_id)
-
-    if date != None and date != "":
-        # print "date filter"
-        year = date[6:10]
-        month = date[3:5]
-        day = date[0:2]
-        # print year
-        # print month
-        # print day
-        tranObjs = tranObjs.filter(date_booking=datetime.date(int(year), int(month), int(day)))
-
-    if del_date != None and del_date != "":
-        # print "date filter"
-        year_del = del_date[6:10]
-        month_del = del_date[3:5]
-        day_del = del_date[0:2]
-        print year_del
-        print month_del
-        print day_del
-        tranObjs = tranObjs.filter(date_delivery=datetime.date(int(year_del), int(month_del), int(day_del)))
-
-    if veh_type != None and veh_type != "" :
-        # print "veh type"
-        tranObjs = tranObjs.filter(cust_vehicle_type=veh_type)
-
-    status_next = ""
     for trans in tranObjs:
         oldformat_b = str(trans.date_booking)
         datetimeobject = datetime.datetime.strptime(oldformat_b, '%Y-%m-%d')
@@ -5328,10 +5347,11 @@ def view_all_bookings(request):
             'customer_notes'        :trans.customer_notes,
             'booking_user_type'     : trans.booking_user_type,
             'delivery_date'         :newformat_d,
-            'req_user_agent'        :request.user.is_agent,
-            'req_user_staff'        : request.user.is_staff,
-            'req_user_b2b'          : request.user.is_b2b,
-            'req_user_admin'        : request.user.is_admin,
+
+            'req_user_agent'        : is_agent,
+            'req_user_staff'        : is_staff,
+            'req_user_b2b'          : is_b2b,
+            'req_user_admin'        : is_admin,
             'booking_user_name'     : trans.booking_user_name,
             'booking_user_number'   : trans.booking_user_number,
             'bill_id'               : trans.bill_id,
@@ -6532,28 +6552,6 @@ def generate_bill(request):
                    )
         tt.save()
 
-        # from weasyprint import HTML
-        # HTML('local.clickgarage.in/bills/new/'+data_id+'#print').write_pdf('/home/shashwat/Desktop/codebase/website/Bills/'+data_id+'.pdf')
-        # time.sleep(10)
-
-        # from wkhtmltopdf import WKHtmlToPdf
-        # wkhtmltopdf = WKHtmlToPdf(
-        #     url='local.clickgarage.in/bills/new/'+data_id+'#print',
-        #     output_file='/home/shashwat/Desktop/codebase/website/Bills/'+data_id+'.pdf',
-        #
-        # )
-        # wkhtmltopdf.render()
-
-        # wkhtmltopdf 'local.clickgarage.in/bills/new/'+data_id+'#print' '/home/shashwat/Desktop/codebase/website/Bills/'+data_id+'.pdf'
-
-
-        # import subprocess
-        # # http://local.clickgarage.in/bills/old/58ca6aa7c8ece612511ba1b1#print
-        # cmd = 'wkhtmltopdf https://www.clickgarage.in/bills/new/'+data_id+'#print /home/ubuntu/beta/website/templates/revamp/'+data_id+'.pdf'
-        # # WKHtmlToPdf(url=, output_file=)
-        # s = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-        # ss = s.communicate()
-
 
         tt2 = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner,invoice_number = invoice_number)[0]
         booking.bill_id                 = tt2.id
@@ -6561,16 +6559,20 @@ def generate_bill(request):
         booking.save()
 
 
-        # url='http://local.clickgarage.in/bills/old/'+data_id+'#print'
-        # output_file='/home/shashwat/Desktop/codebase/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
-        # print url
-        # print_page(url=url,output=output_file)
+
+        import subprocess
+        cmd = 'wkhtmltopdf http://local.clickgarage.in/bills/old/'+data_id+'#print /home/shashwat/Desktop/codebase/website/Bills/'+data_id+'.pdf'
+        s = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        ss = s.communicate()
+
+
 
     obj['status'] = True
     obj['counter'] = 1
     obj['err'] = ss
     obj['filename'] = '/home/shashwat/Desktop/codebase/website/Bills/'+data_id+'.pdf'
     obj['msg'] = "Success"
+    
     # obj['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b,
     #                       'agent': request.user.is_agent, 'staff': request.user.is_staff}
     return HttpResponse(json.dumps(obj), content_type='application/json')
