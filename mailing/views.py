@@ -8084,8 +8084,12 @@ def html_to_send(name, booking_id, service_list,car_bike):
 	for serv in service_list:
 		if serv['category']:
 			category_list.append(str(serv['category']))
-		if serv['doorstep']:
-			doorstep_list.append(str(serv['doorstep']))
+		try:
+			if serv['doorstep']:
+				doorstep_list.append(str(serv['doorstep']))
+		except:
+			None
+
 		summary_html2 = summary_html2 + "<tr><td>" + serv['job_name'] + "</td><td>Rs. &nbsp;" + str(serv['price_total']) + "</td></tr>"
 
 	# print doorstep_list

@@ -1385,6 +1385,15 @@ def adminpanel(request,cat_type= '',all_single='',data_id=''):
     context = RequestContext(request, locals())
     return HttpResponse(template.render(context))
 
+def completion(request):
+    template = loader.get_template('revamp/complete.html')
+
+    total_amount = views.get_param(request, 'total', 0)
+    print total_amount
+    context = RequestContext(request, locals())
+    return HttpResponse(template.render(context))
+
+
 # def adminpanel(request):
 #     template = loader.get_template('revamp/admin.html')
 #     context = RequestContext(request, {

@@ -4693,7 +4693,7 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
     if send_sms == "1":
         mviews.send_booking_confirm(email=email,name=name,booking_id=booking_id,number=number, service_list= int_summary, car_bike=veh_type)
     mviews.send_booking(firstname=name,lastname ="", number=number,email=email, car_bike=veh_type, make=make, model=model, fuel_type=fuel, additional="", service_category=comment,locality=locality,address=address,date_requested=date,time_requested=time_str)
-    return {'Status': "Order Placed", 'booking_id': str(tt.booking_id),'price_total':str(tt.price_total),'Summary':str(tt.comments)}
+    return {'Status': "Order Placed", 'booking_id': str(tt.booking_id),'price_total':str(tt.price_total),'Summary':str(tt.comments), 'id':str(tt.id)}
 #
 # def send_otp_booking(request):
 #     name = get_param(request, 'name', None)
