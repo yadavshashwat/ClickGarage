@@ -7868,6 +7868,28 @@ aws_secret='b+3UYBwdLRJzR5ZA6E/isduXMAsABUIgqpYDf1H5'
 import requests
 import json
 
+def send_promo_campaign_cg(to,message):
+	url = "http://2factor.in/API/V1/e5fd3098-a453-11e6-a40f-00163ef91450/ADDON_SERVICES/SEND/PSMS"
+	payload = {
+		"From": "CLKGRG",
+		"To": to	,
+		"Msg" :message
+	}
+	response = requests.request("GET", url, data = json.dumps(payload))
+	print(response.text)
+
+def send_promo_campaign_agent(to,message):
+	url = "http://2factor.in/API/V1/e5fd3098-a453-11e6-a40f-00163ef91450/ADDON_SERVICES/SEND/PSMS"
+	payload = {
+		"From": "EZYGRG",
+		"To": to	,
+		"Msg" :message
+	}
+	response = requests.request("GET", url, data = json.dumps(payload))
+	print(response.text)
+
+
+
 def send_sms_2factor(to,message):
 	url = "http://2factor.in/API/V1/e5fd3098-a453-11e6-a40f-00163ef91450/ADDON_SERVICES/SEND/TSMS"
 	payload = {
@@ -7881,7 +7903,7 @@ def send_sms_2factor(to,message):
 def send_sms_2factor_EZY(to,message):
 	url = "http://2factor.in/API/V1/e5fd3098-a453-11e6-a40f-00163ef91450/ADDON_SERVICES/SEND/TSMS"
 	payload = {
-		"From":"EZYGRG",
+		"From":"CLKGRG",
 		"To": to	   ,
 		"Msg":message
 	}
@@ -8026,6 +8048,7 @@ def send_sms_customer(name,number,booking_id,date,time,agent_details = None,esti
 		else:
 			message = "Hi " + name + "! Your vehicle has reached the workshop. You will recieve and updated estimate post inspection. For further assistance, please contact us on " + agent_num + " and quote your booking ID: " + str(
 				booking_id) + "."
+			print "2"
 			send_sms_2factor_EZY(number, message)
 	if status == "Estimate Shared":
 		if booking.clickgarage_flag == True:

@@ -130,6 +130,7 @@ class CGUserNew(AbstractUser):
     clickgarage_flag = models.BooleanField(default=True)
     email_list = ListField(models.CharField(max_length=200))
     owner_user = ListField(models.CharField(max_length=200))
+    agent_sms_credits = models.IntegerField(default=0)
 
     # car_ids = ListField(models.CharField(max_length=200))
 

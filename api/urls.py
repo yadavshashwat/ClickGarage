@@ -152,5 +152,7 @@ urlpatterns = [
     url(r'get_all_part/$', 'api.views.get_all_part', name='get_all_part'),
     url(r'get_all_taxes/$', 'api.views.get_all_taxes', name='get_all_taxes'),
     url(r'view_all_bills/$', 'api.views.view_all_bills', name='view_all_bills'),
+    url(r'send_sms_campaign/$', 'api.views.send_sms_campaign', name='send_sms_campaign'),
+
 
 ]

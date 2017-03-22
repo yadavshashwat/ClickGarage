@@ -30,10 +30,16 @@ from mailing import views as mviews
 from api import tasks as tasks
 # from wkhtmltopdf import WKHtmlToPdf
 from django.db.models import Q
-
-
+import math
+import os
+import socket
 from activity.models import Transactions, CGUser, CGUserNew
 # from lxml import html
+
+PRODUCTION = False
+
+if os.getcwd()=='/home/ubuntu/beta/suigen':
+    PRODUCTION = True
 
 
 tempSecretKey = 'dmFydW5ndWxhdGlsaWtlc2dhbG91dGlrZWJhYg=='
@@ -4778,6 +4784,7 @@ def verify_otp_password_cookie(request):
         login_flag = True
         obj['result']['userid'] = user.id
         obj['result']['username'] = user.username
+        obj['result']['agent_sms_credits'] = user.agent_sms_credits
         obj['result']['auth'] = True
         message = "Success"
     else:
@@ -4790,6 +4797,8 @@ def verify_otp_password_cookie(request):
                 obj['result']['userid'] = user.id
                 obj['result']['username'] = user.username
                 obj['result']['auth'] = True
+                obj['result']['agent_sms_credits'] = user.agent_sms_credits
+
                 message = "Success"
             elif objtp['status']:
                 login(request, user)
@@ -4797,6 +4806,7 @@ def verify_otp_password_cookie(request):
                 obj['result']['userid'] = user.id
                 obj['result']['username'] = user.username
                 obj['result']['auth'] = True
+                obj['result']['agent_sms_credits'] = user.agent_sms_credits
                 message = "Success"
             else:
                 obj['result']['auth'] = False
@@ -4810,13 +4820,13 @@ def verify_otp_password_cookie(request):
     admin_status = None
 
     # print request.user.username
-    if request.user.username in superadmin:
-        admin_status = True
-    else:
-        admin_status = request.user.is_admin
     # print admin_status
 
     if login_flag:
+        if request.user.username in superadmin:
+            admin_status = True
+        else:
+            admin_status = request.user.is_admin
         obj['result']['auth_rights'] = {'admin': admin_status, 'b2b': request.user.is_b2b,
                                         'agent': request.user.is_agent,
                                         'staff': request.user.is_staff}
@@ -5197,7 +5207,10 @@ def view_all_bookings(request):
                     vat_part = taxes['result'][0]['vat_parts']
                     vat_consumable = taxes['result'][0]['vat_consumables']
                     vat_lube = taxes['result'][0]['vat_lube']
-                    service_tax = taxes['result'][0]['service_tax']
+                    if agent_stax:
+                        service_tax = taxes['result'][0]['service_tax']
+                    else:
+                        service_tax = 0
                 else:
                     vat_part = 0
                     vat_consumable = 0
@@ -5470,6 +5483,16 @@ def fetch_all_users(request):
             tranObjs = tranObjs.filter(is_admin=True)
         # else:
             #     tranObjs = CGUserNew.objects.all()
+    if request.user.is_authenticated():
+        is_agent = request.user.is_agent
+        is_staff = request.user.is_staff
+        is_admin = request.user.is_admin
+        is_b2b = request.user.is_b2b
+    else:
+        is_agent = False
+        is_staff = False
+        is_admin = False
+        is_b2b = False
 
     for trans in tranObjs:
         obj['result'].append({
@@ -5485,29 +5508,34 @@ def fetch_all_users(request):
             , 'admin': trans.is_admin
             ,'staff': trans.is_staff
             ,'b2b': trans.is_b2b
-            , 'user_address': trans.user_saved_address
+            , 'user_address_list': trans.user_saved_address
             , 'user_vehicles': trans.user_veh_list
             , 'user_state': trans.user_state
             , 'agent_cin': trans.agent_cin
             , 'agent_stax': trans.agent_stax
             , 'agent_vat': trans.agent_vat
             ,'clickgarage_flag' : trans.clickgarage_flag
-            ,'email_list' : trans.email_list
+            # ,'email_list' : trans.email_list
             , 'owner_user': trans.owner_user
             , 'date_joined': str(trans.date_joined)
             , 'user_address': trans.user_address
             , 'user_locality':trans.user_locality
             , 'user_city':trans.user_city
-            , 'user_state':trans.user_state
+            ,'req_user_agent': is_agent
+            ,'req_user_staff': is_staff
+            ,'req_user_b2b': is_b2b
+            ,'req_user_admin': is_admin
+            , 'agent_sms_credits': trans.agent_sms_credits
+        # , 'user_state':trans.user_state
         })
     obj['status'] = True
     obj['counter'] = 1
     # if request.user.is_anonymous:
-    #     obj['result']['auth_rights'] = {'admin': False, 'b2b': False,
+    #     obj['auth_rights'] = {'admin': False, 'b2b': False,
     #                                     'agent': False,
     #                                     'staff': False}
     # else:
-    # obj['result']['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b,
+    #     obj['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b,
     #                                     'agent': request.user.is_agent,
     #                                     'staff': request.user.is_staff}
     obj['msg'] = "Success"
@@ -5533,6 +5561,7 @@ def update_user(request):
     agent_vat = get_param(request, 'agent_vat', None)
     agent_stax = get_param(request, 'agent_stax', None)
     agent_cin = get_param(request, 'agent_cin', None)
+    sms_credits = get_param(request, 'sms_credits', None)
     user_name = cleanstring(user_name).title()
     user_add = cleanstring(user_add).title()
     user_loc = cleanstring(user_loc).title()
@@ -5553,12 +5582,14 @@ def update_user(request):
             user2 = CGUserNew.objects.filter(id=user_id)[0]
         address2 = {'address': user_add, 'locality': user_loc, 'city': user_city, 'state' : user_state}
 
-        if agent_vat:
-            user2.agent_vat = agent_vat
-        if agent_stax:
-            user2.agent_stax = agent_stax
-        if agent_cin:
-            user2.agent_cin = agent_cin
+        # if agent_vat:
+        user2.agent_vat = agent_vat
+        # if agent_stax:
+        user2.agent_stax = agent_stax
+        # if agent_cin:
+        user2.agent_cin = agent_cin
+        if sms_credits:
+            user2.agent_sms_credits = sms_credits
         if user_state:
             user2.user_state = user_state
 
@@ -6230,10 +6261,18 @@ def change_status_actual(booking_id,status_id):
                     date_today = datetime.date.today() + datetime.timedelta(days=60)
 
                 booking.date_delivery = datetime.date.today()
-                new_lead = place_booking(booking.cust_id, booking.cust_name, booking.cust_number, booking.cust_email, booking.cust_regnumber, booking.cust_address,booking.cust_locality, booking.cust_city, booking.service_items,
+                if booking.clickgarage_flag == True:
+                    new_lead = place_booking(booking.cust_id, booking.cust_name, booking.cust_number, booking.cust_email, booking.cust_regnumber, booking.cust_address,booking.cust_locality, booking.cust_city, booking.service_items,
                                          booking.cust_make, booking.cust_vehicle_type,booking.cust_model, booking.cust_fuel_varient, str(date_today), "9:30 AM - 12:30 PM", "Servicing/Repair - Reminder", False, "0", "NA",
                                         "0", "Repeat Customer", False, "NA", send_sms="0")
-
+                else:
+                    new_lead = place_booking(booking.cust_id, booking.cust_name, booking.cust_number,
+                                             booking.cust_email, booking.cust_regnumber, booking.cust_address,
+                                             booking.cust_locality, booking.cust_city, booking.service_items,
+                                             booking.cust_make, booking.cust_vehicle_type, booking.cust_model,
+                                             booking.cust_fuel_varient, str(date_today), "9:30 AM - 12:30 PM",
+                                             "Servicing/Repair - Reminder", False, "0", "NA",
+                                             "0", "Repeat Customer", False, "NA", send_sms="0",owner=booking.booking_owner)
                 # add a lead to the leads data base with follow_up_date as (bike - 60 days , car (bill_amount < 2000) - 30 days, car (bill_amount> 2000) 90 days
 
         if (status_id == "Feedback Taken" and old_status == "Job Completed"):
@@ -6410,8 +6449,8 @@ def generate_bill(request):
     vat_lube                = get_param(request, 'vat_lube', None)
     vat_consumable          = get_param(request, 'vat_consumable', None)
     service_tax             = get_param(request, 'service_tax', None)
-    payment_status          = get_param(request, 'payment_status', None)
-    amount_paid             = get_param(request, 'amount_paid', None)
+    # payment_status          = get_param(request, 'payment_status', None)
+    # amount_paid             = get_param(request, 'amount_paid', None)
     payment_mode             = get_param(request, 'payment_mode', None)
 
     full_agent_name         = get_param(request, 'full_agent_name', None)
@@ -6498,11 +6537,11 @@ def generate_bill(request):
     status = "Generated"
     invoice_number = 1000
     if request.user.is_admin or request.user.is_staff or request.user.is_agent:
-        tran_len = len(Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner, bill_type = bill_type))
+        tran_len = len(Bills.objects.filter(owner=bill_owner, bill_type = bill_type))
         if tran_len:
-            tran = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner = bill_owner, bill_type = bill_type).aggregate(Max('invoice_number'))
+            tran = Bills.objects.filter(owner = bill_owner, bill_type = bill_type).aggregate(Max('invoice_number'))
             invoice_number = int(tran['invoice_number__max'] + 1)
-        billsobjs = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner, booking_id =data_id)
+        billsobjs = Bills.objects.filter(booking_id =data_id)
         for bill in billsobjs:
             bill.status = "Cancelled"
             bill.save()
@@ -6525,8 +6564,8 @@ def generate_bill(request):
                    , time_stamp             =   time.time()
                    , owner                  =   bill_owner
                    , file_name              = 'Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
-                   , payment_status         = payment_status
-                   , amount_paid            = amount_paid
+                   # , payment_status         = payment_status
+                   # , amount_paid            = amount_paid
                    , payment_mode           = payment_mode
                    , notes                  = notes
                    , state                  =state
@@ -6553,7 +6592,7 @@ def generate_bill(request):
         tt.save()
 
 
-        tt2 = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner,invoice_number = invoice_number)[0]
+        tt2 = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner, bill_type = bill_type, invoice_number = invoice_number)[0]
         booking.bill_id                 = tt2.id
         booking.bill_generation_flag    = True
         booking.save()
@@ -6561,20 +6600,45 @@ def generate_bill(request):
 
 
         import subprocess
-        cmd = 'wkhtmltopdf http://local.clickgarage.in/bills/old/'+data_id+'#print /home/shashwat/Desktop/codebase/website/Bills/'+data_id+'.pdf'
+
+        if socket.gethostname().startswith('ip-'):
+            if PRODUCTION:
+                cmd = 'wkhtmltopdf https://www.clickgarage.in/bills/old/' + data_id + '#print /home/ubuntu/beta/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
+            else:
+                cmd = 'wkhtmltopdf http://beta.clickgarage.in/bills/old/' + data_id + '#print /home/ubuntu/testing/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
+        else:
+            cmd = 'wkhtmltopdf http://local.clickgarage.in/bills/old/' + data_id + '#print /home/shashwat/Desktop/codebase/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
+        print cmd
         s = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
         ss = s.communicate()
+
+    obj['err'] = ss
+
+    if socket.gethostname().startswith('ip-'):
+        if PRODUCTION:
+            obj['filename'] = '/home/ubuntu/beta/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
+        else:
+            obj['filename'] = '/home/ubuntu/testing/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
+    else:
+        obj['filename'] = '/home/shashwat/Desktop/codebase/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
+
+
+    f = open(obj['filename'], 'r')
+    filename = 'Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
+    content = f.read()
+    f.close()
+    response_file = HttpResponse(content, mimetype='application/pdf')
+    response_file['Content-Disposition'] = 'attachement; filename=' + filename
 
 
 
     obj['status'] = True
     obj['counter'] = 1
-    obj['err'] = ss
-    obj['filename'] = '/home/shashwat/Desktop/codebase/website/Bills/'+data_id+'.pdf'
     obj['msg'] = "Success"
     
     # obj['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b,
     #                       'agent': request.user.is_agent, 'staff': request.user.is_staff}
+    return response_file
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 import pdfkit
@@ -6869,6 +6933,49 @@ def view_all_subscription(request):
             'source': job.source
         })
 
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def send_sms_campaign(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = {}
+    message = get_param(request, 'message', None)
+    if request.user.is_staff or request.user.is_admin:
+        tranObjs = CGUserNew.objects.all(clickgarage_flag = True)
+
+    if request.user.is_agent:
+        tranObjs = CGUserNew.objects.filter(owner_user=request.user.id)
+    numbers = []
+    numberString = ""
+    for tran in tranObjs:
+        numbers.append(tran.contact_no)
+
+    numberString = ",".join(numbers)
+    user1 = request.user
+    sms_credits = user1.agent_sms_credits
+    if request.user.is_staff or request.user.is_admin:
+        mviews.send_promo_campaign_agent(numberString,message)
+    if request.user.is_agent:
+        message_length = len(message)
+        credits_per_message = math.ceil(float(message_length)/160)
+        num_sms = len(numbers) * credits_per_message
+
+        if num_sms <= request.user.agent_sms_credits:
+            mviews.send_promo_campaign_cg(numberString,message)
+            obj['result']['msg'] = "SMS's Sent! Campaign Success"
+            num_sms_left = sms_credits - num_sms
+
+            request.user.agent_sms_credits = num_sms_left
+
+            request.user.save()
+        else:
+            obj['result']['msg'] = "Insufficient Credits! Campaign Failed"
+
+    print num_sms
+    print num_sms_left
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"

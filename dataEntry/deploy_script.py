@@ -71,5 +71,7 @@ from api.models import *
 # runentry.loadServiceParts('Parts_Final.txt')
 # runentry.CreateJobList()
 # runentry.settlementCat()
-Taxes.objects.all().delete()
-runentry.loadTaxes('States_Taxes.csv')
+# Taxes.objects.all().delete()
+# runentry.loadTaxes('States_Taxes.csv')
+
+
