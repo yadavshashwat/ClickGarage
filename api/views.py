@@ -5167,6 +5167,12 @@ def view_all_bookings(request):
         datetimeobject = datetime.datetime.strptime(oldformat_d, '%Y-%m-%d')
         newformat_d = datetimeobject.strftime('%d-%m-%Y')
 
+        if trans.status == "":
+            status_next = "Confirmed"
+        if trans.status == "Follow Up":
+            status_next = "Confirmed"
+        # if trans.status == "Follow Up":
+        #     status_next = "Confirmed"
         if trans.status == "Lead" 			    :
             status_next = "Confirmed"
         if trans.status =="Confirmed"			:
@@ -6187,9 +6193,18 @@ def change_status_actual(booking_id,status_id):
                 None
         # WMS Modification End
         booking.status = status_id
+        # oldbooking_flag
 
-        if (status_id !="Lead"):
+
+
+
+        if (status_id =="Lead" or status_id == "Follow Up"):
+            booking.booking_flag = False
+        elif (status_id == "Cancelled" and booking.booking_flag == False):
+            booking.booking_flag = False
+        else:
             booking.booking_flag = True
+
 
         if (status_id == "Confirmed" and old_status == "Lead" ):
             if (booking_user=="User"):
