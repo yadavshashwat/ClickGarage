@@ -549,8 +549,8 @@ class Bookings(models.Model):
     booking_user_number     = models.CharField(max_length=200)
     clickgarage_flag = models.BooleanField(default=True)
     booking_owner = models.CharField(max_length=200, default="ClickGarage")
-    odometer = models.IntegerField(null=True)
-
+    odometer        = models.IntegerField(null=True)
+    escalation_flag     = models.BooleanField(default=False)
     bill_id                 = models.CharField(max_length = 200)
     bill_generation_flag    = models.BooleanField(default=False)
     payment_status          = models.CharField(max_length = 200)

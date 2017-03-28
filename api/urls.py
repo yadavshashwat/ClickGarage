@@ -145,6 +145,9 @@ urlpatterns = [
     url(r'generate_bill/$', 'api.views.generate_bill', name='generate_bill'),
     url(r'add_modify_subscription/$', 'api.views.add_modify_subscription', name='add_modify_subscription'),
     url(r'view_all_subscription/$', 'api.views.view_all_subscription', name='view_all_subscription'),
+    url(r'analyize_bookings/$', 'api.views.analyize_bookings', name='analyize_bookings'),
+    url(r'send_sms_campaign/$', 'api.views.send_sms_campaign', name='send_sms_campaign'),
+
     # Website Api Check
     url(r'get_all_models/$', 'api.views.get_all_models', name='get_all_models'),
     url(r'get_all_jobs/$', 'api.views.get_all_jobs', name='get_all_jobs'),
@@ -152,7 +155,6 @@ urlpatterns = [
     url(r'get_all_part/$', 'api.views.get_all_part', name='get_all_part'),
     url(r'get_all_taxes/$', 'api.views.get_all_taxes', name='get_all_taxes'),
     url(r'view_all_bills/$', 'api.views.view_all_bills', name='view_all_bills'),
-    url(r'send_sms_campaign/$', 'api.views.send_sms_campaign', name='send_sms_campaign'),
 
 
 ]
