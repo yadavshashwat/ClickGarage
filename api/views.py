@@ -6903,7 +6903,7 @@ def get_all_taxes(request):
 def generate_bill(request):
     obj = {}
     obj['status'] = False
-    obj['result'] = []
+    obj['result'] = {}
     data_id                 = get_param(request,'data_id', None)
     bill_owner              = get_param(request,'bill_owner',None)
     total_amount            = get_param(request,'total_amount',None)
@@ -7065,46 +7065,46 @@ def generate_bill(request):
 
 
 
-        import subprocess
+    #     import subprocess
+    #
+    #     if socket.gethostname().startswith('ip-'):
+    #         if PRODUCTION:
+    #             cmd = 'wkhtmltopdf https://www.clickgarage.in/bills/old/' + data_id + '#print /home/ubuntu/beta/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
+    #         else:
+    #             cmd = 'wkhtmltopdf http://beta.clickgarage.in/bills/old/' + data_id + '#print /home/ubuntu/testing/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
+    #     else:
+    #         cmd = 'wkhtmltopdf http://local.clickgarage.in/bills/old/' + data_id + '#print /home/shashwat/Desktop/codebase/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
+    #     print cmd
+    #     s = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    #     ss = s.communicate()
+    #
+    # obj['err'] = ss
+    #
+    # if socket.gethostname().startswith('ip-'):
+    #     if PRODUCTION:
+    #         obj['filename'] = '/home/ubuntu/beta/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
+    #     else:
+    #         obj['filename'] = '/home/ubuntu/testing/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
+    # else:
+    #     obj['filename'] = '/home/shashwat/Desktop/codebase/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
+    #
+    #
+    # f = open(obj['filename'], 'r')
+    # filename = 'Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
+    # content = f.read()
+    # f.close()
+    # response_file = HttpResponse(content, mimetype='application/pdf')
+    # response_file['Content-Disposition'] = 'attachement; filename=' + filename
 
-        if socket.gethostname().startswith('ip-'):
-            if PRODUCTION:
-                cmd = 'wkhtmltopdf https://www.clickgarage.in/bills/old/' + data_id + '#print /home/ubuntu/beta/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
-            else:
-                cmd = 'wkhtmltopdf http://beta.clickgarage.in/bills/old/' + data_id + '#print /home/ubuntu/testing/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
-        else:
-            cmd = 'wkhtmltopdf http://local.clickgarage.in/bills/old/' + data_id + '#print /home/shashwat/Desktop/codebase/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
-        print cmd
-        s = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-        ss = s.communicate()
 
-    obj['err'] = ss
-
-    if socket.gethostname().startswith('ip-'):
-        if PRODUCTION:
-            obj['filename'] = '/home/ubuntu/beta/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
-        else:
-            obj['filename'] = '/home/ubuntu/testing/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
-    else:
-        obj['filename'] = '/home/shashwat/Desktop/codebase/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
-
-
-    f = open(obj['filename'], 'r')
-    filename = 'Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
-    content = f.read()
-    f.close()
-    response_file = HttpResponse(content, mimetype='application/pdf')
-    response_file['Content-Disposition'] = 'attachement; filename=' + filename
-
-
-
+    obj['result']['id'] = data_id
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
     
     # obj['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b,
     #                       'agent': request.user.is_agent, 'staff': request.user.is_staff}
-    return response_file
+    # return response_file
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 import pdfkit
