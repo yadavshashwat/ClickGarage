@@ -5249,6 +5249,7 @@ def analyize_bookings(request):
                             vol_lube_completed_cg = vol_lube_completed_cg + float(item['price'])
 
 
+
     obj['result'] = {
             'num_lead_cg': num_lead_cg,
             'vol_lead_cg': vol_lead_cg,
@@ -5330,6 +5331,121 @@ def analyize_bookings(request):
     obj['msg'] = "Success"
 
     return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def send_feedback(request):
+    booking_data_id = get_param(request, 'booking_data_id', None)
+    pick_on_time = get_param(request, 'pick_on_time', None)
+    delivery_on_time = get_param(request, 'delivery_on_time', None)
+    courteous = get_param(request, 'courteous', None)
+    washing = get_param(request, 'washing', None)
+    quality_of_service = get_param(request, 'quality_of_service', None)
+    experience = get_param(request, 'experience', None)
+    additional = get_param(request, 'additional', None)
+    recommend_factor = get_param(request, 'recommend_factor', None)
+    feedback_type   = get_param(request,'feedback_type',None)
+
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+
+    # if pick_on_time == "1":
+    #     pick_on_time = "Yes"
+    # elif pick_on_time == "0":
+    #     pick_on_time = "No"
+    # else:
+    #     pick_on_time = "Unanswered"
+    #
+    # if delivery_on_time == "1":
+    #     delivery_on_time = "Yes"
+    # elif delivery_on_time == "0":
+    #     delivery_on_time = "No"
+    # else:
+    #     delivery_on_time = "Unanswered"
+    #
+    # if courteous == "1":
+    #     courteous ="Yes"
+    # elif courteous == "0":
+    #     courteous = "No"
+    # else:
+    #     courteous = "Unanswered"
+
+    findFeed = Feedback.objects.filter(booking_data_id = booking_data_id)
+    booking = Bookings.objects.filter(id = booking_data_id)[0]
+    if len(findFeed):
+        findFeed = findFeed[0]
+        findFeed.clickgarage_flag       = booking.clickgarage_flag
+        if pick_on_time != None:
+           findFeed.pick_on_time        = pick_on_time
+        if delivery_on_time != None:
+            findFeed.delivery_on_time   = delivery_on_time
+        if courteous != None:
+            findFeed.courteous          = courteous
+        if washing != None:
+            findFeed.washing            = washing
+        if quality_of_service != None:
+            findFeed.quality_of_service = quality_of_service
+        if experience != None:
+            findFeed.experience         = experience
+        if additional != None:
+            findFeed.additional         = additional
+        if recommend_factor != None:
+            findFeed.recommend_factor   = recommend_factor
+        findFeed.time_stamp             = time.time()
+        findFeed.save()
+            # print findService.job_name
+
+    else:
+        Feed = Feedback(
+            clickgarage_flag    = booking.clickgarage_flag,
+            booking_data_id     = booking_data_id,
+            time_stamp          = time.time(),
+            pick_on_time        = pick_on_time,
+            delivery_on_time    = delivery_on_time,
+            courteous           = courteous,
+            washing             = washing,
+            quality_of_service  = quality_of_service,
+            experience          = experience,
+            additional          = additional,
+            recommend_factor    = recommend_factor)
+        Feed.save()
+
+    if feedback_type == "1":
+        booking.feedback_1 = True
+    elif feedback_type == "2":
+        booking.feedback_2 = True
+    booking.save()
+    obj['status'] = True
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def get_all_feedback(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    booking_data_id = get_param(request, 'booking_data_id', None)
+    if booking_data_id == None :
+        feedObjs = Feedback.objects.all()
+    else:
+        feedObjs = Feedback.objects.filter(booking_data_id=booking_data_id)
+    for feed in feedObjs:
+        obj['result'].append({
+            'clickgarage_flag':feed.clickgarage_flag               ,
+            'booking_data_id': feed.booking_data_id,
+            'time_stamp': feed.time_stamp,
+            'pick_on_time': feed.pick_on_time,
+            'delivery_on_time': feed.delivery_on_time,
+            'courteous': feed.courteous,
+            'washing': feed.washing,
+            'quality_of_service': feed.quality_of_service,
+            'experience': feed.experience,
+            'additional': feed.additional,
+            'recommend_factor': feed.recommend_factor,
+        })
+
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
 
 
 def view_all_bookings(request):

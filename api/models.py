@@ -554,6 +554,8 @@ class Bookings(models.Model):
     bill_id                 = models.CharField(max_length = 200)
     bill_generation_flag    = models.BooleanField(default=False)
     payment_status          = models.CharField(max_length = 200)
+    feedback_1              = models.BooleanField(default=False)
+    feedback_2              = models.BooleanField(default=False)
 
     # int_job_summary         = ListField(DictField(), null=True)
 
@@ -600,6 +602,19 @@ class Bills(models.Model):
     make                        = models.CharField(max_length=200)
     model                       = models.CharField(max_length=200)
     bill_type                   = models.CharField(max_length=200)
+
+class Feedback(models.Model):
+    clickgarage_flag            = models.BooleanField()
+    booking_data_id                  = models.CharField(max_length=200)
+    time_stamp                  =  models.CharField(max_length=50)
+    pick_on_time                = models.CharField(max_length=50,null=True)
+    delivery_on_time            = models.CharField(max_length=50,null=True)
+    courteous                   = models.CharField(max_length=50,null=True)
+    washing                     = models.CharField(max_length=50,null=True)
+    quality_of_service          = models.CharField(max_length=50,null=True)
+    experience                  = models.CharField(max_length=50,null=True)
+    additional                  = models.CharField(max_length=600,null=True)
+    recommend_factor            = models.CharField(max_length=50,null=True)
 
 
 class Messages(models.Model):
