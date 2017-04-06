@@ -5537,6 +5537,7 @@ def view_all_bookings(request):
     lead_booking = get_param(request, 'lead_booking', None)
     sort = get_param(request, 'sort', None)
     date = get_param(request,'date', None)
+    date_end = get_param(request,'date_end',None)
     del_date = get_param(request, 'del_date', None)
     status = get_param(request,'status',None)
     name = get_param(request, 'name', None)
@@ -5544,26 +5545,82 @@ def view_all_bookings(request):
     veh_type = get_param(request,'veh_type',None)
     data_id = get_param(request,'data_id',None)
     state = get_param(request,'state',None)
+    source_id = get_param(request, 'source_id', None)
+    phone_num = get_param(request, 'phone_num', None)
+
     if data_id == "" or data_id == None:
-        if request.user.is_admin or request.user.is_staff:
+        if request.user.is_admin:
             if (booking_id == None or booking_id ==""):
                 # print "no id"
                 if sort != None and sort != "":
                     if sort == "Booking ID":
                         # print "booking sort"
                         tranObjs = Bookings.objects.all().order_by('-booking_id')
-                    if sort == "Name":
+                    elif sort == "Name":
                         # print "name sort"
                         tranObjs = Bookings.objects.all().order_by('cust_name')
-                    if sort == "Status":
+                    elif sort == "Status":
                         # print "status sort"
                         tranObjs = Bookings.objects.all().order_by('status')
+                    elif sort == "Generation Date":
+                        # print "status sort"
+                        tranObjs = Bookings.objects.all().order_by('booking_timestamp')
+                    elif sort == "Follow Time":
+                        # print "status sort"
+                        tranObjs = Bookings.objects.all().order_by('follow_up_time')
+                    elif sort == "Source":
+                        # print "status sort"
+                        tranObjs = Bookings.objects.all().order_by('source')
+                    elif sort == "Date":
+                        # print "status sort"
+                        if lead_booking == "Lead":
+                            tranObjs = Bookings.objects.all().order_by('follow_up_date')
+                        else:
+                            tranObjs = Bookings.objects.all().order_by('date_booking')
                     else:
                         # print "other sort"
                         tranObjs = Bookings.objects.all().order_by('-booking_id')
                 else:
                     # print "no sort"
                     tranObjs = Bookings.objects.all().order_by('-booking_id')
+            else:
+                # print "booking id filter"
+                tranObjs = Bookings.objects.filter(booking_id=booking_id)
+
+        elif request.user.is_staff:
+            if (booking_id == None or booking_id ==""):
+                # print "no id"
+                if sort != None and sort != "":
+                    if sort == "Booking ID":
+                        # print "booking sort"
+                        tranObjs = Bookings.objects.filter(clickgarage_flag=True).order_by('-booking_id')
+                    elif sort == "Name":
+                        # print "name sort"
+                        tranObjs = Bookings.objects.filter(clickgarage_flag=True).order_by('cust_name')
+                    elif sort == "Status":
+                        # print "status sort"
+                        tranObjs = Bookings.objects.filter(clickgarage_flag=True).order_by('status')
+                    elif sort == "Generation Date":
+                        # print "status sort"
+                        tranObjs = Bookings.objects.filter(clickgarage_flag=True).order_by('booking_timestamp')
+                    elif sort == "Follow Time":
+                        # print "status sort"
+                        tranObjs = Bookings.objects.filter(clickgarage_flag=True).order_by('follow_up_time')
+                    elif sort == "Source":
+                        # print "status sort"
+                        tranObjs = Bookings.objects.filter(clickgarage_flag=True).order_by('source')
+                    elif sort == "Date":
+                        # print "status sort"
+                        if lead_booking == "Lead":
+                            tranObjs = Bookings.objects.filter(clickgarage_flag=True).order_by('follow_up_date')
+                        else:
+                            tranObjs = Bookings.objects.filter(clickgarage_flag=True).order_by('date_booking')
+                    else:
+                        # print "other sort"
+                        tranObjs = Bookings.objects.filter(clickgarage_flag=True).order_by('-booking_id')
+                else:
+                    # print "no sort"
+                    tranObjs = Bookings.objects.filter(clickgarage_flag=True).order_by('-booking_id')
             else:
                 # print "booking id filter"
                 tranObjs = Bookings.objects.filter(booking_id=booking_id)
@@ -5574,12 +5631,27 @@ def view_all_bookings(request):
                     if sort == "Booking ID":
                         # print "booking sort"
                         tranObjs = Bookings.objects.filter(cust_id=request.user.id).order_by('-booking_id')
-                    if sort == "Name":
+                    elif sort == "Name":
                         # print "name sort"
                         tranObjs = Bookings.objects.filter(cust_id=request.user.id).order_by('cust_name')
-                    if sort == "Status":
+                    elif sort == "Status":
                         # print "status sort"
                         tranObjs = Bookings.objects.filter(cust_id=request.user.id).order_by('status')
+                    elif sort == "Generation Date":
+                        # print "status sort"
+                        tranObjs = Bookings.objects.filter(cust_id=request.user.id).order_by('booking_timestamp')
+                    elif sort == "Follow Time":
+                        # print "status sort"
+                        tranObjs = Bookings.objects.filter(cust_id=request.user.id).order_by('follow_up_time')
+                    elif sort == "Source":
+                        # print "status sort"
+                        tranObjs = Bookings.objects.filter(cust_id=request.user.id).order_by('source')
+                    elif sort == "Date":
+                        # print "status sort"
+                        if lead_booking == "Lead":
+                            tranObjs = Bookings.objects.filter(cust_id=request.user.id).order_by('follow_up_date')
+                        else:
+                            tranObjs = Bookings.objects.filter(cust_id=request.user.id).order_by('date_booking')
                     else:
                         # print "other sort"
                         tranObjs = Bookings.objects.filter(cust_id=request.user.id).order_by('-booking_id')
@@ -5597,12 +5669,27 @@ def view_all_bookings(request):
                     if sort == "Booking ID":
                         # print "booking sort"
                         tranObjs = Bookings.objects.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id)).order_by('-booking_id')
-                    if sort == "Name":
+                    elif sort == "Name":
                         # print "name sort"
                         tranObjs = Bookings.objects.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id)).order_by('cust_name')
-                    if sort == "Status":
+                    elif sort == "Status":
                         # print "status sort"
                         tranObjs = Bookings.objects.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id)).order_by('status')
+                    elif sort == "Generation Date":
+                        # print "status sort"
+                        tranObjs = Bookings.objects.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id)).order_by('booking_timestamp')
+                    elif sort == "Follow Time":
+                        # print "status sort"
+                        tranObjs = Bookings.objects.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id)).order_by('follow_up_time')
+                    elif sort == "Source":
+                        # print "status sort"
+                        tranObjs = Bookings.objects.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id)).order_by('source')
+                    elif sort == "Date":
+                        # print "status sort"
+                        if lead_booking == "Lead":
+                            tranObjs = Bookings.objects.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id)).order_by('follow_up_date')
+                        else:
+                            tranObjs = Bookings.objects.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id)).order_by('date_booking')
                     else:
                         # print "other sort"
                         tranObjs = Bookings.objects.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id)).order_by('-booking_id')
@@ -5633,11 +5720,19 @@ def view_all_bookings(request):
             # print "filter name"
             tranObjs = tranObjs.filter(cust_name=name)
 
+        if source_id != None and source_id != "":
+            tranObjs = tranObjs.filter(source=source_id)
+
+        if phone_num != None and phone_num != "":
+            tranObjs = tranObjs.filter(cust_number=phone_num)
+
         if reg_number != None and reg_number != "":
             # print "filter reg number"
             tranObjs = tranObjs.filter(cust_regnumber=reg_number)
+
         if data_id != None and data_id != "":
             tranObjs = tranObjs.filter(id=data_id)
+
 
         if date != None and date != "":
             # print "date filter"
@@ -5646,11 +5741,21 @@ def view_all_bookings(request):
             day = date[0:2]
             # print year
             # print month
+
+            start_date = datetime.date(int(year), int(month), int(day))
+
+            if date_end != "" and date_end != None:
+                end_date = datetime.date(int(date_end[6:10]), int(date_end[3:5]), int(date_end[0:2]))
+            else:
+                end_date = start_date
+
             # print day
             if lead_booking == "Lead":
-                tranObjs = tranObjs.filter(follow_up_date=datetime.date(int(year), int(month), int(day)))
+                # tranObjs = tranObjs.filter(follow_up_date=datetime.date(int(year), int(month), int(day)))
+                tranObjs = tranObjs.filter(follow_up_date__range=(start_date, end_date))
             else:
-                tranObjs = tranObjs.filter(date_booking=datetime.date(int(year), int(month), int(day)))
+                # tranObjs = tranObjs.filter(date_booking=datetime.date(int(year), int(month), int(day)))
+                tranObjs = tranObjs.filter(date_booking__range=(start_date, end_date))
 
         if del_date != None and del_date != "":
             # print "date filter"
@@ -5660,7 +5765,15 @@ def view_all_bookings(request):
             print year_del
             print month_del
             print day_del
-            tranObjs = tranObjs.filter(date_delivery=datetime.date(int(year_del), int(month_del), int(day_del)))
+            start_date_del = datetime.date(int(year_del), int(month_del), int(day_del))
+
+            if date_end != "" and date_end != None:
+                end_date_del = datetime.date(int(date_end[6:10]), int(date_end[3:5]), int(date_end[0:2]))
+            else:
+                end_date_del = start_date_del
+
+            # tranObjs = tranObjs.filter(date_delivery=datetime.date(int(year_del), int(month_del), int(day_del)))
+            tranObjs = tranObjs.filter(date_delivery__range=(start_date_del, end_date_del))
 
         if veh_type != None and veh_type != "" :
             # print "veh type"
