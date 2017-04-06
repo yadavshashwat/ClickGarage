@@ -1,3 +1,4 @@
+# coding=utf-8
 from django.core.context_processors import csrf
 from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse
@@ -6,7 +7,6 @@ from django.conf import settings
 from django.middleware.csrf import get_token
 
 from ajaxuploader.views import AjaxFileUploader
-
 import datetime
 import math
 import json, urllib
@@ -1362,9 +1362,43 @@ import_uploader = AjaxFileUploader()
 # <----- revamp code ------>
 
 
+# -*- coding: utf-8 -*-
+
 def advert(request,service='',veh_type='', source=''):
+    # -*- coding: utf-8 -*-
     template = loader.get_template('revamp/advert.html')
+    title = ""
+    description = ""
+    if veh_type == "Car":
+        if service == "CarCare":
+            title = "ClickGarage - Car Care Specialties in Gurgaon, Delhi NCR"
+            description = "Keep the exterior & interior of your car looking great with ClickGarage. Choose from a wide range of treatments and get it done while sitting in the comfort of your home."
+        elif service == "Servicing":
+            title = "ClickGarage - Book Car Service Online 24/7"
+            description = "Get online quotes for a car service from ClickGarage. Our service stations offer quality service in Gurgaon, Delhi NCR using genuine parts"
+        elif service == "Repairing":
+            title = "ClickGarage - Book Car Repair Online 24/7 at ClickGarage"
+            description = "Get online quotes for a car repair from ClickGarage. Our service stations offer all type of quality repair in Gurgaon, Delhi NCR using genuine parts"
+        elif service == "Denting":
+            title = "ClickGarage - Denting/Painting Specialties in Gurgaon, Delhi NCR "
+            description = "Get online quotes for any kind of body shop work. Make your car look like new with denting and paining jobs of yourr car"
+        else:
+            title = "Car and Bike - Repair, Cleaning, Servicing , Road Side Assistance , Doorstep services"
+            description = "Click Garage is the ideal one-stop solution for all types of car & bike repair, service, interior cleaning and other associated works. We also offer quick and efficient road side assistance for cars (Nissan, Datsun, Volkswagen, Toyota, Tata, Skoda,  Renault, Maruti Suzuki, Mahindra, Hyundai, Honda, Ford, Fiat, Chevrolet) and bikes (Royal Enfield, Suzuki, TVS, Bajaj, KTM, Yamaha, Hero)."
+    elif veh_type == "Bike":
+        if service == "Servicing":
+            title = "ClickGarage - Book Bike Service & Repairs Online 24/7"
+            description = "Get online quotes for a bike service from ClickGarage. Our service  stations offer quality service in Gurgaon, Delhi NCR"
+        elif service == "Repairing":
+            title = "ClickGarage - Book Bike Repair Online 24/7"
+            description = "Get online quotes for a bike repair from ClickGarage. Our service stations offer all type of quality repair in Gurgaon, Delhi NCR using genuine parts"
+    else:
+        title = "Car and Bike - Repair, Cleaning, Servicing , Road Side Assistance , Doorstep services"
+        description = "Click Garage is the ideal one-stop solution for all types of car & bike repair, service, interior cleaning and other associated works. We also offer quick and efficient road side assistance for cars (Nissan, Datsun, Volkswagen, Toyota, Tata, Skoda,  Renault, Maruti Suzuki, Mahindra, Hyundai, Honda, Ford, Fiat, Chevrolet) and bikes (Royal Enfield, Suzuki, TVS, Bajaj, KTM, Yamaha, Hero)."
     context = RequestContext(request ,locals())
+
+    
+    
     return HttpResponse(template.render(context))
 
 def index(request):

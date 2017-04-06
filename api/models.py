@@ -547,15 +547,18 @@ class Bookings(models.Model):
     booking_user_type       = models.CharField(max_length=500, default="User", null=True)
     booking_user_name       = models.CharField(max_length=200)
     booking_user_number     = models.CharField(max_length=200)
-    clickgarage_flag = models.BooleanField(default=True)
-    booking_owner = models.CharField(max_length=200, default="ClickGarage")
-    odometer        = models.IntegerField(null=True)
-    escalation_flag     = models.BooleanField(default=False)
+    clickgarage_flag        = models.BooleanField(default=True)
+    booking_owner           = models.CharField(max_length=200, default="ClickGarage")
+    odometer                = models.IntegerField(null=True)
+    escalation_flag         = models.BooleanField(default=False)
     bill_id                 = models.CharField(max_length = 200)
     bill_generation_flag    = models.BooleanField(default=False)
     payment_status          = models.CharField(max_length = 200)
     feedback_1              = models.BooleanField(default=False)
     feedback_2              = models.BooleanField(default=False)
+    follow_up_date          = models.DateField(null=True)
+    follow_up_time          = models.TimeField(null=True)
+    follow_up_status        = ListField(DictField())
 
     # int_job_summary         = ListField(DictField(), null=True)
 
@@ -605,8 +608,8 @@ class Bills(models.Model):
 
 class Feedback(models.Model):
     clickgarage_flag            = models.BooleanField()
-    booking_data_id                  = models.CharField(max_length=200)
-    time_stamp                  =  models.CharField(max_length=50)
+    booking_data_id             = models.CharField(max_length=200)
+    time_stamp                  = models.CharField(max_length=50)
     pick_on_time                = models.CharField(max_length=50,null=True)
     delivery_on_time            = models.CharField(max_length=50,null=True)
     courteous                   = models.CharField(max_length=50,null=True)

@@ -4598,12 +4598,9 @@ def create_check_user_modified(name,number,owner):
 
 
 def place_booking(user_id, name, number, email, reg_number, address, locality, city, order_list, make, veh_type, model,
-                  fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary,send_sms = "1",booking_type="User",booking_user_name=None,booking_user_number=None, owner="ClickGarage"):
-
-
+                  fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary,send_sms = "1",booking_type="User",booking_user_name=None,booking_user_number=None, owner="ClickGarage", follow_up_date_book = "",follow_up_time_book = ""):
 
     print email
-
 
     name = cleanstring(name).title()
     address = cleanstring(address).title()
@@ -4642,8 +4639,25 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
             user.email_list.append(email)
         user.email = email
         user.save()
+        if follow_up_date_book == "":
+            follow_up_date = time.strftime("%Y-%m-%d")
+        if follow_up_time_book == "":
+            follow_up_time = datetime.time(9,30,0,0)
+
+
     else:
         status = "Lead"
+        if follow_up_date_book == "":
+            follow_up_date = time.strftime("%Y-%m-%d")
+        else:
+            follow_up_date = follow_up_date_book
+
+        if follow_up_time_book == "":
+            follow_up_time = datetime.time(9,30,0,0)
+        else:
+            follow_up_time = follow_up_time_book
+
+    # import time.strftime("%d/%m/%Y"))
     # update estimate history
     new_estimate_timestamp = time.time()
     estimate_by_id = user_id
@@ -4694,7 +4708,9 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
                  # lead_follow_up_date = follow_up_date,
                  estimate_history    =estimate_history,
                  clickgarage_flag = clickgarage_flag,
-                 booking_owner = owner)
+                 booking_owner = owner,
+                 follow_up_date = follow_up_date,
+                 follow_up_time = follow_up_time)
     tt.save()
     if send_sms == "1":
         mviews.send_booking_confirm(email=email,name=name,booking_id=booking_id,number=number, service_list= int_summary, car_bike=veh_type)
@@ -5001,7 +5017,7 @@ def call_customer(request):
 # Exotel calling end
 
 
-def analyize_bookings(request):
+def analyse_bookings(request):
     obj = {}
     obj['status'] = False
     obj['result'] = {}
@@ -5010,13 +5026,17 @@ def analyize_bookings(request):
     monthyear = get_param(request, 'monthyear', None)
 
     if request.user.is_admin or request.user.is_staff:
-        tranObjs = Bookings.objects.all().order_by('-booking_id')
+        tranObjs = Bookings.objects.filter(clickgarage_flag = True).order_by('-booking_id')
+        custObjs = CGUserNew.objects.filter(clickgarage_flag = True)
     elif request.user.is_b2b:
         tranObjs = Bookings.objects.filter(cust_id=request.user.id).order_by('-booking_id')
+        custObjs = CGUserNew.objects.filter(owner_user=request.user.id)
     elif request.user.is_agent:
         tranObjs = Bookings.objects.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id)).order_by('-booking_id')
+        custObjs = CGUserNew.objects.filter(owner_user=request.user.id)
     else:
         tranObjs = None
+        custObjs = None
 
     if car_bike != None and car_bike != "":
         tranObjs = tranObjs.filter(cust_vehicle_type=car_bike)
@@ -5026,305 +5046,366 @@ def analyize_bookings(request):
         month = date[3:5]
         day = date[0:2]
         tranObjs = tranObjs.filter(date_booking=datetime.date(int(year), int(month), int(day)))
-
+        custObjs = custObjs.filter(date_joined =datetime.date(int(year), int(month), int(day)) )
     if monthyear != None and monthyear != "":
-        year = date[0:4]
-        month = date[3:5]
-        tranObjs = tranObjs.filter(date_booking__year=year, date_booking__month=month)
+        year = monthyear[0:4]
+        month = monthyear[4:6]
+        # print year
+        # print month
+        if month in ['01','03','05','07','08','10','12']:
+            day = 31
+        elif (month == "02" and (int(year) % 4) == 0):
+            day = 29
+        elif month == "02":
+            day = 28
+        else:
+            day = 30
+        start_date = datetime.date(int(year), int(month), 1)
+        end_date = datetime.date(int(year), int(month), day)
+        tranObjs = tranObjs.filter(date_booking__range=(start_date, end_date))
+        custObjs = custObjs.filter(date_joined__range=(start_date, end_date))
+    num_users = 0
+    num_lead = 0
+    vol_lead = 0
+    num_fu = 0
+    vol_fu = 0
+    num_confirmed = 0
+    vol_confirmed = 0
+    num_assigned = 0
+    vol_assigned = 0
+    num_rw = 0
+    vol_rw = 0
+    num_es = 0
+    vol_es = 0
+    num_al = 0
+    vol_al = 0
+    num_lead_cancelled = 0
+    vol_lead_cancelled = 0
+    num_booking_cancelled = 0
+    vol_booking_cancelled = 0
+    num_escalation = 0
+    num_completed = 0
+    vol_googleadwords_completed = 0
+    num_googleadwords_completed = 0
+    vol_repeatcustomer_completed = 0
+    num_repeatcustomer_completed = 0
+    vol_employeereferral_completed = 0
+    num_employeereferral_completed = 0
+    vol_justdial_completed = 0
+    num_justdial_completed = 0
+    vol_pamphlet_completed = 0
+    num_pamphlet_completed = 0
+    vol_autoadvertisement_completed = 0
+    num_autoadvertisement_completed = 0
+    vol_on_groundmarketing_completed = 0
+    num_on_groundmarketing_completed = 0
+    vol_sulekha_completed = 0
+    num_sulekha_completed = 0
+    vol_database_coldcalling_completed = 0
+    num_database_coldcalling_completed = 0
+    vol_chat_completed = 0
+    num_chat_completed = 0
+    vol_b2b_completed = 0
+    num_b2b_completed = 0
+    vol_partner_droom_completed = 0
+    num_partner_droom_completed = 0
+    vol_partner_wishup_completed = 0
+    num_partner_wishup_completed = 0
+    vol_partner_housejoy_completed = 0
+    num_partner_housejoy_completed = 0
+    vol_walkin_completed = 0
+    num_walkin_completed = 0
+    vol_partner_mrright_completed = 0
+    num_partner_mrright_completed = 0
+    vol_websearch_completed = 0
+    num_websearch_completed = 0
+    vol_unknown_completed = 0
+    num_unknown_completed = 0
+    vol_societycamps_completed = 0
+    num_societycamps_completed = 0
+    vol_checkupcamps_completed = 0
+    num_checkupcamps_completed = 0
+    vol_signuplead_completed = 0
+    num_signuplead_completed = 0
+    vol_facebookad_completed = 0
+    num_facebookad_completed = 0
+    vol_mahindraauthorized_completed = 0
+    num_mahindraauthorized_completed = 0
+    vol_other_completed = 0
+    num_other_completed = 0
+    vol_completed = 0
+    vol_part_completed = 0
+    vol_labour_completed = 0
+    vol_consumable_completed = 0
+    vol_lube_completed = 0
+    nps_completed = 0
+    Promoters = 0
+    Detractors = 0
+    Passives = 0
+    if len(custObjs):
+        print len(custObjs)
+        for cust in custObjs:
+            num_users = num_users + 1
 
-    num_lead_cg = 0
-    vol_lead_cg = 0
-    num_fu_cg = 0
-    vol_fu_cg = 0
-    num_confirmed_cg = 0
-    vol_confirmed_cg = 0
-    num_assigned_cg = 0
-    vol_assigned_cg = 0
-    num_rw_cg = 0
-    vol_rw_cg = 0
-    num_es_cg = 0
-    vol_es_cg = 0
-    num_al_cg = 0
-    vol_al_cg = 0
-    num_lead_cancelled_cg = 0
-    vol_lead_cancelled_cg = 0
-    num_booking_cancelled_cg = 0
-    vol_booking_cancelled_cg = 0
-    num_escalation_cg = 0
-    num_completed_cg = 0
-    vol_googleadwords_completed_cg = 0
-    num_googleadwords_completed_cg = 0
-    vol_repeatcustomer_completed_cg = 0
-    num_repeatcustomer_completed_cg = 0
-    vol_employeereferral_completed_cg = 0
-    num_employeereferral_completed_cg = 0
-    vol_justdial_completed_cg = 0
-    num_justdial_completed_cg = 0
-    vol_pamphlet_completed_cg = 0
-    num_pamphlet_completed_cg = 0
-    vol_autoadvertisement_completed_cg = 0
-    num_autoadvertisement_completed_cg = 0
-    vol_on_groundmarketing_completed_cg = 0
-    num_on_groundmarketing_completed_cg = 0
-    vol_sulekha_completed_cg = 0
-    num_sulekha_completed_cg = 0
-    vol_database_coldcalling_completed_cg = 0
-    num_database_coldcalling_completed_cg = 0
-    vol_chat_completed_cg = 0
-    num_chat_completed_cg = 0
-    vol_b2b_completed_cg = 0
-    num_b2b_completed_cg = 0
-    vol_partner_droom_completed_cg = 0
-    num_partner_droom_completed_cg = 0
-    vol_partner_wishup_completed_cg = 0
-    num_partner_wishup_completed_cg = 0
-    vol_partner_housejoy_completed_cg = 0
-    num_partner_housejoy_completed_cg = 0
-    vol_walkin_completed_cg = 0
-    num_walkin_completed_cg = 0
-    vol_partner_mrright_completed_cg = 0
-    num_partner_mrright_completed_cg = 0
-    vol_websearch_completed_cg = 0
-    num_websearch_completed_cg = 0
-    vol_unknown_completed_cg = 0
-    num_unknown_completed_cg = 0
-    vol_societycamps_completed_cg = 0
-    num_societycamps_completed_cg = 0
-    vol_checkupcamps_completed_cg = 0
-    num_checkupcamps_completed_cg = 0
-    vol_signuplead_completed_cg = 0
-    num_signuplead_completed_cg = 0
-    vol_facebookad_completed_cg = 0
-    num_facebookad_completed_cg = 0
-    vol_mahindraauthorized_completed_cg = 0
-    num_mahindraauthorized_completed_cg = 0
-    vol_other_completed_cg = 0
-    num_other_completed_cg = 0
-    vol_completed_cg = 0
-    vol_part_completed_cg = 0
-    vol_labour_completed_cg = 0
-    vol_consumable_completed_cg = 0
-    vol_lube_completed_cg = 0
+
+
     if len(tranObjs):
         for trans in tranObjs:
             if trans.clickgarage_flag == True:
-                if trans.status == "Lead" :
-                    num_lead_cg               = num_lead_cg + 1
+                if trans.status == "Lead":
+                    num_lead               = num_lead + 1
                     for item in trans.service_items:
-                        vol_lead_cg           = vol_lead_cg + float(item['price'])
+                        vol_lead           = vol_lead + float(item['price'])
 
 
                 elif trans.status == "Follow Up":
-                    num_fu_cg               = num_fu_cg + 1
+                    num_fu               = num_fu + 1
                     for item in trans.service_items:
-                        vol_fu_cg         = vol_fu_cg + float(item['price'])
+                        vol_fu         = vol_fu + float(item['price'])
 
 
                 elif trans.status == "Confirmed":
-                    num_confirmed_cg = num_confirmed_cg + 1
+                    num_confirmed = num_confirmed + 1
                     for item in trans.service_items:
-                        vol_confirmed_cg = vol_confirmed_cg + float(item['price'])
+                        vol_confirmed = vol_confirmed + float(item['price'])
 
 
                 elif trans.status == "Assigned":
-                    num_assigned_cg = num_assigned_cg + 1
+                    num_assigned = num_assigned + 1
                     for item in trans.service_items:
-                        vol_assigned_cg = vol_assigned_cg + float(item['price'])
+                        vol_assigned = vol_assigned + float(item['price'])
 
 
                 elif trans.status == "Reached Workshop":
-                    num_rw_cg = num_rw_cg + 1
+                    num_rw = num_rw + 1
                     for item in trans.service_items:
-                        vol_rw_cg = vol_rw_cg + float(item['price'])
+                        vol_rw = vol_rw + float(item['price'])
 
 
                 elif trans.status == "Estimate Shared":
-                    num_es_cg = num_es_cg + 1
+                    num_es = num_es + 1
                     for item in trans.service_items:
-                        vol_es_cg = vol_es_cg + float(item['price'])
+                        vol_es = vol_es + float(item['price'])
 
                 elif trans.status == "Agent Left":
-                    num_al_cg = num_al_cg + 1
+                    num_al = num_al + 1
                     for item in trans.service_items:
-                        vol_al_cg = vol_al_cg + float(item['price'])
+                        vol_al = vol_al + float(item['price'])
 
 
                 elif trans.status == "Cancelled":
                     if trans.booking_flag == False:
-                        num_lead_cancelled_cg = num_lead_cancelled_cg + 1
+                        num_lead_cancelled = num_lead_cancelled + 1
                         for item in trans.service_items:
-                            vol_lead_cancelled_cg = vol_lead_cancelled_cg + float(item['price'])
+                            vol_lead_cancelled = vol_lead_cancelled + float(item['price'])
                     else:
-                        num_booking_cancelled_cg = num_booking_cancelled_cg + 1
+                        num_booking_cancelled = num_booking_cancelled + 1
                         for item in trans.service_items:
-                            vol_booking_cancelled_cg = vol_booking_cancelled_cg + float(item['price'])
+                            vol_booking_cancelled = vol_booking_cancelled + float(item['price'])
 
                 elif trans.status == "Escalation":
-                    num_escalation_cg = num_escalation_cg + 1
+                    num_escalation = num_escalation + 1
 
                 elif trans.status == "Job Completed" or trans.status == "Feedback Taken":
-                    num_completed_cg = num_completed_cg + 1
+                    num_completed = num_completed + 1
                     if trans.source == "Google Adwords":
-                        vol_googleadwords_completed_cg = vol_googleadwords_completed_cg + float(trans.price_total)
-                        num_googleadwords_completed_cg = num_googleadwords_completed_cg + 1
+                        vol_googleadwords_completed = vol_googleadwords_completed + float(trans.price_total)
+                        num_googleadwords_completed = num_googleadwords_completed + 1
                     elif trans.source == "Repeat Customer":
-                        vol_repeatcustomer_completed_cg = vol_repeatcustomer_completed_cg + float(trans.price_total)
-                        num_repeatcustomer_completed_cg = num_repeatcustomer_completed_cg + 1
+                        vol_repeatcustomer_completed = vol_repeatcustomer_completed + float(trans.price_total)
+                        num_repeatcustomer_completed = num_repeatcustomer_completed + 1
                     elif trans.source == "Employee Referral":
-                        vol_employeereferral_completed_cg = vol_employeereferral_completed_cg + float(trans.price_total)
-                        num_employeereferral_completed_cg = num_employeereferral_completed_cg + 1
+                        vol_employeereferral_completed = vol_employeereferral_completed + float(trans.price_total)
+                        num_employeereferral_completed = num_employeereferral_completed + 1
                     elif trans.source == "JustDial":
-                        vol_justdial_completed_cg = vol_justdial_completed_cg + float(trans.price_total)
-                        num_justdial_completed_cg = num_justdial_completed_cg + 1
+                        vol_justdial_completed = vol_justdial_completed + float(trans.price_total)
+                        num_justdial_completed = num_justdial_completed + 1
                     elif trans.source == "Pamphlet":
-                        vol_pamphlet_completed_cg = vol_pamphlet_completed_cg + float(trans.price_total)
-                        num_pamphlet_completed_cg = num_pamphlet_completed_cg + 1
+                        vol_pamphlet_completed = vol_pamphlet_completed + float(trans.price_total)
+                        num_pamphlet_completed = num_pamphlet_completed + 1
                     elif trans.source == "Auto Advertisement":
-                        vol_autoadvertisement_completed_cg = vol_autoadvertisement_completed_cg + float(trans.price_total)
-                        num_autoadvertisement_completed_cg = num_autoadvertisement_completed_cg + 1
+                        vol_autoadvertisement_completed = vol_autoadvertisement_completed + float(trans.price_total)
+                        num_autoadvertisement_completed = num_autoadvertisement_completed + 1
                     elif trans.source == "On-Ground Marketing":
-                        vol_on_groundmarketing_completed_cg = vol_on_groundmarketing_completed_cg + float(trans.price_total)
-                        num_on_groundmarketing_completed_cg = num_on_groundmarketing_completed_cg + 1
+                        vol_on_groundmarketing_completed = vol_on_groundmarketing_completed + float(trans.price_total)
+                        num_on_groundmarketing_completed = num_on_groundmarketing_completed + 1
                     elif trans.source == "Sulekha":
-                        vol_sulekha_completed_cg = vol_sulekha_completed_cg + float(trans.price_total)
-                        num_sulekha_completed_cg = num_sulekha_completed_cg + 1
+                        vol_sulekha_completed = vol_sulekha_completed + float(trans.price_total)
+                        num_sulekha_completed = num_sulekha_completed + 1
                     elif trans.source == "Database - Cold Calling":
-                        vol_database_coldcalling_completed_cg = vol_database_coldcalling_completed_cg + float(trans.price_total)
-                        num_database_coldcalling_completed_cg = num_database_coldcalling_completed_cg + 1
+                        vol_database_coldcalling_completed = vol_database_coldcalling_completed + float(trans.price_total)
+                        num_database_coldcalling_completed = num_database_coldcalling_completed + 1
                     elif trans.source == "Chat":
-                        vol_chat_completed_cg = vol_chat_completed_cg + float(trans.price_total)
-                        num_chat_completed_cg = num_chat_completed_cg + 1
+                        vol_chat_completed = vol_chat_completed + float(trans.price_total)
+                        num_chat_completed = num_chat_completed + 1
                     elif trans.source == "B2B":
-                        vol_b2b_completed_cg = vol_b2b_completed_cg + float(trans.price_total)
-                        num_b2b_completed_cg = num_b2b_completed_cg + 1
+                        vol_b2b_completed = vol_b2b_completed + float(trans.price_total)
+                        num_b2b_completed = num_b2b_completed + 1
                     elif trans.source == "Partner - Droom":
-                        vol_partner_droom_completed_cg = vol_partner_droom_completed_cg + float(trans.price_total)
-                        num_partner_droom_completed_cg = num_partner_droom_completed_cg + 1
+                        vol_partner_droom_completed = vol_partner_droom_completed + float(trans.price_total)
+                        num_partner_droom_completed = num_partner_droom_completed + 1
                     elif trans.source == "Partner - Wishup":
-                        vol_partner_wishup_completed_cg = vol_partner_wishup_completed_cg + float(trans.price_total)
-                        num_partner_wishup_completed_cg = num_partner_wishup_completed_cg + 1
+                        vol_partner_wishup_completed = vol_partner_wishup_completed + float(trans.price_total)
+                        num_partner_wishup_completed = num_partner_wishup_completed + 1
                     elif trans.source == "Partner - Housejoy":
-                        vol_partner_housejoy_completed_cg = vol_partner_housejoy_completed_cg + float(trans.price_total)
-                        num_partner_housejoy_completed_cg = num_partner_housejoy_completed_cg + 1
+                        vol_partner_housejoy_completed = vol_partner_housejoy_completed + float(trans.price_total)
+                        num_partner_housejoy_completed = num_partner_housejoy_completed + 1
                     elif trans.source == "Walk in ":
-                        vol_walkin_completed_cg = vol_walkin_completed_cg + float(trans.price_total)
-                        num_walkin_completed_cg = num_walkin_completed_cg + 1
+                        vol_walkin_completed = vol_walkin_completed + float(trans.price_total)
+                        num_walkin_completed = num_walkin_completed + 1
                     elif trans.source == "Partner - Mr.Right":
-                        vol_partner_mrright_completed_cg = vol_partner_mrright_completed_cg + float(trans.price_total)
-                        num_partner_mrright_completed_cg = num_partner_mrright_completed_cg + 1
+                        vol_partner_mrright_completed = vol_partner_mrright_completed + float(trans.price_total)
+                        num_partner_mrright_completed = num_partner_mrright_completed + 1
                     elif trans.source == "Web Search":
-                        vol_websearch_completed_cg = vol_websearch_completed_cg + float(trans.price_total)
-                        num_websearch_completed_cg = num_websearch_completed_cg + 1
+                        vol_websearch_completed = vol_websearch_completed + float(trans.price_total)
+                        num_websearch_completed = num_websearch_completed + 1
                     elif trans.source == "Unknown":
-                        vol_unknown_completed_cg = vol_unknown_completed_cg + float(trans.price_total)
-                        num_unknown_completed_cg = num_unknown_completed_cg + 1
+                        vol_unknown_completed = vol_unknown_completed + float(trans.price_total)
+                        num_unknown_completed = num_unknown_completed + 1
                     elif trans.source == "Society camps":
-                        vol_societycamps_completed_cg = vol_societycamps_completed_cg + float(trans.price_total)
-                        num_societycamps_completed_cg = num_societycamps_completed_cg + 1
+                        vol_societycamps_completed = vol_societycamps_completed + float(trans.price_total)
+                        num_societycamps_completed = num_societycamps_completed + 1
                     elif trans.source == "Check up camps":
-                        vol_checkupcamps_completed_cg = vol_checkupcamps_completed_cg + float(trans.price_total)
-                        num_checkupcamps_completed_cg = num_checkupcamps_completed_cg + 1
+                        vol_checkupcamps_completed = vol_checkupcamps_completed + float(trans.price_total)
+                        num_checkupcamps_completed = num_checkupcamps_completed + 1
                     elif trans.source == "Sign up lead":
-                        vol_signuplead_completed_cg = vol_signuplead_completed_cg + float(trans.price_total)
-                        num_signuplead_completed_cg = num_signuplead_completed_cg + 1
+                        vol_signuplead_completed = vol_signuplead_completed + float(trans.price_total)
+                        num_signuplead_completed = num_signuplead_completed + 1
                     elif trans.source == "Facebook Ad":
-                        vol_facebookad_completed_cg = vol_facebookad_completed_cg + float(trans.price_total)
-                        num_facebookad_completed_cg = num_facebookad_completed_cg + 1
+                        vol_facebookad_completed = vol_facebookad_completed + float(trans.price_total)
+                        num_facebookad_completed = num_facebookad_completed + 1
                     elif trans.source == "Mahindra Authorized":
-                        vol_mahindraauthorized_completed_cg = vol_mahindraauthorized_completed_cg + float(trans.price_total)
-                        num_mahindraauthorized_completed_cg = num_mahindraauthorized_completed_cg + 1
+                        vol_mahindraauthorized_completed = vol_mahindraauthorized_completed + float(trans.price_total)
+                        num_mahindraauthorized_completed = num_mahindraauthorized_completed + 1
                     else:
-                        vol_other_completed_cg = vol_other_completed_cg + float(trans.price_total)
-                        num_other_completed_cg = num_other_completed_cg + 1
+                        vol_other_completed = vol_other_completed + float(trans.price_total)
+                        num_other_completed = num_other_completed + 1
 
                     for item in trans.service_items:
-                        vol_completed_cg = vol_completed_cg + float(item['price'])
+                        vol_completed = vol_completed + float(item['price'])
                         if item['type'] == "Part":
-                            vol_part_completed_cg = vol_part_completed_cg + float(item['price'])
+                            vol_part_completed = vol_part_completed + float(item['price'])
                         elif item['type'] == "Labour":
-                            vol_labour_completed_cg = vol_labour_completed_cg + float(item['price'])
+                            vol_labour_completed = vol_labour_completed + float(item['price'])
                         elif item['type'] == "Consumable":
-                            vol_consumable_completed_cg = vol_consumable_completed_cg + float(item['price'])
+                            vol_consumable_completed = vol_consumable_completed + float(item['price'])
                         elif item['type'] == "Lube":
-                            vol_lube_completed_cg = vol_lube_completed_cg + float(item['price'])
+                            vol_lube_completed = vol_lube_completed + float(item['price'])
+                    if trans.feedback_2:
+                        feed = Feedback.objects.filter(booking_data_id=trans.id)[0]
+                        time_stamp = feed.time_stamp
+                        pick_on_time = feed.pick_on_time
+                        delivery_on_time = feed.delivery_on_time
+                        courteous = feed.courteous
+                        washing = feed.washing
+                        quality_of_service = feed.quality_of_service
+                        experience = feed.experience
+                        additional = feed.additional
+                        recommend_factor = feed.recommend_factor
+                    else:
+                        time_stamp = "NA"
+                        pick_on_time = "NA"
+                        delivery_on_time = "NA"
+                        courteous = "NA"
+                        washing = "NA"
+                        quality_of_service = "NA"
+                        experience = "NA"
+                        additional = "NA"
+                        recommend_factor = "NA"
 
+                    if recommend_factor in ["1","2","3","4","5","6"]:
+                        print "Detractors"
+                        Detractors = Detractors + 1
+                    elif recommend_factor in ["7","8"]:
+                        print "Passives"
+                        Passives = Passives + 1
+                    elif recommend_factor in ["9","10"]:
+                        print "Promoters"
+                        Promoters = Promoters + 1
+
+                    try:
+                        nps_completed = math.ceil((Promoters - Detractors)/(Promoters + Detractors + Passives) * 100)
+                    except:
+                        nps_completed = "NA"
 
 
     obj['result'] = {
-            'num_lead_cg': num_lead_cg,
-            'vol_lead_cg': vol_lead_cg,
-            'num_fu_cg': num_fu_cg,
-            'vol_fu_cg': vol_fu_cg,
-            'num_confirmed_cg': num_confirmed_cg,
-            'vol_confirmed_cg': vol_confirmed_cg,
-            'num_assigned_cg': num_assigned_cg,
-            'vol_assigned_cg': vol_assigned_cg,
-            'num_rw_cg': num_rw_cg,
-            'vol_rw_cg': vol_rw_cg,
-            'num_es_cg': num_es_cg,
-            'vol_es_cg': vol_es_cg,
-            'num_al_cg': num_al_cg,
-            'vol_al_cg': vol_al_cg,
-            'num_lead_cancelled_cg': num_lead_cancelled_cg,
-            'vol_lead_cancelled_cg': vol_lead_cancelled_cg,
-            'num_booking_cancelled_cg': num_booking_cancelled_cg,
-            'vol_booking_cancelled_cg': vol_booking_cancelled_cg,
-            'num_escalation_cg': num_escalation_cg,
-            'num_completed_cg': num_completed_cg,
-            'vol_googleadwords_completed_cg': vol_googleadwords_completed_cg,
-            'num_googleadwords_completed_cg': num_googleadwords_completed_cg,
-            'vol_repeatcustomer_completed_cg': vol_repeatcustomer_completed_cg,
-            'num_repeatcustomer_completed_cg': num_repeatcustomer_completed_cg,
-            'vol_employeereferral_completed_cg': vol_employeereferral_completed_cg,
-            'num_employeereferral_completed_cg': num_employeereferral_completed_cg,
-            'vol_justdial_completed_cg': vol_justdial_completed_cg,
-            'num_justdial_completed_cg': num_justdial_completed_cg,
-            'vol_pamphlet_completed_cg': vol_pamphlet_completed_cg,
-            'num_pamphlet_completed_cg': num_pamphlet_completed_cg,
-            'vol_autoadvertisement_completed_cg': vol_autoadvertisement_completed_cg,
-            'num_autoadvertisement_completed_cg': num_autoadvertisement_completed_cg,
-            'vol_on_groundmarketing_completed_cg': vol_on_groundmarketing_completed_cg,
-            'num_on_groundmarketing_completed_cg': num_on_groundmarketing_completed_cg,
-            'vol_sulekha_completed_cg': vol_sulekha_completed_cg,
-            'num_sulekha_completed_cg': num_sulekha_completed_cg,
-            'vol_database_coldcalling_completed_cg': vol_database_coldcalling_completed_cg,
-            'num_database_coldcalling_completed_cg': num_database_coldcalling_completed_cg,
-            'vol_chat_completed_cg': vol_chat_completed_cg,
-            'num_chat_completed_cg': num_chat_completed_cg,
-            'vol_b2b_completed_cg': vol_b2b_completed_cg,
-            'num_b2b_completed_cg': num_b2b_completed_cg,
-            'vol_partner_droom_completed_cg': vol_partner_droom_completed_cg,
-            'num_partner_droom_completed_cg': num_partner_droom_completed_cg,
-            'vol_partner_wishup_completed_cg': vol_partner_wishup_completed_cg,
-            'num_partner_wishup_completed_cg': num_partner_wishup_completed_cg,
-            'vol_partner_housejoy_completed_cg': vol_partner_housejoy_completed_cg,
-            'num_partner_housejoy_completed_cg': num_partner_housejoy_completed_cg,
-            'vol_walkin_completed_cg': vol_walkin_completed_cg,
-            'num_walkin_completed_cg': num_walkin_completed_cg,
-            'vol_partner_mrright_completed_cg': vol_partner_mrright_completed_cg,
-            'num_partner_mrright_completed_cg': num_partner_mrright_completed_cg,
-            'vol_websearch_completed_cg': vol_websearch_completed_cg,
-            'num_websearch_completed_cg': num_websearch_completed_cg,
-            'vol_unknown_completed_cg': vol_unknown_completed_cg,
-            'num_unknown_completed_cg': num_unknown_completed_cg,
-            'vol_societycamps_completed_cg': vol_societycamps_completed_cg,
-            'num_societycamps_completed_cg': num_societycamps_completed_cg,
-            'vol_checkupcamps_completed_cg': vol_checkupcamps_completed_cg,
-            'num_checkupcamps_completed_cg': num_checkupcamps_completed_cg,
-            'vol_signuplead_completed_cg': vol_signuplead_completed_cg,
-            'num_signuplead_completed_cg': num_signuplead_completed_cg,
-            'vol_facebookad_completed_cg': vol_facebookad_completed_cg,
-            'num_facebookad_completed_cg': num_facebookad_completed_cg,
-            'vol_mahindraauthorized_completed_cg': vol_mahindraauthorized_completed_cg,
-            'num_mahindraauthorized_completed_cg': num_mahindraauthorized_completed_cg,
-            'vol_other_completed_cg': vol_other_completed_cg,
-            'num_other_completed_cg': num_other_completed_cg,
-            'vol_completed_cg': vol_completed_cg,
-            'vol_part_completed_cg': vol_part_completed_cg,
-            'vol_labour_completed_cg': vol_labour_completed_cg,
-            'vol_consumable_completed_cg': vol_consumable_completed_cg,
-            'vol_lube_completed_cg': vol_lube_completed_cg,
-
+            'num_lead': num_lead,
+            'vol_lead': vol_lead,
+            'num_fu': num_fu,
+            'vol_fu': vol_fu,
+            'num_confirmed': num_confirmed,
+            'vol_confirmed': vol_confirmed,
+            'num_assigned': num_assigned,
+            'vol_assigned': vol_assigned,
+            'num_rw': num_rw,
+            'vol_rw': vol_rw,
+            'num_es': num_es,
+            'vol_es': vol_es,
+            'num_al': num_al,
+            'vol_al': vol_al,
+            'num_lead_cancelled': num_lead_cancelled,
+            'vol_lead_cancelled': vol_lead_cancelled,
+            'num_booking_cancelled': num_booking_cancelled,
+            'vol_booking_cancelled': vol_booking_cancelled,
+            'num_escalation': num_escalation,
+            'num_completed': num_completed,
+            'vol_googleadwords_completed': vol_googleadwords_completed,
+            'num_googleadwords_completed': num_googleadwords_completed,
+            'vol_repeatcustomer_completed': vol_repeatcustomer_completed,
+            'num_repeatcustomer_completed': num_repeatcustomer_completed,
+            'vol_employeereferral_completed': vol_employeereferral_completed,
+            'num_employeereferral_completed': num_employeereferral_completed,
+            'vol_justdial_completed': vol_justdial_completed,
+            'num_justdial_completed': num_justdial_completed,
+            'vol_pamphlet_completed': vol_pamphlet_completed,
+            'num_pamphlet_completed': num_pamphlet_completed,
+            'vol_autoadvertisement_completed': vol_autoadvertisement_completed,
+            'num_autoadvertisement_completed': num_autoadvertisement_completed,
+            'vol_on_groundmarketing_completed': vol_on_groundmarketing_completed,
+            'num_on_groundmarketing_completed': num_on_groundmarketing_completed,
+            'vol_sulekha_completed': vol_sulekha_completed,
+            'num_sulekha_completed': num_sulekha_completed,
+            'vol_database_coldcalling_completed': vol_database_coldcalling_completed,
+            'num_database_coldcalling_completed': num_database_coldcalling_completed,
+            'vol_chat_completed': vol_chat_completed,
+            'num_chat_completed': num_chat_completed,
+            'vol_b2b_completed': vol_b2b_completed,
+            'num_b2b_completed': num_b2b_completed,
+            'vol_partner_droom_completed': vol_partner_droom_completed,
+            'num_partner_droom_completed': num_partner_droom_completed,
+            'vol_partner_wishup_completed': vol_partner_wishup_completed,
+            'num_partner_wishup_completed': num_partner_wishup_completed,
+            'vol_partner_housejoy_completed': vol_partner_housejoy_completed,
+            'num_partner_housejoy_completed': num_partner_housejoy_completed,
+            'vol_walkin_completed': vol_walkin_completed,
+            'num_walkin_completed': num_walkin_completed,
+            'vol_partner_mrright_completed': vol_partner_mrright_completed,
+            'num_partner_mrright_completed': num_partner_mrright_completed,
+            'vol_websearch_completed': vol_websearch_completed,
+            'num_websearch_completed': num_websearch_completed,
+            'vol_unknown_completed': vol_unknown_completed,
+            'num_unknown_completed': num_unknown_completed,
+            'vol_societycamps_completed': vol_societycamps_completed,
+            'num_societycamps_completed': num_societycamps_completed,
+            'vol_checkupcamps_completed': vol_checkupcamps_completed,
+            'num_checkupcamps_completed': num_checkupcamps_completed,
+            'vol_signuplead_completed': vol_signuplead_completed,
+            'num_signuplead_completed': num_signuplead_completed,
+            'vol_facebookad_completed': vol_facebookad_completed,
+            'num_facebookad_completed': num_facebookad_completed,
+            'vol_mahindraauthorized_completed': vol_mahindraauthorized_completed,
+            'num_mahindraauthorized_completed': num_mahindraauthorized_completed,
+            'vol_other_completed': vol_other_completed,
+            'num_other_completed': num_other_completed,
+            'vol_completed': vol_completed,
+            'vol_part_completed': vol_part_completed,
+            'vol_labour_completed': vol_labour_completed,
+            'vol_consumable_completed': vol_consumable_completed,
+            'vol_lube_completed': vol_lube_completed,
+            'nps':nps_completed,
+            'num_users':num_users,
+            'monthyear':monthyear
         }
     obj['status'] = True
     obj['counter'] = 1
@@ -5566,7 +5647,10 @@ def view_all_bookings(request):
             # print year
             # print month
             # print day
-            tranObjs = tranObjs.filter(date_booking=datetime.date(int(year), int(month), int(day)))
+            if lead_booking == "Lead":
+                tranObjs = tranObjs.filter(follow_up_date=datetime.date(int(year), int(month), int(day)))
+            else:
+                tranObjs = tranObjs.filter(date_booking=datetime.date(int(year), int(month), int(day)))
 
         if del_date != None and del_date != "":
             # print "date filter"
@@ -5615,10 +5699,21 @@ def view_all_bookings(request):
         datetimeobject = datetime.datetime.strptime(oldformat_d, '%Y-%m-%d')
         newformat_d = datetimeobject.strftime('%d-%m-%Y')
 
+        if trans.follow_up_date:
+            oldformat_f = str(trans.follow_up_date)
+            datetimeobject = datetime.datetime.strptime(oldformat_f, '%Y-%m-%d')
+            newformat_f = datetimeobject.strftime('%d-%m-%Y')
+        else:
+            newformat_f = "NA"
         if trans.status == "":
             status_next = "Confirmed"
         if trans.status == "Follow Up":
             status_next = "Confirmed"
+        if trans.status == "Cold":
+            status_next = "Warm"
+        if trans.status == "Warm":
+            status_next = "Confirmed"
+
         # if trans.status == "Follow Up":
         #     status_next = "Confirmed"
         if trans.status == "Lead" 			    :
@@ -5710,6 +5805,8 @@ def view_all_bookings(request):
                 vat_lube = taxes['result'][0]['vat_lube']
                 service_tax = taxes['result'][0]['service_tax']
 
+
+
         if trans.bill_id != "":
             bill = Bills.objects.filter(id = trans.bill_id)[0]
             components = bill.components
@@ -5764,11 +5861,38 @@ def view_all_bookings(request):
             bill_model = ""
             bill_type = ""
 
+        if trans.feedback_2:
+            print "1"
+            feed                = Feedback.objects.filter(booking_data_id = trans.id)[0]
+            time_stamp          = feed.time_stamp
+            pick_on_time        = feed.pick_on_time
+            delivery_on_time    = feed.delivery_on_time
+            courteous           = feed.courteous
+            washing             = feed.washing
+            quality_of_service  = feed.quality_of_service
+            experience          = feed.experience
+            additional          = feed.additional
+            recommend_factor    = feed.recommend_factor
+        else:
+            print "2"
+            time_stamp = "NA"
+            pick_on_time = "NA"
+            delivery_on_time = "NA"
+            courteous = "NA"
+            washing = "NA"
+            quality_of_service = "NA"
+            experience = "NA"
+            additional = "NA"
+            recommend_factor = "NA"
+
+
         obj['result'].append({
             'id'                : trans.id              ,
             'booking_flag'      : trans.booking_flag    ,
             'booking_id'        : trans.booking_id      ,
             'booking_timestamp' : trans.booking_timestamp,
+            'time_generated'    : time.strftime('%I:%M %p',time.localtime(float(trans.booking_timestamp)+19800)),
+            'date_generated'    : time.strftime('%d-%m-%Y',time.localtime(float(trans.booking_timestamp)+19800)),
             'cust_id'           : trans.cust_id,
             'cust_name'         : trans.cust_name,
             'cust_make'         : trans.cust_make,
@@ -5852,7 +5976,20 @@ def view_all_bookings(request):
             'bill_reg_number': bill_reg_number,
             'bill_make': bill_make,
             'bill_model': bill_model,
-            'bill_type':bill_type
+            'bill_type':bill_type,
+            'time_stamp' : time_stamp,
+            'pick_on_time': pick_on_time,
+            'delivery_on_time': delivery_on_time,
+            'courteous': courteous,
+            'washing': washing,
+            'quality_of_service': quality_of_service,
+            'experience': experience,
+            'additional': additional,
+            'recommend_factor': recommend_factor,
+            'follow_up_date': newformat_f,
+            'follow_up_time': str(trans.follow_up_time.strftime('%I:%M %p')),
+            'follow_up_status':trans.follow_up_status
+
         })
     obj['status'] = True
     obj['counter'] = 1
@@ -6117,6 +6254,9 @@ def update_booking(request):
     city = get_param(request, 'city', None)
     source = get_param(request, 'source', None)
     date_delivery = get_param(request, 'date_del', None)
+    date_follow = get_param(request, 'date_follow', None)
+    time_follow = get_param(request, 'time_follow', None)
+    follow_status = get_param(request, 'follow_status', None)
 
     booking = Bookings.objects.filter(booking_id=booking_id)[0]
 
@@ -6126,8 +6266,20 @@ def update_booking(request):
     city = cleanstring(city).title()
     reg_number_n = cleanstring(reg_number_n).upper()
 
+    curr_date = time.strftime("%d-%m-%Y")
+    curr_time = datetime.datetime.time(datetime.datetime.now() + datetime.timedelta(hours = 5, minutes = 30))
+    curr_time = str(curr_time.strftime('%I:%M %p'))
+
+
     # if agent_id != None and agent_id != "":
     #     booking.agent = agent_id
+    if follow_status != None and follow_status != "":
+        new_follow_status = {'Date': curr_date,
+                             'Time': curr_time,
+                             'Status': follow_status
+                             }
+        booking.follow_up_status.append(new_follow_status)
+
     if amount_paid != None:
         booking.amount_paid = amount_paid
 
@@ -6164,17 +6316,17 @@ def update_booking(request):
     if comment_n != None:
         booking.comments = comment_n
 
-    if time_n != None:
+    if time_n != None or time_n != "":
         booking.time_booking = time_n
 
-    if date_n != None:
+    if date_n != None or date_n != "":
         oldformat = date_n
         datetimeobject = datetime.datetime.strptime(oldformat, '%d-%m-%Y')
         newformat = datetimeobject.strftime('%Y-%m-%d')
         date_n = newformat
         booking.date_booking = date_n
 
-    if date_delivery != None:
+    if date_delivery != None and date_delivery != "":
         oldformat_2 = date_delivery
         datetimeobject2 = datetime.datetime.strptime(oldformat_2, '%d-%m-%Y')
         newformat_2 = datetimeobject2.strftime('%Y-%m-%d')
@@ -6186,6 +6338,16 @@ def update_booking(request):
 
     if email_n != None:
         booking.cust_email = email_n
+
+    if date_follow != None and date_follow != "":
+        oldformat_3 = date_follow
+        datetimeobject3 = datetime.datetime.strptime(oldformat_3, '%d-%m-%Y')
+        newformat_3 = datetimeobject3.strftime('%Y-%m-%d')
+        date_follow = newformat_3
+        booking.follow_up_date = date_follow
+
+    if time_follow != None and time_follow != "":
+        booking.follow_up_time = time_follow
 
 
     booking.save()
@@ -6476,6 +6638,7 @@ def send_booking(request):
     send_confirm = get_param(request,'send_confirm',"1")
     booking_user_name = get_param(request,'booking_user_name',None)
     booking_user_number = get_param(request,'booking_user_number',None)
+    follow_time = get_param(request,'follow_time',None)
     # follow_up_date = get_param(request,'follow',None)
     # print email
     # print order_list
@@ -6524,9 +6687,8 @@ def send_booking(request):
             booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city,
                                     order_list,make, veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
                                     price_total, source, booking_flag,
-                                    job_summary_int, send_sms=send_confirm,owner=request.user.id)
+                                    job_summary_int, send_sms=send_confirm,owner=request.user.id,follow_up_date_book=date,follow_up_time_book=follow_time)
         # WMS Modification End
-
 
         elif request.user.is_staff or request.user.is_admin:
             if booking_flag_user == "True":
@@ -6544,7 +6706,7 @@ def send_booking(request):
                                         order_list,
                                         make,
                                         veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
-                                        price_total, "B2B", booking_flag,job_summary_int,send_sms="0", booking_type="B2B",booking_user_name=booking_user_name,booking_user_number=booking_user_number)
+                                        price_total, "B2B", booking_flag,job_summary_int,send_sms="0", booking_type="B2B",booking_user_name=booking_user_name,booking_user_number=booking_user_number,follow_up_date_book=date,follow_up_time_book=follow_time)
 
             else:
                 booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city,
@@ -6552,7 +6714,7 @@ def send_booking(request):
                                         make,
                                         veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
                                         price_total, source, booking_flag,
-                                        job_summary_int,send_sms=send_confirm)
+                                        job_summary_int,send_sms=send_confirm,follow_up_date_book=date,follow_up_time_book=follow_time)
 
         else:
             print email
@@ -6648,7 +6810,7 @@ def change_status_actual(booking_id,status_id):
 
 
 
-        if (status_id =="Lead" or status_id == "Follow Up"):
+        if (status_id =="Lead" or status_id == "Follow Up" or status_id == "Cold" or status_id == "Warm"):
             booking.booking_flag = False
         elif (status_id == "Cancelled" and booking.booking_flag == False):
             booking.booking_flag = False
@@ -6729,7 +6891,7 @@ def change_status_actual(booking_id,status_id):
                 if booking.clickgarage_flag == True:
                     new_lead = place_booking(booking.cust_id, booking.cust_name, booking.cust_number, booking.cust_email, booking.cust_regnumber, booking.cust_address,booking.cust_locality, booking.cust_city, booking.service_items,
                                          booking.cust_make, booking.cust_vehicle_type,booking.cust_model, booking.cust_fuel_varient, str(date_today), "9:30 AM - 12:30 PM", "Servicing/Repair - Reminder", False, "0", "NA",
-                                        "0", "Repeat Customer", False, "NA", send_sms="0")
+                                        "0", "Repeat Customer", False, "NA", send_sms="0",follow_up_date_book=str(date_today))
                 else:
                     new_lead = place_booking(booking.cust_id, booking.cust_name, booking.cust_number,
                                              booking.cust_email, booking.cust_regnumber, booking.cust_address,
@@ -6737,7 +6899,7 @@ def change_status_actual(booking_id,status_id):
                                              booking.cust_make, booking.cust_vehicle_type, booking.cust_model,
                                              booking.cust_fuel_varient, str(date_today), "9:30 AM - 12:30 PM",
                                              "Servicing/Repair - Reminder", False, "0", "NA",
-                                             "0", "Repeat Customer", False, "NA", send_sms="0",owner=booking.booking_owner)
+                                             "0", "Repeat Customer", False, "NA", send_sms="0",owner=booking.booking_owner,follow_up_date_book=str(date_today))
                 # add a lead to the leads data base with follow_up_date as (bike - 60 days , car (bill_amount < 2000) - 30 days, car (bill_amount> 2000) 90 days
 
         if (status_id == "Feedback Taken" and old_status == "Job Completed"):
