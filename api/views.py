@@ -4641,8 +4641,12 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
         user.save()
         if follow_up_date_book == "":
             follow_up_date = time.strftime("%Y-%m-%d")
+        else:
+            follow_up_date = follow_up_date_book
         if follow_up_time_book == "":
             follow_up_time = datetime.time(9,30,0,0)
+        else:
+            follow_up_time = datetime.time(9, 30, 0, 0)
 
 
     else:
