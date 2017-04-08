@@ -8018,7 +8018,7 @@ def send_sms_customer(name,number,booking_id,date,time,agent_details = None,esti
 		agent_num = agent.contact_no
 	if status =="Confirmed":
 		if booking.clickgarage_flag == True:
-			message = "Hi " + name + "! Your ClickGarage order has been confirmed for "+ str(time) + " on " + str(date) +". You will recieve the agent details shortly. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
+			message = "Hi " + name + "! Your ClickGarage order has been confirmed for "+ str(time) + " on " + str(date) +". You will recieve the engineer details shortly. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
 				booking_id) + "."
 			send_sms_2factor(number, message)
 		else:
@@ -8027,7 +8027,7 @@ def send_sms_customer(name,number,booking_id,date,time,agent_details = None,esti
 			send_sms_2factor_EZY(number, message)
 	if status == "Assigned":
 		if booking.clickgarage_flag == True:
-			message = "Hi " + name + "! Our Agent "+agent_details+ " has been assigned for your order. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
+			message = "Hi " + name + "! CG Service engineer "+agent_details+ " has been assigned for your order. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
 				booking_id) + "."
 			send_sms_2factor(number, message)
 	if status =="Engineer Left":
