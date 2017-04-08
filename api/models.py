@@ -619,6 +619,14 @@ class Feedback(models.Model):
     additional                  = models.CharField(max_length=600,null=True)
     recommend_factor            = models.CharField(max_length=50,null=True)
 
+class Expenses(models.Model):
+    date_created    = models.DateField()
+    category        = models.CharField(max_length=200)
+    sub_category    = models.CharField(max_length=200)
+    reason          = models.CharField(max_length=200)
+    comment         = models.CharField(max_length=500)
+    amount          = models.CharField(max_length=200)
+    expense_owner   = models.CharField(max_length=200)
 
 class Messages(models.Model):
     firstname           = models.CharField(max_length=50)

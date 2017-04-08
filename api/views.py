@@ -4598,7 +4598,7 @@ def create_check_user_modified(name,number,owner):
 
 
 def place_booking(user_id, name, number, email, reg_number, address, locality, city, order_list, make, veh_type, model,
-                  fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary,send_sms = "1",booking_type="User",booking_user_name=None,booking_user_number=None, owner="ClickGarage", follow_up_date_book = "",follow_up_time_book = ""):
+                  fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary,send_sms = "1",booking_type="User",booking_user_name=None,booking_user_number=None, owner="ClickGarage", follow_up_date_book = "",follow_up_time_book = "",odometer=""):
 
     print email
 
@@ -4714,7 +4714,8 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
                  clickgarage_flag = clickgarage_flag,
                  booking_owner = owner,
                  follow_up_date = follow_up_date,
-                 follow_up_time = follow_up_time)
+                 follow_up_time = follow_up_time,
+                 odometer = odometer)
     tt.save()
     if send_sms == "1":
         mviews.send_booking_confirm(email=email,name=name,booking_id=booking_id,number=number, service_list= int_summary, car_bike=veh_type)
@@ -5069,25 +5070,33 @@ def analyse_bookings(request):
         tranObjs = tranObjs.filter(date_booking__range=(start_date, end_date))
         custObjs = custObjs.filter(date_joined__range=(start_date, end_date))
     num_users = 0
-    num_lead = 0
-    vol_lead = 0
-    num_fu = 0
-    vol_fu = 0
-    num_confirmed = 0
-    vol_confirmed = 0
-    num_assigned = 0
-    vol_assigned = 0
-    num_rw = 0
-    vol_rw = 0
-    num_es = 0
-    vol_es = 0
-    num_al = 0
-    vol_al = 0
-    num_lead_cancelled = 0
-    vol_lead_cancelled = 0
-    num_booking_cancelled = 0
-    vol_booking_cancelled = 0
-    num_escalation = 0
+
+    num_lead_lead = 0
+    vol_lead_lead = 0
+    num_warm_lead = 0
+    vol_warm_lead = 0
+    num_cold_lead = 0
+    vol_cold_lead = 0
+
+    num_confirmed_booking = 0
+    vol_confirmed_booking = 0
+    num_assigned_booking = 0
+    vol_assigned_booking = 0
+    num_reachedworkshop_booking = 0
+    vol_reachedworkshop_booking = 0
+    num_estimateshared_booking = 0
+    vol_estimateshared_booking = 0
+    num_engineerleft_booking = 0
+    vol_engineerleft_booking = 0
+
+    num_cancelled_lead = 0
+    vol_cancelled_lead = 0
+    num_cancelled_booking = 0
+    vol_cancelled_booking = 0
+    num_escalation_booking = 0
+    num_jobcompleted_booking = 0
+    num_feedbacktaken_booking = 0
+
     num_completed = 0
     vol_googleadwords_completed = 0
     num_googleadwords_completed = 0
@@ -5095,6 +5104,8 @@ def analyse_bookings(request):
     num_repeatcustomer_completed = 0
     vol_employeereferral_completed = 0
     num_employeereferral_completed = 0
+    vol_externalreferral_completed = 0
+    num_externalreferral_completed = 0
     vol_justdial_completed = 0
     num_justdial_completed = 0
     vol_pamphlet_completed = 0
@@ -5135,14 +5146,78 @@ def analyse_bookings(request):
     num_facebookad_completed = 0
     vol_mahindraauthorized_completed = 0
     num_mahindraauthorized_completed = 0
+    vol_exotel_completed = 0
+    num_exotel_completed = 0
     vol_other_completed = 0
     num_other_completed = 0
+    vol_total_lead = 0
+    num_total_lead = 0
+    vol_googleadwords_lead = 0
+    num_googleadwords_lead = 0
+    vol_repeatcustomer_lead = 0
+    num_repeatcustomer_lead = 0
+    vol_employeereferral_lead = 0
+    num_employeereferral_lead = 0
+    vol_externalreferral_lead = 0
+    num_externalreferral_lead = 0
+    vol_justdial_lead = 0
+    num_justdial_lead = 0
+    vol_pamphlet_lead = 0
+    num_pamphlet_lead = 0
+    vol_autoadvertisement_lead = 0
+    num_autoadvertisement_lead = 0
+    vol_on_groundmarketing_lead = 0
+    num_on_groundmarketing_lead = 0
+    vol_sulekha_lead = 0
+    num_sulekha_lead = 0
+    vol_database_coldcalling_lead = 0
+    num_database_coldcalling_lead = 0
+    vol_chat_lead = 0
+    num_chat_lead = 0
+    vol_b2b_lead = 0
+    num_b2b_lead = 0
+    vol_partner_droom_lead = 0
+    num_partner_droom_lead = 0
+    vol_partner_wishup_lead = 0
+    num_partner_wishup_lead = 0
+    vol_partner_housejoy_lead = 0
+    num_partner_housejoy_lead = 0
+    vol_walkin_lead = 0
+    num_walkin_lead = 0
+    vol_partner_mrright_lead = 0
+    num_partner_mrright_lead = 0
+    vol_websearch_lead = 0
+    num_websearch_lead = 0
+    vol_unknown_lead = 0
+    num_unknown_lead = 0
+    vol_societycamps_lead = 0
+    num_societycamps_lead = 0
+    vol_checkupcamps_lead = 0
+    num_checkupcamps_lead = 0
+    vol_signuplead_lead = 0
+    num_signuplead_lead = 0
+    vol_facebookad_lead = 0
+    num_facebookad_lead = 0
+    vol_mahindraauthorized_lead = 0
+    num_mahindraauthorized_lead = 0
+    vol_exotel_lead = 0
+    num_exotel_lead = 0
+    vol_other_lead = 0
+    num_other_lead = 0
     vol_completed = 0
     vol_part_completed = 0
     vol_labour_completed = 0
     vol_consumable_completed = 0
     vol_lube_completed = 0
     nps_completed = 0
+    vol_b2b_total_completed = 0
+    num_b2b_total_completed = 0
+    vol_b2c_total_completed = 0
+    num_b2c_total_completed = 0
+    vol_b2b_total_lead = 0
+    num_b2b_total_lead = 0
+    vol_b2c_total_lead = 0
+    num_b2c_total_lead = 0
     Promoters = 0
     Detractors = 0
     Passives = 0
@@ -5157,60 +5232,68 @@ def analyse_bookings(request):
         for trans in tranObjs:
             if trans.clickgarage_flag == True:
                 if trans.status == "Lead":
-                    num_lead               = num_lead + 1
+                    num_lead_lead               = num_lead_lead + 1
                     for item in trans.service_items:
-                        vol_lead           = vol_lead + float(item['price'])
+                        vol_lead_lead           = vol_lead_lead + float(item['price'])
 
-
-                elif trans.status == "Follow Up":
-                    num_fu               = num_fu + 1
+                elif trans.status == "Warm":
+                    num_warm_lead               = num_warm_lead + 1
                     for item in trans.service_items:
-                        vol_fu         = vol_fu + float(item['price'])
+                        vol_warm_lead         = vol_warm_lead + float(item['price'])
+
+                elif trans.status == "Cold":
+                    num_cold_lead = num_cold_lead + 1
+                    for item in trans.service_items:
+                        vol_cold_lead = vol_cold_lead + float(item['price'])
 
 
                 elif trans.status == "Confirmed":
-                    num_confirmed = num_confirmed + 1
+                    num_confirmed_booking = num_confirmed_booking + 1
                     for item in trans.service_items:
-                        vol_confirmed = vol_confirmed + float(item['price'])
+                        vol_confirmed_booking = vol_confirmed_booking + float(item['price'])
 
 
                 elif trans.status == "Assigned":
-                    num_assigned = num_assigned + 1
+                    num_assigned_booking = num_assigned_booking + 1
                     for item in trans.service_items:
-                        vol_assigned = vol_assigned + float(item['price'])
+                        vol_assigned_booking = vol_assigned_booking + float(item['price'])
 
 
                 elif trans.status == "Reached Workshop":
-                    num_rw = num_rw + 1
+                    num_reachedworkshop_booking = num_reachedworkshop_booking + 1
                     for item in trans.service_items:
-                        vol_rw = vol_rw + float(item['price'])
+                        vol_reachedworkshop_booking = vol_reachedworkshop_booking + float(item['price'])
 
 
                 elif trans.status == "Estimate Shared":
-                    num_es = num_es + 1
+                    num_estimateshared_booking = num_estimateshared_booking + 1
                     for item in trans.service_items:
-                        vol_es = vol_es + float(item['price'])
+                        vol_estimateshared_booking = vol_estimateshared_booking + float(item['price'])
 
-                elif trans.status == "Agent Left":
-                    num_al = num_al + 1
+                elif trans.status == "Engineer Left":
+                    num_engineerleft_booking = num_engineerleft_booking + 1
                     for item in trans.service_items:
-                        vol_al = vol_al + float(item['price'])
-
+                        vol_engineerleft_booking = vol_engineerleft_booking + float(item['price'])
 
                 elif trans.status == "Cancelled":
                     if trans.booking_flag == False:
-                        num_lead_cancelled = num_lead_cancelled + 1
+                        num_cancelled_lead = num_cancelled_lead + 1
                         for item in trans.service_items:
-                            vol_lead_cancelled = vol_lead_cancelled + float(item['price'])
+                            vol_cancelled_lead = vol_cancelled_lead + float(item['price'])
                     else:
-                        num_booking_cancelled = num_booking_cancelled + 1
+                        num_cancelled_booking = num_cancelled_booking + 1
                         for item in trans.service_items:
-                            vol_booking_cancelled = vol_booking_cancelled + float(item['price'])
+                            vol_cancelled_booking = vol_cancelled_booking + float(item['price'])
 
                 elif trans.status == "Escalation":
-                    num_escalation = num_escalation + 1
+                    num_escalation_booking = num_escalation_booking + 1
 
                 elif trans.status == "Job Completed" or trans.status == "Feedback Taken":
+                    if trans.status == "Job Completed":
+                        num_jobcompleted_booking = num_jobcompleted_booking + 1
+                    elif trans.status == "Feedback Taken":
+                        num_feedbacktaken_booking = num_feedbacktaken_booking + 1
+
                     num_completed = num_completed + 1
                     if trans.source == "Google Adwords":
                         vol_googleadwords_completed = vol_googleadwords_completed + float(trans.price_total)
@@ -5221,6 +5304,9 @@ def analyse_bookings(request):
                     elif trans.source == "Employee Referral":
                         vol_employeereferral_completed = vol_employeereferral_completed + float(trans.price_total)
                         num_employeereferral_completed = num_employeereferral_completed + 1
+                    elif trans.source == "External Referral":
+                        vol_externalreferral_completed = vol_externalreferral_completed + float(trans.price_total)
+                        num_externalreferral_completed = num_externalreferral_completed + 1
                     elif trans.source == "JustDial":
                         vol_justdial_completed = vol_justdial_completed + float(trans.price_total)
                         num_justdial_completed = num_justdial_completed + 1
@@ -5257,7 +5343,7 @@ def analyse_bookings(request):
                     elif trans.source == "Walk in ":
                         vol_walkin_completed = vol_walkin_completed + float(trans.price_total)
                         num_walkin_completed = num_walkin_completed + 1
-                    elif trans.source == "Partner - Mr.Right":
+                    elif trans.source == "Partner - Mr Right":
                         vol_partner_mrright_completed = vol_partner_mrright_completed + float(trans.price_total)
                         num_partner_mrright_completed = num_partner_mrright_completed + 1
                     elif trans.source == "Web Search":
@@ -5281,20 +5367,128 @@ def analyse_bookings(request):
                     elif trans.source == "Mahindra Authorized":
                         vol_mahindraauthorized_completed = vol_mahindraauthorized_completed + float(trans.price_total)
                         num_mahindraauthorized_completed = num_mahindraauthorized_completed + 1
+                    elif trans.source == "Exotel":
+                        vol_exotel_completed = vol_exotel_completed + float(trans.price_total)
+                        num_exotel_completed = num_exotel_completed + 1
                     else:
                         vol_other_completed = vol_other_completed + float(trans.price_total)
                         num_other_completed = num_other_completed + 1
 
                     for item in trans.service_items:
                         vol_completed = vol_completed + float(item['price'])
-                        if item['type'] == "Part":
-                            vol_part_completed = vol_part_completed + float(item['price'])
-                        elif item['type'] == "Labour":
+                        try:
+                            if item['type'] == "Part":
+                                vol_part_completed = vol_part_completed + float(item['price'])
+                            elif item['type'] == "Labour":
+                                vol_labour_completed = vol_labour_completed + float(item['price'])
+                            elif item['type'] == "Consumable":
+                                vol_consumable_completed = vol_consumable_completed + float(item['price'])
+                            elif item['type'] == "Lube":
+                                vol_lube_completed = vol_lube_completed + float(item['price'])
+                        except:
                             vol_labour_completed = vol_labour_completed + float(item['price'])
-                        elif item['type'] == "Consumable":
-                            vol_consumable_completed = vol_consumable_completed + float(item['price'])
-                        elif item['type'] == "Lube":
-                            vol_lube_completed = vol_lube_completed + float(item['price'])
+
+                    if trans.booking_user_type == "B2B" or trans.source == "B2B":
+                        vol_b2b_total_completed = vol_b2b_total_completed + float(trans.price_total)
+                        num_b2b_total_completed = num_b2b_total_completed + 1
+
+                    else:
+                        vol_b2c_total_completed = vol_b2c_total_completed + float(trans.price_total)
+                        num_b2c_total_completed = num_b2c_total_completed + 1
+
+
+                vol_total_lead = vol_total_lead + float(trans.price_total)
+                num_total_lead = num_total_lead + 1
+
+                if trans.booking_user_type == "B2B" or trans.source == "B2B":
+                    vol_b2b_total_lead = vol_b2b_total_lead + float(trans.price_total)
+                    num_b2b_total_lead = num_b2b_total_lead + 1
+
+                else:
+                    vol_b2c_total_lead = vol_b2c_total_lead + float(trans.price_total)
+                    num_b2c_total_lead = num_b2c_total_lead + 1
+
+                if trans.source == "Google Adwords":
+                    vol_googleadwords_lead = vol_googleadwords_lead + float(trans.price_total)
+                    num_googleadwords_lead = num_googleadwords_lead + 1
+                elif trans.source == "Repeat Customer":
+                    vol_repeatcustomer_lead = vol_repeatcustomer_lead + float(trans.price_total)
+                    num_repeatcustomer_lead = num_repeatcustomer_lead + 1
+                elif trans.source == "Employee Referral":
+                    vol_employeereferral_lead = vol_employeereferral_lead + float(trans.price_total)
+                    num_employeereferral_lead = num_employeereferral_lead + 1
+                elif trans.source == "External Referral":
+                    vol_externalreferral_lead = vol_externalreferral_lead + float(trans.price_total)
+                    num_externalreferral_lead = num_externalreferral_lead + 1
+                elif trans.source == "JustDial":
+                    vol_justdial_lead = vol_justdial_lead + float(trans.price_total)
+                    num_justdial_lead = num_justdial_lead + 1
+                elif trans.source == "Pamphlet":
+                    vol_pamphlet_lead = vol_pamphlet_lead + float(trans.price_total)
+                    num_pamphlet_lead = num_pamphlet_lead + 1
+                elif trans.source == "Auto Advertisement":
+                    vol_autoadvertisement_lead = vol_autoadvertisement_lead + float(trans.price_total)
+                    num_autoadvertisement_lead = num_autoadvertisement_lead + 1
+                elif trans.source == "On-Ground Marketing":
+                    vol_on_groundmarketing_lead = vol_on_groundmarketing_lead + float(trans.price_total)
+                    num_on_groundmarketing_lead = num_on_groundmarketing_lead + 1
+                elif trans.source == "Sulekha":
+                    vol_sulekha_lead = vol_sulekha_lead + float(trans.price_total)
+                    num_sulekha_lead = num_sulekha_lead + 1
+                elif trans.source == "Database - Cold Calling":
+                    vol_database_coldcalling_lead = vol_database_coldcalling_lead + float(trans.price_total)
+                    num_database_coldcalling_lead = num_database_coldcalling_lead + 1
+                elif trans.source == "Chat":
+                    vol_chat_lead = vol_chat_lead + float(trans.price_total)
+                    num_chat_lead = num_chat_lead + 1
+                elif trans.source == "B2B":
+                    vol_b2b_lead = vol_b2b_lead + float(trans.price_total)
+                    num_b2b_lead = num_b2b_lead + 1
+                elif trans.source == "Partner - Droom":
+                    vol_partner_droom_lead = vol_partner_droom_lead + float(trans.price_total)
+                    num_partner_droom_lead = num_partner_droom_lead + 1
+                elif trans.source == "Partner - Wishup":
+                    vol_partner_wishup_lead = vol_partner_wishup_lead + float(trans.price_total)
+                    num_partner_wishup_lead = num_partner_wishup_lead + 1
+                elif trans.source == "Partner - Housejoy":
+                    vol_partner_housejoy_lead = vol_partner_housejoy_lead + float(trans.price_total)
+                    num_partner_housejoy_lead = num_partner_housejoy_lead + 1
+                elif trans.source == "Walk in ":
+                    vol_walkin_lead = vol_walkin_lead + float(trans.price_total)
+                    num_walkin_lead = num_walkin_lead + 1
+                elif trans.source == "Partner - Mr Right":
+                    vol_partner_mrright_lead = vol_partner_mrright_lead + float(trans.price_total)
+                    num_partner_mrright_lead = num_partner_mrright_lead + 1
+                elif trans.source == "Web Search":
+                    vol_websearch_lead = vol_websearch_lead + float(trans.price_total)
+                    num_websearch_lead = num_websearch_lead + 1
+                elif trans.source == "Unknown":
+                    vol_unknown_lead = vol_unknown_lead + float(trans.price_total)
+                    num_unknown_lead = num_unknown_lead + 1
+                elif trans.source == "Society camps":
+                    vol_societycamps_lead = vol_societycamps_lead + float(trans.price_total)
+                    num_societycamps_lead = num_societycamps_lead + 1
+                elif trans.source == "Check up camps":
+                    vol_checkupcamps_lead = vol_checkupcamps_lead + float(trans.price_total)
+                    num_checkupcamps_lead = num_checkupcamps_lead + 1
+                elif trans.source == "Sign up lead":
+                    vol_signuplead_lead = vol_signuplead_lead + float(trans.price_total)
+                    num_signuplead_lead = num_signuplead_lead + 1
+                elif trans.source == "Facebook Ad":
+                    vol_facebookad_lead = vol_facebookad_lead + float(trans.price_total)
+                    num_facebookad_lead = num_facebookad_lead + 1
+                elif trans.source == "Mahindra Authorized":
+                    vol_mahindraauthorized_lead = vol_mahindraauthorized_lead + float(trans.price_total)
+                    num_mahindraauthorized_lead = num_mahindraauthorized_lead + 1
+                elif trans.source == "Exotel":
+                    vol_exotel_lead = vol_exotel_lead + float(trans.price_total)
+                    num_exotel_lead = num_exotel_lead + 1
+                else:
+                    vol_other_lead = vol_other_lead + float(trans.price_total)
+                    num_other_lead = num_other_lead + 1
+
+
+
                     if trans.feedback_2:
                         feed = Feedback.objects.filter(booking_data_id=trans.id)[0]
                         time_stamp = feed.time_stamp
@@ -5333,26 +5527,33 @@ def analyse_bookings(request):
                         nps_completed = "NA"
 
 
+    obj['status'] = True
+    obj['counter'] = 1
     obj['result'] = {
-            'num_lead': num_lead,
-            'vol_lead': vol_lead,
-            'num_fu': num_fu,
-            'vol_fu': vol_fu,
-            'num_confirmed': num_confirmed,
-            'vol_confirmed': vol_confirmed,
-            'num_assigned': num_assigned,
-            'vol_assigned': vol_assigned,
-            'num_rw': num_rw,
-            'vol_rw': vol_rw,
-            'num_es': num_es,
-            'vol_es': vol_es,
-            'num_al': num_al,
-            'vol_al': vol_al,
-            'num_lead_cancelled': num_lead_cancelled,
-            'vol_lead_cancelled': vol_lead_cancelled,
-            'num_booking_cancelled': num_booking_cancelled,
-            'vol_booking_cancelled': vol_booking_cancelled,
-            'num_escalation': num_escalation,
+
+            'num_lead_lead':   num_lead_lead ,
+             'vol_lead_lead':   vol_lead_lead ,
+             'num_warm_lead':   num_warm_lead ,
+             'vol_warm_lead':   vol_warm_lead ,
+             'num_cold_lead':   num_cold_lead ,
+             'vol_cold_lead':   vol_cold_lead ,
+             'num_confirmed_booking':   num_confirmed_booking ,
+             'vol_confirmed_booking':   vol_confirmed_booking ,
+             'num_assigned_booking':   num_assigned_booking ,
+             'vol_assigned_booking':   vol_assigned_booking ,
+             'num_reachedworkshop_booking':   num_reachedworkshop_booking ,
+             'vol_reachedworkshop_booking':   vol_reachedworkshop_booking ,
+             'num_estimateshared_booking':   num_estimateshared_booking ,
+             'vol_estimateshared_booking':   vol_estimateshared_booking ,
+             'num_engineerleft_booking':   num_engineerleft_booking ,
+             'vol_engineerleft_booking':   vol_engineerleft_booking ,
+             'num_cancelled_lead':   num_cancelled_lead ,
+             'vol_cancelled_lead':   vol_cancelled_lead ,
+             'num_cancelled_booking':   num_cancelled_booking ,
+             'vol_cancelled_booking':   vol_cancelled_booking ,
+             'num_escalation_booking':   num_escalation_booking ,
+             'num_jobcompleted_booking':   num_jobcompleted_booking ,
+             'num_feedbacktaken_booking':   num_feedbacktaken_booking ,
             'num_completed': num_completed,
             'vol_googleadwords_completed': vol_googleadwords_completed,
             'num_googleadwords_completed': num_googleadwords_completed,
@@ -5360,32 +5561,34 @@ def analyse_bookings(request):
             'num_repeatcustomer_completed': num_repeatcustomer_completed,
             'vol_employeereferral_completed': vol_employeereferral_completed,
             'num_employeereferral_completed': num_employeereferral_completed,
+            'vol_externalreferral_completed': vol_externalreferral_completed,
+            'num_externalreferral_completed': num_externalreferral_completed,
             'vol_justdial_completed': vol_justdial_completed,
             'num_justdial_completed': num_justdial_completed,
             'vol_pamphlet_completed': vol_pamphlet_completed,
             'num_pamphlet_completed': num_pamphlet_completed,
             'vol_autoadvertisement_completed': vol_autoadvertisement_completed,
             'num_autoadvertisement_completed': num_autoadvertisement_completed,
-            'vol_on_groundmarketing_completed': vol_on_groundmarketing_completed,
-            'num_on_groundmarketing_completed': num_on_groundmarketing_completed,
+            'vol_ongroundmarketing_completed': vol_on_groundmarketing_completed,
+            'num_ongroundmarketing_completed': num_on_groundmarketing_completed,
             'vol_sulekha_completed': vol_sulekha_completed,
             'num_sulekha_completed': num_sulekha_completed,
-            'vol_database_coldcalling_completed': vol_database_coldcalling_completed,
-            'num_database_coldcalling_completed': num_database_coldcalling_completed,
+            'vol_databasecoldcalling_completed': vol_database_coldcalling_completed,
+            'num_databasecoldcalling_completed': num_database_coldcalling_completed,
             'vol_chat_completed': vol_chat_completed,
             'num_chat_completed': num_chat_completed,
             'vol_b2b_completed': vol_b2b_completed,
             'num_b2b_completed': num_b2b_completed,
-            'vol_partner_droom_completed': vol_partner_droom_completed,
-            'num_partner_droom_completed': num_partner_droom_completed,
-            'vol_partner_wishup_completed': vol_partner_wishup_completed,
-            'num_partner_wishup_completed': num_partner_wishup_completed,
-            'vol_partner_housejoy_completed': vol_partner_housejoy_completed,
-            'num_partner_housejoy_completed': num_partner_housejoy_completed,
+            'vol_partnerdroom_completed': vol_partner_droom_completed,
+            'num_partnerdroom_completed': num_partner_droom_completed,
+            'vol_partnerwishup_completed': vol_partner_wishup_completed,
+            'num_partnerwishup_completed': num_partner_wishup_completed,
+            'vol_partnerhousejoy_completed': vol_partner_housejoy_completed,
+            'num_partnerhousejoy_completed': num_partner_housejoy_completed,
             'vol_walkin_completed': vol_walkin_completed,
             'num_walkin_completed': num_walkin_completed,
-            'vol_partner_mrright_completed': vol_partner_mrright_completed,
-            'num_partner_mrright_completed': num_partner_mrright_completed,
+            'vol_partnermrright_completed': vol_partner_mrright_completed,
+            'num_partnermrright_completed': num_partner_mrright_completed,
             'vol_websearch_completed': vol_websearch_completed,
             'num_websearch_completed': num_websearch_completed,
             'vol_unknown_completed': vol_unknown_completed,
@@ -5400,6 +5603,8 @@ def analyse_bookings(request):
             'num_facebookad_completed': num_facebookad_completed,
             'vol_mahindraauthorized_completed': vol_mahindraauthorized_completed,
             'num_mahindraauthorized_completed': num_mahindraauthorized_completed,
+            'vol_exotel_completed': vol_exotel_completed,
+            'num_exotel_completed': num_exotel_completed,
             'vol_other_completed': vol_other_completed,
             'num_other_completed': num_other_completed,
             'vol_completed': vol_completed,
@@ -5409,10 +5614,71 @@ def analyse_bookings(request):
             'vol_lube_completed': vol_lube_completed,
             'nps':nps_completed,
             'num_users':num_users,
-            'monthyear':monthyear
-        }
-    obj['status'] = True
-    obj['counter'] = 1
+            'monthyear':monthyear,
+            'vol_total_lead': vol_total_lead,
+            'num_total_lead': num_total_lead,
+            'vol_googleadwords_lead': vol_googleadwords_lead,
+            'num_googleadwords_lead': num_googleadwords_lead,
+            'vol_repeatcustomer_lead': vol_repeatcustomer_lead,
+            'num_repeatcustomer_lead': num_repeatcustomer_lead,
+            'vol_employeereferral_lead': vol_employeereferral_lead,
+            'num_employeereferral_lead': num_employeereferral_lead,
+            'vol_externalreferral_lead': vol_externalreferral_lead,
+            'num_externalreferral_lead': num_externalreferral_lead,
+            'vol_justdial_lead': vol_justdial_lead,
+            'num_justdial_lead': num_justdial_lead,
+            'vol_pamphlet_lead': vol_pamphlet_lead,
+            'num_pamphlet_lead': num_pamphlet_lead,
+            'vol_autoadvertisement_lead': vol_autoadvertisement_lead,
+            'num_autoadvertisement_lead': num_autoadvertisement_lead,
+            'vol_ongroundmarketing_lead': vol_on_groundmarketing_lead,
+            'num_ongroundmarketing_lead': num_on_groundmarketing_lead,
+            'vol_sulekha_lead': vol_sulekha_lead,
+            'num_sulekha_lead': num_sulekha_lead,
+            'vol_databasecoldcalling_lead': vol_database_coldcalling_lead,
+            'num_databasecoldcalling_lead': num_database_coldcalling_lead,
+            'vol_chat_lead': vol_chat_lead,
+            'num_chat_lead': num_chat_lead,
+            'vol_b2b_lead': vol_b2b_lead,
+            'num_b2b_lead': num_b2b_lead,
+            'vol_partnerdroom_lead': vol_partner_droom_lead,
+            'num_partnerdroom_lead': num_partner_droom_lead,
+            'vol_partnerwishup_lead': vol_partner_wishup_lead,
+            'num_partnerwishup_lead': num_partner_wishup_lead,
+            'vol_partnerhousejoy_lead': vol_partner_housejoy_lead,
+            'num_partnerhousejoy_lead': num_partner_housejoy_lead,
+            'vol_walkin_lead': vol_walkin_lead,
+            'num_walkin_lead': num_walkin_lead,
+            'vol_partnermrright_lead': vol_partner_mrright_lead,
+            'num_partnermrright_lead': num_partner_mrright_lead,
+            'vol_websearch_lead': vol_websearch_lead,
+            'num_websearch_lead': num_websearch_lead,
+            'vol_unknown_lead': vol_unknown_lead,
+            'num_unknown_lead': num_unknown_lead,
+            'vol_societycamps_lead': vol_societycamps_lead,
+            'num_societycamps_lead': num_societycamps_lead,
+            'vol_checkupcamps_lead': vol_checkupcamps_lead,
+            'num_checkupcamps_lead': num_checkupcamps_lead,
+            'vol_signuplead_lead': vol_signuplead_lead,
+            'num_signuplead_lead': num_signuplead_lead,
+            'vol_facebookad_lead': vol_facebookad_lead,
+            'num_facebookad_lead': num_facebookad_lead,
+            'vol_mahindraauthorized_lead': vol_mahindraauthorized_lead,
+            'num_mahindraauthorized_lead': num_mahindraauthorized_lead,
+            'vol_exotel_lead': vol_exotel_lead,
+            'num_exotel_lead': num_exotel_lead,
+            'vol_other_lead': vol_other_lead,
+            'num_other_lead': num_other_lead,
+            'vol_b2b_total_completed':vol_b2b_total_completed,
+            'num_b2b_total_completed': num_b2b_total_completed,
+            'vol_b2c_total_completed': vol_b2c_total_completed,
+            'num_b2c_total_completed': num_b2c_total_completed,
+            'vol_b2b_total_lead': vol_b2b_total_lead,
+            'num_b2b_total_lead': num_b2b_total_lead,
+            'vol_b2c_total_lead': vol_b2c_total_lead,
+            'num_b2c_total_lead': num_b2c_total_lead
+
+    }
     obj['msg'] = "Success"
 
     return HttpResponse(json.dumps(obj), content_type='application/json')
@@ -6374,6 +6640,7 @@ def update_booking(request):
     date_follow = get_param(request, 'date_follow', None)
     time_follow = get_param(request, 'time_follow', None)
     follow_status = get_param(request, 'follow_status', None)
+    odometer = get_param(request, 'odometer', None)
 
     booking = Bookings.objects.filter(booking_id=booking_id)[0]
 
@@ -6465,6 +6732,9 @@ def update_booking(request):
 
     if time_follow != None and time_follow != "":
         booking.follow_up_time = time_follow
+
+    if odometer != None and odometer != "":
+        booking.odometer = odometer
 
 
     booking.save()
@@ -6756,6 +7026,7 @@ def send_booking(request):
     booking_user_name = get_param(request,'booking_user_name',None)
     booking_user_number = get_param(request,'booking_user_number',None)
     follow_time = get_param(request,'follow_time',None)
+    odometer = get_param(request, 'odometer', "")
     # follow_up_date = get_param(request,'follow',None)
     # print email
     # print order_list
@@ -6789,7 +7060,7 @@ def send_booking(request):
             email = request.user.email
             booking = place_booking(str(request.user.id), name, number, email, reg_number, address, locality, city, order_list,
                                     make, veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
-                                    price_total, "B2B", booking_flag,job_summary_int,send_sms="0", booking_type="B2B",booking_user_name=booking_user_name,booking_user_number=booking_user_number)
+                                    price_total, "B2B", booking_flag,job_summary_int,send_sms="0", booking_type="B2B",booking_user_name=booking_user_name,booking_user_number=booking_user_number,odometer=odometer)
 
         # WMS Modification Start
 
@@ -6804,7 +7075,7 @@ def send_booking(request):
             booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city,
                                     order_list,make, veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
                                     price_total, source, booking_flag,
-                                    job_summary_int, send_sms=send_confirm,owner=request.user.id,follow_up_date_book=date,follow_up_time_book=follow_time)
+                                    job_summary_int, send_sms=send_confirm,owner=request.user.id,follow_up_date_book=date,follow_up_time_book=follow_time,odometer=odometer)
         # WMS Modification End
 
         elif request.user.is_staff or request.user.is_admin:
@@ -6823,7 +7094,7 @@ def send_booking(request):
                                         order_list,
                                         make,
                                         veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
-                                        price_total, "B2B", booking_flag,job_summary_int,send_sms="0", booking_type="B2B",booking_user_name=booking_user_name,booking_user_number=booking_user_number,follow_up_date_book=date,follow_up_time_book=follow_time)
+                                        price_total, "B2B", booking_flag,job_summary_int,send_sms="0", booking_type="B2B",booking_user_name=booking_user_name,booking_user_number=booking_user_number,follow_up_date_book=date,follow_up_time_book=follow_time,odometer=odometer)
 
             else:
                 booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city,
@@ -6831,7 +7102,7 @@ def send_booking(request):
                                         make,
                                         veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
                                         price_total, source, booking_flag,
-                                        job_summary_int,send_sms=send_confirm,follow_up_date_book=date,follow_up_time_book=follow_time)
+                                        job_summary_int,send_sms=send_confirm,follow_up_date_book=date,follow_up_time_book=follow_time,odometer=odometer)
 
         else:
             print email
@@ -6841,7 +7112,7 @@ def send_booking(request):
                 # print email
                 booking = place_booking(str(request.user.id), name, number, email, reg_number, address, locality, city,
                                         order_list, make,veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
-                                        price_total, source, booking_flag,job_summary_int,send_confirm)
+                                        price_total, source, booking_flag,job_summary_int,send_confirm,odometer=odometer)
             elif obj['status']:
                 # print email
                 user = create_check_user(name, number)
@@ -6849,7 +7120,7 @@ def send_booking(request):
                                         order_list,
                                         make,
                                         veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
-                                        price_total, source, booking_flag,job_summary_int,send_confirm)
+                                        price_total, source, booking_flag,job_summary_int,send_confirm,odometer=odometer)
         obj2['result'] = {}
         obj2['result']['userid'] = user.id
         obj2['result']['booking'] = booking
@@ -6862,7 +7133,7 @@ def send_booking(request):
         login(request, user)
         booking_flag = True
         booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city, order_list, make,
-                                veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source,booking_flag,job_summary_int,send_confirm)
+                                veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source,booking_flag,job_summary_int,send_confirm,odometer=odometer)
         obj2['result'] = {}
         obj2['result']['userid'] = user.id
         obj2['result']['booking'] = booking
