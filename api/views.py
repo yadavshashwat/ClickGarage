@@ -6457,6 +6457,15 @@ def view_all_bookings(request):
                 except:
                     type_part = "NA"
 
+                try:
+                    item_unit_price = item['unit_price']
+                except:
+                    item_unit_price = "NA"
+
+                try:
+                    item_quantity = item['quantity']
+                except:
+                    item_quantity = "NA"
 
                 try:
                     name = item['name']
@@ -6485,9 +6494,9 @@ def view_all_bookings(request):
                                 str(trans.cust_city),
                                 str(settlement_cat),
                                 str(item['price']),
-                                str(item['unit_price']),
+                                str(item_unit_price),
                                 str(type_part),
-                                str(item['quantity']),
+                                str(item_quantity),
                                 str(name),
                                 str(trans.price_total),
                                 str(trans.price_labour),
