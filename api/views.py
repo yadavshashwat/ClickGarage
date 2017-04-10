@@ -6453,12 +6453,19 @@ def view_all_bookings(request):
                     settlement_cat = "NA"
 
                 try:
+                    type_part = item['type']
+                except:
+                    type_part = "NA"
+
+
+                try:
                     name = item['name']
                 except:
                     try:
                         name = item['job_name']
                     except:
                         name = "NA"
+
                 # print name
 
                 datarow.append([str(trans.booking_flag),
@@ -6479,7 +6486,7 @@ def view_all_bookings(request):
                                 str(settlement_cat),
                                 str(item['price']),
                                 str(item['unit_price']),
-                                str(item['type']),
+                                str(type_part),
                                 str(item['quantity']),
                                 str(name),
                                 str(trans.price_total),
