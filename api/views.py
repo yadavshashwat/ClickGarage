@@ -6446,6 +6446,7 @@ def view_all_bookings(request):
 
             file = open(filename, 'w')
             for item in items:
+                # print trans.booking_id
                 try:
                     settlement_cat = item['settlement_cat']
                 except:
@@ -6458,54 +6459,55 @@ def view_all_bookings(request):
                         name = item['job_name']
                     except:
                         name = "NA"
+                # print name
 
-                datarow.append([trans.booking_flag,
-                                trans.booking_id,
-                                trans.booking_timestamp,
-                                trans.cust_id,
-                                trans.cust_name,
-                                trans.cust_make,
-                                trans.cust_model,
-                                trans.cust_vehicle_type,
-                                trans.cust_fuel_varient,
-                                trans.cust_regnumber,
-                                trans.cust_number,
-                                trans.cust_email,
-                                trans.cust_address,
-                                trans.cust_locality,
-                                trans.cust_city,
-                                settlement_cat,
-                                item['price'],
-                                item['unit_price'],
-                                item['type'],
-                                item['quantity'],
-                                name,
-                                trans.price_total,
-                                trans.price_labour,
-                                trans.price_part,
-                                trans.price_discount,
+                datarow.append([str(trans.booking_flag),
+                                str(trans.booking_id),
+                                str(trans.booking_timestamp),
+                                str(trans.cust_id),
+                                str(trans.cust_name),
+                                str(trans.cust_make),
+                                str(trans.cust_model),
+                                str(trans.cust_vehicle_type),
+                                str(trans.cust_fuel_varient),
+                                str(trans.cust_regnumber),
+                                str(trans.cust_number),
+                                str(trans.cust_email),
+                                str(trans.cust_address),
+                                str(trans.cust_locality),
+                                str(trans.cust_city),
+                                str(settlement_cat),
+                                str(item['price']),
+                                str(item['unit_price']),
+                                str(item['type']),
+                                str(item['quantity']),
+                                str(name),
+                                str(trans.price_total),
+                                str(trans.price_labour),
+                                str(trans.price_part),
+                                str(trans.price_discount),
                                 str(trans.date_booking),
-                                trans.time_booking,
+                                str(trans.time_booking),
                                 str(trans.date_delivery),
-                                trans.is_paid,
-                                trans.amount_paid,
-                                trans.coupon,
-                                trans.status,
-                                trans.comments,
-                                trans.source,
-                                trans.agent,
-                                trans.customer_notes,
-                                trans.booking_user_type,
-                                trans.booking_user_name,
-                                trans.booking_user_number,
-                                trans.clickgarage_flag,
-                                trans.booking_owner,
-                                trans.odometer,
-                                trans.escalation_flag,
-                                trans.bill_id,
-                                trans.bill_generation_flag,
-                                trans.feedback_1,
-                                trans.feedback_2,
+                                str(trans.is_paid),
+                                str(trans.amount_paid),
+                                str(trans.coupon),
+                                str(trans.status),
+                                str(trans.comments),
+                                str(trans.source),
+                                str(trans.agent),
+                                str(trans.customer_notes),
+                                str(trans.booking_user_type),
+                                str(trans.booking_user_name),
+                                str(trans.booking_user_number),
+                                str(trans.clickgarage_flag),
+                                str(trans.booking_owner),
+                                str(trans.odometer),
+                                str(trans.escalation_flag),
+                                str(trans.bill_id),
+                                str(trans.bill_generation_flag),
+                                str(trans.feedback_1),
+                                str(trans.feedback_2),
                                 str(trans.follow_up_date),
                                 str(trans.follow_up_time)])
 
@@ -6615,21 +6617,25 @@ def view_all_bookings(request):
 
         })
     if getcsv == "True":
+        # obj['datacheck'] = datarow
         with file:
-            writer = csv.writer(file)
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename="allbookings.csv"'
+            writer = csv.writer(response)
             writer.writerows(datarow)
-            f = open(filename, 'r')
-            downloadfilename = 'bookingsdata.csv'
-            content = f.read()
-            f.close()
-            response_file = HttpResponse(content, mimetype='application/csv')
-            response_file['Content-Disposition'] = 'attachement; filename=' + downloadfilename
-            return response_file
+            return response
+
+            # writer = csv.writer(file)
+            # f = open(filename, 'r')
+            # downloadfilename = 'bookingsdata.csv'
+            # content = f.read()
+            # response_file = HttpResponse(content, mimetype='text/csv')
+            # response_file['Content-Disposition'] = 'attachement; filename=' + downloadfilename
+            # return response_file
 
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
-
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 def fetch_user(user_id):
