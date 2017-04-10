@@ -6511,7 +6511,7 @@ def view_all_bookings(request):
                                 str(trans.status),
                                 str(trans.comments),
                                 str(trans.source),
-                                str(trans.agent),
+                                str(full_agent_name),
                                 str(trans.customer_notes),
                                 str(trans.booking_user_type),
                                 str(trans.booking_user_name),
