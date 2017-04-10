@@ -35,6 +35,7 @@ import os
 import socket
 from activity.models import Transactions, CGUser, CGUserNew
 # from lxml import html
+import csv
 
 PRODUCTION = False
 
@@ -2453,28 +2454,28 @@ def fetch_all_booking(request):
 
 
     tranObjs = Transactions.objects.all()
-            #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
+    #ServiceObjs = Service_wo_sort.objects.order_by('odometer')
     for trans in tranObjs:
         obj['result'].append({
-                            'tran_id'          :trans.id
-                            ,'booking_id'       :trans.booking_id
-                            ,'trans_timestamp'  :trans.trans_timestamp
-                            ,'cust_id'          :trans.cust_id
-                            ,'cust_name'        :trans.cust_name
-                            ,'cust_brand'       :trans.cust_brand
-                            ,'cust_carname'     :trans.cust_carname
-                            ,'cust_carnumber'   :trans.cust_carnumber
-                            ,'cust_number'      :trans.cust_number
-                            ,'cust_email'       :trans.cust_email
-                            ,'cust_pickup_add'  :trans.cust_pickup_add
-                            ,'cust_drop_add'    :trans.cust_drop_add
-                            ,'service_items'    :trans.service_items
-                            ,'price_total'      :trans.price_total
-                            ,'date_booking'     :trans.date_booking
-                            ,'time_booking'     :trans.time_booking
-                            ,'amount_paid'      :trans.amount_paid
-                            ,'status'           :trans.status
-                            ,'comments'         :trans.comments} )
+            'tran_id'          :trans.id
+            ,'booking_id'       :trans.booking_id
+            ,'trans_timestamp'  :trans.trans_timestamp
+            ,'cust_id'          :trans.cust_id
+            ,'cust_name'        :trans.cust_name
+            ,'cust_brand'       :trans.cust_brand
+            ,'cust_carname'     :trans.cust_carname
+            ,'cust_carnumber'   :trans.cust_carnumber
+            ,'cust_number'      :trans.cust_number
+            ,'cust_email'       :trans.cust_email
+            ,'cust_pickup_add'  :trans.cust_pickup_add
+            ,'cust_drop_add'    :trans.cust_drop_add
+            ,'service_items'    :trans.service_items
+            ,'price_total'      :trans.price_total
+            ,'date_booking'     :trans.date_booking
+            ,'time_booking'     :trans.time_booking
+            ,'amount_paid'      :trans.amount_paid
+            ,'status'           :trans.status
+            ,'comments'         :trans.comments} )
         obj['status'] = True
         obj['counter'] = 1
         obj['msg'] = "Success"
@@ -5043,6 +5044,12 @@ def analyse_bookings(request):
         tranObjs = None
         custObjs = None
 
+    if car_bike == None and monthyear == None and date == None:
+        expenseObjs = Expenses.objects.filter()
+    else:
+        expenseObjs = None
+
+
     if car_bike != None and car_bike != "":
         tranObjs = tranObjs.filter(cust_vehicle_type=car_bike)
 
@@ -5221,11 +5228,94 @@ def analyse_bookings(request):
     Promoters = 0
     Detractors = 0
     Passives = 0
+    vol_total_expense = 0
+    vol_googleadwords_expense = 0
+    vol_repeatcustomer_expense = 0
+    vol_employeereferral_expense = 0
+    vol_externalreferral_expense = 0
+    vol_justdial_expense = 0
+    vol_pamphlet_expense = 0
+    vol_autoadvertisement_expense = 0
+    vol_on_groundmarketing_expense = 0
+    vol_sulekha_expense = 0
+    vol_database_coldcalling_expense = 0
+    vol_chat_expense = 0
+    vol_b2b_expense = 0
+    vol_partner_droom_expense = 0
+    vol_partner_wishup_expense = 0
+    vol_partner_housejoy_expense = 0
+    vol_walkin_expense = 0
+    vol_partner_mrright_expense = 0
+    vol_websearch_expense = 0
+    vol_unknown_expense = 0
+    vol_societycamps_expense = 0
+    vol_checkupcamps_expense = 0
+    vol_signuplead_expense = 0
+    vol_facebookad_expense = 0
+    vol_mahindraauthorized_expense = 0
+    vol_exotel_expense = 0
+    vol_other_expense = 0
+
     if len(custObjs):
         print len(custObjs)
         for cust in custObjs:
             num_users = num_users + 1
 
+    if expenseObjs != None:
+        for expense in expenseObjs:
+            if expense.category == "Marketing":
+                if expense.sub_category == "Google Adwords":
+                    vol_googleadwords_expense = vol_googleadwords_expense + float(expense.amount)
+                elif expense.sub_category == "Repeat Customer":
+                    vol_repeatcustomer_expense = vol_repeatcustomer_expense + float(expense.amount)
+                elif expense.sub_category == "Employee Referral":
+                    vol_employeereferral_expense = vol_employeereferral_expense + float(expense.amount)
+                elif expense.sub_category == "External Referral":
+                    vol_externalreferral_expense = vol_externalreferral_expense + float(expense.amount)
+                elif expense.sub_category == "JustDial":
+                    vol_justdial_expense = vol_justdial_expense + float(expense.amount)
+                elif expense.sub_category == "Pamphlet":
+                    vol_pamphlet_expense = vol_pamphlet_expense + float(expense.amount)
+                elif expense.sub_category == "Auto Advertisement":
+                    vol_autoadvertisement_expense = vol_autoadvertisement_expense + float(expense.amount)
+                elif expense.sub_category == "On-Ground Marketing":
+                    vol_on_groundmarketing_expense = vol_on_groundmarketing_expense + float(expense.amount)
+                elif expense.sub_category == "Sulekha":
+                    vol_sulekha_expense = vol_sulekha_expense + float(expense.amount)
+                elif expense.sub_category == "Database - Cold Calling":
+                    vol_database_coldcalling_expense = vol_database_coldcalling_expense + float(expense.amount)
+                elif expense.sub_category == "Chat":
+                    vol_chat_expense = vol_chat_expense + float(expense.amount)
+                elif expense.sub_category == "B2B":
+                    vol_b2b_expense = vol_b2b_expense + float(expense.amount)
+                elif expense.sub_category == "Partner - Droom":
+                    vol_partner_droom_expense = vol_partner_droom_expense + float(expense.amount)
+                elif expense.sub_category == "Partner - Wishup":
+                    vol_partner_wishup_expense = vol_partner_wishup_expense + float(expense.amount)
+                elif expense.sub_category == "Partner - Housejoy":
+                    vol_partner_housejoy_expense = vol_partner_housejoy_expense + float(expense.amount)
+                elif expense.sub_category == "Walk in ":
+                    vol_walkin_expense = vol_walkin_expense + float(expense.amount)
+                elif expense.sub_category == "Partner - Mr Right":
+                    vol_partner_mrright_expense = vol_partner_mrright_expense + float(expense.amount)
+                elif expense.sub_category == "Web Search":
+                    vol_websearch_expense = vol_websearch_expense + float(expense.amount)
+                elif expense.sub_category == "Unknown":
+                    vol_unknown_expense = vol_unknown_expense + float(expense.amount)
+                elif expense.sub_category == "Society camps":
+                    vol_societycamps_expense = vol_societycamps_expense + float(expense.amount)
+                elif expense.sub_category == "Check up camps":
+                    vol_checkupcamps_expense = vol_checkupcamps_expense + float(expense.amount)
+                elif expense.sub_category == "Sign up lead":
+                    vol_signuplead_expense = vol_signuplead_expense + float(expense.amount)
+                elif expense.sub_category == "Facebook Ad":
+                    vol_facebookad_expense = vol_facebookad_expense + float(expense.amount)
+                elif expense.sub_category == "Mahindra Authorized":
+                    vol_mahindraauthorized_expense = vol_mahindraauthorized_expense + float(expense.amount)
+                elif expense.sub_category == "Exotel":
+                    vol_exotel_expense = vol_exotel_expense + float(expense.amount)
+                else:
+                    vol_other_expense = vol_other_expense + float(expense.amount)
 
 
     if len(tranObjs):
@@ -5531,153 +5621,179 @@ def analyse_bookings(request):
     obj['counter'] = 1
     obj['result'] = {
 
-            'num_lead_lead':   num_lead_lead ,
-             'vol_lead_lead':   vol_lead_lead ,
-             'num_warm_lead':   num_warm_lead ,
-             'vol_warm_lead':   vol_warm_lead ,
-             'num_cold_lead':   num_cold_lead ,
-             'vol_cold_lead':   vol_cold_lead ,
-             'num_confirmed_booking':   num_confirmed_booking ,
-             'vol_confirmed_booking':   vol_confirmed_booking ,
-             'num_assigned_booking':   num_assigned_booking ,
-             'vol_assigned_booking':   vol_assigned_booking ,
-             'num_reachedworkshop_booking':   num_reachedworkshop_booking ,
-             'vol_reachedworkshop_booking':   vol_reachedworkshop_booking ,
-             'num_estimateshared_booking':   num_estimateshared_booking ,
-             'vol_estimateshared_booking':   vol_estimateshared_booking ,
-             'num_engineerleft_booking':   num_engineerleft_booking ,
-             'vol_engineerleft_booking':   vol_engineerleft_booking ,
-             'num_cancelled_lead':   num_cancelled_lead ,
-             'vol_cancelled_lead':   vol_cancelled_lead ,
-             'num_cancelled_booking':   num_cancelled_booking ,
-             'vol_cancelled_booking':   vol_cancelled_booking ,
-             'num_escalation_booking':   num_escalation_booking ,
-             'num_jobcompleted_booking':   num_jobcompleted_booking ,
-             'num_feedbacktaken_booking':   num_feedbacktaken_booking ,
-            'num_completed': num_completed,
-            'vol_googleadwords_completed': vol_googleadwords_completed,
-            'num_googleadwords_completed': num_googleadwords_completed,
-            'vol_repeatcustomer_completed': vol_repeatcustomer_completed,
-            'num_repeatcustomer_completed': num_repeatcustomer_completed,
-            'vol_employeereferral_completed': vol_employeereferral_completed,
-            'num_employeereferral_completed': num_employeereferral_completed,
-            'vol_externalreferral_completed': vol_externalreferral_completed,
-            'num_externalreferral_completed': num_externalreferral_completed,
-            'vol_justdial_completed': vol_justdial_completed,
-            'num_justdial_completed': num_justdial_completed,
-            'vol_pamphlet_completed': vol_pamphlet_completed,
-            'num_pamphlet_completed': num_pamphlet_completed,
-            'vol_autoadvertisement_completed': vol_autoadvertisement_completed,
-            'num_autoadvertisement_completed': num_autoadvertisement_completed,
-            'vol_ongroundmarketing_completed': vol_on_groundmarketing_completed,
-            'num_ongroundmarketing_completed': num_on_groundmarketing_completed,
-            'vol_sulekha_completed': vol_sulekha_completed,
-            'num_sulekha_completed': num_sulekha_completed,
-            'vol_databasecoldcalling_completed': vol_database_coldcalling_completed,
-            'num_databasecoldcalling_completed': num_database_coldcalling_completed,
-            'vol_chat_completed': vol_chat_completed,
-            'num_chat_completed': num_chat_completed,
-            'vol_b2b_completed': vol_b2b_completed,
-            'num_b2b_completed': num_b2b_completed,
-            'vol_partnerdroom_completed': vol_partner_droom_completed,
-            'num_partnerdroom_completed': num_partner_droom_completed,
-            'vol_partnerwishup_completed': vol_partner_wishup_completed,
-            'num_partnerwishup_completed': num_partner_wishup_completed,
-            'vol_partnerhousejoy_completed': vol_partner_housejoy_completed,
-            'num_partnerhousejoy_completed': num_partner_housejoy_completed,
-            'vol_walkin_completed': vol_walkin_completed,
-            'num_walkin_completed': num_walkin_completed,
-            'vol_partnermrright_completed': vol_partner_mrright_completed,
-            'num_partnermrright_completed': num_partner_mrright_completed,
-            'vol_websearch_completed': vol_websearch_completed,
-            'num_websearch_completed': num_websearch_completed,
-            'vol_unknown_completed': vol_unknown_completed,
-            'num_unknown_completed': num_unknown_completed,
-            'vol_societycamps_completed': vol_societycamps_completed,
-            'num_societycamps_completed': num_societycamps_completed,
-            'vol_checkupcamps_completed': vol_checkupcamps_completed,
-            'num_checkupcamps_completed': num_checkupcamps_completed,
-            'vol_signuplead_completed': vol_signuplead_completed,
-            'num_signuplead_completed': num_signuplead_completed,
-            'vol_facebookad_completed': vol_facebookad_completed,
-            'num_facebookad_completed': num_facebookad_completed,
-            'vol_mahindraauthorized_completed': vol_mahindraauthorized_completed,
-            'num_mahindraauthorized_completed': num_mahindraauthorized_completed,
-            'vol_exotel_completed': vol_exotel_completed,
-            'num_exotel_completed': num_exotel_completed,
-            'vol_other_completed': vol_other_completed,
-            'num_other_completed': num_other_completed,
-            'vol_completed': vol_completed,
-            'vol_part_completed': vol_part_completed,
-            'vol_labour_completed': vol_labour_completed,
-            'vol_consumable_completed': vol_consumable_completed,
-            'vol_lube_completed': vol_lube_completed,
-            'nps':nps_completed,
-            'num_users':num_users,
-            'monthyear':monthyear,
-            'vol_total_lead': vol_total_lead,
-            'num_total_lead': num_total_lead,
-            'vol_googleadwords_lead': vol_googleadwords_lead,
-            'num_googleadwords_lead': num_googleadwords_lead,
-            'vol_repeatcustomer_lead': vol_repeatcustomer_lead,
-            'num_repeatcustomer_lead': num_repeatcustomer_lead,
-            'vol_employeereferral_lead': vol_employeereferral_lead,
-            'num_employeereferral_lead': num_employeereferral_lead,
-            'vol_externalreferral_lead': vol_externalreferral_lead,
-            'num_externalreferral_lead': num_externalreferral_lead,
-            'vol_justdial_lead': vol_justdial_lead,
-            'num_justdial_lead': num_justdial_lead,
-            'vol_pamphlet_lead': vol_pamphlet_lead,
-            'num_pamphlet_lead': num_pamphlet_lead,
-            'vol_autoadvertisement_lead': vol_autoadvertisement_lead,
-            'num_autoadvertisement_lead': num_autoadvertisement_lead,
-            'vol_ongroundmarketing_lead': vol_on_groundmarketing_lead,
-            'num_ongroundmarketing_lead': num_on_groundmarketing_lead,
-            'vol_sulekha_lead': vol_sulekha_lead,
-            'num_sulekha_lead': num_sulekha_lead,
-            'vol_databasecoldcalling_lead': vol_database_coldcalling_lead,
-            'num_databasecoldcalling_lead': num_database_coldcalling_lead,
-            'vol_chat_lead': vol_chat_lead,
-            'num_chat_lead': num_chat_lead,
-            'vol_b2b_lead': vol_b2b_lead,
-            'num_b2b_lead': num_b2b_lead,
-            'vol_partnerdroom_lead': vol_partner_droom_lead,
-            'num_partnerdroom_lead': num_partner_droom_lead,
-            'vol_partnerwishup_lead': vol_partner_wishup_lead,
-            'num_partnerwishup_lead': num_partner_wishup_lead,
-            'vol_partnerhousejoy_lead': vol_partner_housejoy_lead,
-            'num_partnerhousejoy_lead': num_partner_housejoy_lead,
-            'vol_walkin_lead': vol_walkin_lead,
-            'num_walkin_lead': num_walkin_lead,
-            'vol_partnermrright_lead': vol_partner_mrright_lead,
-            'num_partnermrright_lead': num_partner_mrright_lead,
-            'vol_websearch_lead': vol_websearch_lead,
-            'num_websearch_lead': num_websearch_lead,
-            'vol_unknown_lead': vol_unknown_lead,
-            'num_unknown_lead': num_unknown_lead,
-            'vol_societycamps_lead': vol_societycamps_lead,
-            'num_societycamps_lead': num_societycamps_lead,
-            'vol_checkupcamps_lead': vol_checkupcamps_lead,
-            'num_checkupcamps_lead': num_checkupcamps_lead,
-            'vol_signuplead_lead': vol_signuplead_lead,
-            'num_signuplead_lead': num_signuplead_lead,
-            'vol_facebookad_lead': vol_facebookad_lead,
-            'num_facebookad_lead': num_facebookad_lead,
-            'vol_mahindraauthorized_lead': vol_mahindraauthorized_lead,
-            'num_mahindraauthorized_lead': num_mahindraauthorized_lead,
-            'vol_exotel_lead': vol_exotel_lead,
-            'num_exotel_lead': num_exotel_lead,
-            'vol_other_lead': vol_other_lead,
-            'num_other_lead': num_other_lead,
-            'vol_b2b_total_completed':vol_b2b_total_completed,
-            'num_b2b_total_completed': num_b2b_total_completed,
-            'vol_b2c_total_completed': vol_b2c_total_completed,
-            'num_b2c_total_completed': num_b2c_total_completed,
-            'vol_b2b_total_lead': vol_b2b_total_lead,
-            'num_b2b_total_lead': num_b2b_total_lead,
-            'vol_b2c_total_lead': vol_b2c_total_lead,
-            'num_b2c_total_lead': num_b2c_total_lead
-
+        'num_lead_lead':   num_lead_lead ,
+        'vol_lead_lead':   vol_lead_lead ,
+        'num_warm_lead':   num_warm_lead ,
+        'vol_warm_lead':   vol_warm_lead ,
+        'num_cold_lead':   num_cold_lead ,
+        'vol_cold_lead':   vol_cold_lead ,
+        'num_confirmed_booking':   num_confirmed_booking ,
+        'vol_confirmed_booking':   vol_confirmed_booking ,
+        'num_assigned_booking':   num_assigned_booking ,
+        'vol_assigned_booking':   vol_assigned_booking ,
+        'num_reachedworkshop_booking':   num_reachedworkshop_booking ,
+        'vol_reachedworkshop_booking':   vol_reachedworkshop_booking ,
+        'num_estimateshared_booking':   num_estimateshared_booking ,
+        'vol_estimateshared_booking':   vol_estimateshared_booking ,
+        'num_engineerleft_booking':   num_engineerleft_booking ,
+        'vol_engineerleft_booking':   vol_engineerleft_booking ,
+        'num_cancelled_lead':   num_cancelled_lead ,
+        'vol_cancelled_lead':   vol_cancelled_lead ,
+        'num_cancelled_booking':   num_cancelled_booking ,
+        'vol_cancelled_booking':   vol_cancelled_booking ,
+        'num_escalation_booking':   num_escalation_booking ,
+        'num_jobcompleted_booking':   num_jobcompleted_booking ,
+        'num_feedbacktaken_booking':   num_feedbacktaken_booking ,
+        'num_completed': num_completed,
+        'vol_googleadwords_completed': vol_googleadwords_completed,
+        'num_googleadwords_completed': num_googleadwords_completed,
+        'vol_repeatcustomer_completed': vol_repeatcustomer_completed,
+        'num_repeatcustomer_completed': num_repeatcustomer_completed,
+        'vol_employeereferral_completed': vol_employeereferral_completed,
+        'num_employeereferral_completed': num_employeereferral_completed,
+        'vol_externalreferral_completed': vol_externalreferral_completed,
+        'num_externalreferral_completed': num_externalreferral_completed,
+        'vol_justdial_completed': vol_justdial_completed,
+        'num_justdial_completed': num_justdial_completed,
+        'vol_pamphlet_completed': vol_pamphlet_completed,
+        'num_pamphlet_completed': num_pamphlet_completed,
+        'vol_autoadvertisement_completed': vol_autoadvertisement_completed,
+        'num_autoadvertisement_completed': num_autoadvertisement_completed,
+        'vol_ongroundmarketing_completed': vol_on_groundmarketing_completed,
+        'num_ongroundmarketing_completed': num_on_groundmarketing_completed,
+        'vol_sulekha_completed': vol_sulekha_completed,
+        'num_sulekha_completed': num_sulekha_completed,
+        'vol_databasecoldcalling_completed': vol_database_coldcalling_completed,
+        'num_databasecoldcalling_completed': num_database_coldcalling_completed,
+        'vol_chat_completed': vol_chat_completed,
+        'num_chat_completed': num_chat_completed,
+        'vol_b2b_completed': vol_b2b_completed,
+        'num_b2b_completed': num_b2b_completed,
+        'vol_partnerdroom_completed': vol_partner_droom_completed,
+        'num_partnerdroom_completed': num_partner_droom_completed,
+        'vol_partnerwishup_completed': vol_partner_wishup_completed,
+        'num_partnerwishup_completed': num_partner_wishup_completed,
+        'vol_partnerhousejoy_completed': vol_partner_housejoy_completed,
+        'num_partnerhousejoy_completed': num_partner_housejoy_completed,
+        'vol_walkin_completed': vol_walkin_completed,
+        'num_walkin_completed': num_walkin_completed,
+        'vol_partnermrright_completed': vol_partner_mrright_completed,
+        'num_partnermrright_completed': num_partner_mrright_completed,
+        'vol_websearch_completed': vol_websearch_completed,
+        'num_websearch_completed': num_websearch_completed,
+        'vol_unknown_completed': vol_unknown_completed,
+        'num_unknown_completed': num_unknown_completed,
+        'vol_societycamps_completed': vol_societycamps_completed,
+        'num_societycamps_completed': num_societycamps_completed,
+        'vol_checkupcamps_completed': vol_checkupcamps_completed,
+        'num_checkupcamps_completed': num_checkupcamps_completed,
+        'vol_signuplead_completed': vol_signuplead_completed,
+        'num_signuplead_completed': num_signuplead_completed,
+        'vol_facebookad_completed': vol_facebookad_completed,
+        'num_facebookad_completed': num_facebookad_completed,
+        'vol_mahindraauthorized_completed': vol_mahindraauthorized_completed,
+        'num_mahindraauthorized_completed': num_mahindraauthorized_completed,
+        'vol_exotel_completed': vol_exotel_completed,
+        'num_exotel_completed': num_exotel_completed,
+        'vol_other_completed': vol_other_completed,
+        'num_other_completed': num_other_completed,
+        'vol_completed': vol_completed,
+        'vol_part_completed': vol_part_completed,
+        'vol_labour_completed': vol_labour_completed,
+        'vol_consumable_completed': vol_consumable_completed,
+        'vol_lube_completed': vol_lube_completed,
+        'nps':nps_completed,
+        'num_users':num_users,
+        'monthyear':monthyear,
+        'vol_total_lead': vol_total_lead,
+        'num_total_lead': num_total_lead,
+        'vol_googleadwords_lead': vol_googleadwords_lead,
+        'num_googleadwords_lead': num_googleadwords_lead,
+        'vol_repeatcustomer_lead': vol_repeatcustomer_lead,
+        'num_repeatcustomer_lead': num_repeatcustomer_lead,
+        'vol_employeereferral_lead': vol_employeereferral_lead,
+        'num_employeereferral_lead': num_employeereferral_lead,
+        'vol_externalreferral_lead': vol_externalreferral_lead,
+        'num_externalreferral_lead': num_externalreferral_lead,
+        'vol_justdial_lead': vol_justdial_lead,
+        'num_justdial_lead': num_justdial_lead,
+        'vol_pamphlet_lead': vol_pamphlet_lead,
+        'num_pamphlet_lead': num_pamphlet_lead,
+        'vol_autoadvertisement_lead': vol_autoadvertisement_lead,
+        'num_autoadvertisement_lead': num_autoadvertisement_lead,
+        'vol_ongroundmarketing_lead': vol_on_groundmarketing_lead,
+        'num_ongroundmarketing_lead': num_on_groundmarketing_lead,
+        'vol_sulekha_lead': vol_sulekha_lead,
+        'num_sulekha_lead': num_sulekha_lead,
+        'vol_databasecoldcalling_lead': vol_database_coldcalling_lead,
+        'num_databasecoldcalling_lead': num_database_coldcalling_lead,
+        'vol_chat_lead': vol_chat_lead,
+        'num_chat_lead': num_chat_lead,
+        'vol_b2b_lead': vol_b2b_lead,
+        'num_b2b_lead': num_b2b_lead,
+        'vol_partnerdroom_lead': vol_partner_droom_lead,
+        'num_partnerdroom_lead': num_partner_droom_lead,
+        'vol_partnerwishup_lead': vol_partner_wishup_lead,
+        'num_partnerwishup_lead': num_partner_wishup_lead,
+        'vol_partnerhousejoy_lead': vol_partner_housejoy_lead,
+        'num_partnerhousejoy_lead': num_partner_housejoy_lead,
+        'vol_walkin_lead': vol_walkin_lead,
+        'num_walkin_lead': num_walkin_lead,
+        'vol_partnermrright_lead': vol_partner_mrright_lead,
+        'num_partnermrright_lead': num_partner_mrright_lead,
+        'vol_websearch_lead': vol_websearch_lead,
+        'num_websearch_lead': num_websearch_lead,
+        'vol_unknown_lead': vol_unknown_lead,
+        'num_unknown_lead': num_unknown_lead,
+        'vol_societycamps_lead': vol_societycamps_lead,
+        'num_societycamps_lead': num_societycamps_lead,
+        'vol_checkupcamps_lead': vol_checkupcamps_lead,
+        'num_checkupcamps_lead': num_checkupcamps_lead,
+        'vol_signuplead_lead': vol_signuplead_lead,
+        'num_signuplead_lead': num_signuplead_lead,
+        'vol_facebookad_lead': vol_facebookad_lead,
+        'num_facebookad_lead': num_facebookad_lead,
+        'vol_mahindraauthorized_lead': vol_mahindraauthorized_lead,
+        'num_mahindraauthorized_lead': num_mahindraauthorized_lead,
+        'vol_exotel_lead': vol_exotel_lead,
+        'num_exotel_lead': num_exotel_lead,
+        'vol_other_lead': vol_other_lead,
+        'num_other_lead': num_other_lead,
+        'vol_b2b_total_completed':vol_b2b_total_completed,
+        'num_b2b_total_completed': num_b2b_total_completed,
+        'vol_b2c_total_completed': vol_b2c_total_completed,
+        'num_b2c_total_completed': num_b2c_total_completed,
+        'vol_b2b_total_lead': vol_b2b_total_lead,
+        'num_b2b_total_lead': num_b2b_total_lead,
+        'vol_b2c_total_lead': vol_b2c_total_lead,
+        'num_b2c_total_lead': num_b2c_total_lead,
+        'vol_total_expense': vol_total_expense,
+        'vol_googleadwords_expense': vol_googleadwords_expense,
+        'vol_repeatcustomer_expense': vol_repeatcustomer_expense,
+        'vol_employeereferral_expense': vol_employeereferral_expense,
+        'vol_externalreferral_expense': vol_externalreferral_expense,
+        'vol_justdial_expense': vol_justdial_expense,
+        'vol_pamphlet_expense': vol_pamphlet_expense,
+        'vol_autoadvertisement_expense': vol_autoadvertisement_expense,
+        'vol_ongroundmarketing_expense': vol_on_groundmarketing_expense,
+        'vol_sulekha_expense': vol_sulekha_expense,
+        'vol_databasecoldcalling_expense': vol_database_coldcalling_expense,
+        'vol_chat_expense': vol_chat_expense,
+        'vol_b2b_expense': vol_b2b_expense,
+        'vol_partnerdroom_expense': vol_partner_droom_expense,
+        'vol_partnerwishup_expense': vol_partner_wishup_expense,
+        'vol_partnerhousejoy_expense': vol_partner_housejoy_expense,
+        'vol_walkin_expense': vol_walkin_expense,
+        'vol_partnermrright_expense': vol_partner_mrright_expense,
+        'vol_websearch_expense': vol_websearch_expense,
+        'vol_unknown_expense': vol_unknown_expense,
+        'vol_societycamps_expense': vol_societycamps_expense,
+        'vol_checkupcamps_expense': vol_checkupcamps_expense,
+        'vol_signuplead_expense': vol_signuplead_expense,
+        'vol_facebookad_expense': vol_facebookad_expense,
+        'vol_mahindraauthorized_expense': vol_mahindraauthorized_expense,
+        'vol_exotel_expense': vol_exotel_expense,
+        'vol_other_expense': vol_other_expense
     }
     obj['msg'] = "Success"
 
@@ -5726,7 +5842,7 @@ def send_feedback(request):
         findFeed = findFeed[0]
         findFeed.clickgarage_flag       = booking.clickgarage_flag
         if pick_on_time != None:
-           findFeed.pick_on_time        = pick_on_time
+            findFeed.pick_on_time        = pick_on_time
         if delivery_on_time != None:
             findFeed.delivery_on_time   = delivery_on_time
         if courteous != None:
@@ -5743,7 +5859,7 @@ def send_feedback(request):
             findFeed.recommend_factor   = recommend_factor
         findFeed.time_stamp             = time.time()
         findFeed.save()
-            # print findService.job_name
+        # print findService.job_name
 
     else:
         Feed = Feedback(
@@ -5817,6 +5933,7 @@ def view_all_bookings(request):
     state = get_param(request,'state',None)
     source_id = get_param(request, 'source_id', None)
     phone_num = get_param(request, 'phone_num', None)
+    getcsv = get_param(request, 'getcsv', "False")
 
     if data_id == "" or data_id == None:
         if request.user.is_admin:
@@ -6068,7 +6185,56 @@ def view_all_bookings(request):
             is_admin = False
             is_b2b = False
 
-
+    datarow = []
+    datarow.append(['booking_flag',
+                    'booking_id',
+                    'booking_timestamp',
+                    'cust_id',
+                    'cust_name',
+                    'cust_make',
+                    'cust_model',
+                    'cust_vehicle_type',
+                    'cust_fuel_varient',
+                    'cust_regnumber',
+                    'cust_number',
+                    'cust_email',
+                    'cust_address',
+                    'cust_locality',
+                    'cust_city',
+                    'settlement_cat',
+                    'price',
+                    'unit_price',
+                    'type',
+                    'quantity',
+                    'name',
+                    'price_total',
+                    'price_labour',
+                    'price_part',
+                    'price_discount',
+                    'date_booking',
+                    'time_booking',
+                    'date_delivery',
+                    'is_paid',
+                    'amount_paid',
+                    'coupon',
+                    'status',
+                    'comments',
+                    'source',
+                    'agent',
+                    'customer_notes',
+                    'booking_user_type',
+                    'booking_user_name',
+                    'booking_user_number',
+                    'clickgarage_flag',
+                    'booking_owner',
+                    'odometer',
+                    'escalation_flag',
+                    'bill_id',
+                    'bill_generation_flag',
+                    'feedback_1',
+                    'feedback_2',
+                    'follow_up_date',
+                    'follow_up_time'])
     for trans in tranObjs:
         oldformat_b = str(trans.date_booking)
         datetimeobject = datetime.datetime.strptime(oldformat_b, '%Y-%m-%d')
@@ -6268,6 +6434,80 @@ def view_all_bookings(request):
             additional = "NA"
             recommend_factor = "NA"
 
+        if getcsv == "True":
+            items = trans.service_items
+            if socket.gethostname().startswith('ip-'):
+                if PRODUCTION:
+                    filename = '/home/ubuntu/beta/suigen/csvfiles/allbookings.csv'
+                else:
+                    filename = '/home/ubuntu/testing/suigen/csvfiles/allbookings.csv'
+            else:
+                filename = '/home/shashwat/Desktop/codebase/ClickGarage/csvfiles/allbookings.csv'
+
+            file = open(filename, 'w')
+            for item in items:
+                try:
+                    settlement_cat = item['settlement_cat']
+                except:
+                    settlement_cat = "NA"
+
+                try:
+                    name = item['name']
+                except:
+                    try:
+                        name = item['job_name']
+                    except:
+                        name = "NA"
+
+                datarow.append([trans.booking_flag,
+                                trans.booking_id,
+                                trans.booking_timestamp,
+                                trans.cust_id,
+                                trans.cust_name,
+                                trans.cust_make,
+                                trans.cust_model,
+                                trans.cust_vehicle_type,
+                                trans.cust_fuel_varient,
+                                trans.cust_regnumber,
+                                trans.cust_number,
+                                trans.cust_email,
+                                trans.cust_address,
+                                trans.cust_locality,
+                                trans.cust_city,
+                                settlement_cat,
+                                item['price'],
+                                item['unit_price'],
+                                item['type'],
+                                item['quantity'],
+                                name,
+                                trans.price_total,
+                                trans.price_labour,
+                                trans.price_part,
+                                trans.price_discount,
+                                str(trans.date_booking),
+                                trans.time_booking,
+                                str(trans.date_delivery),
+                                trans.is_paid,
+                                trans.amount_paid,
+                                trans.coupon,
+                                trans.status,
+                                trans.comments,
+                                trans.source,
+                                trans.agent,
+                                trans.customer_notes,
+                                trans.booking_user_type,
+                                trans.booking_user_name,
+                                trans.booking_user_number,
+                                trans.clickgarage_flag,
+                                trans.booking_owner,
+                                trans.odometer,
+                                trans.escalation_flag,
+                                trans.bill_id,
+                                trans.bill_generation_flag,
+                                trans.feedback_1,
+                                trans.feedback_2,
+                                str(trans.follow_up_date),
+                                str(trans.follow_up_time)])
 
         obj['result'].append({
             'id'                : trans.id              ,
@@ -6374,18 +6614,21 @@ def view_all_bookings(request):
             'follow_up_status':trans.follow_up_status
 
         })
+    if getcsv == "True":
+        with file:
+            writer = csv.writer(file)
+            writer.writerows(datarow)
+            f = open(filename, 'r')
+            downloadfilename = 'bookingsdata.csv'
+            content = f.read()
+            f.close()
+            response_file = HttpResponse(content, mimetype='application/csv')
+            response_file['Content-Disposition'] = 'attachement; filename=' + downloadfilename
+            return response_file
+
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
-    # if request.user.is_anonymous:
-    #     obj['result']['auth_rights'] = {'admin': False, 'b2b': False,
-    #                                     'agent': False,
-    #                                     'staff': False}
-    # else:
-    # obj['result']['auth_rights'] = {'admin': request.user.is_admin,
-    #                                 'b2b': request.user.is_b2b,
-    #                                     'agent': request.user.is_agent,
-    #                                     'staff': request.user.is_staff}
 
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
@@ -6456,7 +6699,7 @@ def fetch_all_users(request):
             tranObjs = tranObjs.filter(is_admin=True)
         elif type == "staff":
             tranObjs = tranObjs.filter(is_admin=True)
-        # else:
+            # else:
             #     tranObjs = CGUserNew.objects.all()
     if request.user.is_authenticated():
         is_agent = request.user.is_agent
@@ -6501,7 +6744,7 @@ def fetch_all_users(request):
             ,'req_user_b2b': is_b2b
             ,'req_user_admin': is_admin
             , 'agent_sms_credits': trans.agent_sms_credits
-        # , 'user_state':trans.user_state
+            # , 'user_state':trans.user_state
         })
     obj['status'] = True
     obj['counter'] = 1
@@ -6551,7 +6794,7 @@ def update_user(request):
                 user2 = create_check_user_modified(name=user_name,number=user_num,owner=request.user.id)
             else:
                 user2 = create_check_user(name=user_name,number=user_num)
-    # WMS Modification End
+                # WMS Modification End
 
         else:
             user2 = CGUserNew.objects.filter(id=user_id)[0]
@@ -6839,6 +7082,94 @@ def update_agent(request):
     obj['msg'] = "Success"
     # obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
     return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def update_delete_expense(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    expense_id = get_param(request, 'expense_id', None)
+    expense_date = get_param(request, 'expense_date', None)
+    expense_cat = get_param(request, 'expense_cat',None)
+    expense_subcat = get_param(request, 'expense_subcat',None)
+    expense_reason = get_param(request, 'expense_reason',None)
+    expense_comment = get_param(request, 'expense_comment',None)
+    expense_amount = get_param(request, 'expense_amount',None)
+    expense_owner = get_param(request, 'expense_owner', None)
+    delete = get_param(request,'delete',None)
+    try:
+        oldformat_e = expense_date
+        datetimeobject = datetime.datetime.strptime(oldformat_e, '%d-%m-%Y')
+        newformat_e= datetimeobject.strftime('%Y-%m-%d')
+    except:
+        None
+    # added_by_id = str(request.user.id)
+    # WMS Modification Start
+    if request.user.is_admin:
+        if expense_id == "" or expense_id == None:
+            expense = Expenses(timestamp_expense=time.time(),
+                               date_expense=newformat_e,
+                               category=expense_cat,
+                               sub_category=expense_subcat,
+                               reason=expense_reason,
+                               comment=expense_comment,
+                               amount=str(expense_amount),
+                               expense_owner=expense_owner,
+                               added_by=request.user.id)
+            expense.save()
+        else:
+            findExpense = Expenses.objects.filter(id=expense_id)
+            if len(findExpense):
+                findExpense = findExpense[0]
+                if delete == "True":
+                    findExpense.delete()
+                else:
+                    findExpense.date_expense = newformat_e
+                    findExpense.category = expense_cat
+                    findExpense.sub_category = expense_subcat
+                    findExpense.reason = expense_reason
+                    findExpense.comment = expense_comment
+                    findExpense.amount = expense_amount
+                    findExpense.expense_owner = expense_owner
+                    findExpense.save()
+    obj['status'] = True
+    obj['result'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def view_all_expense(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    expense_id = get_param(request, 'expense_id', None)
+    if request.user.is_admin:
+        if expense_id == None or expense_id == "":
+            expenses = Expenses.objects.all()
+        else:
+            expenses = Expenses.objects.filter(id=expense_id)
+
+        for expense in expenses:
+            oldformat_e = str(expense.date_expense)
+            datetimeobject = datetime.datetime.strptime(oldformat_e,'%Y-%m-%d')
+            newformat_e = datetimeobject.strftime('%d-%m-%Y')
+
+            obj['result'].append({
+                'id':expense.id,
+                'timestamp_expense': expense.timestamp_expense,
+                'date_expense': newformat_e,
+                'category': expense.category,
+                'sub_category': expense.sub_category,
+                'reason': expense.reason,
+                'comment': expense.comment,
+                'amount': expense.amount,
+                'expense_owner': expense.expense_owner,
+                'added_by': expense.added_by
+            })
+    obj['status'] = True
+    obj['counter'] = 1
+    # obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
 
 
 
@@ -7262,8 +7593,8 @@ def change_status_actual(booking_id,status_id):
             # send email to customer about bill reciept and a thank you note
             if (booking_user == "User"):
                 mviews.send_sms_customer(booking.cust_name, booking.cust_number, booking.booking_id, booking.date_booking,
-                                 booking.time_booking, estimate=booking.price_total,
-                                 status="Job Completed")
+                                         booking.time_booking, estimate=booking.price_total,
+                                         status="Job Completed")
 
                 if booking.cust_vehicle_type == "Car":
                     if booking.price_total >= 3500:
@@ -7278,8 +7609,8 @@ def change_status_actual(booking_id,status_id):
                 booking.date_delivery = datetime.date.today()
                 if booking.clickgarage_flag == True:
                     new_lead = place_booking(booking.cust_id, booking.cust_name, booking.cust_number, booking.cust_email, booking.cust_regnumber, booking.cust_address,booking.cust_locality, booking.cust_city, booking.service_items,
-                                         booking.cust_make, booking.cust_vehicle_type,booking.cust_model, booking.cust_fuel_varient, str(date_today), "9:30 AM - 12:30 PM", "Servicing/Repair - Reminder", False, "0", "NA",
-                                        "0", "Repeat Customer", False, "NA", send_sms="0",follow_up_date_book=str(date_today))
+                                             booking.cust_make, booking.cust_vehicle_type,booking.cust_model, booking.cust_fuel_varient, str(date_today), "9:30 AM - 12:30 PM", "Servicing/Repair - Reminder", False, "0", "NA",
+                                             "0", "Repeat Customer", False, "NA", send_sms="0",follow_up_date_book=str(date_today))
                 else:
                     new_lead = place_booking(booking.cust_id, booking.cust_name, booking.cust_number,
                                              booking.cust_email, booking.cust_regnumber, booking.cust_address,
@@ -7288,7 +7619,7 @@ def change_status_actual(booking_id,status_id):
                                              booking.cust_fuel_varient, str(date_today), "9:30 AM - 12:30 PM",
                                              "Servicing/Repair - Reminder", False, "0", "NA",
                                              "0", "Repeat Customer", False, "NA", send_sms="0",owner=booking.booking_owner,follow_up_date_book=str(date_today))
-                # add a lead to the leads data base with follow_up_date as (bike - 60 days , car (bill_amount < 2000) - 30 days, car (bill_amount> 2000) 90 days
+                    # add a lead to the leads data base with follow_up_date as (bike - 60 days , car (bill_amount < 2000) - 30 days, car (bill_amount> 2000) 90 days
 
         if (status_id == "Feedback Taken" and old_status == "Job Completed"):
             None
@@ -7305,8 +7636,8 @@ def change_status_actual(booking_id,status_id):
                                      booking.time_booking, estimate=booking.price_total,
                                      status="Escalation")
             booking.escalation_flag = True
-        #     # send sms to customer that sorry something happend we will take care of the same - Share number of agent diretly to sort his problems
-        #     # send a sorry note to the customer over email
+            #     # send sms to customer that sorry something happend we will take care of the same - Share number of agent diretly to sort his problems
+            #     # send a sorry note to the customer over email
 
     booking.save()
     obj['status'] = True
@@ -7429,6 +7760,7 @@ def get_tax(state):
     obj['msg'] = "Success"
     return obj
 
+
 def get_all_taxes(request):
     obj = {}
     obj['status'] = False
@@ -7498,47 +7830,7 @@ def generate_bill(request):
         else:
             state = "NA"
 
-    # if booking.agent != "":
-    #     agent = fetch_user(booking.agent)
-    #     agent_name = agent['result'][0]['first_name']
-    #     agent_num = agent['result'][0]['phone']
-    #     full_agent_name = agent['result'][0]['first_name'] + ' ' + agent['result'][0]['last_name']
-    #     agent_address = agent['result'][0]['user_address']
-    #     agent_locality = agent['result'][0]['user_locality']
-    #     agent_city = agent['result'][0]['user_city']
-    #     agent_vat_no = agent['result'][0]['agent_vat']
-    #     agent_cin = agent['result'][0]['agent_cin']
-    #     agent_stax = agent['result'][0]['agent_stax']
-    #     state = agent['result'][0]['user_state']
-    #
-    #     if state:
-    #         taxes = get_tax(state)
-    #         vat_part_percent = taxes['result'][0]['vat_parts']
-    #         vat_consumable_percent = taxes['result'][0]['vat_consumables']
-    #         vat_lube_percent = taxes['result'][0]['vat_lube']
-    #         service_tax_percent = taxes['result'][0]['service_tax']
-    #     else:
-    #         vat_part_percent = 0
-    #         vat_consumable_percent = 0
-    #         vat_lube_percent = 0
-    #         service_tax_percent = 0
-    # else:
-    #     agent_name = "NA"
-    #     full_agent_name = "NA"
-    #     agent_num = "NA"
-    #     agent_address = "NA"
-    #     agent_locality = "NA"
-    #     agent_city = "NA"
-    #     state = "NA"
-    #     agent_vat_no = "NA"
-    #     agent_cin = "NA"
-    #     agent_stax = "NA"
-    #     agent_details = "Not Assigned"
-    #     agent_state = "NA"
-    #     vat_part_percent = 0
-    #     vat_consumable_percent = 0
-    #     vat_lube_percent = 0
-    #     service_tax_percent = 0
+
 
     cust_name       = booking.cust_name
     cust_address    = booking.cust_address
@@ -7651,7 +7943,7 @@ def generate_bill(request):
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
-    
+
     # obj['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b,
     #                       'agent': request.user.is_agent, 'staff': request.user.is_staff}
     # return response_file
@@ -7787,33 +8079,33 @@ def add_modify_subscription(request):
                 tran = Subscriptions.objects.all().aggregate(Max('subscription_id'))
                 subs_id = int(tran['subscription_id__max'] + 1)
             tt = Subscriptions(booking_timestamp       = time.time()
-                                ,subscription_id         = subs_id
-                                ,cust_id                 = user.id
-                                ,cust_fname              = cust_fname
-                                ,cust_lname              = cust_lname
-                                ,cust_make               = make
-                                ,cust_model              = model
-                                ,cust_vehicle_type       = veh_type
-                                ,cust_fuel_varient       = fuel
-                                ,cust_regnumber          = vehicle_regno
-                                ,cust_vehicle_vin        = vehicle_vin
-                                ,cust_number_primary     = cust_num_p
-                                ,cust_number_secondary   = cust_num_s
-                                ,cust_email              = cust_email
-                                ,cust_address            = cust_add
-                                ,cust_locality           = cust_loc
-                                ,cust_city               = cust_city
+                               ,subscription_id         = subs_id
+                               ,cust_id                 = user.id
+                               ,cust_fname              = cust_fname
+                               ,cust_lname              = cust_lname
+                               ,cust_make               = make
+                               ,cust_model              = model
+                               ,cust_vehicle_type       = veh_type
+                               ,cust_fuel_varient       = fuel
+                               ,cust_regnumber          = vehicle_regno
+                               ,cust_vehicle_vin        = vehicle_vin
+                               ,cust_number_primary     = cust_num_p
+                               ,cust_number_secondary   = cust_num_s
+                               ,cust_email              = cust_email
+                               ,cust_address            = cust_add
+                               ,cust_locality           = cust_loc
+                               ,cust_city               = cust_city
                                , cust_state              = cust_state
                                ,subscription_type        = sub_type
-                                ,package_name            = pack_name
-                                ,date_start              = date_start
-                                ,date_end                = date_end
-                                ,is_active               = active
-                                ,amount_paid             = paid_amt
-                                ,status                  = status
-                                ,comment                 = comment
-                                ,source                  = source
-                                ,date_veh_purchase       = date_veh_purchase
+                               ,package_name            = pack_name
+                               ,date_start              = date_start
+                               ,date_end                = date_end
+                               ,is_active               = active
+                               ,amount_paid             = paid_amt
+                               ,status                  = status
+                               ,comment                 = comment
+                               ,source                  = source
+                               ,date_veh_purchase       = date_veh_purchase
                                )
             tt.save()
         else:
@@ -8001,7 +8293,7 @@ def send_sms_campaign(request):
 # def export_bookings():
 
 
-    # <<---- Checking Code ---->>
+# <<---- Checking Code ---->>
 
 def view_all_bills(request):
     obj = {}

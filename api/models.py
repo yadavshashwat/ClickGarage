@@ -620,14 +620,15 @@ class Feedback(models.Model):
     recommend_factor            = models.CharField(max_length=50,null=True)
 
 class Expenses(models.Model):
-    date_created    = models.DateField()
+    timestamp_expense    = models.CharField(max_length=200)
     date_expense    = models.DateField()
     category        = models.CharField(max_length=200)
     sub_category    = models.CharField(max_length=200)
     reason          = models.CharField(max_length=200)
     comment         = models.CharField(max_length=500)
     amount          = models.CharField(max_length=200)
-    expense_owner   = models.CharField(max_length=200)
+    expense_owner   = models.CharField(max_length=200,default="ClickGarage")
+    added_by        = models.CharField(max_length=200)
 
 class Messages(models.Model):
     firstname           = models.CharField(max_length=50)
