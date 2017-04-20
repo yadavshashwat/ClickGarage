@@ -4599,7 +4599,7 @@ def create_check_user_modified(name,number,owner):
 
 
 def place_booking(user_id, name, number, email, reg_number, address, locality, city, order_list, make, veh_type, model,
-                  fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary,send_sms = "1",booking_type="User",booking_user_name=None,booking_user_number=None, owner="ClickGarage", follow_up_date_book = "",follow_up_time_book = "",odometer=""):
+                  fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary,send_sms = "1",booking_type="User",booking_user_name=None,booking_user_number=None, owner="ClickGarage", follow_up_date_book = "",follow_up_time_book = "",odometer=""):
 
     print email
 
@@ -4703,7 +4703,8 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
                  amount_paid            =paid_amt          ,
                  coupon                 =coupon            ,
                  status                 =status            ,
-                 comments               =comment           ,
+                 jobssummary  = jobsummary_list,
+                 # comments               =comment           ,
                  source                 =source           ,
                  agent                  =    agent             ,
                  booking_user_type      =   booking_type,
@@ -4720,7 +4721,7 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
     tt.save()
     if send_sms == "1":
         mviews.send_booking_confirm(email=email,name=name,booking_id=booking_id,number=number, service_list= int_summary, car_bike=veh_type)
-    mviews.send_booking(firstname=name,lastname ="", number=number,email=email, car_bike=veh_type, make=make, model=model, fuel_type=fuel, additional="", service_category=comment,locality=locality,address=address,date_requested=date,time_requested=time_str)
+    mviews.send_booking(firstname=name,lastname ="", number=number,email=email, car_bike=veh_type, make=make, model=model, fuel_type=fuel,locality=locality,address=address,date_requested=date,time_requested=time_str)
     return {'Status': "Order Placed", 'booking_id': str(tt.booking_id),'price_total':str(tt.price_total),'Summary':str(tt.comments), 'id':str(tt.id)}
 #
 # def send_otp_booking(request):
@@ -6010,7 +6011,7 @@ def view_all_bookings(request):
                     tranObjs = Bookings.objects.filter(clickgarage_flag=True).order_by('-booking_id')
             else:
                 # print "booking id filter"
-                tranObjs = Bookings.objects.filter(booking_id=booking_id)
+                tranObjs = Bookings.objects.filter(booking_id=booking_id, clickgarage_flag=True)
         elif request.user.is_b2b:
             if booking_id == None or booking_id == "":
                 # print "no id"
@@ -6047,7 +6048,7 @@ def view_all_bookings(request):
                     tranObjs = Bookings.objects.filter(cust_id=request.user.id).order_by('-booking_id')
             else:
                 # print "booking id filter"
-                tranObjs = Bookings.objects.filter(booking_id=booking_id)
+                tranObjs = Bookings.objects.filter(booking_id=booking_id, cust_id=request.user.id)
 
         elif request.user.is_agent:
             if booking_id == None or booking_id == "":
@@ -6086,6 +6087,7 @@ def view_all_bookings(request):
             else:
                 # print "booking id filter"
                 tranObjs = Bookings.objects.filter(booking_id=booking_id)
+                tranObjs = tranObjs.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id))
         else:
             tranObjs=None
 
@@ -6259,6 +6261,8 @@ def view_all_bookings(request):
         if trans.status == "Follow Up":
             status_next = "Confirmed"
         if trans.status == "Cold":
+            status_next = "Estimate Required"
+        if trans.status == "Estimate Required":
             status_next = "Warm"
         if trans.status == "Warm":
             status_next = "Confirmed"
@@ -6370,8 +6374,8 @@ def view_all_bookings(request):
             bill_service_tax_percent = bill.service_tax_percent
             bill_agent_name = bill.agent_name
             bill_agent_address = bill.agent_address
-            bill_agent_locality =  bill.agent_locality
-            bill_agent_city = bill.agent_city
+            # bill_agent_locality =  bill.agent_locality
+            # bill_agent_city = bill.agent_city
             bill_agent_vat_no = bill.agent_vat_no
             bill_agent_cin = bill.agent_cin
             bill_agent_stax = bill.agent_stax
@@ -6380,9 +6384,10 @@ def view_all_bookings(request):
             bill_cust_locality = bill.cust_locality
             bill_cust_city = bill.cust_city
             bill_reg_number  =  bill.reg_number
-            bill_make = bill.make
-            bill_model = bill.model
+            bill_vehicle = bill.vehicle
+            # bill_model = bill.model
             bill_type  = bill.bill_type
+            bill_owner = bill.owner
         else:
             components = ""
             payment_mode = ""
@@ -6396,8 +6401,8 @@ def view_all_bookings(request):
             bill_service_tax_percent = ""
             bill_agent_name = ""
             bill_agent_address = ""
-            bill_agent_locality = ""
-            bill_agent_city = ""
+            # bill_agent_locality = ""
+            # bill_agent_city = ""
             bill_agent_vat_no = ""
             bill_agent_cin = ""
             bill_agent_stax = ""
@@ -6406,9 +6411,10 @@ def view_all_bookings(request):
             bill_cust_locality = ""
             bill_cust_city = ""
             bill_reg_number = ""
-            bill_make = ""
-            bill_model = ""
+            bill_vehicle = ""
+            # bill_model = ""
             bill_type = ""
+            bill_owner = ""
 
         if trans.feedback_2:
             print "1"
@@ -6580,7 +6586,7 @@ def view_all_bookings(request):
             'customer_notes'        :trans.customer_notes,
             'booking_user_type'     : trans.booking_user_type,
             'delivery_date'         :newformat_d,
-
+            'job_summary': trans.jobssummary ,
             'req_user_agent'        : is_agent,
             'req_user_staff'        : is_staff,
             'req_user_b2b'          : is_b2b,
@@ -6605,8 +6611,8 @@ def view_all_bookings(request):
             'bill_service_tax_percent' : bill_service_tax_percent,
             'bill_agent_name' : bill_agent_name,
             'bill_agent_address' : bill_agent_address,
-            'bill_agent_locality' : bill_agent_locality,
-            'bill_agent_city' : bill_agent_city,
+            # 'bill_agent_locality' : bill_agent_locality,
+            # 'bill_agent_city' : bill_agent_city,
             'bill_agent_vat_no' : bill_agent_vat_no,
             'bill_agent_cin' : bill_agent_cin,
             'bill_agent_stax' : bill_agent_stax,
@@ -6615,8 +6621,9 @@ def view_all_bookings(request):
             'bill_cust_locality': bill_cust_locality,
             'bill_cust_city': bill_cust_city,
             'bill_reg_number': bill_reg_number,
-            'bill_make': bill_make,
-            'bill_model': bill_model,
+            'bill_vehicle': bill_vehicle,
+            'bill_owner':bill_owner,
+            # 'bill_model': bill_model,
             'bill_type':bill_type,
             'time_stamp' : time_stamp,
             'pick_on_time': pick_on_time,
@@ -6639,6 +6646,7 @@ def view_all_bookings(request):
             response['Content-Disposition'] = 'attachment; filename="allbookings.csv"'
             writer = csv.writer(response)
             writer.writerows(datarow)
+            file.close()
             return response
 
             # writer = csv.writer(file)
@@ -6906,6 +6914,7 @@ def update_booking(request):
     time_follow = get_param(request, 'time_follow', None)
     follow_status = get_param(request, 'follow_status', None)
     odometer = get_param(request, 'odometer', None)
+    job_summary = get_param(request, 'job_summary', None)
 
     booking = Bookings.objects.filter(booking_id=booking_id)[0]
 
@@ -6964,6 +6973,9 @@ def update_booking(request):
 
     if comment_n != None:
         booking.comments = comment_n
+
+    if job_summary != None:
+        booking.jobssummary = json.loads(job_summary)
 
     if time_n != None or time_n != "":
         booking.time_booking = time_n
@@ -7367,7 +7379,8 @@ def send_booking(request):
     fuel = get_param(request, 'fuel', None)
     date = get_param(request, 'date', None)
     time_str = get_param(request, 'time', None)
-    comment = get_param(request, 'comment', None)
+    # comment = get_param(request, 'comment', None)
+    jobsummary_list = get_param(request,'jobsummary_list',None)
     is_paid = get_param(request, 'is_paid', None)
     paid_amt = get_param(request, 'paid_amt', None)
     coupon = get_param(request, 'coupon', None)
@@ -7386,7 +7399,7 @@ def send_booking(request):
 
     # if follow_up_date == None:
     #     follow_up_date = date
-
+    jobsummary_list = json.loads(jobsummary_list)
     oldformat = date
     datetimeobject = datetime.datetime.strptime(oldformat, '%d-%m-%Y')
     newformat = datetimeobject.strftime('%Y-%m-%d')
@@ -7412,7 +7425,7 @@ def send_booking(request):
             number = request.user.contact_no
             email = request.user.email
             booking = place_booking(str(request.user.id), name, number, email, reg_number, address, locality, city, order_list,
-                                    make, veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
+                                    make, veh_type, model, fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon,
                                     price_total, "B2B", booking_flag,job_summary_int,send_sms="0", booking_type="B2B",booking_user_name=booking_user_name,booking_user_number=booking_user_number,odometer=odometer)
 
         # WMS Modification Start
@@ -7426,7 +7439,7 @@ def send_booking(request):
             # if request.user.id not in user.owner_user:
             #     user.owner_user.append(request.user.id)
             booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city,
-                                    order_list,make, veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
+                                    order_list,make, veh_type, model, fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon,
                                     price_total, source, booking_flag,
                                     job_summary_int, send_sms=send_confirm,owner=request.user.id,follow_up_date_book=date,follow_up_time_book=follow_time,odometer=odometer)
         # WMS Modification End
@@ -7446,14 +7459,14 @@ def send_booking(request):
                 booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city,
                                         order_list,
                                         make,
-                                        veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
+                                        veh_type, model, fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon,
                                         price_total, "B2B", booking_flag,job_summary_int,send_sms="0", booking_type="B2B",booking_user_name=booking_user_name,booking_user_number=booking_user_number,follow_up_date_book=date,follow_up_time_book=follow_time,odometer=odometer)
 
             else:
                 booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city,
                                         order_list,
                                         make,
-                                        veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
+                                        veh_type, model, fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon,
                                         price_total, source, booking_flag,
                                         job_summary_int,send_sms=send_confirm,follow_up_date_book=date,follow_up_time_book=follow_time,odometer=odometer)
 
@@ -7464,7 +7477,7 @@ def send_booking(request):
             if request.user.contact_no == number:
                 # print email
                 booking = place_booking(str(request.user.id), name, number, email, reg_number, address, locality, city,
-                                        order_list, make,veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
+                                        order_list, make,veh_type, model, fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon,
                                         price_total, source, booking_flag,job_summary_int,send_confirm,odometer=odometer)
             elif obj['status']:
                 # print email
@@ -7472,7 +7485,7 @@ def send_booking(request):
                 booking = place_booking(str(request.user.id), name, number, email, reg_number, address, locality, city,
                                         order_list,
                                         make,
-                                        veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
+                                        veh_type, model, fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon,
                                         price_total, source, booking_flag,job_summary_int,send_confirm,odometer=odometer)
         obj2['result'] = {}
         obj2['result']['userid'] = user.id
@@ -7486,7 +7499,7 @@ def send_booking(request):
         login(request, user)
         booking_flag = True
         booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city, order_list, make,
-                                veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon, price_total,source,booking_flag,job_summary_int,send_confirm,odometer=odometer)
+                                veh_type, model, fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon, price_total,source,booking_flag,job_summary_int,send_confirm,odometer=odometer)
         obj2['result'] = {}
         obj2['result']['userid'] = user.id
         obj2['result']['booking'] = booking
@@ -7548,11 +7561,16 @@ def change_status_actual(booking_id,status_id):
         booking.status = status_id
         # oldbooking_flag
 
+        if (status_id =="Lead" or status_id == "Follow Up" or status_id == "Cold" or status_id == "Warm" or status_id == "Estimate Required"):
+            if(status_id == "Lead" and booking.booking_flag == True):
+                date_lead_convert = datetime.date.today() + datetime.timedelta(days=1)
+                time_lead_convert =  datetime.time(9, 30, 0, 0)
+                booking.follow_up_date = str(date_lead_convert)
+                booking.follow_up_time = time_lead_convert
+                booking.booking_flag = False
+            else:
+                booking.booking_flag = False
 
-
-
-        if (status_id =="Lead" or status_id == "Follow Up" or status_id == "Cold" or status_id == "Warm"):
-            booking.booking_flag = False
         elif (status_id == "Cancelled" and booking.booking_flag == False):
             booking.booking_flag = False
         else:
@@ -7693,6 +7711,8 @@ def send_lead(request):
     fuel = get_param(request, 'fuel', None)
     date = get_param(request, 'date', None)
     time_str = get_param(request, 'time', None)
+    jobsummary_list = get_param(request, 'jobsummary_list', None)
+
     comment = get_param(request, 'comment', None)
     is_paid = get_param(request, 'is_paid', None)
     paid_amt = get_param(request, 'paid_amt', None)
@@ -7705,7 +7725,7 @@ def send_lead(request):
     datetimeobject = datetime.datetime.strptime(oldformat, '%d-%m-%Y')
     newformat = datetimeobject.strftime('%Y-%m-%d')
     date = newformat
-
+    jobsummary_list = json.loads(jobsummary_list)
     obj2 = {}
     obj2['status'] = False
     obj2['result'] = []
@@ -7713,7 +7733,7 @@ def send_lead(request):
     booking_flag = False
 
     booking = place_booking('', name, number, email, reg_number, address, locality, city, order_list,
-                            make, veh_type, model, fuel, date, time_str, comment, is_paid, paid_amt, coupon,
+                            make, veh_type, model, fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon,
                             price_total, source, booking_flag, job_summary_int, send_sms=send_confirm)
     obj2['result'] = {}
     obj2['result']['userid'] = 'None'
@@ -7784,10 +7804,14 @@ def get_tax(state):
 
 
 def get_all_taxes(request):
+    state = get_param(request, 'state', None)
     obj = {}
     obj['status'] = False
     obj['result'] = []
-    taxObjs = Taxes.objects.all()
+    if state == None or state == "":
+        taxObjs = Taxes.objects.all()
+    else:
+        taxObjs = Taxes.objects.filter(state=state)
 
     for tax in taxObjs:
         obj['result'].append({
@@ -7808,6 +7832,7 @@ def generate_bill(request):
     obj = {}
     obj['status'] = False
     obj['result'] = {}
+
     data_id                 = get_param(request,'data_id', None)
     bill_owner              = get_param(request,'bill_owner',None)
     total_amount            = get_param(request,'total_amount',None)
@@ -7819,159 +7844,195 @@ def generate_bill(request):
     vat_lube                = get_param(request, 'vat_lube', None)
     vat_consumable          = get_param(request, 'vat_consumable', None)
     service_tax             = get_param(request, 'service_tax', None)
-    # payment_status          = get_param(request, 'payment_status', None)
-    # amount_paid             = get_param(request, 'amount_paid', None)
-    payment_mode             = get_param(request, 'payment_mode', None)
-
+    payment_mode            = get_param(request, 'payment_mode', None)
     full_agent_name         = get_param(request, 'full_agent_name', None)
-    agent_address           = get_param(request, 'agent_address', None)
-    agent_locality          = get_param(request, 'agent_locality', None)
-    agent_city              = get_param(request, 'agent_city', None)
+    agent_address      = get_param(request, 'agent_address', None)
     agent_vat_no            = get_param(request, 'agent_vat_no', None)
     agent_cin               = get_param(request, 'agent_cin', None)
     agent_stax              = get_param(request, 'agent_stax', None)
-
-    bill_type               = get_param(request,'bill_type',None)
     state                   = get_param(request, 'state', None)
     vat_part_percent        = get_param(request, 'vat_part_percent', None)
     vat_lube_percent        = get_param(request, 'vat_lube_percent', None)
     vat_consumable_percent  = get_param(request, 'vat_consumable_percent', None)
     service_tax_percent     = get_param(request, 'service_tax_percent', None)
+    notes                   = get_param(request, 'notes', None)
+    cust_name               = get_param(request,'cust_name',None)
+    cust_address            = get_param(request,'cust_address',None)
+    cust_locality           = get_param(request,'cust_locality',None)
+    cust_city               = get_param(request,'cust_city',None)
+    reg_number              = get_param(request,'reg_number',None)
+    vehicle                 = get_param(request,'vehicle',None)
+    service_items           = get_param(request,'service_items',None)
+    invoice_number          = get_param(request,'invoice_number',None)
+    booking = None
+    service_items = json.loads(service_items)
+    if data_id != None and data_id != "":
+        booking = Bookings.objects.filter(id=data_id)[0]
+        booking_id = booking.booking_id
 
 
-    notes = get_param(request, 'notes', None)
+    if invoice_number == "Pre-Invoice":
+        pre_invoice = True
+        bill_type = "Pre-Invoice"
+        invoice_number = 0
+    else:
+        pre_invoice = False
+        bill_type = "Invoice"
+        if invoice_number == "" or invoice_number == None:
+            tran_len = len(Bills.objects.filter(owner=bill_owner,bill_type = "Invoice"))
+            if tran_len:
+                tran = Bills.objects.filter(owner=bill_owner,bill_type = "Invoice").aggregate(Max('invoice_number'))
+                invoice_number = int(tran['invoice_number__max'] + 1)
+            else:
+                invoice_number = 10000
 
-    booking                 = Bookings.objects.filter(id=data_id)[0]
-    components              = booking.service_items
-    booking_id              = data_id
-
-    if state == None or state == "":
-        if booking.agent != "":
-            agent = fetch_user(booking.agent)
-            state = agent['result'][0]['user_state']
-        else:
-            state = "NA"
-
-
-
-    cust_name       = booking.cust_name
-    cust_address    = booking.cust_address
-    cust_locality   = booking.cust_locality
-    cust_city       = booking.cust_city
-    reg_number      = booking.cust_regnumber
-    make            = booking.cust_make
-    model           = booking.cust_model
-
-    date_today = datetime.date.today()
-    clickgarage_flag = booking.clickgarage_flag
-    status = "Generated"
-    invoice_number = 1000
-    if request.user.is_admin or request.user.is_staff or request.user.is_agent:
-        tran_len = len(Bills.objects.filter(owner=bill_owner, bill_type = bill_type))
-        if tran_len:
-            tran = Bills.objects.filter(owner = bill_owner, bill_type = bill_type).aggregate(Max('invoice_number'))
-            invoice_number = int(tran['invoice_number__max'] + 1)
-        billsobjs = Bills.objects.filter(booking_id =data_id)
+    if booking:
+        billsobjs = Bills.objects.filter(booking_data_id=data_id)
         for bill in billsobjs:
             bill.status = "Cancelled"
             bill.save()
 
-        tt = Bills(clickgarage_flag         = clickgarage_flag
-                   , invoice_number         = invoice_number
-                   , total_amount           = total_amount
-                   , part_amount            = part_amount
-                   , lube_amount            = lube_amount
-                   , consumable_amount      =consumable_amount
-                   , labour_amount          =labour_amount
-                   , vat_part               =vat_part
-                   , vat_lube               =vat_lube
-                   , vat_consumable         =vat_consumable
-                   , service_tax            =service_tax
-                   , components             = components
-                   , status                 =status
-                   , booking_id             = booking_id
-                   , date_created           = date_today
-                   , time_stamp             =   time.time()
-                   , owner                  =   bill_owner
-                   , file_name              = 'Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
-                   # , payment_status         = payment_status
-                   # , amount_paid            = amount_paid
-                   , payment_mode           = payment_mode
-                   , notes                  = notes
-                   , state                  =state
-                   , vat_part_percent       =vat_part_percent
-                   , vat_lube_percent       =vat_lube_percent
-                   , vat_consumable_percent =vat_consumable_percent
-                   , service_tax_percent    =service_tax_percent
-                   , agent_name             =full_agent_name
-                   , agent_address          =agent_address
-                   , agent_locality         =agent_locality
-                   , agent_city             =agent_city
-                   , agent_vat_no           =agent_vat_no
-                   , agent_cin              =agent_cin
-                   , agent_stax             =agent_stax
-                   , cust_name              =cust_name
-                   , cust_address           =cust_address
-                   , cust_locality          =cust_locality
-                   , cust_city              =cust_city
-                   , reg_number             =reg_number
-                   , make                   =make
-                   , model                  =model
-                   ,bill_type               = bill_type
-                   )
-        tt.save()
+
+    if booking:
+        clickgarage_flag = booking.clickgarage_flag
+        if not pre_invoice:
+            booking.service_items = service_items
+    else:
+        data_id = ""
+        if request.user.is_admin or request.user.is_staff:
+            clickgarage_flag = True
+        else:
+            clickgarage_flag = False
+
+    date_today = datetime.date.today()
 
 
-        tt2 = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner, bill_type = bill_type, invoice_number = invoice_number)[0]
-        booking.bill_id                 = tt2.id
-        booking.bill_generation_flag    = True
+    status = "Generated"
+
+
+    tt = Bills(clickgarage_flag         = clickgarage_flag
+               , invoice_number         = str(invoice_number)
+               , total_amount           = total_amount
+               , part_amount            = part_amount
+               , lube_amount            = lube_amount
+               , consumable_amount      =consumable_amount
+               , labour_amount          =labour_amount
+               , vat_part               =vat_part
+               , vat_lube               =vat_lube
+               , vat_consumable         =vat_consumable
+               , service_tax            =service_tax
+               , components             = service_items
+               , status                 =status
+               , date_created           = date_today
+               , time_stamp             =   time.time()
+               , owner                  =   bill_owner
+               ,    booking_data_id = data_id
+               # , file_name              = bill_type+'-'+str(invoice_number)+'_'+data_id+'.pdf'
+               # , payment_status         = payment_status
+               # , amount_paid            = amount_paid
+               , payment_mode           = payment_mode
+               , notes                  = notes
+               , state                  =state
+               , vat_part_percent       =vat_part_percent
+               , vat_lube_percent       =vat_lube_percent
+               , vat_consumable_percent =vat_consumable_percent
+               , service_tax_percent    =service_tax_percent
+               , agent_name             =full_agent_name
+               , agent_address          =agent_address
+               , agent_vat_no           =agent_vat_no
+               , agent_cin              =agent_cin
+               , agent_stax             =agent_stax
+               , cust_name              =cust_name
+               , cust_address           =cust_address
+               , cust_locality          =cust_locality
+               , cust_city              =cust_city
+               , reg_number             =reg_number
+               , vehicle                =vehicle
+               ,bill_type               = bill_type
+               )
+    tt.save()
+    if booking:
+        tt2 = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner, booking_data_id = data_id, status = "Generated", bill_type=bill_type,invoice_number=invoice_number)[0]
+        booking.bill_id = tt2.id
+        if tt2.bill_type == "Pre-Invoice":
+            booking.bill_generation_flag  = False
+        else:
+            booking.bill_generation_flag = True
         booking.save()
 
+    import pdfkit
+    import sys
+    reload(sys)
+    sys.setdefaultencoding('utf8')
 
+    if pre_invoice:
+        if booking:
+            html = mviews.bill_html(agent_name = full_agent_name,agent_address= agent_address,invoice_number="Pre-Invoice",booking_id = booking_id,created_date = date_today ,tin_number = agent_vat_no, cin_number=agent_cin,stax_number = agent_stax,cust_name= cust_name,cust_address= cust_address,cust_locality=cust_locality,cust_city=cust_city,cust_reg=reg_number,cust_veh=vehicle,service_items = service_items,vat_part_percent=vat_part_percent,vat_lube_percent=vat_lube_percent,vat_consumable_percent=vat_consumable_percent,stax_percent=service_tax_percent,vat_part=vat_part,vat_lube=vat_lube,vat_consumable=vat_consumable,stax_amount=service_tax,total=total_amount,recommendation=notes,logo=clickgarage_flag)
+        else:
+            html = mviews.bill_html(agent_name = full_agent_name,agent_address= agent_address,invoice_number="Pre-Invoice",booking_id = "",created_date = date_today ,tin_number = agent_vat_no, cin_number=agent_cin,stax_number = agent_stax,cust_name= cust_name,cust_address= cust_address,cust_locality=cust_locality,cust_city=cust_city,cust_reg=reg_number,cust_veh=vehicle,service_items = service_items,vat_part_percent=vat_part_percent,vat_lube_percent=vat_lube_percent,vat_consumable_percent=vat_consumable_percent,stax_percent=service_tax_percent,vat_part=vat_part,vat_lube=vat_lube,vat_consumable=vat_consumable,stax_amount=service_tax,total=total_amount,recommendation=notes,logo=clickgarage_flag)
+    else:
+        if booking:
+            html = mviews.bill_html(agent_name=full_agent_name, agent_address=agent_address, invoice_number=invoice_number,
+                                booking_id=booking_id, created_date=date_today, tin_number=agent_vat_no, cin_number=agent_cin,
+                                stax_number=agent_stax, cust_name=cust_name, cust_address=cust_address,
+                                cust_locality=cust_locality, cust_city=cust_city, cust_reg=reg_number, cust_veh=vehicle,
+                                service_items=service_items, vat_part_percent=vat_part_percent,
+                                vat_lube_percent=vat_lube_percent, vat_consumable_percent=vat_consumable_percent,
+                                stax_percent=service_tax_percent, vat_part=vat_part, vat_lube=vat_lube,
+                                vat_consumable=vat_consumable, stax_amount=service_tax, total=total_amount,
+                                recommendation=notes,logo=clickgarage_flag)
+        else:
+            html = mviews.bill_html(agent_name=full_agent_name, agent_address=agent_address,
+                                    invoice_number=invoice_number,
+                                    booking_id="", created_date=date_today, tin_number=agent_vat_no,
+                                    cin_number=agent_cin,
+                                    stax_number=agent_stax, cust_name=cust_name, cust_address=cust_address,
+                                    cust_locality=cust_locality, cust_city=cust_city, cust_reg=reg_number,
+                                    cust_veh=vehicle,
+                                    service_items=service_items, vat_part_percent=vat_part_percent,
+                                    vat_lube_percent=vat_lube_percent, vat_consumable_percent=vat_consumable_percent,
+                                    stax_percent=service_tax_percent, vat_part=vat_part, vat_lube=vat_lube,
+                                    vat_consumable=vat_consumable, stax_amount=service_tax, total=total_amount,
+                                    recommendation=notes,logo=clickgarage_flag)
+        #     import subprocess
+        #
+    if socket.gethostname().startswith('ip-'):
+        if PRODUCTION:
+            cmd = pdfkit.from_string(html,'/home/ubuntu/beta/website/Bills/'+bill_type+'-'+str(invoice_number)+'_'+data_id+'.pdf')
+        else:
+            cmd = pdfkit.from_string(html,'/home/ubuntu/testing/website/Bills/'+bill_type+'-'+str(invoice_number)+'_'+data_id+'.pdf')
+    else:
+        cmd = pdfkit.from_string(html, '/home/shashwat/Desktop/codebase/website/Bills/' + bill_type + '-' + str(invoice_number) + '_' + data_id + '.pdf')
 
-    #     import subprocess
-    #
-    #     if socket.gethostname().startswith('ip-'):
-    #         if PRODUCTION:
-    #             cmd = 'wkhtmltopdf https://www.clickgarage.in/bills/old/' + data_id + '#print /home/ubuntu/beta/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
-    #         else:
-    #             cmd = 'wkhtmltopdf http://beta.clickgarage.in/bills/old/' + data_id + '#print /home/ubuntu/testing/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
-    #     else:
-    #         cmd = 'wkhtmltopdf http://local.clickgarage.in/bills/old/' + data_id + '#print /home/shashwat/Desktop/codebase/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
-    #     print cmd
-    #     s = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-    #     ss = s.communicate()
-    #
-    # obj['err'] = ss
-    #
-    # if socket.gethostname().startswith('ip-'):
-    #     if PRODUCTION:
-    #         obj['filename'] = '/home/ubuntu/beta/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
-    #     else:
-    #         obj['filename'] = '/home/ubuntu/testing/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
-    # else:
-    #     obj['filename'] = '/home/shashwat/Desktop/codebase/website/Bills/Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
-    #
-    #
-    # f = open(obj['filename'], 'r')
-    # filename = 'Invoice-'+str(invoice_number)+'_'+data_id+'.pdf'
-    # content = f.read()
-    # f.close()
-    # response_file = HttpResponse(content, mimetype='application/pdf')
-    # response_file['Content-Disposition'] = 'attachement; filename=' + filename
+        #     s = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        #     ss = s.communicate()
+        #
+        # obj['err'] = ss
+        #
+    if socket.gethostname().startswith('ip-'):
+        if PRODUCTION:
+            obj['filename'] = '/home/ubuntu/beta/website/Bills/'+bill_type+'-'+str(invoice_number)+'_'+data_id+'.pdf'
+        else:
+            obj['filename'] = '/home/ubuntu/testing/website/Bills/'+bill_type+'-'+str(invoice_number)+'_'+data_id+'.pdf'
+    else:
+        obj['filename'] = '/home/shashwat/Desktop/codebase/website/Bills/'+bill_type+'-'+str(invoice_number)+'_'+data_id+'.pdf'
+        #
+        #
+    f = open(obj['filename'], 'r')
+    filename = bill_type+'-'+str(invoice_number)+'_'+data_id+'.pdf'
+    content = f.read()
+    f.close()
+    response_file = HttpResponse(content, mimetype='application/pdf')
+    response_file['Content-Disposition'] = 'attachement; filename=' + filename
 
-
-    obj['result']['id'] = data_id
+    obj['msg'] = "Bill Generated"
     obj['status'] = True
     obj['counter'] = 1
-    obj['msg'] = "Success"
 
-    # obj['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b,
-    #                       'agent': request.user.is_agent, 'staff': request.user.is_staff}
-    # return response_file
+    return response_file
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
-import pdfkit
+# import pdfkit
 
 # def print_page (url,output):
 #     pdfkit.from_url(url, output)
@@ -8321,7 +8382,37 @@ def view_all_bills(request):
     obj = {}
     obj['status'] = False
     obj['result'] = []
-    jobObjs = Bills.objects.all()
+    data_id = get_param(request, 'data_id', None)
+    bill_type = get_param(request, 'bill_type', None)
+
+    if request.user.is_admin:
+        if (data_id == None or data_id == ""):
+            jobObjs = Bills.objects.all().order_by('-time_stamp')
+        else:
+            jobObjs = Bills.objects.filter(id=data_id)
+
+    elif request.user.is_staff:
+        if (data_id == None or data_id == ""):
+            jobObjs = Bills.objects.filter(clickgarage_flag=True).order_by('-time_stamp')
+        else:
+            jobObjs = Bills.objects.filter(id=data_id)
+    elif request.user.is_b2b:
+        if data_id == None or data_id == "":
+            jobObjs = Bills.objects.filter(cust_id=request.user.id).order_by('-time_stamp')
+        else:
+            jobObjs = Bills.objects.filter(id=data_id)
+
+    elif request.user.is_agent:
+        if data_id == None or data_id == "":
+            jobObjs = Bills.objects.filter(owner=request.user.id).order_by('-time_stamp')
+        else:
+            jobObjs = Bills.objects.filter(id=data_id)
+    else:
+        jobObjs = None
+
+    jobObjs = jobObjs.filter(bill_type=bill_type)
+
+    # jobObjs = Bills.objects.all()
 
     for job in jobObjs:
         obj['result'].append({
@@ -8339,7 +8430,7 @@ def view_all_bills(request):
             'service_tax': job.service_tax,
             'components': job.components,
             'status': job.status,
-            'booking_id': job.booking_id,
+            'booking_data_id': job.booking_data_id,
             'date_created': str(job.date_created),
             # 'date_modified    ': str(job.date_modified),
             'time_stamp': job.time_stamp,
@@ -8356,8 +8447,8 @@ def view_all_bills(request):
             'service_tax_percent': job.service_tax_percent,
             'agent_name': job.agent_name,
             'agent_address': job.agent_address,
-            'agent_locality': job.agent_locality,
-            'agent_city': job.agent_city,
+            # 'agent_locality': job.agent_locality,
+            # 'agent_city': job.agent_city,
             'agent_vat_no': job.agent_vat_no,
             'agent_cin': job.agent_cin,
             'agent_stax': job.agent_stax,
@@ -8489,3 +8580,5 @@ def get_all_part(request):
     obj['counter'] = 1
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
+
+

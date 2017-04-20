@@ -1414,7 +1414,7 @@ def get_quote(request,veh_type='',veh='',service=''):
     return HttpResponse(template.render(context))
 
 
-def adminpanel(request,cat_type= '',all_single='',data_id=''):
+def adminpanel(request,cat_type= '',all_single='',data_id='',pre_post = ''):
     template = loader.get_template('revamp/admin.html')
     context = RequestContext(request, locals())
     return HttpResponse(template.render(context))

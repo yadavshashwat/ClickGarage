@@ -540,6 +540,8 @@ class Bookings(models.Model):
     coupon                  = models.CharField(max_length=200, null=True)
     status                  = models.CharField(max_length=200)
     comments                = models.CharField(max_length=500, null=True)
+    jobssummary             = ListField(DictField())
+    # Price Job Item
     source                  = models.CharField(max_length=200, null=True)
     agent                   = models.CharField(max_length=200, null=True)
     estimate_history        = ListField(DictField())
@@ -576,7 +578,7 @@ class Bills(models.Model):
     service_tax                 = models.CharField(max_length=200)
     components                  = ListField(DictField())
     status                      = models.CharField(max_length=200)
-    booking_id                  = models.CharField(max_length=200)
+    booking_data_id             = models.CharField(max_length=200)
     date_created                = models.DateField()
     time_stamp                  =  models.CharField(max_length=50)
     owner                       = models.CharField(max_length=200)
@@ -592,8 +594,8 @@ class Bills(models.Model):
     service_tax_percent         = models.CharField(max_length=50)
     agent_name                  = models.CharField(max_length=200)
     agent_address               = models.CharField(max_length=200)
-    agent_locality              = models.CharField(max_length=200)
-    agent_city                  = models.CharField(max_length=200)
+    # agent_locality              = models.CharField(max_length=200)
+    # agent_city                  = models.CharField(max_length=200)
     agent_vat_no                = models.CharField(max_length=200)
     agent_cin                   = models.CharField(max_length=200)
     agent_stax                  = models.CharField(max_length=200)
@@ -602,8 +604,7 @@ class Bills(models.Model):
     cust_locality               = models.CharField(max_length=200)
     cust_city                   = models.CharField(max_length=200)
     reg_number                  = models.CharField(max_length=200)
-    make                        = models.CharField(max_length=200)
-    model                       = models.CharField(max_length=200)
+    vehicle                     = models.CharField(max_length=200)
     bill_type                   = models.CharField(max_length=200)
 
 class Feedback(models.Model):

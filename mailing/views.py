@@ -7946,7 +7946,7 @@ def send_lead(firstname,lastname, number,email, car_bike, make, model, fuel_type
 
 	conn = boto.ses.connect_to_region(region,aws_access_key_id=aws_access,aws_secret_access_key=aws_secret)
 	result = conn.send_raw_email(msg.as_string())
-def send_booking(firstname,lastname, number,email, car_bike, make, model, fuel_type, additional, service_category,locality,address,date_requested,time_requested):
+def send_booking(firstname,lastname, number,email, car_bike, make, model, fuel_type, locality,address,date_requested,time_requested):
 	me = "bookings@clickgarage.in"
 	you = "bookings@clickgarage.in"
 	# Create message container - the correct MIME type is multipart/alternative.
@@ -7955,7 +7955,7 @@ def send_booking(firstname,lastname, number,email, car_bike, make, model, fuel_t
 	msg['From'] = me
 	msg['To'] = you
 
-	message = "Name: " + firstname + " " + lastname + " | Phone: " + number+ " | Email: " + email +" | Car/Bike : " + car_bike+ " | Vehicle : " + make + " " + model + " " + fuel_type + " | Additional :" + additional + " | Service Category : " + service_category + " | Locality : " + locality + " | Address : "+address+" | Date :" + date_requested +" | Time :" + time_requested
+	message = "Name: " + firstname + " " + lastname + " | Phone: " + number+ " | Email: " + email +" | Car/Bike : " + car_bike+ " | Vehicle : " + make + " " + model + " " + fuel_type  + " | Locality : " + locality + " | Address : "+address+" | Date :" + date_requested +" | Time :" + time_requested
 	script = MIMEText(message, 'html')
 	msg.attach(script)
 
@@ -9646,4 +9646,396 @@ def html_to_send(name, booking_id, service_list,car_bike):
 </body>
 </html>"""
 
+	return html
+
+def bill_html(agent_name,agent_address,invoice_number,booking_id,created_date,tin_number,cin_number,stax_number,cust_name,cust_address,cust_locality,cust_city,cust_reg,cust_veh,service_items,vat_part_percent,vat_lube_percent,vat_consumable_percent,stax_percent,vat_part,vat_lube,vat_consumable,stax_amount,total,recommendation,logo):
+	html = """<!DOCTYPE html>
+<html id="bill-data" lang="en"><head>
+	<style>
+/* ==========================================================================
+   Insert Your Bill Styles Below. All styles located in this file will
+   override existing main.css stylesheets.
+   ========================================================================== */
+.actionables{
+    /*background: #eaeaea;*/
+    /*padding: 4%;*/
+    margin-bottom: 2%;
+    /*width: 100%;*/
+    background: #FFF;
+    /*height: 5%;*/
+}
+
+.button-row{
+    padding: 3%;
+}
+.bill-btn{
+    width: 300px;
+    margin: 5px;
+
+}
+
+.view-pdf-box{
+    /*border:1px solid #4a148c;*/
+    /*width:100px;*/
+    /*margin-left:50%;*/
+    /*left:50px;*/
+
+}
+.invoice-box{
+    max-width:800px;
+    margin:auto;
+    padding:30px;
+    /*border:1px solid #eee;*/
+    /*box-shadow:0 0 10px rgba(0, 0, 0, .15);*/
+    font-size:16px;
+    line-height:24px;
+    font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+    color:#555;
+}
+
+.invoice-box .company-name{
+    font-size:16px!important;
+    color:#555!important;
+    line-height: 20px!important;
+}
+
+.invoice-box .bill-details{
+    font-size:16px!important;
+    color:#555!important;
+    line-height: 10px!important;
+
+}
+
+
+
+.tax{
+    font-size: 10px;
+    line-height: 5px;
+}
+
+
+.invoice-box table{
+    width:100%;
+    line-height:inherit;
+    text-align:left;
+}
+
+.invoice-box table td{
+    padding:5px;
+    vertical-align:top;
+}
+
+.invoice-box table tr td:nth-child(2){
+    text-align:right;
+}
+
+
+body {
+  background: rgb(204,204,204);
+}
+
+page {
+  background: white;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 0.5cm;
+  box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+}
+page[size="A4"] {
+  width: 21cm;
+  /*height: 29.7cm;*/
+}
+page[size="A4"][layout="portrait"] {
+  width: 29.7cm;
+  height: 21cm;
+}
+page[size="A3"] {
+  width: 29.7cm;
+  height: 42cm;
+}
+page[size="A3"][layout="portrait"] {
+  width: 42cm;
+  height: 29.7cm;
+}
+page[size="A5"] {
+  width: 14.8cm;
+  height: 21cm;
+}
+page[size="A5"][layout="portrait"] {
+  width: 21cm;
+  height: 14.8cm;
+}
+@media print {
+  body, page {
+    margin: 0;
+    box-shadow: 0;
+  }
+}
+
+
+.invoice-box .information tr td {
+     text-align:left!important;
+}
+.invoice-box table tr.top table td{
+    padding-bottom:0px;
+    padding: 0px;
+    line-height: 20px;
+}
+
+.invoice-box .customer-details td{
+    padding: 0px!important;;
+    padding-bottom: 0px!important;
+    text-align: left!important;
+}
+.invoice-box table tr.top table td.title{
+    font-size:45px;
+    line-height:45px;
+    color:#333;
+}
+
+.invoice-box table tr.information table td{
+    padding-bottom:0px;
+}
+
+.invoice-box .agent-details td:nth-child(1){
+    width: 50%;
+}
+.invoice-box .agent-details td:nth-child(2){
+    width: 50%;
+}
+
+.invoice-box .information-cust td:nth-child(1){
+    width: 50%;
+}
+.invoice-box .information-cust td:nth-child(2){
+    width: 50%;
+}
+.invoice-box .information-cust .customer-details td:nth-child(1){
+    width: 40%;
+}
+.invoice-box .information-cust .customer-details td:nth-child(2){
+    width: 60%;
+}
+
+.invoice-box table thead.heading td{
+    background:#eee;
+    border-bottom:1px solid #ddd;
+    font-weight:bold;
+}
+
+.invoice-box .parts-table td:nth-child(1){
+    width: 40%;
+}
+.invoice-box .parts-table td:nth-child(2){
+    width: 20%;
+    text-align: center;
+}
+.invoice-box .parts-table td:nth-child(3){
+    width: 20%;
+    text-align: center;
+
+}
+.row{
+    margin-bottom:5px;
+}
+.recommendation{
+    margin-left: 10px;
+}
+.invoice-box .parts-table td:nth-child(4){
+    width: 20%;
+    text-align: right;
+
+}
+
+.invoice-box .summary td{
+    text-align: right;
+}
+
+.invoice-box table tr.details td{
+    padding-bottom:20px;
+}
+
+.invoice-box table tr.item td{
+    border-bottom:1px solid #eee;
+}
+
+.invoice-box table tr.item.last td{
+    border-bottom:none;
+}
+
+
+.invoice-box .summary{
+    border-top:2px solid #eee;
+}
+.invoice-box table tr.total td:nth-child(1){
+    border-top:2px solid #eee;
+    font-weight:bold;
+}
+
+@media only screen and (max-width: 600px) {
+    .invoice-box table tr.top table td{
+        width:100%;
+        display:block;
+        text-align:center;
+    }
+
+    .invoice-box table tr.information table td{
+        width:100%;
+        display:block;
+        text-align:center;
+    }
+}
+	</style>
+</head>
+<body class="bill-page">
+<page id="bill" class="" style="" size="A4">
+	<div class="invoice-box">
+		<!--<table cellpadding="0" cellspacing="0">-->
+		<!--<tr class="top">-->
+		<!--<td colspan="2">-->
+		<table class="agent-details">
+			<tr>
+				<td class="title company-name">"""
+	if not logo:
+		html += """<img id="bill-logo" src="https://www.clickgarage.in/static/revamp/img/Bill%20Logos/"""+agent_name+""".png" style="width:100%; max-width:150px;"><br>"""
+	else:
+		html += """<img id="bill-logo" src="https://www.clickgarage.in/static/revamp/img/Bill%20Logos/ClickGarage.png" style="width:100%; max-width:150px;"><br>"""
+
+	html += """<span id="agent-name">"""+ agent_name +"""</span><br>
+					<span id="agent-address">"""+ agent_address +"""</span><br>
+				</td>
+
+				<td>
+					<table class="bill-details">
+						<tr class="reciept"><td>Invoice #: </td><td><span id="bill-number">"""+ str(invoice_number) +"""</span></td></tr>"""
+	if booking_id !="":
+		html += """<tr><td>Booking #: </td><td><span id="booking-id">"""+str(booking_id)+"""</span></td></tr>"""
+	if created_date != "":
+		html += """<tr><td>Created: </td><td><span id="bill-date">""" + str(created_date) +"""</span></td></tr>"""
+	if tin_number != "":
+		html += """<tr class="reciept tin"><td>TIN : </td><td><span id = "agent-tin">"""+tin_number+"""</span></td></tr>"""
+	if cin_number != "":
+		html += """<tr class="reciept cin"><td>CIN : </td><td><span id = "agent-cin">"""+cin_number+"""</span></td></tr>"""
+	if stax_number != "":
+		html += """<tr class="reciept stax"><td>Service Tax : </td><td><span id = "agent-stax">"""+stax_number+"""</span></td></tr>"""
+
+
+	html += """</table>
+				</td>
+			</tr>
+		</table>
+		<!--</td>-->
+		<!--</tr>-->
+		<table class="information information-cust">
+			<tr>
+				<!--<td colspan="2">-->
+				<!--<table class="">-->
+				<!--<tr>-->
+				<td>
+					<b>Customer Details:  </b><br>
+					<table class="customer-details">
+						<tr><td>&nbsp;&nbsp;Name </td><td><span id="cust-name">"""+cust_name+"""</span></td></tr>
+						<tr><td>&nbsp;&nbsp;Address </td><td><span id="cust-address">"""+cust_address+"""</span>, <span id="cust-locality">"""+cust_locality+"""</span>, <span id="cust-city">"""+cust_city+"""</span></td></tr>
+
+					</table>
+				</td>
+				<td>
+					<b>Vehicle Details: </b><br>
+					<table class="customer-details">
+						<tr><td>&nbsp;&nbsp;Registration </td><td><span id="veh-reg">"""+cust_reg+"""</span></td></tr>
+						<tr><td>&nbsp;&nbsp;Vehicle Name </td><td><span id="veh-name">"""+cust_veh+"""</span></td></tr>
+					</table>
+				</td>
+
+			</tr>
+		</table>
+		<!--</td>-->
+		<!--</tr>-->
+		<!--</table>-->"""
+
+	if len(service_items):
+		html += """<table class="parts-table">
+			<thead class="heading">
+			<td>
+				Parts
+			</td>
+			<td>
+				Units
+			</td>
+			<td>
+				Unit Price
+			</td>
+			<td>
+				Price
+			</td>
+			</thead>
+			<tbody class="parts-list">"""
+		for part in service_items:
+			if part['type'] == "Part" or part['type'] == "Lube" or part['type'] == "Consumable":
+				html += """<tr class="item"><td>"""+part['name']+"""</td><td>"""+str(part['quantity'])+"""</td><td>"""+str(part['unit_price'])+"""</td><td>Rs. """+str(part['pre_tax_price'])+"""</td></tr>"""
+		html += """</tbody></table>"""
+	html += """<br>"""
+
+
+	if len(service_items):
+		html += """<table class="service-table">
+			<thead class="heading">
+			<td>
+				Services/Labour
+			</td>
+			<td>
+				Price
+			</td>
+			</thead>
+
+			<tbody class="service-list">"""
+		for service in service_items:
+			if service['type'] == "Labour":
+				html += """<tr class="item"><td>"""+service['name']+"""</td><td>Rs. """+str(service['pre_tax_price'])+"""</td></tr>"""
+
+		html+="""</tbody></table>"""
+	html+="""<br>"""
+
+	html+="""<table class="summary">"""
+	if tin_number != "":
+		html+="""<tr class="tax reciept">
+				<td>
+					VAT (Parts) @ <span id="vat-part-percent">"""+str(vat_part_percent)+"""</span>%: Rs. <span class="vat-part-amount">"""+str(vat_part)+"""</span>
+				</td>
+			</tr>
+			<tr class="tax reciept">
+				<td>
+					VAT (Lubes) @ <span id="vat-lube-percent">"""+str(vat_lube_percent)+"""</span>%: Rs. <span class="vat-lube-amount">"""+str(vat_lube)+"""</span>
+				</td>
+			</tr>
+			<tr class="tax reciept">
+				<td>
+					VAT (Consumables) @ <span id="vat-consumable-percent">"""+str(vat_consumable_percent)+"""</span>%: Rs. <span class="vat-consumable-amount">"""+str(vat_consumable)+"""</span>
+				</td>
+			</tr>"""
+	if stax_number != "":
+		html += """<tr class="tax reciept stax">
+				<td>
+					Service Tax + Krishna Kalyan Cess + Swachha Bharat Cess @ <span id="stax-percent">"""+str(stax_percent)+"""</span>%: Rs. <span class="stax-amount">"""+str(stax_amount)+"""</span>
+				</td>
+			</tr>"""
+	html += """<tr class="total">
+				<td>
+					Total Amount: Rs.  <span id="cust-total">"""+str(total)+"""</span>
+				</td>
+			</tr>
+		</table>
+		<div class="recommendations">
+			<div class="row">
+				<b>Recommendations:</b>
+			</div>
+			<div class="row">
+				<span class="recommendation">"""+recommendation+"""</span>
+			</div>
+		</div>
+	</div>
+</page>
+
+</body>
+</html>"""
 	return html
