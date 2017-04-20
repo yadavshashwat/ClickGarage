@@ -7008,7 +7008,14 @@ def update_booking(request):
         booking.follow_up_date = date_follow
 
     if time_follow != None and time_follow != "":
-        booking.follow_up_time = time_follow
+        oldformat_time = time_follow
+        time_format = datetime.datetime.strptime(oldformat_time, '%I:%M %p')
+        # time_obj = time_format.strftime('%I:%M %p')
+
+        print time_follow
+        # print time_obj
+
+        booking.follow_up_time = time_format
 
     if odometer != None and odometer != "":
         booking.odometer = odometer
@@ -7414,6 +7421,8 @@ def send_booking(request):
     obj2['status'] = False
     obj2['result'] = []
 
+    oldformat_time = follow_time
+    time_format = datetime.datetime.strptime(oldformat_time, '%I:%M %p')
 
     obj = checkOTP_new(onetp, number)
 
@@ -7441,7 +7450,7 @@ def send_booking(request):
             booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city,
                                     order_list,make, veh_type, model, fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon,
                                     price_total, source, booking_flag,
-                                    job_summary_int, send_sms=send_confirm,owner=request.user.id,follow_up_date_book=date,follow_up_time_book=follow_time,odometer=odometer)
+                                    job_summary_int, send_sms=send_confirm,owner=request.user.id,follow_up_date_book=date,follow_up_time_book=time_format,odometer=odometer)
         # WMS Modification End
 
         elif request.user.is_staff or request.user.is_admin:
@@ -7460,7 +7469,7 @@ def send_booking(request):
                                         order_list,
                                         make,
                                         veh_type, model, fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon,
-                                        price_total, "B2B", booking_flag,job_summary_int,send_sms="0", booking_type="B2B",booking_user_name=booking_user_name,booking_user_number=booking_user_number,follow_up_date_book=date,follow_up_time_book=follow_time,odometer=odometer)
+                                        price_total, "B2B", booking_flag,job_summary_int,send_sms="0", booking_type="B2B",booking_user_name=booking_user_name,booking_user_number=booking_user_number,follow_up_date_book=date,follow_up_time_book=time_format,odometer=odometer)
 
             else:
                 booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city,
@@ -7468,7 +7477,7 @@ def send_booking(request):
                                         make,
                                         veh_type, model, fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon,
                                         price_total, source, booking_flag,
-                                        job_summary_int,send_sms=send_confirm,follow_up_date_book=date,follow_up_time_book=follow_time,odometer=odometer)
+                                        job_summary_int,send_sms=send_confirm,follow_up_date_book=date,follow_up_time_book=time_format,odometer=odometer)
 
         else:
             print email
