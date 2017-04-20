@@ -8093,7 +8093,12 @@ def send_sms_customer(name,number,booking_id,date,time,agent_details = None,esti
 			send_sms_2factor_EZY(number, message)
 
 def send_sms_agent(agent_name, agent_num, cust_num,date,time,booking_id,cust_name, comments, total, address,vehicle ):
-	message = "Hi " + agent_name + "! You have been assigned a ClickGarage booking. | Booking ID:"+str(booking_id)+" | Date:" + str(date) + " | Time: " + str(time) + "| Name:"+ cust_name + "("+cust_num+")| Vehicle:"+ vehicle +"| Requests: "+comments+" | Amount: "+total+" | Address: "+address
+	message = "Hi " + agent_name + "! You have been assigned a ClickGarage booking. | Booking ID:"+str(booking_id)+" | Date:" + str(date) + " | Time: " + str(time) + "| Name:"+ cust_name + "("+cust_num+")| Vehicle:"+ vehicle +"| Requests: "
+	i = 1
+	for comment in comments:
+		message += str(i) + ") "+ comment['Job']
+		i = i + 1
+	message +=  "| Amount: "+total+" | Address: "+address
 	# message = message.replace(" ", "+")
 	send_sms_2factor(agent_num, message)
 
