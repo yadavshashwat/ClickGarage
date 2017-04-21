@@ -7421,9 +7421,11 @@ def send_booking(request):
     obj2['status'] = False
     obj2['result'] = []
 
-    oldformat_time = follow_time
-    time_format = datetime.datetime.strptime(oldformat_time, '%I:%M %p')
-
+    if follow_time != None and follow_time != "":
+        oldformat_time = follow_time
+        time_format = datetime.datetime.strptime(oldformat_time, '%I:%M %p')
+    else:
+        time_format = ""
     obj = checkOTP_new(onetp, number)
 
     if request.user.is_authenticated():
