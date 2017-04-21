@@ -51,7 +51,7 @@ urlpatterns = [
     # params : service_id
     url(r'fetch_windshield_details/$','api.views.fetch_car_windshieldcatdetails',name='fetch_car_windshieldcatdetails'),
     # url(r'fetch_car_servicedealercat/$','api.views.fetch_car_servicedealercat',name='fetch_car_servicedealercat'),
-    
+
     # Booking page jugad
     url(r'fetch_car_booking/$','api.views.fetch_car_booking',name='fetch_car_booking'),
     url(r'fetch_car_complete/$','api.views.fetch_car_complete',name='fetch_car_complete'),
@@ -78,7 +78,7 @@ urlpatterns = [
     #url(r'fetch_clean_catservice/$','api.views.fetch_clean_catservice',name='fetch_clean_catservice'),
     #url(r'fetch_all_cleaningcat/$','api.views.fetch_all_cleaningcat',name='fetch_all_cleaningcat'),
     # url(r'fetch_all_cleaningcatservices/$','api.views.fetch_all_cleaningcatservices',name='fetch_all_cleaningcatservices'),
-    #  
+    #
     #url(r'fetch_all_vas/$','api.views.fetch_all_vas',name='fetch_all_vas'),
     #url(r'fetch_vas_service/$','api.views.fetch_vas_service',name='fetch_vas_service'),
     #
@@ -87,12 +87,12 @@ urlpatterns = [
     #url(r'fetch_vas_catservice/$','api.views.fetch_vas_catservice',name='fetch_vas_catservice'),
     #url(r'fetch_all_vascat/$','api.views.fetch_all_vascat',name='fetch_all_vascat'),
     #url(r'fetch_all_vascatservices/$','api.views.fetch_all_vascatservices',name='fetch_all_vascatservices'),
-    #  
+    #
     #url(r'fetch_all_windshieldcatdetails/$','api.views.fetch_all_windshieldcatdetails',name='fetch_all_windshieldcatdetails'),
     #url(r'fetch_all_windshieldservices/$','api.views.fetch_all_windshieldservices',name='fetch_all_windshieldservices'),
     #url(r'fetch_car_windshieldcatdetails/$','api.views.fetch_car_windshieldcatdetails',name='fetch_car_windshieldcatdetails'),
     #url(r'fetch_car_windshieldservices/$','api.views.fetch_car_windshieldservices',name='fetch_car_windshieldservices'),
-            
+
 
 
     # url(r'fetch_location/$','api.views.fetch_location',name='fetch_location'),
@@ -101,7 +101,7 @@ urlpatterns = [
     url(r'fetch_all_services/$','api.views.fetch_all_services',name='fetch_all_services'),
     url(r'fetch_all_servicedealercat/$','api.views.fetch_all_servicedealercat',name='fetch_all_servicedealercat'),
     url(r'fetch_all_servicedealername/$','api.views.fetch_all_servicedealername',name='fetch_all_servicedealername'),
-    
+
 	url(r'fetch_car_tyres/$','api.views.fetch_car_tyres',name='fetch_car_tyres'),
 
     url(r'fetch_all_wheelservices/$','api.views.fetch_all_wheelservices',name='fetch_all_wheelservices'),
@@ -159,6 +159,8 @@ urlpatterns = [
     url(r'get_all_part/$', 'api.views.get_all_part', name='get_all_part'),
     url(r'get_all_taxes/$', 'api.views.get_all_taxes', name='get_all_taxes'),
     url(r'view_all_bills/$', 'api.views.view_all_bills', name='view_all_bills'),
-
+    url(r'download_pdf/$', 'api.views.download_pdf', name='download_pdf'),
+    url(r'update_bill/$', 'api.views.update_bill', name='update_bill'),
+    url(r'send_bill/$', 'api.views.send_bill', name='send_bill'),
 
 ]

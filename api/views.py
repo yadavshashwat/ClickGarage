@@ -7906,18 +7906,22 @@ def generate_bill(request):
 
     if booking:
         clickgarage_flag = booking.clickgarage_flag
+        cust_number = booking.cust_number
+        cust_email = booking.cust_email
         if not pre_invoice:
             booking.service_items = service_items
     else:
         data_id = ""
+        cust_number = ""
+        cust_email = ""
         if request.user.is_admin or request.user.is_staff:
             clickgarage_flag = True
         else:
             clickgarage_flag = False
 
     date_today = datetime.date.today()
-
-
+    # date_due = date_today
+    time_stamp = time.time()
     status = "Generated"
 
 
@@ -7926,24 +7930,24 @@ def generate_bill(request):
                , total_amount           = total_amount
                , part_amount            = part_amount
                , lube_amount            = lube_amount
-               , consumable_amount      =consumable_amount
-               , labour_amount          =labour_amount
-               , vat_part               =vat_part
-               , vat_lube               =vat_lube
-               , vat_consumable         =vat_consumable
-               , service_tax            =service_tax
+               , consumable_amount      = consumable_amount
+               , labour_amount          = labour_amount
+               , vat_part               = vat_part
+               , vat_lube               = vat_lube
+               , vat_consumable         = vat_consumable
+               , service_tax            = service_tax
                , components             = service_items
-               , status                 =status
+               , status                 = status
                , date_created           = date_today
-               , time_stamp             =   time.time()
-               , owner                  =   bill_owner
-               ,    booking_data_id = data_id
+               , time_stamp             = time_stamp
+               , owner                  = bill_owner
+               , booking_data_id        = data_id
                # , file_name              = bill_type+'-'+str(invoice_number)+'_'+data_id+'.pdf'
                # , payment_status         = payment_status
                # , amount_paid            = amount_paid
                , payment_mode           = payment_mode
                , notes                  = notes
-               , state                  =state
+               , state                  = state
                , vat_part_percent       =vat_part_percent
                , vat_lube_percent       =vat_lube_percent
                , vat_consumable_percent =vat_consumable_percent
@@ -7960,10 +7964,13 @@ def generate_bill(request):
                , reg_number             =reg_number
                , vehicle                =vehicle
                ,bill_type               = bill_type
+               ,date_due                = date_today
+               ,cust_number             = cust_number
+               ,cust_email              = cust_email
                )
     tt.save()
+    tt2 = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner, time_stamp= time_stamp, booking_data_id=data_id, status="Generated", bill_type=bill_type, invoice_number=invoice_number)[0]
     if booking:
-        tt2 = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner, booking_data_id = data_id, status = "Generated", bill_type=bill_type,invoice_number=invoice_number)[0]
         booking.bill_id = tt2.id
         if tt2.bill_type == "Pre-Invoice":
             booking.bill_generation_flag  = False
@@ -8009,28 +8016,29 @@ def generate_bill(request):
         #
     if socket.gethostname().startswith('ip-'):
         if PRODUCTION:
-            cmd = pdfkit.from_string(html,'/home/ubuntu/beta/website/Bills/'+bill_type+'-'+str(invoice_number)+'_'+data_id+'.pdf')
+            cmd = pdfkit.from_string(html,'/home/ubuntu/beta/website/Bills/'+bill_type+'-'+str(invoice_number)+'_'+tt2.id+'.pdf')
         else:
-            cmd = pdfkit.from_string(html,'/home/ubuntu/testing/website/Bills/'+bill_type+'-'+str(invoice_number)+'_'+data_id+'.pdf')
+            cmd = pdfkit.from_string(html,'/home/ubuntu/testing/website/Bills/'+bill_type+'-'+str(invoice_number)+'_'+tt2.id+'.pdf')
     else:
-        cmd = pdfkit.from_string(html, '/home/shashwat/Desktop/codebase/website/Bills/' + bill_type + '-' + str(invoice_number) + '_' + data_id + '.pdf')
+        cmd = pdfkit.from_string(html, '/home/shashwat/Desktop/codebase/website/Bills/' + bill_type + '-' + str(invoice_number) + '_' + tt2.id + '.pdf')
 
-        #     s = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-        #     ss = s.communicate()
-        #
-        # obj['err'] = ss
-        #
+
     if socket.gethostname().startswith('ip-'):
         if PRODUCTION:
-            obj['filename'] = '/home/ubuntu/beta/website/Bills/'+bill_type+'-'+str(invoice_number)+'_'+data_id+'.pdf'
+            obj['filename'] = '/home/ubuntu/beta/website/Bills/'+bill_type+'-'+str(invoice_number)+'_'+tt2.id+'.pdf'
         else:
-            obj['filename'] = '/home/ubuntu/testing/website/Bills/'+bill_type+'-'+str(invoice_number)+'_'+data_id+'.pdf'
+            obj['filename'] = '/home/ubuntu/testing/website/Bills/'+bill_type+'-'+str(invoice_number)+'_'+tt2.id+'.pdf'
     else:
-        obj['filename'] = '/home/shashwat/Desktop/codebase/website/Bills/'+bill_type+'-'+str(invoice_number)+'_'+data_id+'.pdf'
+        obj['filename'] = '/home/shashwat/Desktop/codebase/website/Bills/'+bill_type+'-'+str(invoice_number)+'_'+tt2.id+'.pdf'
         #
         #
+    tt2.file_name = obj['filename']
+    tt2.save()
     f = open(obj['filename'], 'r')
-    filename = bill_type+'-'+str(invoice_number)+'_'+data_id+'.pdf'
+    if tt2.bill_type == "Pre-Invoice":
+        filename = bill_type+'_'+tt2.id+'.pdf'
+    else:
+        filename = bill_type + '_' + str(invoice_number) + '_' + tt2.id + '.pdf'
     content = f.read()
     f.close()
     response_file = HttpResponse(content, mimetype='application/pdf')
@@ -8421,11 +8429,32 @@ def view_all_bills(request):
     else:
         jobObjs = None
 
-    jobObjs = jobObjs.filter(bill_type=bill_type)
+    if bill_type != None and bill_type != "":
+        jobObjs = jobObjs.filter(bill_type=bill_type)
 
     # jobObjs = Bills.objects.all()
 
     for job in jobObjs:
+        booking = None
+        booking_id = "NA"
+        date_job_created = "NA"
+        if job.booking_data_id != "":
+            booking = Bookings.objects.filter(id = job.booking_data_id)[0]
+        if booking:
+            booking_id = booking.booking_id
+            # date_job_created = booking.date_booking
+            oldformat_j = str(booking.date_booking)
+            datetimeobject = datetime.datetime.strptime(oldformat_j, '%Y-%m-%d')
+            date_job_created = datetimeobject.strftime('%d-%m-%Y')
+
+        oldformat_d = str(job.date_due)
+        datetimeobject = datetime.datetime.strptime(oldformat_d, '%Y-%m-%d')
+        newformat_d = datetimeobject.strftime('%d-%m-%Y')
+
+        oldformat_c = str(job.date_created)
+        datetimeobject = datetime.datetime.strptime(oldformat_c, '%Y-%m-%d')
+        newformat_c = datetimeobject.strftime('%d-%m-%Y')
+
         obj['result'].append({
             'id': job.id,
             'clickgarage_flag': job.clickgarage_flag,
@@ -8442,7 +8471,9 @@ def view_all_bills(request):
             'components': job.components,
             'status': job.status,
             'booking_data_id': job.booking_data_id,
-            'date_created': str(job.date_created),
+            'booking_id': booking_id,
+            'date_job_created':str(date_job_created),
+            'date_created': newformat_c,
             # 'date_modified    ': str(job.date_modified),
             'time_stamp': job.time_stamp,
             'owner': job.owner,
@@ -8464,8 +8495,12 @@ def view_all_bills(request):
             'agent_cin': job.agent_cin,
             'agent_stax': job.agent_stax,
             'cust_name': job.cust_name,
+            'reg_number': job.reg_number,
             'cust_address': job.cust_address,
-            'bill_type': job.bill_type
+            'bill_type': job.bill_type,
+            'date_due': newformat_d,
+            'cust_email': job.cust_email,
+            'cust_number': job.cust_number,
 
         })
 
@@ -8474,10 +8509,68 @@ def view_all_bills(request):
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+def update_bill(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    data_id = get_param(request, 'data_id', None)
+    cust_number = get_param(request, 'cust_number', None)
+    cust_email = get_param(request,'cust_email',None)
+    payment_mode = get_param(request, 'payment_mode', None)
+    amount_paid = get_param(request, 'amount_paid', None)
+    due_date = get_param(request, 'due_date', None)
+    status = get_param(request, 'status', None)
+    bill = Bills.objects.filter(id=data_id)[0]
+
+    if cust_number != "" and cust_number != None:
+        bill.cust_number = cust_number
+
+    if cust_email != "" and cust_email != None:
+        bill.cust_email = cust_email
+
+    if payment_mode != "" and payment_mode != None:
+        bill.payment_mode = payment_mode
+
+    if amount_paid != "" and amount_paid != None:
+        if amount_paid == "true":
+            bill.amount_paid = True
+        else:
+            bill.amount_paid = False
+
+    if due_date != "" and due_date != None:
+        oldformat = due_date
+        datetimeobject = datetime.datetime.strptime(oldformat, '%d-%m-%Y')
+        newformat = datetimeobject.strftime('%Y-%m-%d')
+        due_date = newformat
+        bill.due_date = due_date
+
+    if status != "" and status != None:
+        bill.status = status
+
+    bill.save()
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def send_bill(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    data_id = get_param(request, 'data_id', None)
+    cust_number = get_param(request, 'cust_number', None)
+    cust_email = get_param(request, 'cust_email', None)
+    bill = Bills.objects.filter(id=data_id)[0]
+    filename = bill.file_name
+    cust_name = bill.cust_name
+    mviews.send_bill(cust_name,cust_email,cust_number,filename)
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
 
 def get_all_jobs(request):
     obj = {}
-
     obj['status'] = False
     obj['result'] = []
     jobObjs = Services.objects.all()
@@ -8593,3 +8686,20 @@ def get_all_part(request):
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
+def download_pdf(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    file_name = get_param(request, 'file_name', None)
+    f = open(file_name, 'r')
+    content = f.read()
+    f.close()
+    filename_list = file_name.split('/')
+    filename_len = len(filename_list) -1
+    file_name_out = filename_list[filename_len]
+    response_file = HttpResponse(content, mimetype='application/pdf')
+    response_file['Content-Disposition'] = 'attachement; filename=' + file_name_out
+    obj['msg'] = "File Downloaded"
+    obj['status'] = True
+    obj['counter'] = 1
+    return response_file

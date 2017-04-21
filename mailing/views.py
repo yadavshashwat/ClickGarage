@@ -9653,6 +9653,37 @@ def html_to_send(name, booking_id, service_list,car_bike):
 
 	return html
 
+def send_bill(cust_name,cust_email,cust_number,filename):
+	me = from_address
+	# Create message container - the correct MIME type is multipart/alternative.
+	msg = MIMEMultipart('alternative')
+	msg['Subject'] = "Thanks for using ClickGarage"
+	msg['From'] = me
+	msg['To'] = cust_email
+
+	message = "Hi "+cust_name+","
+	message += "Thanks for using ClickGarage. Please find attached your detailed invoice for the booking in the mail."
+	message += "Happy Motoring,"
+	message += "Team ClickGarage"
+
+	script = MIMEText(message, 'html')
+	msg.attach(script)
+
+	part = MIMEApplication(open(filename, 'rb').read())
+	part.add_header('Content-Disposition', 'attachment', filename='Invoice.pdf')
+	msg.attach(part)
+
+	conn = boto.ses.connect_to_region(region, aws_access_key_id=aws_access, aws_secret_access_key=aws_secret)
+	result = conn.send_raw_email(msg.as_string())
+
+
+
+	# the attachment
+
+
+
+
+
 def bill_html(agent_name,agent_address,invoice_number,booking_id,created_date,tin_number,cin_number,stax_number,cust_name,cust_address,cust_locality,cust_city,cust_reg,cust_veh,service_items,vat_part_percent,vat_lube_percent,vat_consumable_percent,stax_percent,vat_part,vat_lube,vat_consumable,stax_amount,total,recommendation,logo):
 	html = """<!DOCTYPE html>
 <html id="bill-data" lang="en"><head>
@@ -9744,7 +9775,6 @@ page {
   display: block;
   margin: 0 auto;
   margin-bottom: 0.5cm;
-  box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
 }
 page[size="A4"] {
   width: 21cm;
@@ -9893,7 +9923,7 @@ page[size="A5"][layout="portrait"] {
 	</style>
 </head>
 <body class="bill-page">
-<page id="bill" class="" style="" size="A4">
+<page id="bill" class="" style="" size="">
 	<div class="invoice-box">
 		<!--<table cellpadding="0" cellspacing="0">-->
 		<!--<tr class="top">-->
@@ -9957,9 +9987,12 @@ page[size="A5"][layout="portrait"] {
 		<!--</td>-->
 		<!--</tr>-->
 		<!--</table>-->"""
-
+	marker = 0
 	if len(service_items):
-		html += """<table class="parts-table">
+		html2 = ''
+		html3 = ''
+		html4 = ''
+		html2 += """<table class="parts-table">
 			<thead class="heading">
 			<td>
 				Parts
@@ -9975,15 +10008,26 @@ page[size="A5"][layout="portrait"] {
 			</td>
 			</thead>
 			<tbody class="parts-list">"""
+
 		for part in service_items:
-			if part['type'] == "Part" or part['type'] == "Lube" or part['type'] == "Consumable":
-				html += """<tr class="item"><td>"""+part['name']+"""</td><td>"""+str(part['quantity'])+"""</td><td>"""+str(part['unit_price'])+"""</td><td>Rs. """+str(part['pre_tax_price'])+"""</td></tr>"""
-		html += """</tbody></table>"""
+			if (part['type'] == "Part" or part['type'] == "Lube" or part['type'] == "Consumable") and float(part['unit_price'])>0 :
+				marker = 1
+				html3 += """<tr class="item"><td>"""+part['name']+"""</td><td>"""+str(part['quantity'])+"""</td><td>"""+str(part['unit_price'])+"""</td><td>Rs. """+str(part['pre_tax_price'])+"""</td></tr>"""
+		html4 += """</tbody></table>"""
+
+	if marker ==1 :
+		html += html2
+		html += html3
+		html += html4
+
 	html += """<br>"""
 
-
+	marker2 = 0
 	if len(service_items):
-		html += """<table class="service-table">
+		html5 = ''
+		html6 = ''
+		html7 = ''
+		html5 += """<table class="service-table">
 			<thead class="heading">
 			<td>
 				Services/Labour
@@ -9994,12 +10038,45 @@ page[size="A5"][layout="portrait"] {
 			</thead>
 
 			<tbody class="service-list">"""
-		for service in service_items:
-			if service['type'] == "Labour":
-				html += """<tr class="item"><td>"""+service['name']+"""</td><td>Rs. """+str(service['pre_tax_price'])+"""</td></tr>"""
 
-		html+="""</tbody></table>"""
+		for service in service_items:
+			if (service['type'] == "Labour") and float(service['pre_tax_price']) > 0:
+				marker2 = 1
+				html6 += """<tr class="item"><td>"""+service['name']+"""</td><td>Rs. """+str(service['pre_tax_price'])+"""</td></tr>"""
+		html7+="""</tbody></table>"""
+	if marker2 == 1:
+		html += html5
+		html += html6
+		html += html7
 	html+="""<br>"""
+	marker3 = 0
+	if len(service_items):
+		html8 = ''
+		html9 = ''
+		html10 = ''
+
+		html8 += """<table class="service-table">
+			<thead class="heading">
+			<td>
+				Other Jobs Performed/ Parts Replaced
+			</td>
+			</thead>
+
+			<tbody class="service-list">"""
+
+
+		for service in service_items:
+			if float(service['pre_tax_price']) == 0:
+				marker3 = 1
+				html9 += """<tr class="item"><td>"""+service['name']+"""</td></tr>"""
+		html10+="""</tbody></table>"""
+	if marker3 == 1:
+		html += html8
+		html += html9
+		html += html10
+	html+="""<br>"""
+
+
 
 	html+="""<table class="summary">"""
 	if tin_number != "":
