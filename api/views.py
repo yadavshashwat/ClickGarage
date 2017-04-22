@@ -4809,6 +4809,36 @@ def verify_otp_password_cookie(request):
         obj['result']['username'] = user.username
         obj['result']['agent_sms_credits'] = user.agent_sms_credits
         obj['result']['auth'] = True
+        obj['result']['email_list'] = user.email_list
+        obj['result']['email_primary'] = user.email
+        obj['result']['phone'] = user.contact_no
+        obj['result']['first_name'] = user.first_name
+        obj['result']['last_name'] = user.last_name
+        obj['result']['agent'] = user.is_agent
+        obj['result']['user'] = user.is_user
+        obj['result']['admin'] = user.is_admin
+        obj['result']['staff'] = user.is_staff
+        obj['result']['b2b'] = user.is_b2b
+        obj['result']['user_address_list'] = user.user_saved_address
+        obj['result']['user_vehicles'] = user.user_veh_list
+        obj['result']['user_state'] = user.user_state
+        obj['result']['agent_cin'] = user.agent_cin
+        obj['result']['agent_stax'] = user.agent_stax
+        obj['result']['agent_vat'] = user.agent_vat
+        obj['result']['clickgarage_flag'] = user.clickgarage_flag
+        obj['result']['owner_user'] = user.owner_user
+        obj['result']['date_joined'] = str(user.date_joined)
+        obj['result']['user_address'] = user.user_address
+        obj['result']['user_locality'] = user.user_locality
+        obj['result']['user_city'] = user.user_city
+        if user.user_state != "":
+            taxes = get_tax(user.user_state)
+            if len(taxes['result']):
+                obj['result']['vat_parts'] = taxes['result'][0]['vat_parts']
+                obj['result']['vat_consumables'] = taxes['result'][0]['vat_consumables']
+                obj['result']['vat_lube'] = taxes['result'][0]['vat_lube']
+                obj['result']['service_tax'] = taxes['result'][0]['service_tax']
+
         message = "Success"
     else:
         try:
@@ -4821,6 +4851,35 @@ def verify_otp_password_cookie(request):
                 obj['result']['username'] = user.username
                 obj['result']['auth'] = True
                 obj['result']['agent_sms_credits'] = user.agent_sms_credits
+                obj['result']['email_list'] = user.email_list
+                obj['result']['email_primary'] = user.email
+                obj['result']['phone'] = user.contact_no
+                obj['result']['first_name'] = user.first_name
+                obj['result']['last_name'] = user.last_name
+                obj['result']['agent'] = user.is_agent
+                obj['result']['user'] = user.is_user
+                obj['result']['admin'] = user.is_admin
+                obj['result']['staff'] = user.is_staff
+                obj['result']['b2b'] = user.is_b2b
+                obj['result']['user_address_list'] = user.user_saved_address
+                obj['result']['user_vehicles'] = user.user_veh_list
+                obj['result']['user_state'] = user.user_state
+                obj['result']['agent_cin'] = user.agent_cin
+                obj['result']['agent_stax'] = user.agent_stax
+                obj['result']['agent_vat'] = user.agent_vat
+                obj['result']['clickgarage_flag'] = user.clickgarage_flag
+                obj['result']['owner_user'] = user.owner_user
+                obj['result']['date_joined'] = str(user.date_joined)
+                obj['result']['user_address'] = user.user_address
+                obj['result']['user_locality'] = user.user_locality
+                obj['result']['user_city'] = user.user_city
+                if user.user_state != "":
+                    taxes = get_tax(user.user_state)
+                    if len(taxes['result']):
+                        obj['result']['vat_parts'] = taxes['result'][0]['vat_parts']
+                        obj['result']['vat_consumables'] = taxes['result'][0]['vat_consumables']
+                        obj['result']['vat_lube'] = taxes['result'][0]['vat_lube']
+                        obj['result']['service_tax'] = taxes['result'][0]['service_tax']
 
                 message = "Success"
             elif objtp['status']:
@@ -4830,6 +4889,29 @@ def verify_otp_password_cookie(request):
                 obj['result']['username'] = user.username
                 obj['result']['auth'] = True
                 obj['result']['agent_sms_credits'] = user.agent_sms_credits
+                obj['result']['email_list'] = user.email_list
+                obj['result']['email_primary'] = user.email
+                obj['result']['phone'] = user.contact_no
+                obj['result']['first_name'] = user.first_name
+                obj['result']['last_name'] = user.last_name
+                obj['result']['agent'] = user.is_agent
+                obj['result']['user'] = user.is_user
+                obj['result']['admin'] = user.is_admin
+                obj['result']['staff'] = user.is_staff
+                obj['result']['b2b'] = user.is_b2b
+                obj['result']['user_address_list'] = user.user_saved_address
+                obj['result']['user_vehicles'] = user.user_veh_list
+                obj['result']['user_state'] = user.user_state
+                obj['result']['agent_cin'] = user.agent_cin
+                obj['result']['agent_stax'] = user.agent_stax
+                obj['result']['agent_vat'] = user.agent_vat
+                obj['result']['clickgarage_flag'] = user.clickgarage_flag
+                obj['result']['owner_user'] = user.owner_user
+                obj['result']['date_joined'] = str(user.date_joined)
+                obj['result']['user_address'] = user.user_address
+                obj['result']['user_locality'] = user.user_locality
+                obj['result']['user_city'] = user.user_city
+
                 message = "Success"
             else:
                 obj['result']['auth'] = False
@@ -4874,6 +4956,8 @@ def verify_otp_password_cookie(request):
         except:
             None
     return response
+
+
 
 def set_password_otp(request):
     obj = {}
@@ -6374,6 +6458,7 @@ def view_all_bookings(request):
             bill_service_tax_percent = bill.service_tax_percent
             bill_agent_name = bill.agent_name
             bill_agent_address = bill.agent_address
+            bill_file_name = bill.file_name
             # bill_agent_locality =  bill.agent_locality
             # bill_agent_city = bill.agent_city
             bill_agent_vat_no = bill.agent_vat_no
@@ -6415,6 +6500,7 @@ def view_all_bookings(request):
             # bill_model = ""
             bill_type = ""
             bill_owner = ""
+            bill_file_name = ""
 
         if trans.feedback_2:
             print "1"
@@ -6611,6 +6697,7 @@ def view_all_bookings(request):
             'bill_service_tax_percent' : bill_service_tax_percent,
             'bill_agent_name' : bill_agent_name,
             'bill_agent_address' : bill_agent_address,
+            'bill_file_name':bill_file_name,
             # 'bill_agent_locality' : bill_agent_locality,
             # 'bill_agent_city' : bill_agent_city,
             'bill_agent_vat_no' : bill_agent_vat_no,
@@ -7055,7 +7142,7 @@ def update_estimate(request):
             # print estimate
             for item in estimate:
                 # print item
-                if item['type']=="Part":
+                if item['type'] == "Part" or item['type'] == "Consumable" or item['type'] == "Lube":
                     total_price = total_price + float(item['price'])
                     total_part = total_part + float(item['price'])
                 elif item['type']=="Labour":
@@ -7881,7 +7968,6 @@ def generate_bill(request):
         booking = Bookings.objects.filter(id=data_id)[0]
         booking_id = booking.booking_id
 
-
     if invoice_number == "Pre-Invoice":
         pre_invoice = True
         bill_type = "Pre-Invoice"
@@ -7897,6 +7983,9 @@ def generate_bill(request):
             else:
                 invoice_number = 10000
 
+    # if bill_owner == "Agent Bill" or bill_owner = "":
+    #     bill_owner
+
     if booking:
         billsobjs = Bills.objects.filter(booking_data_id=data_id)
         for bill in billsobjs:
@@ -7908,9 +7997,46 @@ def generate_bill(request):
         clickgarage_flag = booking.clickgarage_flag
         cust_number = booking.cust_number
         cust_email = booking.cust_email
+        if bill_owner == "Agent Bill" or bill_owner == "":
+            bill_owner = booking.agent
         if not pre_invoice:
+            new_estimate_timestamp = time.time()
+            estimate_by_id = request.user.id
+            estimate_by_number = request.user.contact_no
+            estimate_by_name = request.user.first_name + " " + request.user.last_name
+            old_estimate = booking.service_items
             booking.service_items = service_items
+            total_price = 0
+            total_part = 0
+            total_labour = 0
+            total_discount = 0
+            # print estimate
+            for item in service_items:
+                # print item
+                if item['type'] == "Part" or item['type'] == "Consumable" or item['type'] == "Lube":
+                    total_price = total_price + float(item['price'])
+                    total_part = total_part + float(item['price'])
+                elif item['type'] == "Labour":
+                    total_price = total_price + float(item['price'])
+                    total_labour = total_labour + float(item['price'])
+                elif item['type'] == "Discount":
+                    total_price = total_price - float(item['price'])
+                    total_discount = total_discount + float(item['price'])
+            booking.price_total = str(total_price)
+            booking.price_labour = str(total_labour)
+            booking.price_part = str(total_part)
+            booking.price_discount = str(total_discount)
+
+            a = booking.estimate_history.append(
+                {"timestamp": new_estimate_timestamp, "change_by_userid": estimate_by_id,
+                 "change_by_number": estimate_by_number, "change_by_name": estimate_by_name,
+                 'estimate': old_estimate})
+
+        booking.save()
+
     else:
+        if bill_owner == "Agent Bill" or bill_owner == "":
+            bill_owner = request.user.id
         data_id = ""
         cust_number = ""
         cust_email = ""

@@ -7903,7 +7903,7 @@ def send_sms_2factor(to,message):
 def send_sms_2factor_EZY(to,message):
 	url = "http://2factor.in/API/V1/e5fd3098-a453-11e6-a40f-00163ef91450/ADDON_SERVICES/SEND/TSMS"
 	payload = {
-		"From":"CLKGRG",
+		"From":"EZYGRG",
 		"To": to	   ,
 		"Msg":message
 	}
@@ -7977,7 +7977,7 @@ def send_booking_confirm(email,name,booking_id,number,service_list,car_bike):
 	html = html_to_send(name, booking_id, service_list, car_bike)
 
 	# html = "Hi "+name+"Your booking with ClickGarage has been confirmed. Pick up time selected by you is "+time+" on "+date+"For further details please contact "+helpline_number+" and quote your booking reference id :"+str(booking_id)+"."
-
+	booking = Bookings.objects.filter(booking_id=booking_id)[0]
 	script = MIMEText(html, 'html')
 	msg.attach(script)
 	conn = boto.ses.connect_to_region(region,aws_access_key_id=aws_access,aws_secret_access_key=aws_secret)
@@ -7986,9 +7986,10 @@ def send_booking_confirm(email,name,booking_id,number,service_list,car_bike):
 		print "check"
 		None
 	else:
-		result = conn.send_raw_email(msg.as_string())
+		if booking.clickgarage_flag == True:
+			result = conn.send_raw_email(msg.as_string())
 
-	booking = Bookings.objects.filter(booking_id=booking_id)[0]
+
 	print booking.agent
 	if booking.agent != "":
 		agent = CGUserNew.objects.filter(id = booking.agent)[0]
@@ -8006,7 +8007,7 @@ def send_booking_confirm(email,name,booking_id,number,service_list,car_bike):
 	else:
 		message = "Hi " + name + "! Your booking with " + full_agent_name + " has been confirmed for " + str(booking.time_booking) + " on " + str(booking.date_booking) + ".  For further assistance, please contact us on " + agent_num + " and quote your booking ID: " + str(
 			booking_id) + "."
-		print message
+		# print message
 		send_sms_2factor_EZY(number, message)
 
 def send_sms_customer(name,number,booking_id,date,time,agent_details = None,estimate=None, status=None, status2=None):
@@ -10106,16 +10107,17 @@ page[size="A5"][layout="portrait"] {
 					Total Amount: Rs.  <span id="cust-total">"""+str(total)+"""</span>
 				</td>
 			</tr>
-		</table>
-		<div class="recommendations">
+		</table>"""
+	if recommendation != "" and recommendation != "null":
+		html+="""<div class="recommendations">
 			<div class="row">
 				<b>Recommendations:</b>
 			</div>
 			<div class="row">
 				<span class="recommendation">"""+recommendation+"""</span>
 			</div>
-		</div>
-	</div>
+		</div>"""
+	html+="""</div>
 </page>
 
 </body>
