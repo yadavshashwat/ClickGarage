@@ -8093,6 +8093,7 @@ def generate_bill(request):
                ,date_due                = date_today
                ,cust_number             = cust_number
                ,cust_email              = cust_email
+               ,amount_paid             = False
                )
     tt.save()
     tt2 = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner, time_stamp= time_stamp, booking_data_id=data_id, status="Generated", bill_type=bill_type, invoice_number=invoice_number)[0]
