@@ -8118,14 +8118,14 @@ def generate_bill(request):
     else:
         if booking:
             html = mviews.bill_html(agent_name=full_agent_name, agent_address=agent_address, invoice_number=invoice_number,
-                                booking_id=booking_id, created_date=date_today, tin_number=agent_vat_no, cin_number=agent_cin,
-                                stax_number=agent_stax, cust_name=cust_name, cust_address=cust_address,
-                                cust_locality=cust_locality, cust_city=cust_city, cust_reg=reg_number, cust_veh=vehicle,
-                                service_items=service_items, vat_part_percent=vat_part_percent,
-                                vat_lube_percent=vat_lube_percent, vat_consumable_percent=vat_consumable_percent,
-                                stax_percent=service_tax_percent, vat_part=vat_part, vat_lube=vat_lube,
-                                vat_consumable=vat_consumable, stax_amount=service_tax, total=total_amount,
-                                recommendation=notes,logo=clickgarage_flag)
+                                    booking_id=booking_id, created_date=date_today, tin_number=agent_vat_no, cin_number=agent_cin,
+                                    stax_number=agent_stax, cust_name=cust_name, cust_address=cust_address,
+                                    cust_locality=cust_locality, cust_city=cust_city, cust_reg=reg_number, cust_veh=vehicle,
+                                    service_items=service_items, vat_part_percent=vat_part_percent,
+                                    vat_lube_percent=vat_lube_percent, vat_consumable_percent=vat_consumable_percent,
+                                    stax_percent=service_tax_percent, vat_part=vat_part, vat_lube=vat_lube,
+                                    vat_consumable=vat_consumable, stax_amount=service_tax, total=total_amount,
+                                    recommendation=notes,logo=clickgarage_flag)
         else:
             html = mviews.bill_html(agent_name=full_agent_name, agent_address=agent_address,
                                     invoice_number=invoice_number,
@@ -8139,8 +8139,8 @@ def generate_bill(request):
                                     stax_percent=service_tax_percent, vat_part=vat_part, vat_lube=vat_lube,
                                     vat_consumable=vat_consumable, stax_amount=service_tax, total=total_amount,
                                     recommendation=notes,logo=clickgarage_flag)
-        #     import subprocess
-        #
+            #     import subprocess
+            #
     if socket.gethostname().startswith('ip-'):
         if PRODUCTION:
             cmd = pdfkit.from_string(html,'/home/ubuntu/beta/website/Bills/'+bill_type+'-'+str(invoice_number)+'_'+tt2.id+'.pdf')

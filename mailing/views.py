@@ -15,7 +15,7 @@ escalation_number = "9899125443"
 key = "ab33f626-fba5-4bff-9a2b-68a7e9eed43c"
 # ab33f626-fba5-4bff-9a2b-68a7e9eed43c
 sendername = "CLKGRG"
-staffmails = ["shashwat@clickgarage.in", "bhuvan@clickgarage.in","bookings@clickgarage.in", "rajiv@clickgarage.in","amit.kumar@clickgarage.in"]
+staffmails = ["shashwat@clickgarage.in", "bhuvan@clickgarage.in","bookings@clickgarage.in", "rajiv@clickgarage.in","amit.kumar@clickgarage.in","jitendra@clickgarage.in"]
 booking_mail = ["bookings@clickgarage.in"]
 
 import smtplib
@@ -35,7 +35,7 @@ from email.mime.text import MIMEText
 import boto.ses
 from api.models import *
 from activity.models import Transactions, CGUser, CGUserNew
-
+import string
 
 
 def send_sms(type,to,message):
@@ -9932,10 +9932,10 @@ page[size="A5"][layout="portrait"] {
 		<table class="agent-details">
 			<tr>
 				<td class="title company-name">"""
-	if not logo:
-		html += """<img id="bill-logo" src="https://www.clickgarage.in/static/revamp/img/Bill%20Logos/"""+agent_name+""".png" style="width:100%; max-width:150px;"><br>"""
-	else:
+	if logo:
 		html += """<img id="bill-logo" src="https://www.clickgarage.in/static/revamp/img/Bill%20Logos/ClickGarage.png" style="width:100%; max-width:150px;"><br>"""
+	else:
+		html += """<img id="bill-logo" src="https://www.clickgarage.in/static/revamp/img/Bill%20Logos/""" + string.replace(agent_name, ' ', '%20') + """.png" style="width:100%; max-width:150px;"><br>"""
 
 	html += """<span id="agent-name">"""+ agent_name +"""</span><br>
 					<span id="agent-address">"""+ agent_address +"""</span><br>
@@ -9954,7 +9954,6 @@ page[size="A5"][layout="portrait"] {
 		html += """<tr class="reciept cin"><td>CIN : </td><td><span id = "agent-cin">"""+cin_number+"""</span></td></tr>"""
 	if stax_number != "":
 		html += """<tr class="reciept stax"><td>Service Tax : </td><td><span id = "agent-stax">"""+stax_number+"""</span></td></tr>"""
-
 
 	html += """</table>
 				</td>
@@ -10059,13 +10058,10 @@ page[size="A5"][layout="portrait"] {
 		html8 += """<table class="service-table">
 			<thead class="heading">
 			<td>
-				Other Jobs Performed/ Parts Replaced
+				Other Jobs Performed/Parts Replaced
 			</td>
 			</thead>
-
 			<tbody class="service-list">"""
-
-
 		for service in service_items:
 			if float(service['pre_tax_price']) == 0:
 				marker3 = 1
