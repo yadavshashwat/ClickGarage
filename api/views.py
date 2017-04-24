@@ -7733,21 +7733,20 @@ def change_status_actual(booking_id,status_id):
                 mviews.send_sms_customer(booking.cust_name, booking.cust_number, booking.booking_id, booking.date_booking,
                                          booking.time_booking, estimate=booking.price_total,
                                          status="Job Completed")
-
-                if booking.cust_vehicle_type == "Car":
-                    if booking.price_total >= 3500:
-                        date_today = datetime.date.today() + datetime.timedelta(days=180)
-                    elif booking.price_total >= 1500:
-                        date_today = datetime.date.today() + datetime.timedelta(days=90)
-                    else:
-                        date_today = datetime.date.today() + datetime.timedelta(days=30)
-                else:
-                    date_today = datetime.date.today() + datetime.timedelta(days=60)
+                # if booking.cust_vehicle_type == "Car":
+                    # if booking.price_total >= 3500:
+                    #     date_today = datetime.date.today() + datetime.timedelta(days=180)
+                    # elif booking.price_total >= 1500:
+                date_today = datetime.date.today() + datetime.timedelta(days=90)
+                #     else:
+                #         date_today = datetime.date.today() + datetime.timedelta(days=30)
+                # else:
+                #     date_today = datetime.date.today() + datetime.timedelta(days=60)
 
                 booking.date_delivery = datetime.date.today()
                 if booking.clickgarage_flag == True:
                     new_lead = place_booking(booking.cust_id, booking.cust_name, booking.cust_number, booking.cust_email, booking.cust_regnumber, booking.cust_address,booking.cust_locality, booking.cust_city, booking.service_items,
-                                             booking.cust_make, booking.cust_vehicle_type,booking.cust_model, booking.cust_fuel_varient, str(date_today), "9:30 AM - 12:30 PM", "Servicing/Repair - Reminder", False, "0", "NA",
+                                             booking.cust_make, booking.cust_vehicle_type,booking.cust_model, booking.cust_fuel_varient, str(date_today), "9:30 AM - 12:30 PM", [{'Job':'Servicing/Repair - Reminder','Price':'0'}], False, "0", "NA",
                                              "0", "Repeat Customer", False, "NA", send_sms="0",follow_up_date_book=str(date_today))
                 else:
                     new_lead = place_booking(booking.cust_id, booking.cust_name, booking.cust_number,
@@ -7755,8 +7754,8 @@ def change_status_actual(booking_id,status_id):
                                              booking.cust_locality, booking.cust_city, booking.service_items,
                                              booking.cust_make, booking.cust_vehicle_type, booking.cust_model,
                                              booking.cust_fuel_varient, str(date_today), "9:30 AM - 12:30 PM",
-                                             "Servicing/Repair - Reminder", False, "0", "NA",
-                                             "0", "Repeat Customer", False, "NA", send_sms="0",owner=booking.booking_owner,follow_up_date_book=str(date_today))
+                                             [{'Job':'Servicing/Repair - Reminder','Price':'0'}], False, "0", "NA",
+                                             "0", "Repeat Customer", False, "NA", send_sms="0",owner=booking.booking_owner, follow_up_date_book=str(date_today))
                     # add a lead to the leads data base with follow_up_date as (bike - 60 days , car (bill_amount < 2000) - 30 days, car (bill_amount> 2000) 90 days
 
         if (status_id == "Feedback Taken" and old_status == "Job Completed"):
@@ -7944,7 +7943,7 @@ def generate_bill(request):
     service_tax             = get_param(request, 'service_tax', None)
     payment_mode            = get_param(request, 'payment_mode', None)
     full_agent_name         = get_param(request, 'full_agent_name', None)
-    agent_address      = get_param(request, 'agent_address', None)
+    agent_address           = get_param(request, 'agent_address', None)
     agent_vat_no            = get_param(request, 'agent_vat_no', None)
     agent_cin               = get_param(request, 'agent_cin', None)
     agent_stax              = get_param(request, 'agent_stax', None)
