@@ -6666,7 +6666,8 @@ def view_all_bookings(request):
             'agent_vat'             : agent_vat,
             'agent_cin'             :agent_cin,
             'agent_stax'            : agent_stax,
-            'estimate_history'      : trans.estimate_history,
+            # 'estimate_history'      : trans.estimate_history,
+            'estimate_history_len': len(trans.estimate_history),
             'agent_details'         : agent_details,
             'status_next'           :status_next,
             'customer_notes'        :trans.customer_notes,
@@ -6723,7 +6724,11 @@ def view_all_bookings(request):
             'recommend_factor': recommend_factor,
             'follow_up_date': newformat_f,
             'follow_up_time': str(trans.follow_up_time.strftime('%I:%M %p')),
-            'follow_up_status':trans.follow_up_status
+            'follow_up_status':trans.follow_up_status,
+            'total_commission':trans.commission_total,
+            'commission_items': trans.commission,
+            'settlement_flag': trans.settlement_flag,
+            'payment_booking': trans.payment_booking,
 
         })
     if getcsv == "True":
@@ -6861,6 +6866,13 @@ def fetch_all_users(request):
             ,'req_user_b2b': is_b2b
             ,'req_user_admin': is_admin
             , 'agent_sms_credits': trans.agent_sms_credits
+
+            , 'agent_part_share': trans.agent_part_share
+            , 'agent_lube_share': trans.agent_lube_share
+            , 'agent_consumable_share': trans.agent_consumable_share
+            , 'agent_labour_share': trans.agent_labour_share
+            , 'agent_vas_share': trans.agent_vas_share
+            , 'agent_denting_share': trans.agent_denting_share
             # , 'user_state':trans.user_state
         })
     obj['status'] = True
@@ -6897,6 +6909,14 @@ def update_user(request):
     agent_stax = get_param(request, 'agent_stax', None)
     agent_cin = get_param(request, 'agent_cin', None)
     sms_credits = get_param(request, 'sms_credits', None)
+
+    agent_part_share = get_param(request, 'agent_part_share', None)
+    agent_lube_share = get_param(request, 'agent_lube_share', None)
+    agent_consumable_share = get_param(request, 'agent_consumable_share', None)
+    agent_labour_share = get_param(request, 'agent_labour_share', None)
+    agent_vas_share = get_param(request, 'agent_vas_share', None)
+    agent_denting_share = get_param(request, 'agent_denting_share', None)
+
     user_name = cleanstring(user_name).title()
     user_add = cleanstring(user_add).title()
     user_loc = cleanstring(user_loc).title()
@@ -6925,6 +6945,25 @@ def update_user(request):
         user2.agent_cin = agent_cin
         if sms_credits:
             user2.agent_sms_credits = sms_credits
+
+        if agent_part_share:
+            user2.agent_part_share = agent_part_share
+
+        if agent_lube_share:
+            user2.agent_lube_share = agent_lube_share
+
+        if agent_consumable_share:
+            user2.agent_consumable_share = agent_consumable_share
+
+        if agent_labour_share:
+            user2.agent_labour_share = agent_labour_share
+
+        if agent_vas_share:
+            user2.agent_vas_share = agent_vas_share
+
+        if agent_denting_share:
+            user2.agent_denting_share = agent_denting_share
+
         if user_state:
             user2.user_state = user_state
 
@@ -7115,6 +7154,56 @@ def update_booking(request):
     # obj['auth_rights'] = {'admin' : request.user.is_admin, 'b2b': request.user.is_b2b, 'agent': request.user.is_agent, 'staff':request.user.is_staff}
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+def add_delete_payment(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    data_id = get_param(request, 'data_id', None)
+    payment_id = get_param(request,'payment_id',None)
+    add_delete = get_param(request,'add_del',None)
+    amount= get_param(request, 'amount', None)
+    col_by = get_param(request, 'col_by', None)
+    booking = Bookings.objects.filter(id = data_id)[0]
+    date_today = datetime.date.today()
+    oldformat_b = str(date_today)
+    datetimeobject = datetime.datetime.strptime(oldformat_b, '%Y-%m-%d')
+    date_today_new= datetimeobject.strftime('%d-%m-%Y')
+    total_paid = float(booking.amount_paid)
+    if add_delete == "Add":
+        if amount != "" and amount != None:
+            obj = {
+                "payment_id" : str(time.time()),
+                "collected_by":col_by,
+                "amount":amount,
+                "date_collected": date_today_new
+            }
+            total_paid = float(booking.amount_paid) + float(amount)
+            booking.payment_booking.append(obj)
+            booking.amount_paid = str(total_paid)
+    if add_delete == "Delete":
+        payment2 = []
+        items = booking.payment_booking
+        # print payment_id
+        for item in items:
+            print item['payment_id']
+            if item['payment_id'] == payment_id:
+                print "1"
+                total_paid = float(booking.amount_paid) - float(item['amount'])
+            else:
+                print "2"
+                payment2.append(item)
+        booking.amount_paid = str(total_paid)
+        booking.payment_booking = payment2
+
+    booking.save()
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+
+
 def update_estimate(request):
     obj = {}
     obj['status'] = False
@@ -7123,9 +7212,40 @@ def update_estimate(request):
     estimate = get_param(request,'estimate',None)
 
     booking = Bookings.objects.filter(booking_id=booking_id)[0]
+    if booking.agent != "Not Assigned" and booking.agent != "":
+        agent = CGUserNew.objects.filter(id = booking.agent)[0]
+        state = agent.user_state
+        if booking.clickgarage_flag:
+            agent_vas_share = agent.agent_vas_share
+            agent_part_share = agent.agent_part_share
+            agent_lube_share = agent.agent_lube_share
+            agent_consumable_share = agent.agent_consumable_share
+            agent_denting_share = agent.agent_denting_share
+            agent_labour_share = agent.agent_labour_share
+        else:
+            agent_vas_share = 0
+            agent_part_share = 0
+            agent_lube_share = 0
+            agent_consumable_share = 0
+            agent_denting_share = 0
+            agent_labour_share = 0
+
+        taxes = get_tax(state)
+        if agent.agent_vat and agent.agent_vat != None:
+            vat_part = float(taxes['result'][0]['vat_parts'])
+            vat_consumable = float(taxes['result'][0]['vat_consumables'])
+            vat_lube = float(taxes['result'][0]['vat_lube'])
+        else:
+            vat_part = 0
+            vat_consumable = 0
+            vat_lube = 0
+
+        if agent.agent_stax != "" and agent.agent_stax != None:
+            service_tax = float(taxes['result'][0]['service_tax'])
+        else:
+            service_tax = 0
 
     if estimate != None:
-
         old_estimate = booking.service_items
         estimate = json.loads(estimate)
         if estimate != old_estimate:
@@ -7133,32 +7253,184 @@ def update_estimate(request):
             estimate_by_id = request.user.id
             estimate_by_number = request.user.contact_no
             estimate_by_name = request.user.first_name + " " + request.user.last_name
-
-            booking.service_items = estimate
             total_price = 0
             total_part = 0
             total_labour = 0
             total_discount = 0
-            # print estimate
+
+            clickgarage_part_share = 0
+            total_part_comm = 0
+            total_part_pre_tax = 0
+            clickgarage_labour_share = 0
+            total_labour_comm = 0
+            total_labour_pre_tax = 0
+            clickgarage_denting_share = 0
+            total_denting_comm = 0
+            total_denting_pre_tax = 0
+            clickgarage_vas_share = 0
+            total_vas_comm = 0
+            total_vas_pre_tax = 0
+            clickgarage_lube_share = 0
+            total_lube_comm = 0
+            total_lube_pre_tax = 0
+            clickgarage_consumable_share = 0
+            total_consumable_comm = 0
+            total_consumable_pre_tax = 0
+            clickgarage_discount_share = 0
+            total_discount_comm = 0
+            total_discount_pre_tax = 0
+            total_commission = 0
+            obj_part = {}
+            obj_lube = {}
+            obj_consumable = {}
+            obj_vas = {}
+            obj_denting = {}
+            obj_labour = {}
+            obj_discount = {}
+            commission = []
+            estimate2 = []
             for item in estimate:
+                obj2 = {}
+                applicable_tax = 0
                 # print item
-                if item['type'] == "Part" or item['type'] == "Consumable" or item['type'] == "Lube":
+                if item['type'] == "Part":
                     total_price = total_price + float(item['price'])
                     total_part = total_part + float(item['price'])
+                    applicable_tax = vat_part
+                elif item['type'] == "Consumable":
+                    total_price = total_price + float(item['price'])
+                    total_part = total_part + float(item['price'])
+                    applicable_tax = vat_consumable
+                elif item['type'] == "Lube":
+                    total_price = total_price + float(item['price'])
+                    total_part = total_part + float(item['price'])
+                    applicable_tax = vat_lube
+
                 elif item['type']=="Labour":
                     total_price = total_price + float(item['price'])
                     total_labour = total_labour + float(item['price'])
+                    applicable_tax = service_tax
+
                 elif item['type'] == "Discount":
                     total_price = total_price - float(item['price'])
                     total_discount = total_discount + float(item['price'])
+                    applicable_tax = 0
+
+                if item['settlement_cat'] == "Part":
+                    applicable_commission_share = float(agent_part_share)
+                    clickgarage_part_share = clickgarage_part_share + (float(item['purchase_price']) / (1 + applicable_tax / 100)*(applicable_commission_share)/100)
+                    total_part_comm = total_part_comm + float(item['purchase_price'])
+                    total_part_pre_tax = total_part_pre_tax + float(item['purchase_price']) / (1 + applicable_tax / 100)
+                    total_commission = total_commission + clickgarage_part_share
+                elif item['settlement_cat'] == "Labour":
+                    applicable_commission_share = float(agent_labour_share)
+                    clickgarage_labour_share = clickgarage_labour_share + (float(item['purchase_price']) / (1 + applicable_tax / 100) * (applicable_commission_share) / 100)
+                    total_labour_comm = total_labour_comm + float(item['purchase_price'])
+                    total_labour_pre_tax = total_labour_pre_tax + float(item['purchase_price']) / (1 + applicable_tax / 100)
+                    total_commission = total_commission + clickgarage_labour_share
+                elif item['settlement_cat'] == "VAS":
+                    applicable_commission_share = float(agent_vas_share)
+                    clickgarage_vas_share = clickgarage_vas_share + (float(item['purchase_price']) / (1 + applicable_tax / 100) * (applicable_commission_share) / 100)
+                    total_vas_comm = total_vas_comm + float(item['purchase_price'])
+                    total_vas_pre_tax = total_vas_pre_tax + float(item['purchase_price']) / (1 + applicable_tax / 100)
+                    total_commission = total_commission + clickgarage_vas_share
+                elif item['settlement_cat'] == "Denting":
+                    applicable_commission_share = float(agent_denting_share)
+                    clickgarage_denting_share = clickgarage_denting_share + (float(item['purchase_price']) / (1 + applicable_tax / 100) * (applicable_commission_share) / 100)
+                    total_denting_comm = total_denting_comm + float(item['purchase_price'])
+                    total_denting_pre_tax = total_denting_pre_tax + float(item['purchase_price']) / (1 + applicable_tax / 100)
+                    total_commission = total_commission + clickgarage_denting_share
+                elif item['settlement_cat'] == "Lube":
+                    applicable_commission_share = float(agent_lube_share)
+                    clickgarage_lube_share = clickgarage_lube_share + (float(item['purchase_price']) / (1 + applicable_tax / 100) * (applicable_commission_share) / 100)
+                    total_lube_comm = total_lube_comm + float(item['purchase_price'])
+                    total_lube_pre_tax = total_lube_pre_tax + float(item['purchase_price']) / (1 + applicable_tax / 100)
+                    total_commission = total_commission + clickgarage_lube_share
+                elif item['settlement_cat'] == "Consumable":
+                    applicable_commission_share = float(agent_consumable_share)
+                    clickgarage_consumable_share = clickgarage_consumable_share + (float(item['purchase_price']) / (1 + applicable_tax / 100) * (applicable_commission_share) / 100)
+                    total_consumable_comm = total_consumable_comm + float(item['purchase_price'])
+                    total_consumable_pre_tax = total_consumable_pre_tax + float(item['purchase_price']) / (1 + applicable_tax / 100)
+                    total_commission = total_commission + clickgarage_consumable_share
+                elif item['settlement_cat'] == "Discount":
+                    applicable_commission_share = 0
+                    clickgarage_discount_share = clickgarage_discount_share + (float(item['purchase_price']) / (1 + applicable_tax / 100) * (applicable_commission_share) / 100)
+                    total_discount_comm = total_discount_comm + float(item['purchase_price'])
+                    total_discount_pre_tax = total_discount_pre_tax + float(item['purchase_price']) / (1 + applicable_tax / 100)
+                    total_commission = total_commission + clickgarage_discount_share
+
+                obj2 = {
+                    'comment': item['comment'],
+                    'name': item['name'],
+                    'settlement_cat': item['settlement_cat'],
+                    'price': item['price'],
+                    'unit_price': item['unit_price'],
+                    'pre_tax_price': float(item['price']) / (1 + applicable_tax / 100),
+                    'type': item['type'],
+                    'approved': item['approved'],
+                    'quantity': item['quantity'],
+                    'purchase_price': item['purchase_price'],
+                    'purchase_price_pretax': float(item['purchase_price']) / (1 + applicable_tax / 100),
+                    'clickgarage_share': (float(item['purchase_price']) / (1 + applicable_tax / 100)*(applicable_commission_share)/100),
+                }
+                estimate2.append(obj2)
+
+            booking.service_items = estimate2
+            obj_part = {"type":"Part",
+                        "purchase_price":total_part_comm,
+                        "purchase_price_pre_tax":total_part_pre_tax,
+                        "clickgarage_share":clickgarage_part_share,
+                        "share_percent" : agent_part_share}
+            commission.append(obj_part)
+
+            obj_labour = {"type": "Labour",
+                        "purchase_price": total_labour_comm,
+                        "purchase_price_pre_tax": total_labour_pre_tax,
+                        "clickgarage_share": clickgarage_labour_share,
+                          "share_percent": agent_labour_share}
+            commission.append(obj_labour)
+
+            obj_vas = {"type": "VAS",
+                        "purchase_price": total_vas_comm,
+                        "purchase_price_pre_tax": total_vas_pre_tax,
+                        "clickgarage_share": clickgarage_vas_share,
+                       "share_percent": agent_vas_share}
+            commission.append(obj_vas)
+
+            obj_denting = {"type": "Denting",
+                        "purchase_price": total_denting_comm,
+                        "purchase_price_pre_tax": total_denting_pre_tax,
+                        "clickgarage_share": clickgarage_denting_share,
+                           "share_percent": agent_denting_share}
+            commission.append(obj_denting)
+
+            obj_consumable = {"type": "Consumable",
+                        "purchase_price": total_consumable_comm,
+                        "purchase_price_pre_tax": total_consumable_pre_tax,
+                        "clickgarage_share": clickgarage_consumable_share,
+                              "share_percent": agent_consumable_share}
+            commission.append(obj_consumable)
+
+            obj_lube = {"type": "Lube",
+                        "purchase_price": total_lube_comm,
+                        "purchase_price_pre_tax": total_lube_pre_tax,
+                        "clickgarage_share": clickgarage_lube_share,
+                        "share_percent": agent_lube_share}
+            commission.append(obj_lube)
+
+            obj_discount = {"type": "Discount",
+                        "purchase_price": total_discount_comm,
+                        "purchase_price_pre_tax": total_discount_pre_tax,
+                        "clickgarage_share": clickgarage_discount_share,
+                        "share_percent": 0}
+            commission.append(obj_discount)
+
+            booking.commission = commission
+            booking.commission_total = str(total_commission)
             booking.price_total = str(total_price)
             booking.price_labour = str(total_labour)
             booking.price_part = str(total_part)
             booking.price_discount = str(total_discount)
-            # print total_price
-            # print total_labour
-            # print total_discount
-            # print total_part
             a = booking.estimate_history.append({"timestamp": new_estimate_timestamp, "change_by_userid" : estimate_by_id, "change_by_number": estimate_by_number, "change_by_name":  estimate_by_name, 'estimate':old_estimate})
             print a
 
@@ -7999,6 +8271,22 @@ def generate_bill(request):
         if bill_owner == "Agent Bill" or bill_owner == "":
             bill_owner = booking.agent
         if not pre_invoice:
+            if booking.clickgarage_flag:
+                agent = CGUserNew.objects.filter(id=booking.agent)[0]
+                agent_vas_share = agent.agent_vas_share
+                agent_part_share = agent.agent_part_share
+                agent_lube_share = agent.agent_lube_share
+                agent_consumable_share = agent.agent_consumable_share
+                agent_denting_share = agent.agent_denting_share
+                agent_labour_share = agent.agent_labour_share
+            else:
+                agent_vas_share = 0
+                agent_part_share = 0
+                agent_lube_share = 0
+                agent_consumable_share = 0
+                agent_denting_share = 0
+                agent_labour_share = 0
+
             new_estimate_timestamp = time.time()
             estimate_by_id = request.user.id
             estimate_by_number = request.user.contact_no
@@ -8009,29 +8297,197 @@ def generate_bill(request):
             total_part = 0
             total_labour = 0
             total_discount = 0
+            # new addition
+            clickgarage_part_share = 0
+            total_part_comm = 0
+            total_part_pre_tax = 0
+            clickgarage_labour_share = 0
+            total_labour_comm = 0
+            total_labour_pre_tax = 0
+            clickgarage_denting_share = 0
+            total_denting_comm = 0
+            total_denting_pre_tax = 0
+            clickgarage_vas_share = 0
+            total_vas_comm = 0
+            total_vas_pre_tax = 0
+            clickgarage_lube_share = 0
+            total_lube_comm = 0
+            total_lube_pre_tax = 0
+            clickgarage_consumable_share = 0
+            total_consumable_comm = 0
+            total_consumable_pre_tax = 0
+            clickgarage_discount_share = 0
+            total_discount_comm = 0
+            total_discount_pre_tax = 0
+            total_commission = 0
+            obj_part = {}
+            obj_lube = {}
+            obj_consumable = {}
+            obj_vas = {}
+            obj_denting = {}
+            obj_labour = {}
+            obj_discount = {}
+            commission = []
+            estimate2 = []
+
             # print estimate
             for item in service_items:
+                obj2 = {}
                 # print item
-                if item['type'] == "Part" or item['type'] == "Consumable" or item['type'] == "Lube":
+                if item['type'] == "Part":
                     total_price = total_price + float(item['price'])
                     total_part = total_part + float(item['price'])
+                elif item['type'] == "Consumable":
+                    total_price = total_price + float(item['price'])
+                    total_part = total_part + float(item['price'])
+                elif item['type'] == "Lube":
+                    total_price = total_price + float(item['price'])
+                    total_part = total_part + float(item['price'])
+
                 elif item['type'] == "Labour":
                     total_price = total_price + float(item['price'])
                     total_labour = total_labour + float(item['price'])
+
                 elif item['type'] == "Discount":
                     total_price = total_price - float(item['price'])
                     total_discount = total_discount + float(item['price'])
+                    applicable_tax = 0
+
+                if item['settlement_cat'] == "Part":
+                    applicable_commission_share = float(agent_part_share)
+                    clickgarage_part_share = clickgarage_part_share + (
+                    float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
+                    total_part_comm = total_part_comm + float(item['purchase_price'])
+                    total_part_pre_tax = total_part_pre_tax + float(item['purchase_price_pretax'])
+                    total_commission = total_commission + clickgarage_part_share
+                elif item['settlement_cat'] == "Labour":
+                    applicable_commission_share = float(agent_labour_share)
+                    clickgarage_labour_share = clickgarage_labour_share + (
+                    float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
+                    total_labour_comm = total_labour_comm + float(item['purchase_price'])
+                    total_labour_pre_tax = total_labour_pre_tax + float(item['purchase_price_pretax'])
+                    total_commission = total_commission + clickgarage_labour_share
+                elif item['settlement_cat'] == "VAS":
+                    applicable_commission_share = float(agent_vas_share)
+                    clickgarage_vas_share = clickgarage_vas_share + (
+                    float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
+                    total_vas_comm = total_vas_comm + float(item['purchase_price'])
+                    total_vas_pre_tax = total_vas_pre_tax + float(item['purchase_price_pretax'])
+                    total_commission = total_commission + clickgarage_vas_share
+                elif item['settlement_cat'] == "Denting":
+                    applicable_commission_share = float(agent_denting_share)
+                    clickgarage_denting_share = clickgarage_denting_share + (
+                    float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
+                    total_denting_comm = total_denting_comm + float(item['purchase_price'])
+                    total_denting_pre_tax = total_denting_pre_tax + float(item['purchase_price_pretax'])
+                    total_commission = total_commission + clickgarage_denting_share
+                elif item['settlement_cat'] == "Lube":
+                    applicable_commission_share = float(agent_lube_share)
+                    clickgarage_lube_share = clickgarage_lube_share + (
+                    float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
+                    total_lube_comm = total_lube_comm + float(item['purchase_price'])
+                    total_lube_pre_tax = total_lube_pre_tax + float(item['purchase_price_pretax'])
+                    total_commission = total_commission + clickgarage_lube_share
+                elif item['settlement_cat'] == "Consumable":
+                    applicable_commission_share = float(agent_consumable_share)
+                    clickgarage_consumable_share = clickgarage_consumable_share + (
+                    float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
+                    total_consumable_comm = total_consumable_comm + float(item['purchase_price'])
+                    total_consumable_pre_tax = total_consumable_pre_tax + float(item['purchase_price_pretax'])
+                    total_commission = total_commission + clickgarage_consumable_share
+                elif item['settlement_cat'] == "Discount":
+                    applicable_commission_share = 0
+                    clickgarage_discount_share = clickgarage_discount_share + (
+                    float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
+                    total_discount_comm = total_discount_comm + float(item['purchase_price'])
+                    total_discount_pre_tax = total_discount_pre_tax + float(item['purchase_price_pretax'])
+                    total_commission = total_commission + clickgarage_discount_share
+
+                obj2 = {
+                    'comment': item['comment'],
+                    'name': item['name'],
+                    'settlement_cat': item['settlement_cat'],
+                    'price': item['price'],
+                    'unit_price': item['unit_price'],
+                    'pre_tax_price': item['pre_tax_price'],
+                    'type': item['type'],
+                    'approved': item['approved'],
+                    'quantity': item['quantity'],
+                    'purchase_price': item['purchase_price'],
+                    'purchase_price_pretax': float(item['purchase_price_pretax']),
+                    'clickgarage_share': (float(item['purchase_price_pretax']) * (applicable_commission_share) / 100),
+                }
+
+                estimate2.append(obj2)
+
+
+
+
+                # print item
+            booking.service_items = estimate2
             booking.price_total = str(total_price)
             booking.price_labour = str(total_labour)
             booking.price_part = str(total_part)
             booking.price_discount = str(total_discount)
+            obj_part = {"type": "Part",
+                        "purchase_price": total_part_comm,
+                        "purchase_price_pre_tax": total_part_pre_tax,
+                        "clickgarage_share": clickgarage_part_share,
+                        "share_percent": agent_part_share}
+            commission.append(obj_part)
+
+            obj_labour = {"type": "Labour",
+                          "purchase_price": total_labour_comm,
+                          "purchase_price_pre_tax": total_labour_pre_tax,
+                          "clickgarage_share": clickgarage_labour_share,
+                          "share_percent": agent_labour_share}
+            commission.append(obj_labour)
+
+            obj_vas = {"type": "VAS",
+                       "purchase_price": total_vas_comm,
+                       "purchase_price_pre_tax": total_vas_pre_tax,
+                       "clickgarage_share": clickgarage_vas_share,
+                       "share_percent": agent_vas_share}
+            commission.append(obj_vas)
+
+            obj_denting = {"type": "Denting",
+                           "purchase_price": total_denting_comm,
+                           "purchase_price_pre_tax": total_denting_pre_tax,
+                           "clickgarage_share": clickgarage_denting_share,
+                           "share_percent": agent_denting_share}
+            commission.append(obj_denting)
+
+            obj_consumable = {"type": "Consumable",
+                              "purchase_price": total_consumable_comm,
+                              "purchase_price_pre_tax": total_consumable_pre_tax,
+                              "clickgarage_share": clickgarage_consumable_share,
+                              "share_percent": agent_consumable_share}
+            commission.append(obj_consumable)
+
+            obj_lube = {"type": "Lube",
+                        "purchase_price": total_lube_comm,
+                        "purchase_price_pre_tax": total_lube_pre_tax,
+                        "clickgarage_share": clickgarage_lube_share,
+                        "share_percent": agent_lube_share}
+            commission.append(obj_lube)
+
+            obj_discount = {"type": "Discount",
+                            "purchase_price": total_discount_comm,
+                            "purchase_price_pre_tax": total_discount_pre_tax,
+                            "clickgarage_share": clickgarage_discount_share,
+                            "share_percent": 0}
+            commission.append(obj_discount)
+
+            booking.commission = commission
+            booking.commission_total = str(total_commission)
 
             a = booking.estimate_history.append(
                 {"timestamp": new_estimate_timestamp, "change_by_userid": estimate_by_id,
                  "change_by_number": estimate_by_number, "change_by_name": estimate_by_name,
                  'estimate': old_estimate})
 
-        booking.save()
+            booking.save()
+
 
     else:
         if bill_owner == "Agent Bill" or bill_owner == "":

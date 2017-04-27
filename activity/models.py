@@ -131,7 +131,14 @@ class CGUserNew(AbstractUser):
     email_list = ListField(models.CharField(max_length=200))
     owner_user = ListField(models.CharField(max_length=200))
     agent_sms_credits = models.IntegerField(default=0)
+    agent_part_share = models.CharField(max_length=5,default="0",null=True)
+    agent_lube_share = models.CharField(max_length=5,default="0",null=True)
+    agent_consumable_share = models.CharField(max_length=5, default="0", null=True)
+    agent_labour_share = models.CharField(max_length=5, default="0", null=True)
+    agent_vas_share = models.CharField(max_length=5, default="0", null=True)
+    agent_denting_share = models.CharField(max_length=5, default="0", null=True)
 
+    # part_share
     # car_ids = ListField(models.CharField(max_length=200))
 
 

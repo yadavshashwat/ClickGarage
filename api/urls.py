@@ -162,5 +162,7 @@ urlpatterns = [
     url(r'download_pdf/$', 'api.views.download_pdf', name='download_pdf'),
     url(r'update_bill/$', 'api.views.update_bill', name='update_bill'),
     url(r'send_bill/$', 'api.views.send_bill', name='send_bill'),
+    url(r'add_delete_payment/$', 'api.views.add_delete_payment', name='add_delete_payment'),
+
 
 ]
