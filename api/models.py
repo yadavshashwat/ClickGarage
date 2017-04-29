@@ -561,9 +561,12 @@ class Bookings(models.Model):
     follow_up_date          = models.DateField(null=True)
     follow_up_time          = models.TimeField(null=True)
     follow_up_status        = ListField(DictField())
+    purchase_price_total    = models.CharField(max_length=200)
     payment_booking         = ListField(DictField())
     commission              = ListField(DictField())
     commission_total        = models.CharField(max_length=200,null=True,default="0")
+    job_completion_flag     = models.BooleanField(default=False)
+    frozen_flag         = models.BooleanField(default=False)
     settlement_flag         = models.BooleanField(default=False)
 
     # int_job_summary         = ListField(DictField(), null=True)

@@ -5115,7 +5115,10 @@ def analyse_bookings(request):
     date = get_param(request, 'date', None)
     car_bike = get_param(request,'car_bike',None)
     monthyear = get_param(request, 'monthyear', None)
-
+    is_agent = request.user.is_agent
+    is_staff = request.user.is_staff
+    is_admin = request.user.is_admin
+    is_b2b = request.user.is_b2b
     if request.user.is_admin or request.user.is_staff:
         tranObjs = Bookings.objects.filter(clickgarage_flag = True).order_by('-booking_id')
         custObjs = CGUserNew.objects.filter(clickgarage_flag = True)
@@ -5405,301 +5408,301 @@ def analyse_bookings(request):
 
     if len(tranObjs):
         for trans in tranObjs:
-            if trans.clickgarage_flag == True:
-                if trans.status == "Lead":
-                    num_lead_lead               = num_lead_lead + 1
+            # if trans.clickgarage_flag == True:
+            if trans.status == "Lead":
+                num_lead_lead               = num_lead_lead + 1
+                for item in trans.service_items:
+                    vol_lead_lead           = vol_lead_lead + float(item['price'])
+
+            elif trans.status == "Warm":
+                num_warm_lead               = num_warm_lead + 1
+                for item in trans.service_items:
+                    vol_warm_lead         = vol_warm_lead + float(item['price'])
+
+            elif trans.status == "Cold":
+                num_cold_lead = num_cold_lead + 1
+                for item in trans.service_items:
+                    vol_cold_lead = vol_cold_lead + float(item['price'])
+
+
+            elif trans.status == "Confirmed":
+                num_confirmed_booking = num_confirmed_booking + 1
+                for item in trans.service_items:
+                    vol_confirmed_booking = vol_confirmed_booking + float(item['price'])
+
+
+            elif trans.status == "Assigned":
+                num_assigned_booking = num_assigned_booking + 1
+                for item in trans.service_items:
+                    vol_assigned_booking = vol_assigned_booking + float(item['price'])
+
+
+            elif trans.status == "Reached Workshop":
+                num_reachedworkshop_booking = num_reachedworkshop_booking + 1
+                for item in trans.service_items:
+                    vol_reachedworkshop_booking = vol_reachedworkshop_booking + float(item['price'])
+
+
+            elif trans.status == "Estimate Shared":
+                num_estimateshared_booking = num_estimateshared_booking + 1
+                for item in trans.service_items:
+                    vol_estimateshared_booking = vol_estimateshared_booking + float(item['price'])
+
+            elif trans.status == "Engineer Left":
+                num_engineerleft_booking = num_engineerleft_booking + 1
+                for item in trans.service_items:
+                    vol_engineerleft_booking = vol_engineerleft_booking + float(item['price'])
+
+            elif trans.status == "Cancelled":
+                if trans.booking_flag == False:
+                    num_cancelled_lead = num_cancelled_lead + 1
                     for item in trans.service_items:
-                        vol_lead_lead           = vol_lead_lead + float(item['price'])
-
-                elif trans.status == "Warm":
-                    num_warm_lead               = num_warm_lead + 1
+                        vol_cancelled_lead = vol_cancelled_lead + float(item['price'])
+                else:
+                    num_cancelled_booking = num_cancelled_booking + 1
                     for item in trans.service_items:
-                        vol_warm_lead         = vol_warm_lead + float(item['price'])
+                        vol_cancelled_booking = vol_cancelled_booking + float(item['price'])
 
-                elif trans.status == "Cold":
-                    num_cold_lead = num_cold_lead + 1
-                    for item in trans.service_items:
-                        vol_cold_lead = vol_cold_lead + float(item['price'])
+            elif trans.status == "Escalation":
+                num_escalation_booking = num_escalation_booking + 1
 
+            elif trans.status == "Job Completed" or trans.status == "Feedback Taken":
+                if trans.status == "Job Completed":
+                    num_jobcompleted_booking = num_jobcompleted_booking + 1
+                elif trans.status == "Feedback Taken":
+                    num_feedbacktaken_booking = num_feedbacktaken_booking + 1
 
-                elif trans.status == "Confirmed":
-                    num_confirmed_booking = num_confirmed_booking + 1
-                    for item in trans.service_items:
-                        vol_confirmed_booking = vol_confirmed_booking + float(item['price'])
+                num_completed = num_completed + 1
+                if trans.source == "Google Adwords":
+                    vol_googleadwords_completed = vol_googleadwords_completed + float(trans.price_total)
+                    num_googleadwords_completed = num_googleadwords_completed + 1
+                elif trans.source == "Repeat Customer":
+                    vol_repeatcustomer_completed = vol_repeatcustomer_completed + float(trans.price_total)
+                    num_repeatcustomer_completed = num_repeatcustomer_completed + 1
+                elif trans.source == "Employee Referral":
+                    vol_employeereferral_completed = vol_employeereferral_completed + float(trans.price_total)
+                    num_employeereferral_completed = num_employeereferral_completed + 1
+                elif trans.source == "External Referral":
+                    vol_externalreferral_completed = vol_externalreferral_completed + float(trans.price_total)
+                    num_externalreferral_completed = num_externalreferral_completed + 1
+                elif trans.source == "JustDial":
+                    vol_justdial_completed = vol_justdial_completed + float(trans.price_total)
+                    num_justdial_completed = num_justdial_completed + 1
+                elif trans.source == "Pamphlet":
+                    vol_pamphlet_completed = vol_pamphlet_completed + float(trans.price_total)
+                    num_pamphlet_completed = num_pamphlet_completed + 1
+                elif trans.source == "Auto Advertisement":
+                    vol_autoadvertisement_completed = vol_autoadvertisement_completed + float(trans.price_total)
+                    num_autoadvertisement_completed = num_autoadvertisement_completed + 1
+                elif trans.source == "On-Ground Marketing":
+                    vol_on_groundmarketing_completed = vol_on_groundmarketing_completed + float(trans.price_total)
+                    num_on_groundmarketing_completed = num_on_groundmarketing_completed + 1
+                elif trans.source == "Sulekha":
+                    vol_sulekha_completed = vol_sulekha_completed + float(trans.price_total)
+                    num_sulekha_completed = num_sulekha_completed + 1
+                elif trans.source == "Database - Cold Calling":
+                    vol_database_coldcalling_completed = vol_database_coldcalling_completed + float(trans.price_total)
+                    num_database_coldcalling_completed = num_database_coldcalling_completed + 1
+                elif trans.source == "Chat":
+                    vol_chat_completed = vol_chat_completed + float(trans.price_total)
+                    num_chat_completed = num_chat_completed + 1
+                elif trans.source == "B2B":
+                    vol_b2b_completed = vol_b2b_completed + float(trans.price_total)
+                    num_b2b_completed = num_b2b_completed + 1
+                elif trans.source == "Partner - Droom":
+                    vol_partner_droom_completed = vol_partner_droom_completed + float(trans.price_total)
+                    num_partner_droom_completed = num_partner_droom_completed + 1
+                elif trans.source == "Partner - Wishup":
+                    vol_partner_wishup_completed = vol_partner_wishup_completed + float(trans.price_total)
+                    num_partner_wishup_completed = num_partner_wishup_completed + 1
+                elif trans.source == "Partner - Housejoy":
+                    vol_partner_housejoy_completed = vol_partner_housejoy_completed + float(trans.price_total)
+                    num_partner_housejoy_completed = num_partner_housejoy_completed + 1
+                elif trans.source == "Walk in ":
+                    vol_walkin_completed = vol_walkin_completed + float(trans.price_total)
+                    num_walkin_completed = num_walkin_completed + 1
+                elif trans.source == "Partner - Mr Right":
+                    vol_partner_mrright_completed = vol_partner_mrright_completed + float(trans.price_total)
+                    num_partner_mrright_completed = num_partner_mrright_completed + 1
+                elif trans.source == "Web Search":
+                    vol_websearch_completed = vol_websearch_completed + float(trans.price_total)
+                    num_websearch_completed = num_websearch_completed + 1
+                elif trans.source == "Unknown":
+                    vol_unknown_completed = vol_unknown_completed + float(trans.price_total)
+                    num_unknown_completed = num_unknown_completed + 1
+                elif trans.source == "Society camps":
+                    vol_societycamps_completed = vol_societycamps_completed + float(trans.price_total)
+                    num_societycamps_completed = num_societycamps_completed + 1
+                elif trans.source == "Check up camps":
+                    vol_checkupcamps_completed = vol_checkupcamps_completed + float(trans.price_total)
+                    num_checkupcamps_completed = num_checkupcamps_completed + 1
+                elif trans.source == "Sign up lead":
+                    vol_signuplead_completed = vol_signuplead_completed + float(trans.price_total)
+                    num_signuplead_completed = num_signuplead_completed + 1
+                elif trans.source == "Facebook Ad":
+                    vol_facebookad_completed = vol_facebookad_completed + float(trans.price_total)
+                    num_facebookad_completed = num_facebookad_completed + 1
+                elif trans.source == "Mahindra Authorized":
+                    vol_mahindraauthorized_completed = vol_mahindraauthorized_completed + float(trans.price_total)
+                    num_mahindraauthorized_completed = num_mahindraauthorized_completed + 1
+                elif trans.source == "Exotel":
+                    vol_exotel_completed = vol_exotel_completed + float(trans.price_total)
+                    num_exotel_completed = num_exotel_completed + 1
+                else:
+                    vol_other_completed = vol_other_completed + float(trans.price_total)
+                    num_other_completed = num_other_completed + 1
 
-
-                elif trans.status == "Assigned":
-                    num_assigned_booking = num_assigned_booking + 1
-                    for item in trans.service_items:
-                        vol_assigned_booking = vol_assigned_booking + float(item['price'])
-
-
-                elif trans.status == "Reached Workshop":
-                    num_reachedworkshop_booking = num_reachedworkshop_booking + 1
-                    for item in trans.service_items:
-                        vol_reachedworkshop_booking = vol_reachedworkshop_booking + float(item['price'])
-
-
-                elif trans.status == "Estimate Shared":
-                    num_estimateshared_booking = num_estimateshared_booking + 1
-                    for item in trans.service_items:
-                        vol_estimateshared_booking = vol_estimateshared_booking + float(item['price'])
-
-                elif trans.status == "Engineer Left":
-                    num_engineerleft_booking = num_engineerleft_booking + 1
-                    for item in trans.service_items:
-                        vol_engineerleft_booking = vol_engineerleft_booking + float(item['price'])
-
-                elif trans.status == "Cancelled":
-                    if trans.booking_flag == False:
-                        num_cancelled_lead = num_cancelled_lead + 1
-                        for item in trans.service_items:
-                            vol_cancelled_lead = vol_cancelled_lead + float(item['price'])
-                    else:
-                        num_cancelled_booking = num_cancelled_booking + 1
-                        for item in trans.service_items:
-                            vol_cancelled_booking = vol_cancelled_booking + float(item['price'])
-
-                elif trans.status == "Escalation":
-                    num_escalation_booking = num_escalation_booking + 1
-
-                elif trans.status == "Job Completed" or trans.status == "Feedback Taken":
-                    if trans.status == "Job Completed":
-                        num_jobcompleted_booking = num_jobcompleted_booking + 1
-                    elif trans.status == "Feedback Taken":
-                        num_feedbacktaken_booking = num_feedbacktaken_booking + 1
-
-                    num_completed = num_completed + 1
-                    if trans.source == "Google Adwords":
-                        vol_googleadwords_completed = vol_googleadwords_completed + float(trans.price_total)
-                        num_googleadwords_completed = num_googleadwords_completed + 1
-                    elif trans.source == "Repeat Customer":
-                        vol_repeatcustomer_completed = vol_repeatcustomer_completed + float(trans.price_total)
-                        num_repeatcustomer_completed = num_repeatcustomer_completed + 1
-                    elif trans.source == "Employee Referral":
-                        vol_employeereferral_completed = vol_employeereferral_completed + float(trans.price_total)
-                        num_employeereferral_completed = num_employeereferral_completed + 1
-                    elif trans.source == "External Referral":
-                        vol_externalreferral_completed = vol_externalreferral_completed + float(trans.price_total)
-                        num_externalreferral_completed = num_externalreferral_completed + 1
-                    elif trans.source == "JustDial":
-                        vol_justdial_completed = vol_justdial_completed + float(trans.price_total)
-                        num_justdial_completed = num_justdial_completed + 1
-                    elif trans.source == "Pamphlet":
-                        vol_pamphlet_completed = vol_pamphlet_completed + float(trans.price_total)
-                        num_pamphlet_completed = num_pamphlet_completed + 1
-                    elif trans.source == "Auto Advertisement":
-                        vol_autoadvertisement_completed = vol_autoadvertisement_completed + float(trans.price_total)
-                        num_autoadvertisement_completed = num_autoadvertisement_completed + 1
-                    elif trans.source == "On-Ground Marketing":
-                        vol_on_groundmarketing_completed = vol_on_groundmarketing_completed + float(trans.price_total)
-                        num_on_groundmarketing_completed = num_on_groundmarketing_completed + 1
-                    elif trans.source == "Sulekha":
-                        vol_sulekha_completed = vol_sulekha_completed + float(trans.price_total)
-                        num_sulekha_completed = num_sulekha_completed + 1
-                    elif trans.source == "Database - Cold Calling":
-                        vol_database_coldcalling_completed = vol_database_coldcalling_completed + float(trans.price_total)
-                        num_database_coldcalling_completed = num_database_coldcalling_completed + 1
-                    elif trans.source == "Chat":
-                        vol_chat_completed = vol_chat_completed + float(trans.price_total)
-                        num_chat_completed = num_chat_completed + 1
-                    elif trans.source == "B2B":
-                        vol_b2b_completed = vol_b2b_completed + float(trans.price_total)
-                        num_b2b_completed = num_b2b_completed + 1
-                    elif trans.source == "Partner - Droom":
-                        vol_partner_droom_completed = vol_partner_droom_completed + float(trans.price_total)
-                        num_partner_droom_completed = num_partner_droom_completed + 1
-                    elif trans.source == "Partner - Wishup":
-                        vol_partner_wishup_completed = vol_partner_wishup_completed + float(trans.price_total)
-                        num_partner_wishup_completed = num_partner_wishup_completed + 1
-                    elif trans.source == "Partner - Housejoy":
-                        vol_partner_housejoy_completed = vol_partner_housejoy_completed + float(trans.price_total)
-                        num_partner_housejoy_completed = num_partner_housejoy_completed + 1
-                    elif trans.source == "Walk in ":
-                        vol_walkin_completed = vol_walkin_completed + float(trans.price_total)
-                        num_walkin_completed = num_walkin_completed + 1
-                    elif trans.source == "Partner - Mr Right":
-                        vol_partner_mrright_completed = vol_partner_mrright_completed + float(trans.price_total)
-                        num_partner_mrright_completed = num_partner_mrright_completed + 1
-                    elif trans.source == "Web Search":
-                        vol_websearch_completed = vol_websearch_completed + float(trans.price_total)
-                        num_websearch_completed = num_websearch_completed + 1
-                    elif trans.source == "Unknown":
-                        vol_unknown_completed = vol_unknown_completed + float(trans.price_total)
-                        num_unknown_completed = num_unknown_completed + 1
-                    elif trans.source == "Society camps":
-                        vol_societycamps_completed = vol_societycamps_completed + float(trans.price_total)
-                        num_societycamps_completed = num_societycamps_completed + 1
-                    elif trans.source == "Check up camps":
-                        vol_checkupcamps_completed = vol_checkupcamps_completed + float(trans.price_total)
-                        num_checkupcamps_completed = num_checkupcamps_completed + 1
-                    elif trans.source == "Sign up lead":
-                        vol_signuplead_completed = vol_signuplead_completed + float(trans.price_total)
-                        num_signuplead_completed = num_signuplead_completed + 1
-                    elif trans.source == "Facebook Ad":
-                        vol_facebookad_completed = vol_facebookad_completed + float(trans.price_total)
-                        num_facebookad_completed = num_facebookad_completed + 1
-                    elif trans.source == "Mahindra Authorized":
-                        vol_mahindraauthorized_completed = vol_mahindraauthorized_completed + float(trans.price_total)
-                        num_mahindraauthorized_completed = num_mahindraauthorized_completed + 1
-                    elif trans.source == "Exotel":
-                        vol_exotel_completed = vol_exotel_completed + float(trans.price_total)
-                        num_exotel_completed = num_exotel_completed + 1
-                    else:
-                        vol_other_completed = vol_other_completed + float(trans.price_total)
-                        num_other_completed = num_other_completed + 1
-
-                    for item in trans.service_items:
-                        vol_completed = vol_completed + float(item['price'])
-                        try:
-                            if item['type'] == "Part":
-                                vol_part_completed = vol_part_completed + float(item['price'])
-                            elif item['type'] == "Labour":
-                                vol_labour_completed = vol_labour_completed + float(item['price'])
-                            elif item['type'] == "Consumable":
-                                vol_consumable_completed = vol_consumable_completed + float(item['price'])
-                            elif item['type'] == "Lube":
-                                vol_lube_completed = vol_lube_completed + float(item['price'])
-                        except:
+                for item in trans.service_items:
+                    vol_completed = vol_completed + float(item['price'])
+                    try:
+                        if item['type'] == "Part":
+                            vol_part_completed = vol_part_completed + float(item['price'])
+                        elif item['type'] == "Labour":
                             vol_labour_completed = vol_labour_completed + float(item['price'])
-
-                    if trans.booking_user_type == "B2B" or trans.source == "B2B":
-                        vol_b2b_total_completed = vol_b2b_total_completed + float(trans.price_total)
-                        num_b2b_total_completed = num_b2b_total_completed + 1
-
-                    else:
-                        vol_b2c_total_completed = vol_b2c_total_completed + float(trans.price_total)
-                        num_b2c_total_completed = num_b2c_total_completed + 1
-
-
-                vol_total_lead = vol_total_lead + float(trans.price_total)
-                num_total_lead = num_total_lead + 1
+                        elif item['type'] == "Consumable":
+                            vol_consumable_completed = vol_consumable_completed + float(item['price'])
+                        elif item['type'] == "Lube":
+                            vol_lube_completed = vol_lube_completed + float(item['price'])
+                    except:
+                        vol_labour_completed = vol_labour_completed + float(item['price'])
 
                 if trans.booking_user_type == "B2B" or trans.source == "B2B":
-                    vol_b2b_total_lead = vol_b2b_total_lead + float(trans.price_total)
-                    num_b2b_total_lead = num_b2b_total_lead + 1
+                    vol_b2b_total_completed = vol_b2b_total_completed + float(trans.price_total)
+                    num_b2b_total_completed = num_b2b_total_completed + 1
 
                 else:
-                    vol_b2c_total_lead = vol_b2c_total_lead + float(trans.price_total)
-                    num_b2c_total_lead = num_b2c_total_lead + 1
+                    vol_b2c_total_completed = vol_b2c_total_completed + float(trans.price_total)
+                    num_b2c_total_completed = num_b2c_total_completed + 1
 
-                if trans.source == "Google Adwords":
-                    vol_googleadwords_lead = vol_googleadwords_lead + float(trans.price_total)
-                    num_googleadwords_lead = num_googleadwords_lead + 1
-                elif trans.source == "Repeat Customer":
-                    vol_repeatcustomer_lead = vol_repeatcustomer_lead + float(trans.price_total)
-                    num_repeatcustomer_lead = num_repeatcustomer_lead + 1
-                elif trans.source == "Employee Referral":
-                    vol_employeereferral_lead = vol_employeereferral_lead + float(trans.price_total)
-                    num_employeereferral_lead = num_employeereferral_lead + 1
-                elif trans.source == "External Referral":
-                    vol_externalreferral_lead = vol_externalreferral_lead + float(trans.price_total)
-                    num_externalreferral_lead = num_externalreferral_lead + 1
-                elif trans.source == "JustDial":
-                    vol_justdial_lead = vol_justdial_lead + float(trans.price_total)
-                    num_justdial_lead = num_justdial_lead + 1
-                elif trans.source == "Pamphlet":
-                    vol_pamphlet_lead = vol_pamphlet_lead + float(trans.price_total)
-                    num_pamphlet_lead = num_pamphlet_lead + 1
-                elif trans.source == "Auto Advertisement":
-                    vol_autoadvertisement_lead = vol_autoadvertisement_lead + float(trans.price_total)
-                    num_autoadvertisement_lead = num_autoadvertisement_lead + 1
-                elif trans.source == "On-Ground Marketing":
-                    vol_on_groundmarketing_lead = vol_on_groundmarketing_lead + float(trans.price_total)
-                    num_on_groundmarketing_lead = num_on_groundmarketing_lead + 1
-                elif trans.source == "Sulekha":
-                    vol_sulekha_lead = vol_sulekha_lead + float(trans.price_total)
-                    num_sulekha_lead = num_sulekha_lead + 1
-                elif trans.source == "Database - Cold Calling":
-                    vol_database_coldcalling_lead = vol_database_coldcalling_lead + float(trans.price_total)
-                    num_database_coldcalling_lead = num_database_coldcalling_lead + 1
-                elif trans.source == "Chat":
-                    vol_chat_lead = vol_chat_lead + float(trans.price_total)
-                    num_chat_lead = num_chat_lead + 1
-                elif trans.source == "B2B":
-                    vol_b2b_lead = vol_b2b_lead + float(trans.price_total)
-                    num_b2b_lead = num_b2b_lead + 1
-                elif trans.source == "Partner - Droom":
-                    vol_partner_droom_lead = vol_partner_droom_lead + float(trans.price_total)
-                    num_partner_droom_lead = num_partner_droom_lead + 1
-                elif trans.source == "Partner - Wishup":
-                    vol_partner_wishup_lead = vol_partner_wishup_lead + float(trans.price_total)
-                    num_partner_wishup_lead = num_partner_wishup_lead + 1
-                elif trans.source == "Partner - Housejoy":
-                    vol_partner_housejoy_lead = vol_partner_housejoy_lead + float(trans.price_total)
-                    num_partner_housejoy_lead = num_partner_housejoy_lead + 1
-                elif trans.source == "Walk in ":
-                    vol_walkin_lead = vol_walkin_lead + float(trans.price_total)
-                    num_walkin_lead = num_walkin_lead + 1
-                elif trans.source == "Partner - Mr Right":
-                    vol_partner_mrright_lead = vol_partner_mrright_lead + float(trans.price_total)
-                    num_partner_mrright_lead = num_partner_mrright_lead + 1
-                elif trans.source == "Web Search":
-                    vol_websearch_lead = vol_websearch_lead + float(trans.price_total)
-                    num_websearch_lead = num_websearch_lead + 1
-                elif trans.source == "Unknown":
-                    vol_unknown_lead = vol_unknown_lead + float(trans.price_total)
-                    num_unknown_lead = num_unknown_lead + 1
-                elif trans.source == "Society camps":
-                    vol_societycamps_lead = vol_societycamps_lead + float(trans.price_total)
-                    num_societycamps_lead = num_societycamps_lead + 1
-                elif trans.source == "Check up camps":
-                    vol_checkupcamps_lead = vol_checkupcamps_lead + float(trans.price_total)
-                    num_checkupcamps_lead = num_checkupcamps_lead + 1
-                elif trans.source == "Sign up lead":
-                    vol_signuplead_lead = vol_signuplead_lead + float(trans.price_total)
-                    num_signuplead_lead = num_signuplead_lead + 1
-                elif trans.source == "Facebook Ad":
-                    vol_facebookad_lead = vol_facebookad_lead + float(trans.price_total)
-                    num_facebookad_lead = num_facebookad_lead + 1
-                elif trans.source == "Mahindra Authorized":
-                    vol_mahindraauthorized_lead = vol_mahindraauthorized_lead + float(trans.price_total)
-                    num_mahindraauthorized_lead = num_mahindraauthorized_lead + 1
-                elif trans.source == "Exotel":
-                    vol_exotel_lead = vol_exotel_lead + float(trans.price_total)
-                    num_exotel_lead = num_exotel_lead + 1
+
+            vol_total_lead = vol_total_lead + float(trans.price_total)
+            num_total_lead = num_total_lead + 1
+
+            if trans.booking_user_type == "B2B" or trans.source == "B2B":
+                vol_b2b_total_lead = vol_b2b_total_lead + float(trans.price_total)
+                num_b2b_total_lead = num_b2b_total_lead + 1
+
+            else:
+                vol_b2c_total_lead = vol_b2c_total_lead + float(trans.price_total)
+                num_b2c_total_lead = num_b2c_total_lead + 1
+
+            if trans.source == "Google Adwords":
+                vol_googleadwords_lead = vol_googleadwords_lead + float(trans.price_total)
+                num_googleadwords_lead = num_googleadwords_lead + 1
+            elif trans.source == "Repeat Customer":
+                vol_repeatcustomer_lead = vol_repeatcustomer_lead + float(trans.price_total)
+                num_repeatcustomer_lead = num_repeatcustomer_lead + 1
+            elif trans.source == "Employee Referral":
+                vol_employeereferral_lead = vol_employeereferral_lead + float(trans.price_total)
+                num_employeereferral_lead = num_employeereferral_lead + 1
+            elif trans.source == "External Referral":
+                vol_externalreferral_lead = vol_externalreferral_lead + float(trans.price_total)
+                num_externalreferral_lead = num_externalreferral_lead + 1
+            elif trans.source == "JustDial":
+                vol_justdial_lead = vol_justdial_lead + float(trans.price_total)
+                num_justdial_lead = num_justdial_lead + 1
+            elif trans.source == "Pamphlet":
+                vol_pamphlet_lead = vol_pamphlet_lead + float(trans.price_total)
+                num_pamphlet_lead = num_pamphlet_lead + 1
+            elif trans.source == "Auto Advertisement":
+                vol_autoadvertisement_lead = vol_autoadvertisement_lead + float(trans.price_total)
+                num_autoadvertisement_lead = num_autoadvertisement_lead + 1
+            elif trans.source == "On-Ground Marketing":
+                vol_on_groundmarketing_lead = vol_on_groundmarketing_lead + float(trans.price_total)
+                num_on_groundmarketing_lead = num_on_groundmarketing_lead + 1
+            elif trans.source == "Sulekha":
+                vol_sulekha_lead = vol_sulekha_lead + float(trans.price_total)
+                num_sulekha_lead = num_sulekha_lead + 1
+            elif trans.source == "Database - Cold Calling":
+                vol_database_coldcalling_lead = vol_database_coldcalling_lead + float(trans.price_total)
+                num_database_coldcalling_lead = num_database_coldcalling_lead + 1
+            elif trans.source == "Chat":
+                vol_chat_lead = vol_chat_lead + float(trans.price_total)
+                num_chat_lead = num_chat_lead + 1
+            elif trans.source == "B2B":
+                vol_b2b_lead = vol_b2b_lead + float(trans.price_total)
+                num_b2b_lead = num_b2b_lead + 1
+            elif trans.source == "Partner - Droom":
+                vol_partner_droom_lead = vol_partner_droom_lead + float(trans.price_total)
+                num_partner_droom_lead = num_partner_droom_lead + 1
+            elif trans.source == "Partner - Wishup":
+                vol_partner_wishup_lead = vol_partner_wishup_lead + float(trans.price_total)
+                num_partner_wishup_lead = num_partner_wishup_lead + 1
+            elif trans.source == "Partner - Housejoy":
+                vol_partner_housejoy_lead = vol_partner_housejoy_lead + float(trans.price_total)
+                num_partner_housejoy_lead = num_partner_housejoy_lead + 1
+            elif trans.source == "Walk in ":
+                vol_walkin_lead = vol_walkin_lead + float(trans.price_total)
+                num_walkin_lead = num_walkin_lead + 1
+            elif trans.source == "Partner - Mr Right":
+                vol_partner_mrright_lead = vol_partner_mrright_lead + float(trans.price_total)
+                num_partner_mrright_lead = num_partner_mrright_lead + 1
+            elif trans.source == "Web Search":
+                vol_websearch_lead = vol_websearch_lead + float(trans.price_total)
+                num_websearch_lead = num_websearch_lead + 1
+            elif trans.source == "Unknown":
+                vol_unknown_lead = vol_unknown_lead + float(trans.price_total)
+                num_unknown_lead = num_unknown_lead + 1
+            elif trans.source == "Society camps":
+                vol_societycamps_lead = vol_societycamps_lead + float(trans.price_total)
+                num_societycamps_lead = num_societycamps_lead + 1
+            elif trans.source == "Check up camps":
+                vol_checkupcamps_lead = vol_checkupcamps_lead + float(trans.price_total)
+                num_checkupcamps_lead = num_checkupcamps_lead + 1
+            elif trans.source == "Sign up lead":
+                vol_signuplead_lead = vol_signuplead_lead + float(trans.price_total)
+                num_signuplead_lead = num_signuplead_lead + 1
+            elif trans.source == "Facebook Ad":
+                vol_facebookad_lead = vol_facebookad_lead + float(trans.price_total)
+                num_facebookad_lead = num_facebookad_lead + 1
+            elif trans.source == "Mahindra Authorized":
+                vol_mahindraauthorized_lead = vol_mahindraauthorized_lead + float(trans.price_total)
+                num_mahindraauthorized_lead = num_mahindraauthorized_lead + 1
+            elif trans.source == "Exotel":
+                vol_exotel_lead = vol_exotel_lead + float(trans.price_total)
+                num_exotel_lead = num_exotel_lead + 1
+            else:
+                vol_other_lead = vol_other_lead + float(trans.price_total)
+                num_other_lead = num_other_lead + 1
+
+
+
+                if trans.feedback_2:
+                    feed = Feedback.objects.filter(booking_data_id=trans.id)[0]
+                    time_stamp = feed.time_stamp
+                    pick_on_time = feed.pick_on_time
+                    delivery_on_time = feed.delivery_on_time
+                    courteous = feed.courteous
+                    washing = feed.washing
+                    quality_of_service = feed.quality_of_service
+                    experience = feed.experience
+                    additional = feed.additional
+                    recommend_factor = feed.recommend_factor
                 else:
-                    vol_other_lead = vol_other_lead + float(trans.price_total)
-                    num_other_lead = num_other_lead + 1
+                    time_stamp = "NA"
+                    pick_on_time = "NA"
+                    delivery_on_time = "NA"
+                    courteous = "NA"
+                    washing = "NA"
+                    quality_of_service = "NA"
+                    experience = "NA"
+                    additional = "NA"
+                    recommend_factor = "NA"
 
+                if recommend_factor in ["1","2","3","4","5","6"]:
+                    print "Detractors"
+                    Detractors = Detractors + 1
+                elif recommend_factor in ["7","8"]:
+                    print "Passives"
+                    Passives = Passives + 1
+                elif recommend_factor in ["9","10"]:
+                    print "Promoters"
+                    Promoters = Promoters + 1
 
-
-                    if trans.feedback_2:
-                        feed = Feedback.objects.filter(booking_data_id=trans.id)[0]
-                        time_stamp = feed.time_stamp
-                        pick_on_time = feed.pick_on_time
-                        delivery_on_time = feed.delivery_on_time
-                        courteous = feed.courteous
-                        washing = feed.washing
-                        quality_of_service = feed.quality_of_service
-                        experience = feed.experience
-                        additional = feed.additional
-                        recommend_factor = feed.recommend_factor
-                    else:
-                        time_stamp = "NA"
-                        pick_on_time = "NA"
-                        delivery_on_time = "NA"
-                        courteous = "NA"
-                        washing = "NA"
-                        quality_of_service = "NA"
-                        experience = "NA"
-                        additional = "NA"
-                        recommend_factor = "NA"
-
-                    if recommend_factor in ["1","2","3","4","5","6"]:
-                        print "Detractors"
-                        Detractors = Detractors + 1
-                    elif recommend_factor in ["7","8"]:
-                        print "Passives"
-                        Passives = Passives + 1
-                    elif recommend_factor in ["9","10"]:
-                        print "Promoters"
-                        Promoters = Promoters + 1
-
-                    try:
-                        nps_completed = math.ceil((Promoters - Detractors)/(Promoters + Detractors + Passives) * 100)
-                    except:
-                        nps_completed = "NA"
+                try:
+                    nps_completed = math.ceil((Promoters - Detractors)/(Promoters + Detractors + Passives) * 100)
+                except:
+                    nps_completed = "NA"
 
 
     obj['status'] = True
@@ -5878,7 +5881,12 @@ def analyse_bookings(request):
         'vol_facebookad_expense': vol_facebookad_expense,
         'vol_mahindraauthorized_expense': vol_mahindraauthorized_expense,
         'vol_exotel_expense': vol_exotel_expense,
-        'vol_other_expense': vol_other_expense
+        'vol_other_expense': vol_other_expense,
+        'req_user_agent': is_agent,
+        'req_user_staff': is_staff,
+        'req_user_b2b': is_b2b,
+        'req_user_admin': is_admin
+
     }
     obj['msg'] = "Success"
 
@@ -6018,7 +6026,11 @@ def view_all_bookings(request):
     state = get_param(request,'state',None)
     source_id = get_param(request, 'source_id', None)
     phone_num = get_param(request, 'phone_num', None)
+    agent_id = get_param(request, 'agent_id', None)
+    cg_book = get_param(request, 'cg_book', None)
+    complete_flag = get_param(request, 'complete_flag', None)
     getcsv = get_param(request, 'getcsv', "False")
+    getcsv2 = get_param(request, 'getcsv2', "False")
 
     if data_id == "" or data_id == None:
         if request.user.is_admin:
@@ -6203,6 +6215,18 @@ def view_all_bookings(request):
             # print "filter reg number"
             tranObjs = tranObjs.filter(cust_regnumber=reg_number)
 
+        if agent_id != None and agent_id != "":
+            # print "filter reg number"
+            tranObjs = tranObjs.filter(agent=agent_id)
+
+        if cg_book != None and cg_book != "":
+            if cg_book == "True":
+                tranObjs = tranObjs.filter(clickgarage_flag=True)
+
+        if complete_flag != None and complete_flag != "":
+            if complete_flag == "True":
+                tranObjs = tranObjs.filter(job_completion_flag=True)
+
         if data_id != None and data_id != "":
             tranObjs = tranObjs.filter(id=data_id)
 
@@ -6321,6 +6345,42 @@ def view_all_bookings(request):
                     'feedback_2',
                     'follow_up_date',
                     'follow_up_time'])
+    datarow2 = []
+    datarow2.append(['agent_name',
+                     'booking_id',
+                    'cust_name',
+                    'cust_make',
+                    'cust_model',
+                    'cust_vehicle_type',
+                    'cust_fuel_varient',
+                    'cust_regnumber',
+                    'date_booking',
+                    'payment_cg',
+                    'price_total',
+                    'price_labour',
+                    'price_part',
+                    'price_lube',
+                    'price_vas',
+                    'price_denting',
+                    'price_discount',
+                    'price_consumable',
+                    'price_labour_pre_tax',
+                    'price_part_pre_tax',
+                    'price_lube_pre_tax',
+                    'price_vas_pre_tax',
+                    'price_denting_pre_tax',
+                    'price_discount_pre_tax',
+                    'price_consumable_pre_tax',
+                    'commission_labour',
+                    'commission_part',
+                    'commission_lube',
+                    'commission_vas',
+                    'commission_denting',
+                    'commission_discount',
+                    'commission_consumable',
+                    'commission_total',
+                    'settlement_flag'
+                     ])
     for trans in tranObjs:
         oldformat_b = str(trans.date_booking)
         datetimeobject = datetime.datetime.strptime(oldformat_b, '%Y-%m-%d')
@@ -6526,6 +6586,116 @@ def view_all_bookings(request):
             additional = "NA"
             recommend_factor = "NA"
 
+        if getcsv2 == "True":
+            commission = trans.commission
+            if socket.gethostname().startswith('ip-'):
+                if PRODUCTION:
+                    filename = '/home/ubuntu/beta/suigen/csvfiles/allbookings_commission.csv'
+                else:
+                    filename = '/home/ubuntu/testing/suigen/csvfiles/allbookings_commission.csv'
+            else:
+                filename = '/home/shashwat/Desktop/codebase/ClickGarage/csvfiles/allbookings_commission.csv'
+
+            file = open(filename, 'w')
+            part_price = 0
+            part_price_pretax = 0
+            part_comm = 0
+            labour_price= 0
+            labour_price_pretax = 0
+            labour_comm = 0
+            vas_price = 0
+            vas_price_pretax = 0
+            vas_comm = 0
+            consumable_price = 0
+            consumable_price_pretax = 0
+            consumable_comm = 0
+            denting_price = 0
+            denting_price_pretax = 0
+            denting_comm = 0
+            lube_price = 0
+            lube_price_pretax = 0
+            lube_comm = 0
+            discount_price = 0
+            discount_price_pretax = 0
+            discount_comm = 0
+
+            for comm in commission:
+                # print trans.booking_id
+                if comm['type']=="Part":
+                    part_price = comm['purchase_price']
+                    part_price_pretax = comm['purchase_price_pre_tax']
+                    part_comm = comm['clickgarage_share']
+
+                if comm['type'] == "Labour":
+                    labour_price = comm['purchase_price']
+                    labour_price_pretax = comm['purchase_price_pre_tax']
+                    labour_comm = comm['clickgarage_share']
+
+                if comm['type'] == "VAS":
+                    vas_price = comm['purchase_price']
+                    vas_price_pretax = comm['purchase_price_pre_tax']
+                    vas_comm = comm['clickgarage_share']
+
+                if comm['type'] == "Consumable":
+                    consumable_price = comm['purchase_price']
+                    consumable_price_pretax = comm['purchase_price_pre_tax']
+                    consumable_comm = comm['clickgarage_share']
+
+                if comm['type'] == "Denting":
+                    denting_price = comm['purchase_price']
+                    denting_price_pretax = comm['purchase_price_pre_tax']
+                    denting_comm = comm['clickgarage_share']
+
+                if comm['type'] == "Lube":
+                    lube_price = comm['purchase_price']
+                    lube_price_pretax = comm['purchase_price_pre_tax']
+                    lube_comm = comm['clickgarage_share']
+
+                if comm['type'] == "Discount":
+                    discount_price = comm['purchase_price']
+                    discount_price_pretax = comm['purchase_price_pre_tax']
+                    discount_comm = comm['clickgarage_share']
+            payment = 0
+            for paymentdic in trans.payment_booking:
+                if len(paymentdic):
+                    if paymentdic['collected_by'] == "ClickGarage":
+                        payment = payment + float(paymentdic['amount'])
+            datarow2.append([str(full_agent_name),
+                             str(trans.booking_id),
+                             str(trans.cust_name),
+                             str(trans.cust_make),
+                             str(trans.cust_model),
+                             str(trans.cust_vehicle_type),
+                             str(trans.cust_fuel_varient),
+                             str(trans.cust_regnumber),
+                             str(trans.date_booking),
+                             str(payment),
+                             str(trans.price_total),
+                             str(labour_price),
+                             str(part_price),
+                             str(lube_price),
+                             str(vas_price),
+                             str(denting_price),
+                             str(discount_price),
+                             str(consumable_price),
+                             str(labour_price_pretax),
+                             str(part_price_pretax),
+                             str(lube_price_pretax),
+                             str(vas_price_pretax),
+                             str(denting_price_pretax),
+                             str(discount_price_pretax),
+                             str(consumable_price_pretax),
+                             str(labour_comm),
+                             str(part_comm),
+                             str(lube_comm),
+                             str(vas_comm),
+                             str(denting_comm),
+                             str(discount_comm),
+                             str(consumable_comm),
+                             str(trans.commission_total),
+                             str(trans.settlement_flag),
+                             ])
+
         if getcsv == "True":
             items = trans.service_items
             if socket.gethostname().startswith('ip-'):
@@ -6618,6 +6788,8 @@ def view_all_bookings(request):
                                 str(trans.feedback_2),
                                 str(trans.follow_up_date),
                                 str(trans.follow_up_time)])
+
+
 
         obj['result'].append({
             'id'                : trans.id              ,
@@ -6728,8 +6900,10 @@ def view_all_bookings(request):
             'total_commission':trans.commission_total,
             'commission_items': trans.commission,
             'settlement_flag': trans.settlement_flag,
+            'frozen_flag': trans.frozen_flag,
+            'job_completion_flag': trans.job_completion_flag,
             'payment_booking': trans.payment_booking,
-
+            'purchase_price_total': trans.purchase_price_total
         })
     if getcsv == "True":
         # obj['datacheck'] = datarow
@@ -6738,6 +6912,16 @@ def view_all_bookings(request):
             response['Content-Disposition'] = 'attachment; filename="allbookings.csv"'
             writer = csv.writer(response)
             writer.writerows(datarow)
+            file.close()
+            return response
+
+    if getcsv2 == "True":
+        # obj['datacheck'] = datarow
+        with file:
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename="allbookings_commission.csv"'
+            writer = csv.writer(response)
+            writer.writerows(datarow2)
             file.close()
             return response
 
@@ -7212,6 +7396,17 @@ def update_estimate(request):
     estimate = get_param(request,'estimate',None)
 
     booking = Bookings.objects.filter(booking_id=booking_id)[0]
+    vat_part = 0
+    vat_consumable = 0
+    vat_lube = 0
+    service_tax = 0
+    agent_vas_share = 0
+    agent_part_share = 0
+    agent_lube_share = 0
+    agent_consumable_share = 0
+    agent_denting_share = 0
+    agent_labour_share = 0
+
     if booking.agent != "Not Assigned" and booking.agent != "":
         agent = CGUserNew.objects.filter(id = booking.agent)[0]
         state = agent.user_state
@@ -7231,17 +7426,32 @@ def update_estimate(request):
             agent_labour_share = 0
 
         taxes = get_tax(state)
-        if agent.agent_vat and agent.agent_vat != None:
-            vat_part = float(taxes['result'][0]['vat_parts'])
-            vat_consumable = float(taxes['result'][0]['vat_consumables'])
-            vat_lube = float(taxes['result'][0]['vat_lube'])
+
+        if agent.agent_vat !="" and agent.agent_vat != None:
+            if taxes['result'][0]['vat_parts'] == "":
+                vat_part = 0
+            else:
+                vat_part = float(taxes['result'][0]['vat_consumables'])
+
+            if taxes['result'][0]['vat_parts'] == "":
+                vat_consumable = 0
+            else:
+                vat_consumable = float(taxes['result'][0]['vat_consumables'])
+
+            if taxes['result'][0]['vat_lube'] == "":
+                vat_lube = 0
+            else:
+                vat_lube = float(taxes['result'][0]['vat_lube'])
         else:
             vat_part = 0
             vat_consumable = 0
             vat_lube = 0
 
         if agent.agent_stax != "" and agent.agent_stax != None:
-            service_tax = float(taxes['result'][0]['service_tax'])
+            if taxes['result'][0]['service_tax'] == "":
+                service_tax = 0
+            else:
+                service_tax = float(taxes['result'][0]['service_tax'])
         else:
             service_tax = 0
 
@@ -7257,7 +7467,7 @@ def update_estimate(request):
             total_part = 0
             total_labour = 0
             total_discount = 0
-
+            total_puchase_price = 0
             clickgarage_part_share = 0
             total_part_comm = 0
             total_part_pre_tax = 0
@@ -7287,6 +7497,7 @@ def update_estimate(request):
             obj_denting = {}
             obj_labour = {}
             obj_discount = {}
+
             commission = []
             estimate2 = []
             for item in estimate:
@@ -7296,24 +7507,29 @@ def update_estimate(request):
                 if item['type'] == "Part":
                     total_price = total_price + float(item['price'])
                     total_part = total_part + float(item['price'])
+                    total_puchase_price = total_puchase_price + float(item['purchase_price'])
                     applicable_tax = vat_part
                 elif item['type'] == "Consumable":
                     total_price = total_price + float(item['price'])
                     total_part = total_part + float(item['price'])
+                    total_puchase_price = total_puchase_price + float(item['purchase_price'])
                     applicable_tax = vat_consumable
                 elif item['type'] == "Lube":
                     total_price = total_price + float(item['price'])
                     total_part = total_part + float(item['price'])
+                    total_puchase_price = total_puchase_price + float(item['purchase_price'])
                     applicable_tax = vat_lube
 
                 elif item['type']=="Labour":
                     total_price = total_price + float(item['price'])
                     total_labour = total_labour + float(item['price'])
+                    total_puchase_price = total_puchase_price + float(item['purchase_price'])
                     applicable_tax = service_tax
 
                 elif item['type'] == "Discount":
                     total_price = total_price - float(item['price'])
                     total_discount = total_discount + float(item['price'])
+                    total_puchase_price = total_puchase_price - float(item['purchase_price'])
                     applicable_tax = 0
 
                 if item['settlement_cat'] == "Part":
@@ -7321,43 +7537,43 @@ def update_estimate(request):
                     clickgarage_part_share = clickgarage_part_share + (float(item['purchase_price']) / (1 + applicable_tax / 100)*(applicable_commission_share)/100)
                     total_part_comm = total_part_comm + float(item['purchase_price'])
                     total_part_pre_tax = total_part_pre_tax + float(item['purchase_price']) / (1 + applicable_tax / 100)
-                    total_commission = total_commission + clickgarage_part_share
+                    total_commission = total_commission + (float(item['purchase_price']) / (1 + applicable_tax / 100)*(applicable_commission_share)/100)
                 elif item['settlement_cat'] == "Labour":
                     applicable_commission_share = float(agent_labour_share)
                     clickgarage_labour_share = clickgarage_labour_share + (float(item['purchase_price']) / (1 + applicable_tax / 100) * (applicable_commission_share) / 100)
                     total_labour_comm = total_labour_comm + float(item['purchase_price'])
                     total_labour_pre_tax = total_labour_pre_tax + float(item['purchase_price']) / (1 + applicable_tax / 100)
-                    total_commission = total_commission + clickgarage_labour_share
+                    total_commission = total_commission + (float(item['purchase_price']) / (1 + applicable_tax / 100)*(applicable_commission_share)/100)
                 elif item['settlement_cat'] == "VAS":
                     applicable_commission_share = float(agent_vas_share)
                     clickgarage_vas_share = clickgarage_vas_share + (float(item['purchase_price']) / (1 + applicable_tax / 100) * (applicable_commission_share) / 100)
                     total_vas_comm = total_vas_comm + float(item['purchase_price'])
                     total_vas_pre_tax = total_vas_pre_tax + float(item['purchase_price']) / (1 + applicable_tax / 100)
-                    total_commission = total_commission + clickgarage_vas_share
+                    total_commission = total_commission + (float(item['purchase_price']) / (1 + applicable_tax / 100)*(applicable_commission_share)/100)
                 elif item['settlement_cat'] == "Denting":
                     applicable_commission_share = float(agent_denting_share)
                     clickgarage_denting_share = clickgarage_denting_share + (float(item['purchase_price']) / (1 + applicable_tax / 100) * (applicable_commission_share) / 100)
                     total_denting_comm = total_denting_comm + float(item['purchase_price'])
                     total_denting_pre_tax = total_denting_pre_tax + float(item['purchase_price']) / (1 + applicable_tax / 100)
-                    total_commission = total_commission + clickgarage_denting_share
+                    total_commission = total_commission + (float(item['purchase_price']) / (1 + applicable_tax / 100)*(applicable_commission_share)/100)
                 elif item['settlement_cat'] == "Lube":
                     applicable_commission_share = float(agent_lube_share)
                     clickgarage_lube_share = clickgarage_lube_share + (float(item['purchase_price']) / (1 + applicable_tax / 100) * (applicable_commission_share) / 100)
                     total_lube_comm = total_lube_comm + float(item['purchase_price'])
                     total_lube_pre_tax = total_lube_pre_tax + float(item['purchase_price']) / (1 + applicable_tax / 100)
-                    total_commission = total_commission + clickgarage_lube_share
+                    total_commission = total_commission + (float(item['purchase_price']) / (1 + applicable_tax / 100)*(applicable_commission_share)/100)
                 elif item['settlement_cat'] == "Consumable":
                     applicable_commission_share = float(agent_consumable_share)
                     clickgarage_consumable_share = clickgarage_consumable_share + (float(item['purchase_price']) / (1 + applicable_tax / 100) * (applicable_commission_share) / 100)
                     total_consumable_comm = total_consumable_comm + float(item['purchase_price'])
                     total_consumable_pre_tax = total_consumable_pre_tax + float(item['purchase_price']) / (1 + applicable_tax / 100)
-                    total_commission = total_commission + clickgarage_consumable_share
+                    total_commission = total_commission + (float(item['purchase_price']) / (1 + applicable_tax / 100)*(applicable_commission_share)/100)
                 elif item['settlement_cat'] == "Discount":
                     applicable_commission_share = 0
                     clickgarage_discount_share = clickgarage_discount_share + (float(item['purchase_price']) / (1 + applicable_tax / 100) * (applicable_commission_share) / 100)
                     total_discount_comm = total_discount_comm + float(item['purchase_price'])
                     total_discount_pre_tax = total_discount_pre_tax + float(item['purchase_price']) / (1 + applicable_tax / 100)
-                    total_commission = total_commission + clickgarage_discount_share
+                    total_commission = total_commission + (float(item['purchase_price']) / (1 + applicable_tax / 100)*(applicable_commission_share)/100)
 
                 obj2 = {
                     'comment': item['comment'],
@@ -7376,57 +7592,61 @@ def update_estimate(request):
                 estimate2.append(obj2)
 
             booking.service_items = estimate2
-            obj_part = {"type":"Part",
-                        "purchase_price":total_part_comm,
-                        "purchase_price_pre_tax":total_part_pre_tax,
-                        "clickgarage_share":clickgarage_part_share,
-                        "share_percent" : agent_part_share}
-            commission.append(obj_part)
+            if booking.frozen_flag or booking.settlement_flag:
+                None
+            else:
+                obj_part = {"type":"Part",
+                            "purchase_price":total_part_comm,
+                            "purchase_price_pre_tax":total_part_pre_tax,
+                            "clickgarage_share":round(clickgarage_part_share),
+                            "share_percent" : agent_part_share}
+                commission.append(obj_part)
 
-            obj_labour = {"type": "Labour",
-                        "purchase_price": total_labour_comm,
-                        "purchase_price_pre_tax": total_labour_pre_tax,
-                        "clickgarage_share": clickgarage_labour_share,
-                          "share_percent": agent_labour_share}
-            commission.append(obj_labour)
+                obj_labour = {"type": "Labour",
+                            "purchase_price": total_labour_comm,
+                            "purchase_price_pre_tax": total_labour_pre_tax,
+                            "clickgarage_share": round(clickgarage_labour_share),
+                              "share_percent": agent_labour_share}
+                commission.append(obj_labour)
 
-            obj_vas = {"type": "VAS",
-                        "purchase_price": total_vas_comm,
-                        "purchase_price_pre_tax": total_vas_pre_tax,
-                        "clickgarage_share": clickgarage_vas_share,
-                       "share_percent": agent_vas_share}
-            commission.append(obj_vas)
+                obj_vas = {"type": "VAS",
+                            "purchase_price": total_vas_comm,
+                            "purchase_price_pre_tax": total_vas_pre_tax,
+                            "clickgarage_share": round(clickgarage_vas_share),
+                           "share_percent": agent_vas_share}
+                commission.append(obj_vas)
 
-            obj_denting = {"type": "Denting",
-                        "purchase_price": total_denting_comm,
-                        "purchase_price_pre_tax": total_denting_pre_tax,
-                        "clickgarage_share": clickgarage_denting_share,
-                           "share_percent": agent_denting_share}
-            commission.append(obj_denting)
+                obj_denting = {"type": "Denting",
+                            "purchase_price": total_denting_comm,
+                            "purchase_price_pre_tax": total_denting_pre_tax,
+                            "clickgarage_share": round(clickgarage_denting_share),
+                               "share_percent": agent_denting_share}
+                commission.append(obj_denting)
 
-            obj_consumable = {"type": "Consumable",
-                        "purchase_price": total_consumable_comm,
-                        "purchase_price_pre_tax": total_consumable_pre_tax,
-                        "clickgarage_share": clickgarage_consumable_share,
-                              "share_percent": agent_consumable_share}
-            commission.append(obj_consumable)
+                obj_consumable = {"type": "Consumable",
+                            "purchase_price": total_consumable_comm,
+                            "purchase_price_pre_tax": total_consumable_pre_tax,
+                            "clickgarage_share": round(clickgarage_consumable_share),
+                                  "share_percent": agent_consumable_share}
+                commission.append(obj_consumable)
 
-            obj_lube = {"type": "Lube",
-                        "purchase_price": total_lube_comm,
-                        "purchase_price_pre_tax": total_lube_pre_tax,
-                        "clickgarage_share": clickgarage_lube_share,
-                        "share_percent": agent_lube_share}
-            commission.append(obj_lube)
+                obj_lube = {"type": "Lube",
+                            "purchase_price": total_lube_comm,
+                            "purchase_price_pre_tax": total_lube_pre_tax,
+                            "clickgarage_share": round(clickgarage_lube_share),
+                            "share_percent": agent_lube_share}
+                commission.append(obj_lube)
 
-            obj_discount = {"type": "Discount",
-                        "purchase_price": total_discount_comm,
-                        "purchase_price_pre_tax": total_discount_pre_tax,
-                        "clickgarage_share": clickgarage_discount_share,
-                        "share_percent": 0}
-            commission.append(obj_discount)
+                obj_discount = {"type": "Discount",
+                            "purchase_price": total_discount_comm,
+                            "purchase_price_pre_tax": total_discount_pre_tax,
+                            "clickgarage_share": round(clickgarage_discount_share),
+                            "share_percent": 0}
+                commission.append(obj_discount)
 
-            booking.commission = commission
-            booking.commission_total = str(total_commission)
+                booking.commission = commission
+                booking.commission_total = str(round(total_commission,0))
+            booking.purchase_price_total = str(total_puchase_price)
             booking.price_total = str(total_price)
             booking.price_labour = str(total_labour)
             booking.price_part = str(total_part)
@@ -7946,10 +8166,12 @@ def change_status_actual(booking_id,status_id):
         else:
             booking.booking_flag = True
 
+        booking.job_completion_flag = False
 
         if (status_id == "Confirmed" and old_status == "Lead" ):
             if (booking_user=="User"):
                 user = create_check_user(booking.cust_name,booking.cust_number)
+                booking.cust_id = user.id
                 address2 = {'address': booking.cust_address, 'locality': booking.cust_locality, 'city': booking.cust_city}
                 if address2 not in user.user_saved_address:
                     user.user_saved_address.append(address2)
@@ -7995,11 +8217,13 @@ def change_status_actual(booking_id,status_id):
                 mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,estimate=booking.price_total,status="Estimate Shared")
 
         if (status_id == "Job Completed" and old_status == "Escalation"):
+            booking.job_completion_flag = True
             # send email to customer about bill reciept and an apology note
             if (booking_user == "User"):
                 mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,estimate=booking.price_total,status="Job Completed", status2 ="Escalation")
 
         if (status_id == "Job Completed" and old_status != "Escalation"):
+            booking.job_completion_flag = True
             # send email to customer about bill reciept and a thank you note
             if (booking_user == "User"):
                 mviews.send_sms_customer(booking.cust_name, booking.cust_number, booking.booking_id, booking.date_booking,
@@ -8030,7 +8254,8 @@ def change_status_actual(booking_id,status_id):
                                              "0", "Repeat Customer", False, "NA", send_sms="0",owner=booking.booking_owner, follow_up_date_book=str(date_today))
                     # add a lead to the leads data base with follow_up_date as (bike - 60 days , car (bill_amount < 2000) - 30 days, car (bill_amount> 2000) 90 days
 
-        if (status_id == "Feedback Taken" and old_status == "Job Completed"):
+        if (status_id == "Feedback Taken"):
+            booking.job_completion_flag = True
             None
         #     # send thankyou to the customer
         #     # if positive send sharing links and referral links
@@ -8201,7 +8426,6 @@ def generate_bill(request):
     obj = {}
     obj['status'] = False
     obj['result'] = {}
-
     data_id                 = get_param(request,'data_id', None)
     bill_owner              = get_param(request,'bill_owner',None)
     total_amount            = get_param(request,'total_amount',None)
@@ -8234,6 +8458,16 @@ def generate_bill(request):
     service_items           = get_param(request,'service_items',None)
     invoice_number          = get_param(request,'invoice_number',None)
     booking = None
+    vat_part = 0
+    vat_consumable = 0
+    vat_lube = 0
+    service_tax = 0
+    agent_vas_share = 0
+    agent_part_share = 0
+    agent_lube_share = 0
+    agent_consumable_share = 0
+    agent_denting_share = 0
+    agent_labour_share = 0
     service_items = json.loads(service_items)
     if data_id != None and data_id != "":
         booking = Bookings.objects.filter(id=data_id)[0]
@@ -8273,12 +8507,21 @@ def generate_bill(request):
         if not pre_invoice:
             if booking.clickgarage_flag:
                 agent = CGUserNew.objects.filter(id=booking.agent)[0]
-                agent_vas_share = agent.agent_vas_share
-                agent_part_share = agent.agent_part_share
-                agent_lube_share = agent.agent_lube_share
-                agent_consumable_share = agent.agent_consumable_share
-                agent_denting_share = agent.agent_denting_share
-                agent_labour_share = agent.agent_labour_share
+                if agent:
+                    agent_vas_share = agent.agent_vas_share
+                    agent_part_share = agent.agent_part_share
+                    agent_lube_share = agent.agent_lube_share
+                    agent_consumable_share = agent.agent_consumable_share
+                    agent_denting_share = agent.agent_denting_share
+                    agent_labour_share = agent.agent_labour_share
+                else:
+                    agent_vas_share = 0
+                    agent_part_share = 0
+                    agent_lube_share = 0
+                    agent_consumable_share = 0
+                    agent_denting_share = 0
+                    agent_labour_share = 0
+
             else:
                 agent_vas_share = 0
                 agent_part_share = 0
@@ -8320,6 +8563,7 @@ def generate_bill(request):
             total_discount_comm = 0
             total_discount_pre_tax = 0
             total_commission = 0
+            total_puchase_price = 0
             obj_part = {}
             obj_lube = {}
             obj_consumable = {}
@@ -8337,71 +8581,69 @@ def generate_bill(request):
                 if item['type'] == "Part":
                     total_price = total_price + float(item['price'])
                     total_part = total_part + float(item['price'])
+                    total_puchase_price = total_puchase_price + float(item['purchase_price'])
                 elif item['type'] == "Consumable":
                     total_price = total_price + float(item['price'])
                     total_part = total_part + float(item['price'])
+                    total_puchase_price = total_puchase_price + float(item['purchase_price'])
                 elif item['type'] == "Lube":
                     total_price = total_price + float(item['price'])
                     total_part = total_part + float(item['price'])
+                    total_puchase_price = total_puchase_price + float(item['purchase_price'])
 
                 elif item['type'] == "Labour":
                     total_price = total_price + float(item['price'])
                     total_labour = total_labour + float(item['price'])
+                    total_puchase_price = total_puchase_price + float(item['purchase_price'])
 
                 elif item['type'] == "Discount":
                     total_price = total_price - float(item['price'])
                     total_discount = total_discount + float(item['price'])
+                    total_puchase_price = total_puchase_price - float(item['purchase_price'])
                     applicable_tax = 0
 
                 if item['settlement_cat'] == "Part":
                     applicable_commission_share = float(agent_part_share)
-                    clickgarage_part_share = clickgarage_part_share + (
-                    float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
+                    clickgarage_part_share = clickgarage_part_share + (float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
                     total_part_comm = total_part_comm + float(item['purchase_price'])
                     total_part_pre_tax = total_part_pre_tax + float(item['purchase_price_pretax'])
-                    total_commission = total_commission + clickgarage_part_share
+                    total_commission = total_commission + (float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
                 elif item['settlement_cat'] == "Labour":
                     applicable_commission_share = float(agent_labour_share)
-                    clickgarage_labour_share = clickgarage_labour_share + (
-                    float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
+                    clickgarage_labour_share = clickgarage_labour_share + (float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
                     total_labour_comm = total_labour_comm + float(item['purchase_price'])
                     total_labour_pre_tax = total_labour_pre_tax + float(item['purchase_price_pretax'])
-                    total_commission = total_commission + clickgarage_labour_share
+                    total_commission = total_commission + (float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
                 elif item['settlement_cat'] == "VAS":
                     applicable_commission_share = float(agent_vas_share)
-                    clickgarage_vas_share = clickgarage_vas_share + (
-                    float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
+                    clickgarage_vas_share = clickgarage_vas_share + (float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
                     total_vas_comm = total_vas_comm + float(item['purchase_price'])
                     total_vas_pre_tax = total_vas_pre_tax + float(item['purchase_price_pretax'])
-                    total_commission = total_commission + clickgarage_vas_share
+                    total_commission = total_commission + (float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
                 elif item['settlement_cat'] == "Denting":
                     applicable_commission_share = float(agent_denting_share)
-                    clickgarage_denting_share = clickgarage_denting_share + (
-                    float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
+                    clickgarage_denting_share = clickgarage_denting_share + (float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
                     total_denting_comm = total_denting_comm + float(item['purchase_price'])
                     total_denting_pre_tax = total_denting_pre_tax + float(item['purchase_price_pretax'])
-                    total_commission = total_commission + clickgarage_denting_share
+                    total_commission = total_commission + (float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
                 elif item['settlement_cat'] == "Lube":
                     applicable_commission_share = float(agent_lube_share)
-                    clickgarage_lube_share = clickgarage_lube_share + (
-                    float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
+                    clickgarage_lube_share = clickgarage_lube_share + (float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
                     total_lube_comm = total_lube_comm + float(item['purchase_price'])
                     total_lube_pre_tax = total_lube_pre_tax + float(item['purchase_price_pretax'])
-                    total_commission = total_commission + clickgarage_lube_share
+                    total_commission = total_commission + (float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
                 elif item['settlement_cat'] == "Consumable":
                     applicable_commission_share = float(agent_consumable_share)
-                    clickgarage_consumable_share = clickgarage_consumable_share + (
-                    float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
+                    clickgarage_consumable_share = clickgarage_consumable_share + (float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
                     total_consumable_comm = total_consumable_comm + float(item['purchase_price'])
                     total_consumable_pre_tax = total_consumable_pre_tax + float(item['purchase_price_pretax'])
-                    total_commission = total_commission + clickgarage_consumable_share
+                    total_commission = total_commission + (float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
                 elif item['settlement_cat'] == "Discount":
                     applicable_commission_share = 0
-                    clickgarage_discount_share = clickgarage_discount_share + (
-                    float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
+                    clickgarage_discount_share = clickgarage_discount_share + (float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
                     total_discount_comm = total_discount_comm + float(item['purchase_price'])
                     total_discount_pre_tax = total_discount_pre_tax + float(item['purchase_price_pretax'])
-                    total_commission = total_commission + clickgarage_discount_share
+                    total_commission = total_commission + (float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
 
                 obj2 = {
                     'comment': item['comment'],
@@ -8426,60 +8668,61 @@ def generate_bill(request):
                 # print item
             booking.service_items = estimate2
             booking.price_total = str(total_price)
+            booking.purchase_price_total = str(total_puchase_price)
             booking.price_labour = str(total_labour)
             booking.price_part = str(total_part)
             booking.price_discount = str(total_discount)
             obj_part = {"type": "Part",
                         "purchase_price": total_part_comm,
                         "purchase_price_pre_tax": total_part_pre_tax,
-                        "clickgarage_share": clickgarage_part_share,
+                        "clickgarage_share": round(clickgarage_part_share,0),
                         "share_percent": agent_part_share}
             commission.append(obj_part)
 
             obj_labour = {"type": "Labour",
                           "purchase_price": total_labour_comm,
                           "purchase_price_pre_tax": total_labour_pre_tax,
-                          "clickgarage_share": clickgarage_labour_share,
+                          "clickgarage_share": round(clickgarage_labour_share,0),
                           "share_percent": agent_labour_share}
             commission.append(obj_labour)
 
             obj_vas = {"type": "VAS",
                        "purchase_price": total_vas_comm,
                        "purchase_price_pre_tax": total_vas_pre_tax,
-                       "clickgarage_share": clickgarage_vas_share,
+                       "clickgarage_share": round(clickgarage_vas_share,0),
                        "share_percent": agent_vas_share}
             commission.append(obj_vas)
 
             obj_denting = {"type": "Denting",
                            "purchase_price": total_denting_comm,
                            "purchase_price_pre_tax": total_denting_pre_tax,
-                           "clickgarage_share": clickgarage_denting_share,
+                           "clickgarage_share": round(clickgarage_denting_share,0),
                            "share_percent": agent_denting_share}
             commission.append(obj_denting)
 
             obj_consumable = {"type": "Consumable",
                               "purchase_price": total_consumable_comm,
                               "purchase_price_pre_tax": total_consumable_pre_tax,
-                              "clickgarage_share": clickgarage_consumable_share,
+                              "clickgarage_share": round(clickgarage_consumable_share,0),
                               "share_percent": agent_consumable_share}
             commission.append(obj_consumable)
 
             obj_lube = {"type": "Lube",
                         "purchase_price": total_lube_comm,
                         "purchase_price_pre_tax": total_lube_pre_tax,
-                        "clickgarage_share": clickgarage_lube_share,
+                        "clickgarage_share": round(clickgarage_lube_share,0),
                         "share_percent": agent_lube_share}
             commission.append(obj_lube)
 
             obj_discount = {"type": "Discount",
                             "purchase_price": total_discount_comm,
                             "purchase_price_pre_tax": total_discount_pre_tax,
-                            "clickgarage_share": clickgarage_discount_share,
+                            "clickgarage_share": round(clickgarage_discount_share,0),
                             "share_percent": 0}
             commission.append(obj_discount)
 
             booking.commission = commission
-            booking.commission_total = str(total_commission)
+            booking.commission_total = str(round(total_commission,0))
 
             a = booking.estimate_history.append(
                 {"timestamp": new_estimate_timestamp, "change_by_userid": estimate_by_id,
@@ -8973,6 +9216,23 @@ def send_sms_campaign(request):
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+def download_pdf(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    file_name = get_param(request, 'file_name', None)
+    f = open(file_name, 'r')
+    content = f.read()
+    f.close()
+    filename_list = file_name.split('/')
+    filename_len = len(filename_list) -1
+    file_name_out = filename_list[filename_len]
+    response_file = HttpResponse(content, mimetype='application/pdf')
+    response_file['Content-Disposition'] = 'attachement; filename=' + file_name_out
+    obj['msg'] = "File Downloaded"
+    obj['status'] = True
+    obj['counter'] = 1
+    return response_file
 
 # def export_bookings():
 
@@ -9091,6 +9351,8 @@ def view_all_bills(request):
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+
+
 def update_bill(request):
     obj = {}
     obj['status'] = False
@@ -9146,6 +9408,89 @@ def send_bill(request):
     filename = bill.file_name
     cust_name = bill.cust_name
     mviews.send_bill(cust_name,cust_email,cust_number,filename)
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def settle_freeze_booking(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    data_id = get_param(request, 'data_id', None)
+    part_share = get_param(request, 'part_share', None)
+    labour_share = get_param(request,'labour_share',None)
+    vas_share = get_param(request,'vas_share',None)
+    lube_share = get_param(request, 'lube_share', None)
+    consumable_share = get_param(request, 'consumable_share', None)
+    denting_share = get_param(request, 'denting_share', None)
+    to_do = get_param(request, 'to_do', None)
+    booking = Bookings.objects.filter(id=data_id)[0]
+    if to_do == "Freeze" or to_do == "Settle":
+        booking.frozen_flag = True
+        if to_do == "Settle":
+            booking.settlement_flag = True
+        item2 = []
+        items = booking.commission
+        for item in items:
+            if item['type'] == "Part":
+                obj_part = {"type": "Part",
+                    "purchase_price": item['purchase_price'],
+                    "purchase_price_pre_tax":item['purchase_price_pre_tax'],
+                    "clickgarage_share": part_share,
+                    "share_percent": item['share_percent']}
+                item2.append(obj_part)
+
+            if item['type'] == "Labour":
+                obj_labour = {"type": "Labour",
+                            "purchase_price": item['purchase_price'],
+                            "purchase_price_pre_tax": item['purchase_price_pre_tax'],
+                            "clickgarage_share": labour_share,
+                            "share_percent": item['share_percent']}
+                item2.append(obj_labour)
+
+            if item['type'] == "Denting":
+                obj_denting = {"type": "Denting",
+                            "purchase_price": item['purchase_price'],
+                            "purchase_price_pre_tax": item['purchase_price_pre_tax'],
+                            "clickgarage_share": denting_share,
+                            "share_percent": item['share_percent']}
+                item2.append(obj_denting)
+            if item['type'] == "Lube":
+                obj_lube = {"type": "Lube",
+                            "purchase_price": item['purchase_price'],
+                            "purchase_price_pre_tax": item['purchase_price_pre_tax'],
+                            "clickgarage_share": lube_share,
+                            "share_percent": item['share_percent']}
+                item2.append(obj_lube)
+            if item['type'] == "VAS":
+                obj_vas = {"type": "VAS",
+                            "purchase_price": item['purchase_price'],
+                            "purchase_price_pre_tax": item['purchase_price_pre_tax'],
+                            "clickgarage_share": vas_share,
+                            "share_percent": item['share_percent']}
+                item2.append(obj_vas)
+            if item['type'] == "Consumable":
+                obj_consumable = {"type": "Consumable",
+                            "purchase_price": item['purchase_price'],
+                            "purchase_price_pre_tax": item['purchase_price_pre_tax'],
+                            "clickgarage_share": consumable_share,
+                            "share_percent": item['share_percent']}
+                item2.append(obj_consumable)
+            if item['type'] == "Discount":
+                obj_discount = item
+                item2.append(obj_discount)
+        booking.commission = item2
+        total_comm = float(part_share) + float(labour_share)+ float(denting_share)+ float(lube_share)+ float(vas_share)+ float(consumable_share)
+        booking.commission_total = str(total_comm)
+
+    if to_do == "Unsettle":
+        booking.settlement_flag = False
+
+    if to_do == "Unfreeze":
+        if booking.settlement_flag == False:
+            booking.frozen_flag = False
+    booking.save()
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
@@ -9268,20 +9613,4 @@ def get_all_part(request):
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
-def download_pdf(request):
-    obj = {}
-    obj['status'] = False
-    obj['result'] = []
-    file_name = get_param(request, 'file_name', None)
-    f = open(file_name, 'r')
-    content = f.read()
-    f.close()
-    filename_list = file_name.split('/')
-    filename_len = len(filename_list) -1
-    file_name_out = filename_list[filename_len]
-    response_file = HttpResponse(content, mimetype='application/pdf')
-    response_file['Content-Disposition'] = 'attachement; filename=' + file_name_out
-    obj['msg'] = "File Downloaded"
-    obj['status'] = True
-    obj['counter'] = 1
-    return response_file
+
