@@ -6709,7 +6709,9 @@ def view_all_bookings(request):
             file = open(filename, 'w')
             comment = ''
             for job in trans.jobssummary:
-                comment = comment +',' + job['Job'] + ' (' + str(job['Price']) + ')'
+                comment = comment +'$' + job['Job'] + ' (' + str(job['Price']) + ')'
+
+            comment = comment.encode('utf-8')
             for item in items:
                 # print trans.booking_id
                 try:
