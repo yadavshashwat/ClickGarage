@@ -6707,6 +6707,9 @@ def view_all_bookings(request):
                 filename = '/home/shashwat/Desktop/codebase/ClickGarage/csvfiles/allbookings.csv'
 
             file = open(filename, 'w')
+            comment = ''
+            for job in trans.jobssummary:
+                comment = comment +',' + job['Job'] + ' (' + str(job['Price']) + ')'
             for item in items:
                 # print trans.booking_id
                 try:
@@ -6771,7 +6774,7 @@ def view_all_bookings(request):
                                 str(trans.amount_paid),
                                 str(trans.coupon),
                                 str(trans.status),
-                                str(trans.comments),
+                                str(comment),
                                 str(trans.source),
                                 str(full_agent_name),
                                 str(trans.customer_notes),
