@@ -8463,10 +8463,6 @@ def generate_bill(request):
     service_items           = get_param(request,'service_items',None)
     invoice_number          = get_param(request,'invoice_number',None)
     booking = None
-    vat_part = 0
-    vat_consumable = 0
-    vat_lube = 0
-    service_tax = 0
     agent_vas_share = 0
     agent_part_share = 0
     agent_lube_share = 0
@@ -8812,7 +8808,8 @@ def generate_bill(request):
     import sys
     reload(sys)
     sys.setdefaultencoding('utf8')
-
+    print vat_part
+    print service_tax
     if pre_invoice:
         if booking:
             html = mviews.bill_html(agent_name = full_agent_name,agent_address= agent_address,invoice_number="Pre-Invoice",booking_id = booking_id,created_date = date_today ,tin_number = agent_vat_no, cin_number=agent_cin,stax_number = agent_stax,cust_name= cust_name,cust_address= cust_address,cust_locality=cust_locality,cust_city=cust_city,cust_reg=reg_number,cust_veh=vehicle,service_items = service_items,vat_part_percent=vat_part_percent,vat_lube_percent=vat_lube_percent,vat_consumable_percent=vat_consumable_percent,stax_percent=service_tax_percent,vat_part=vat_part,vat_lube=vat_lube,vat_consumable=vat_consumable,stax_amount=service_tax,total=total_amount,recommendation=notes,logo=clickgarage_flag)

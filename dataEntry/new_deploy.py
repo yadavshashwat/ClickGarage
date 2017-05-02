@@ -63,43 +63,43 @@ bookings = Bookings.objects.all()
 for booking in bookings:
     booking.bill_generation_flag = False
     booking.bill_id = ""
-    if booking.status == "Job Completed" or booking.status == "Feedback Taken":
-        booking.job_completion_flag = True
-    item_list =[]
-    total_price = 0
-    total_part = 0
-    total_labour = 0
-    total_discount = 0
-    for item in booking.service_items:
-        try:
-            if item['type'] == "Part":
-                total_price = total_price + float(item['price'])
-                total_part = total_part + float(item['price'])
-            elif item['type'] == "Consumable":
-                total_price = total_price + float(item['price'])
-                total_part = total_part + float(item['price'])
-            elif item['type'] == "Lube":
-                total_price = total_price + float(item['price'])
-                total_part = total_part + float(item['price'])
-
-            elif item['type'] == "Labour":
-                total_price = total_price + float(item['price'])
-                total_labour = total_labour + float(item['price'])
-
-            elif item['type'] == "Discount":
-                total_price = total_price - float(item['price'])
-                total_discount = total_discount + float(item['price'])
-        except:
-            total_price = total_price + float(item['price'])
-            total_labour = total_labour + float(item['price'])
-
-    booking.price_total = total_price
-    booking.price_part = total_part
-    booking.price_labour = total_labour
-    booking.price_discount = total_discount
-    booking.frozen_flag = False
-    booking.settlement_flag = False
-    booking.purchase_price_total = total_price
+    # if booking.status == "Job Completed" or booking.status == "Feedback Taken":
+    #     booking.job_completion_flag = True
+    # item_list =[]
+    # total_price = 0
+    # total_part = 0
+    # total_labour = 0
+    # total_discount = 0
+    # for item in booking.service_items:
+    #     try:
+    #         if item['type'] == "Part":
+    #             total_price = total_price + float(item['price'])
+    #             total_part = total_part + float(item['price'])
+    #         elif item['type'] == "Consumable":
+    #             total_price = total_price + float(item['price'])
+    #             total_part = total_part + float(item['price'])
+    #         elif item['type'] == "Lube":
+    #             total_price = total_price + float(item['price'])
+    #             total_part = total_part + float(item['price'])
+    #
+    #         elif item['type'] == "Labour":
+    #             total_price = total_price + float(item['price'])
+    #             total_labour = total_labour + float(item['price'])
+    #
+    #         elif item['type'] == "Discount":
+    #             total_price = total_price - float(item['price'])
+    #             total_discount = total_discount + float(item['price'])
+    #     except:
+    #         total_price = total_price + float(item['price'])
+    #         total_labour = total_labour + float(item['price'])
+    #
+    # booking.price_total = total_price
+    # booking.price_part = total_part
+    # booking.price_labour = total_labour
+    # booking.price_discount = total_discount
+    # booking.frozen_flag = False
+    # booking.settlement_flag = False
+    # booking.purchase_price_total = total_price
     booking.save()
 
 
