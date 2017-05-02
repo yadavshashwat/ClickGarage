@@ -10012,7 +10012,7 @@ page[size="A5"][layout="portrait"] {
 		for part in service_items:
 			if (part['type'] == "Part" or part['type'] == "Lube" or part['type'] == "Consumable") and float(part['unit_price'])>0 :
 				marker = 1
-				html3 += """<tr class="item"><td>"""+part['name']+"""</td><td>"""+str(part['quantity'])+"""</td><td>"""+str(part['unit_price'])+"""</td><td>Rs. """+str(part['pre_tax_price'])+"""</td></tr>"""
+				html3 += """<tr class="item"><td>"""+part['name']+"""</td><td>"""+str(part['quantity'])+"""</td><td>"""+str(round((float(part['pre_tax_price'])/float(part['quantity'])),2))+"""</td><td>Rs. """+str(part['pre_tax_price'])+"""</td></tr>"""
 		html4 += """</tbody></table>"""
 
 	if marker ==1 :
@@ -10095,7 +10095,7 @@ page[size="A5"][layout="portrait"] {
 	if stax_number != "":
 		html += """<tr class="tax reciept stax">
 				<td>
-					Service Tax + Krishna Kalyan Cess + Swachha Bharat Cess @ <span id="stax-percent">"""+str(stax_percent)+"""</span>%: Rs. <span class="stax-amount">"""+str(stax_amount)+"""</span>
+					Service Tax + Krishi Kalyan Cess + Swachha Bharat Cess @ <span id="stax-percent">"""+str(stax_percent)+"""</span>%: Rs. <span class="stax-amount">"""+str(stax_amount)+"""</span>
 				</td>
 			</tr>"""
 	html += """<tr class="total">
