@@ -6356,7 +6356,9 @@ def view_all_bookings(request):
                     'cust_regnumber',
                     'date_booking',
                     'payment_cg',
-                    'price_total',
+                     'payment_cg-uc',
+                     'payment_cg-hj',
+                     'price_total',
                     'price_labour',
                     'price_part',
                     'price_lube',
@@ -6655,11 +6657,19 @@ def view_all_bookings(request):
                     discount_price = comm['purchase_price']
                     discount_price_pretax = comm['purchase_price_pre_tax']
                     discount_comm = comm['clickgarage_share']
-            payment = 0
+            payment_cg = 0
+            payment_uc = 0
+            payment_hj = 0
+
             for paymentdic in trans.payment_booking:
                 if len(paymentdic):
                     if paymentdic['collected_by'] == "ClickGarage":
-                        payment = payment + float(paymentdic['amount'])
+                        payment_cg = payment_cg + float(paymentdic['amount'])
+                    if paymentdic['collected_by'] == "ClickGarage UC":
+                        payment_uc = payment_uc + float(paymentdic['amount'])
+                    if paymentdic['collected_by'] == "ClickGarage HJ":
+                        payment_hj = payment_hj + float(paymentdic['amount'])
+
             datarow2.append([str(full_agent_name),
                              str(trans.booking_id),
                              str(trans.cust_name),
@@ -6669,7 +6679,9 @@ def view_all_bookings(request):
                              str(trans.cust_fuel_varient),
                              str(trans.cust_regnumber),
                              str(trans.date_booking),
-                             str(payment),
+                             str(payment_cg),
+                             str(payment_uc),
+                             str(payment_hj),
                              str(trans.price_total),
                              str(labour_price),
                              str(part_price),
@@ -7350,6 +7362,7 @@ def add_delete_payment(request):
     data_id = get_param(request, 'data_id', None)
     payment_id = get_param(request,'payment_id',None)
     add_delete = get_param(request,'add_del',None)
+    medium = get_param(request,'medium',None)
     amount= get_param(request, 'amount', None)
     col_by = get_param(request, 'col_by', None)
     booking = Bookings.objects.filter(id = data_id)[0]
@@ -7364,6 +7377,7 @@ def add_delete_payment(request):
                 "payment_id" : str(time.time()),
                 "collected_by":col_by,
                 "amount":amount,
+                "medium":medium,
                 "date_collected": date_today_new
             }
             total_paid = float(booking.amount_paid) + float(amount)
