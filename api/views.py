@@ -6358,6 +6358,7 @@ def view_all_bookings(request):
                     'payment_cg',
                      'payment_cg-uc',
                      'payment_cg-hj',
+                     'credit_amount',
                      'price_total',
                     'price_labour',
                     'price_part',
@@ -6660,7 +6661,7 @@ def view_all_bookings(request):
             payment_cg = 0
             payment_uc = 0
             payment_hj = 0
-
+            payment_credit = 0
             for paymentdic in trans.payment_booking:
                 if len(paymentdic):
                     if paymentdic['collected_by'] == "ClickGarage":
@@ -6669,6 +6670,8 @@ def view_all_bookings(request):
                         payment_uc = payment_uc + float(paymentdic['amount'])
                     if paymentdic['collected_by'] == "ClickGarage HJ":
                         payment_hj = payment_hj + float(paymentdic['amount'])
+                    if paymentdic['collected_by'] == "ClickGarage Credit":
+                        payment_credit = payment_credit + float(paymentdic['amount'])
 
             datarow2.append([str(full_agent_name),
                              str(trans.booking_id),
@@ -6682,6 +6685,7 @@ def view_all_bookings(request):
                              str(payment_cg),
                              str(payment_uc),
                              str(payment_hj),
+                             str(payment_credit),
                              str(trans.price_total),
                              str(labour_price),
                              str(part_price),
