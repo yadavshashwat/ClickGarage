@@ -6,6 +6,7 @@ from django.shortcuts import render_to_response, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 
 from django.db import models
 import datetime, time, calendar
@@ -6029,6 +6030,7 @@ def view_all_bookings(request):
     agent_id = get_param(request, 'agent_id', None)
     cg_book = get_param(request, 'cg_book', None)
     complete_flag = get_param(request, 'complete_flag', None)
+    page_num = get_param(request, 'page_num', None)
     getcsv = get_param(request, 'getcsv', "False")
     getcsv2 = get_param(request, 'getcsv2', "False")
 
@@ -6295,6 +6297,18 @@ def view_all_bookings(request):
             is_admin = False
             is_b2b = False
 
+    if getcsv == "True" or getcsv2 == "True":
+        tranObjs = tranObjs
+    else:
+        if page_num != None and page_num != "":
+            # offset = page_num * 30
+            page_num = int(page_num) + 1
+            # tranObjs = tranObjs.skip(offset).limit(30)
+            tranObjs = Paginator(tranObjs, 2)
+            try:
+                tranObjs = tranObjs.page(page_num)
+            except:
+                None
     datarow = []
     datarow.append(['booking_flag',
                     'booking_id',
@@ -8663,7 +8677,7 @@ def generate_bill(request):
                     total_discount_comm = total_discount_comm + float(item['purchase_price'])
                     total_discount_pre_tax = total_discount_pre_tax + float(item['purchase_price_pretax'])
                     total_commission = total_commission + (float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
-
+                print item
                 obj2 = {
                     'comment': item['comment'],
                     'name': item['name'],
@@ -8678,7 +8692,7 @@ def generate_bill(request):
                     'purchase_price_pretax': float(item['purchase_price_pretax']),
                     'clickgarage_share': (float(item['purchase_price_pretax']) * (applicable_commission_share) / 100),
                 }
-
+                print obj2
                 estimate2.append(obj2)
 
 
