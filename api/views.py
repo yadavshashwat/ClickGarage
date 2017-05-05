@@ -6304,7 +6304,7 @@ def view_all_bookings(request):
             # offset = page_num * 30
             page_num = int(page_num) + 1
             # tranObjs = tranObjs.skip(offset).limit(30)
-            tranObjs = Paginator(tranObjs, 20)
+            tranObjs = Paginator(tranObjs, 15)
             try:
                 tranObjs = tranObjs.page(page_num)
             except:
