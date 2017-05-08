@@ -6035,7 +6035,8 @@ def view_all_bookings(request):
     getcsv2 = get_param(request, 'getcsv2', "False")
 
     if request.user.is_admin or request.user.is_staff:
-        lead_correct()
+        if lead_booking == "Lead":
+            lead_correct()
 
 
     if data_id == "" or data_id == None:
