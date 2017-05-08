@@ -566,9 +566,9 @@ class Bookings(models.Model):
     commission              = ListField(DictField())
     commission_total        = models.CharField(max_length=200,null=True,default="0")
     job_completion_flag     = models.BooleanField(default=False)
-    frozen_flag         = models.BooleanField(default=False)
+    frozen_flag             = models.BooleanField(default=False)
     settlement_flag         = models.BooleanField(default=False)
-
+    delay_count             = models.IntegerField(default=0)
     # int_job_summary         = ListField(DictField(), null=True)
 
 

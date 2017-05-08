@@ -6034,6 +6034,10 @@ def view_all_bookings(request):
     getcsv = get_param(request, 'getcsv', "False")
     getcsv2 = get_param(request, 'getcsv2', "False")
 
+    if request.user.is_admin or request.user.is_staff:
+        lead_correct()
+
+
     if data_id == "" or data_id == None:
         if request.user.is_admin:
             if (booking_id == None or booking_id ==""):
@@ -6592,7 +6596,7 @@ def view_all_bookings(request):
             additional          = feed.additional
             recommend_factor    = feed.recommend_factor
         else:
-            print "2"
+            # print "2"
             time_stamp = "NA"
             pick_on_time = "NA"
             delivery_on_time = "NA"
@@ -6938,7 +6942,9 @@ def view_all_bookings(request):
             'frozen_flag': trans.frozen_flag,
             'job_completion_flag': trans.job_completion_flag,
             'payment_booking': trans.payment_booking,
-            'purchase_price_total': trans.purchase_price_total
+            'purchase_price_total': trans.purchase_price_total,
+            'lead_delay_count': trans.delay_count
+
         })
     if getcsv == "True":
         # obj['datacheck'] = datarow
@@ -7411,7 +7417,7 @@ def add_delete_payment(request):
                 print "1"
                 total_paid = float(booking.amount_paid) - float(item['amount'])
             else:
-                print "2"
+                # print "2"
                 payment2.append(item)
         booking.amount_paid = str(total_paid)
         booking.payment_booking = payment2
@@ -8027,12 +8033,6 @@ def send_booking(request):
     datetimeobject = datetime.datetime.strptime(oldformat, '%d-%m-%Y')
     newformat = datetimeobject.strftime('%Y-%m-%d')
     date =newformat
-    # print email
-    # oldformat_f = follow_up_date
-    # datetimeobject = datetime.datetime.strptime(oldformat_f, '%d-%m-%Y')
-    # newformat_f = datetimeobject.strftime('%Y-%m-%d')
-    # follow_up_date = newformat_f
-    # obj2 = {}
     obj2 = {}
     obj2['status'] = False
     obj2['result'] = []
@@ -8153,6 +8153,32 @@ def send_booking(request):
 # 9. Cancelled - Cancelled
 # 10. Escalation - Escalation
 
+def lead_correct():
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    bookings = Bookings.objects.filter(booking_flag = False)
+    for booking in bookings:
+        if booking.booking_flag == False:
+            # print "1"
+            if (booking.status == "Lead" or booking.status == "Follow Up" or booking.status == "Cold" or booking.status == "Warm" or booking.status == "Estimate Required"):
+                # print "2"
+                # booking.delay_count = booking.delay_count + 1
+                oldformat = str(booking.follow_up_date)
+                newformat = datetime.datetime.strptime(oldformat, '%Y-%m-%d')
+                time_today = datetime.datetime.today()
+                time_today = time_today.replace(hour=0, minute=0, second=0, microsecond=0)
+                if newformat < time_today:
+                    print "1"
+                    booking.follow_up_date = datetime.date.today()
+                    booking.follow_up_time = datetime.time(9, 30, 0, 0)
+                    booking.delay_count = booking.delay_count + 1
+                    booking.save()
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
 
 def change_status(request):
     obj = {}
@@ -8254,8 +8280,11 @@ def change_status_actual(booking_id,status_id):
                 mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,estimate=booking.price_total,status="Estimate Shared")
 
         if (status_id == "Job Completed" and old_status == "Escalation"):
+
             booking.job_completion_flag = True
             # send email to customer about bill reciept and an apology note
+            booking.date_delivery = datetime.date.today()
+
             if (booking_user == "User"):
                 mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,estimate=booking.price_total,status="Job Completed", status2 ="Escalation")
 
