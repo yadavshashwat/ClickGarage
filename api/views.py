@@ -4720,9 +4720,31 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
                  follow_up_time = follow_up_time,
                  odometer = odometer)
     tt.save()
-    if send_sms == "1":
+
+    send_sms_bool = True
+    if clickgarage_flag:
+        if send_sms == "1":
+            send_sms_bool = True
+        else:
+            send_sms_bool = False
+    else:
+        user1 = CGUserNew.objects.filter(id=agent)
+        sms_credits = user1.agent_sms_credits
+        credits_per_message = 1
+        num_sms = 1
+        if num_sms <= sms_credits:
+            send_sms_bool = True
+            num_sms_left = sms_credits - 1
+            user1.agent_sms_credits = num_sms_left
+            user1.save()
+        else:
+            send_sms_bool = False
+
+
+    if send_sms_bool:
         mviews.send_booking_confirm(email=email,name=name,booking_id=booking_id,number=number, service_list= int_summary, car_bike=veh_type)
-    mviews.send_booking(firstname=name,lastname ="", number=number,email=email, car_bike=veh_type, make=make, model=model, fuel_type=fuel,locality=locality,address=address,date_requested=date,time_requested=time_str)
+    if clickgarage_flag:
+        mviews.send_booking(firstname=name,lastname ="", number=number,email=email, car_bike=veh_type, make=make, model=model, fuel_type=fuel,locality=locality,address=address,date_requested=date,time_requested=time_str)
     return {'Status': "Order Placed", 'booking_id': str(tt.booking_id),'price_total':str(tt.price_total),'Summary':str(tt.comments), 'id':str(tt.id)}
 #
 # def send_otp_booking(request):
@@ -7711,7 +7733,13 @@ def update_agent(request):
     obj['result'] = []
     booking_id = get_param(request, 'b_id', None)
     agent_id = get_param(request,'agent_id',None)
+    send_sms = get_param(request, 'send_sms', "1")
     booking = Bookings.objects.filter(booking_id=booking_id)[0]
+    send_sms_bool = True
+    if send_sms == "1":
+        send_sms_bool = True
+    else:
+        send_sms_bool = False
 
     if agent_id != None and agent_id != "":
         booking.agent = agent_id
@@ -7736,7 +7764,7 @@ def update_agent(request):
     # for item in estimate:
     #     service_breakup = service_breakup + item['name'] +"-"+item['price']+" "
     booking.save()
-    change_status_actual(booking_id=booking_id,status_id="Assigned")
+    change_status_actual(booking_id=booking_id,status_id="Assigned",send_sms= send_sms_bool)
     # mviews.send_sms_agent(agent_name, agent_num, cust_num, date, time, booking_id, cust_name, comments,
     #                          total, address,vehicle)
     # booking.status = "Assigned"
@@ -8187,7 +8215,12 @@ def change_status(request):
     obj['result'] = []
     booking_id = get_param(request, 'b_id', None)
     status_id = get_param(request,'status_id',None)
-    change_status_actual(booking_id=booking_id,status_id=status_id)
+    send_sms = get_param(request,'send_sms',"1")
+    if send_sms == "1":
+        send_sms_bool = True
+    else:
+        send_sms_bool = False
+    change_status_actual(booking_id=booking_id,status_id=status_id,send_sms= send_sms_bool)
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
@@ -8196,12 +8229,32 @@ def change_status(request):
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
-def change_status_actual(booking_id,status_id):
+def change_status_actual(booking_id,status_id,send_sms):
     obj = {}
     obj['status'] = False
     obj['result'] = []
     booking = Bookings.objects.filter(booking_id=booking_id)[0]
     booking_user = booking.booking_user_type
+    send_sms_bool = True
+
+    if send_sms:
+        if booking.clickgarage_flag:
+            send_sms_bool = True
+        else:
+            user1 = CGUserNew.objects.filter(id = booking.agent)
+            sms_credits = user1.agent_sms_credits
+            num_sms = 1
+            if num_sms <= sms_credits:
+                send_sms_bool = True
+                num_sms_left = sms_credits - 1
+                user1.agent_sms_credits = num_sms_left
+                user1.save()
+            else:
+                send_sms_bool = False
+    else:
+        send_sms_bool = False
+
+
     if status_id != None:
         old_status = booking.status
 
@@ -8234,7 +8287,7 @@ def change_status_actual(booking_id,status_id):
 
         # booking.job_completion_flag = False
 
-        if (status_id == "Confirmed" and old_status == "Lead" ):
+        if (status_id == "Confirmed" and (old_status == "Lead" or old_status == "Follow Up" or old_status == "Cold" or old_status == "Warm"or old_status == "Estimate Required")):
             if (booking_user=="User"):
                 user = create_check_user(booking.cust_name,booking.cust_number)
                 booking.cust_id = user.id
@@ -8249,7 +8302,9 @@ def change_status_actual(booking_id,status_id):
                 user.email = booking.cust_email
                 user.save()
                 # print "SMS Sent"
-                mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking,booking.time_booking,status="Confirmed")
+                if send_sms_bool:
+                    print "SMS Sent"
+                    mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking,booking.time_booking,status="Confirmed")
             print "SMS not Sent"
         if (status_id == "Assigned" and old_status == "Confirmed" ):
             agent = fetch_user(booking.agent)
@@ -8259,28 +8314,40 @@ def change_status_actual(booking_id,status_id):
             vehicle = booking.cust_make +" "+booking.cust_model+" "+booking.cust_fuel_varient
             address = booking.cust_address +", "+booking.cust_locality+", "+booking.cust_city
             if (booking_user == "User"):
-                print "SMS Sent"
-                mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking,booking.time_booking,agent_details,status="Assigned")
-            mviews.send_sms_agent(agent_name, agent_num, booking.booking_user_number, booking.date_booking, booking.time_booking, booking.booking_id, booking.booking_user_name, booking.jobssummary ,
+                # print "SMS Sent"
+
+
+
+                if send_sms_bool:
+                    print "SMS Sent"
+                    mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking,booking.time_booking,agent_details,status="Assigned")
+            if booking.clickgarage_flag:
+                mviews.send_sms_agent(agent_name, agent_num, booking.booking_user_number, booking.date_booking, booking.time_booking, booking.booking_id, booking.booking_user_name, booking.jobssummary ,
                                   booking.price_total, address, vehicle)
 
         if(status_id == "Engineer Left"  and old_status == "Assigned"):
             agent = fetch_user(booking.agent)
             agent_name = agent['result'][0]['first_name']
             agent_num = agent['result'][0]['phone']
-            agent_details = agent_name + " - " + agent_num
+            # agent_details = agent_name + " - " + agent_num
             if (booking_user == "User"):
-                mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,status="Engineer Left")
+                if send_sms_bool:
+                    print "SMS Sent"
+                    mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,status="Engineer Left")
 
 
         if (status_id == "Reached Workshop"):
             if (booking_user == "User"):
-                mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,status="Reached Workshop")
+                if send_sms_bool:
+                    print "SMS Sent"
+                    mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,status="Reached Workshop")
 
         if (status_id == "Estimate Shared"):
             # send email to customer about estimate breakup
             if (booking_user == "User"):
-                mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,estimate=booking.price_total,status="Estimate Shared")
+                if send_sms_bool:
+                    print "SMS Sent"
+                    mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,estimate=booking.price_total,status="Estimate Shared")
 
         if (status_id == "Job Completed" and old_status == "Escalation"):
 
@@ -8289,13 +8356,17 @@ def change_status_actual(booking_id,status_id):
             booking.date_delivery = datetime.date.today()
 
             if (booking_user == "User"):
-                mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,estimate=booking.price_total,status="Job Completed", status2 ="Escalation")
+                if send_sms_bool:
+                    print "SMS Sent"
+                    mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,estimate=booking.price_total,status="Job Completed", status2 ="Escalation")
 
         if (status_id == "Job Completed" and old_status != "Escalation"):
             # booking.job_completion_flag = True
             # send email to customer about bill reciept and a thank you note
             if (booking_user == "User"):
-                mviews.send_sms_customer(booking.cust_name, booking.cust_number, booking.booking_id, booking.date_booking,
+                if send_sms_bool:
+                    print "SMS Sent"
+                    mviews.send_sms_customer(booking.cust_name, booking.cust_number, booking.booking_id, booking.date_booking,
                                          booking.time_booking, estimate=booking.price_total,
                                          status="Job Completed")
                 # if booking.cust_vehicle_type == "Car":
@@ -8339,7 +8410,9 @@ def change_status_actual(booking_id,status_id):
 
         if (status_id == "Escalation"):
             booking.job_completion_flag = False
-            mviews.send_sms_customer(booking.cust_name, booking.cust_number, booking.booking_id, booking.date_booking,
+            if send_sms:
+                print "SMS Sent"
+                mviews.send_sms_customer(booking.cust_name, booking.cust_number, booking.booking_id, booking.date_booking,
                                      booking.time_booking, estimate=booking.price_total,
                                      status="Escalation")
             booking.escalation_flag = True

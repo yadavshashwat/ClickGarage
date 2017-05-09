@@ -8017,6 +8017,8 @@ def send_sms_customer(name,number,booking_id,date,time,agent_details = None,esti
 		agent_name = agent.first_name
 		full_agent_name = agent.first_name + ' ' + agent.last_name
 		agent_num = agent.contact_no
+		agent_details = agent_name + " - " + agent_num
+
 	if status =="Confirmed":
 		if booking.clickgarage_flag == True:
 			message = "Hi " + name + "! Your ClickGarage order has been confirmed for "+ str(time) + " on " + str(date) +". You will recieve the engineer details shortly. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
