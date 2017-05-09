@@ -8285,7 +8285,7 @@ def change_status_actual(booking_id,status_id,send_sms):
         else:
             booking.booking_flag = True
 
-        # booking.job_completion_flag = False
+        booking.job_completion_flag = False
 
         if (status_id == "Confirmed" and (old_status == "Lead" or old_status == "Follow Up" or old_status == "Cold" or old_status == "Warm"or old_status == "Estimate Required")):
             if (booking_user=="User"):
