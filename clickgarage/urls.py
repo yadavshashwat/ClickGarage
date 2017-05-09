@@ -106,6 +106,7 @@ urlpatterns = patterns('',
     url(r'^contactus/', 'website.views.contactus', name='contactus'),
     url(r'^rsa/(?P<veh_type>[a-zA-Z0-9\-_ ]+)/', 'website.views.rsa', name='rsa'),
     url(r'^bills/(?P<bill_type>[a-zA-Z0-9\-_ ]+)/', 'website.views.billing', name='bills'),
+
     url(r'^adminpanel/$', 'website.views.adminpanel',name='adminpanel'),
     url(r'^adminpanel/(?P<cat_type>[a-zA-Z0-9\-_ ]+)/$', 'website.views.adminpanel', name='adminpanel'),
     url(r'^adminpanel/(?P<cat_type>[a-zA-Z0-9\-_ ]+)/(?P<all_single>[a-zA-Z0-9\-_ ]+)/$', 'website.views.adminpanel',name='adminpanel'),
@@ -118,6 +119,5 @@ urlpatterns = patterns('',
     url(r'^ezgarage/(?P<cat_type>[a-zA-Z0-9\-_ ]+)/(?P<all_single>[a-zA-Z0-9\-_ ]+)/(?P<data_id>[a-zA-Z0-9\-_ ]+)/$','website.views.adminpanel', name='adminpanel'),
     url(r'^ezgarage/(?P<cat_type>[a-zA-Z0-9\-_ ]+)/(?P<all_single>[a-zA-Z0-9\-_ ]+)/(?P<data_id>[a-zA-Z0-9\-_ ]+)/(?P<pre_post>[a-zA-Z0-9\-_ ]+)$','website.views.adminpanel', name='adminpanel'),
     url(r'^completebooking/', 'website.views.completion', name='complete'),
-
-)
+    url(r'^track/(?P<data_id>[a-zA-Z0-9\-_ ]+)/', 'website.views.tracking', name='tracking'),)
 

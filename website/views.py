@@ -1419,6 +1419,12 @@ def adminpanel(request,cat_type= '',all_single='',data_id='',pre_post = ''):
     context = RequestContext(request, locals())
     return HttpResponse(template.render(context))
 
+def tracking(request,data_id=''):
+    template = loader.get_template('revamp/track.html')
+    context = RequestContext(request, locals())
+    return HttpResponse(template.render(context))
+
+
 def completion(request):
     template = loader.get_template('revamp/complete.html')
     total_amount = views.get_param(request, 'total', 0)

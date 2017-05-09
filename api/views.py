@@ -8801,7 +8801,7 @@ def generate_bill(request):
                     'purchase_price_pretax': float(item['purchase_price_pretax']),
                     'clickgarage_share': (float(item['purchase_price_pretax']) * (applicable_commission_share) / 100),
                 }
-                print obj2
+                # print obj2
                 estimate2.append(obj2)
 
 
