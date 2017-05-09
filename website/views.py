@@ -1419,7 +1419,7 @@ def adminpanel(request,cat_type= '',all_single='',data_id='',pre_post = ''):
     context = RequestContext(request, locals())
     return HttpResponse(template.render(context))
 
-def tracking(request,data_id=''):
+def tracking(request,data_id='',page=''):
     template = loader.get_template('revamp/track.html')
     context = RequestContext(request, locals())
     return HttpResponse(template.render(context))

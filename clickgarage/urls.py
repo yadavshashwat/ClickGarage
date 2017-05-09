@@ -119,5 +119,5 @@ urlpatterns = patterns('',
     url(r'^ezgarage/(?P<cat_type>[a-zA-Z0-9\-_ ]+)/(?P<all_single>[a-zA-Z0-9\-_ ]+)/(?P<data_id>[a-zA-Z0-9\-_ ]+)/$','website.views.adminpanel', name='adminpanel'),
     url(r'^ezgarage/(?P<cat_type>[a-zA-Z0-9\-_ ]+)/(?P<all_single>[a-zA-Z0-9\-_ ]+)/(?P<data_id>[a-zA-Z0-9\-_ ]+)/(?P<pre_post>[a-zA-Z0-9\-_ ]+)$','website.views.adminpanel', name='adminpanel'),
     url(r'^completebooking/', 'website.views.completion', name='complete'),
-    url(r'^track/(?P<data_id>[a-zA-Z0-9\-_ ]+)/', 'website.views.tracking', name='tracking'),)
+    url(r'^track/(?P<data_id>[a-zA-Z0-9\-_ ]+)/(?P<page>[a-zA-Z0-9\-_ ]+)', 'website.views.tracking', name='tracking'),)
 

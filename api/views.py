@@ -9756,4 +9756,30 @@ def get_all_part(request):
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
+import urllib2
+
+def get_short_url(longurl):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    data = {'key': google_map_api_key,
+            "longUrl": longurl}
+    # data = '{"nw_src": "10.0.0.1/32", "nw_dst": "10.0.0.2/32", "nw_proto": "ICMP", "actions": "ALLOW", "priority": "10"}'
+    # url = 'http://localhost:8080/firewall/rules/0000000000000001'
+    url = "https://www.googleapis.com/urlshortener/v1/url/"
+
+    req = urllib2.Request(url, data, {'Content-Type': 'application/json'})
+    f = urllib2.urlopen(req)
+    # for x in f:
+    #     print(x)
+    # f.close()
+
+
+
+    # req = requests.post(url,data)
+    obj['result'] = f.json()
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return json.dumps(obj)
 
