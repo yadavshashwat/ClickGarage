@@ -4728,7 +4728,7 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
         else:
             send_sms_bool = False
     else:
-        user1 = CGUserNew.objects.filter(id=agent)
+        user1 = CGUserNew.objects.filter(id=agent)[0]
         sms_credits = user1.agent_sms_credits
         credits_per_message = 1
         num_sms = 1
@@ -4746,7 +4746,44 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
     if clickgarage_flag:
         mviews.send_booking(firstname=name,lastname ="", number=number,email=email, car_bike=veh_type, make=make, model=model, fuel_type=fuel,locality=locality,address=address,date_requested=date,time_requested=time_str)
     return {'Status': "Order Placed", 'booking_id': str(tt.booking_id),'price_total':str(tt.price_total),'Summary':str(tt.comments), 'id':str(tt.id)}
-#
+
+def send_sms_customer(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = {}
+    data_id = get_param(request, 'data_id', None)
+    message = get_param(request, 'message', None)
+    booking = Bookings.objects.filter(id = data_id)[0]
+    send_sms_bool = True
+    if booking.clickgarage_flag:
+            send_sms_bool = True
+            obj['result']['message'] = "SMS Sent!"
+    else:
+        user1 = CGUserNew.objects.filter(id=booking.agent)[0]
+        print user1
+        sms_credits = user1.agent_sms_credits
+        message_length = len(message)
+        credits_per_message = math.ceil(float(message_length) / 160)
+        num_sms =  credits_per_message
+        if num_sms <= sms_credits:
+            send_sms_bool = True
+            num_sms_left = sms_credits - num_sms
+            user1.agent_sms_credits = num_sms_left
+            user1.save()
+            obj['result']['message'] = "SMS Sent!"
+        else:
+            send_sms_bool = False
+            obj['result']['message'] = "Insufficient Credits"
+    obj['status'] = True
+    if send_sms_bool:
+        mviews.send_sms_customer_manual(dataid= data_id, message=message)
+    response = HttpResponse(json.dumps(obj), content_type='application/json')
+    return response
+
+
+
+
+        #
 # def send_otp_booking(request):
 #     name = get_param(request, 'name', None)
 #     number = get_param(request, 'number', None)
@@ -8241,7 +8278,7 @@ def change_status_actual(booking_id,status_id,send_sms):
         if booking.clickgarage_flag:
             send_sms_bool = True
         else:
-            user1 = CGUserNew.objects.filter(id = booking.agent)
+            user1 = CGUserNew.objects.filter(id = booking.agent)[0]
             sms_credits = user1.agent_sms_credits
             num_sms = 1
             if num_sms <= sms_credits:

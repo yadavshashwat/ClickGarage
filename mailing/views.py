@@ -61,7 +61,7 @@ def send_cancel_sms(to_name, to, booking_id):
 
 
 def send_advisor(to_name, to, advisor_name, advisor_number, experience, booking_id):
-	message = to_name + ", we have assigned our auto expert Mr. "+ advisor_name + " (Mob: "+ advisor_number +") for your car. He has an experience of over " + experience + " years. He will make sure you get maximum value for your money. Booking ID: " + booking_id 
+	message = to_name + ", we have assigned our auto expert Mr. "+ advisor_name + " (Mob: "+ advisor_number +") for your car. He has an experience of over " + experience + " years. He will make sure you get maximum value for your money. Booking ID: " + booking_id
 	message = message.replace(" ","+")
 	send_sms("TRANS",to,message)
 
@@ -91,7 +91,7 @@ def send_postdrop(to_name,to,booking_id):
 	send_sms("TRANS",to,message)
 
 def prompt(prompt):
-    return raw_input(prompt).strip()
+	return raw_input(prompt).strip()
 
 
 
@@ -1233,7 +1233,7 @@ def send_booking_email_doorstep(to_address,to_name,time_start,date,booking_id):
 
 	# smtp_port = '25'
 	# smtp_do_tls = True
-    #
+	#
 	# server = smtplib.SMTP(
 	#     host = smtp_server,
 	#     port = smtp_port,
@@ -2418,11 +2418,11 @@ def send_booking_email_pick(to_address,to_name,time_start,date,booking_id):
 
 	# smtp_port = '25'
 	# smtp_do_tls = True
-    #
-    # server = smtplib.SMTP(
-	 #    host = smtp_server,
-	 #    port = smtp_port,
-	 #    timeout = 30
+	#
+	# server = smtplib.SMTP(
+	#    host = smtp_server,
+	#    port = smtp_port,
+	#    timeout = 30
 	# )
 	# server.set_debuglevel(10)
 	# server.starttls()
@@ -3250,7 +3250,7 @@ def send_booking_email1(to_address,to_name,time_start,date,booking_id):
 
 	# smtp_port = '25'
 	# smtp_do_tls = True
-    #
+	#
 	# server = smtplib.SMTP(
 	#     host = smtp_server,
 	#     port = smtp_port,
@@ -4069,9 +4069,9 @@ def send_cancel_email(to_address,to_name,booking_id_1):
 	smtp_do_tls = True
 
 	server = smtplib.SMTP(
-	    host = smtp_server,
-	    port = smtp_port,
-	    timeout = 30
+		host = smtp_server,
+		port = smtp_port,
+		timeout = 30
 	)
 	server.set_debuglevel(10)
 	server.starttls()
@@ -4096,13 +4096,13 @@ def send_cancel_email(to_address,to_name,booking_id_1):
 
 	# smtp_port = '25'
 	# smtp_do_tls = True
-    #
+	#
 	# server = smtplib.SMTP(
 	#     host = smtp_server,
 	#     port = smtp_port,
 	#     timeout = 30
 	# )
-    #
+	#
 	# server.set_debuglevel(10)
 	# server.starttls()
 	# server.ehlo()
@@ -6582,13 +6582,13 @@ W-22, Second Floor, Green Park, New Delhi - 110016</div>
 
 	# smtp_port = '25'
 	# smtp_do_tls = True
-    #
+	#
 	# server = smtplib.SMTP(
 	# 	host = smtp_server,
 	# 	port = smtp_port,
 	# 	timeout = 30
 	# )
-    #
+	#
 	# server.set_debuglevel(10)
 	# server.starttls()
 	# server.ehlo()
@@ -6635,7 +6635,7 @@ def send_order_complete(username,userphone,useremail,booking_id):
 #send_order_complete("Bhuvan","9953008804","bhuvan.batra@gmail.com","001")
 
 
-	# _sms("Rajeev", "8447021642", "29-10-2015", "10:00AM", "0001")
+# _sms("Rajeev", "8447021642", "29-10-2015", "10:00AM", "0001")
 def send_booking_details(to_address,booking_id,html_script):
 	me = from_address
 	you = to_address
@@ -6646,7 +6646,7 @@ def send_booking_details(to_address,booking_id,html_script):
 	msg['From'] = me
 	msg['To'] = ', '.join(you)
 
-	
+
 	script = MIMEText(html_script, 'html')
 	msg.attach(script)
 
@@ -6662,7 +6662,7 @@ def send_booking_details(to_address,booking_id,html_script):
 
 	# smtp_port = '25'
 	# smtp_do_tls = True
-    #
+	#
 	# server = smtplib.SMTP(
 	#     host = smtp_server,
 	#     port = smtp_port,
@@ -6705,13 +6705,13 @@ def send_contact_mail(name,phone,content):
 
 	# smtp_port = '25'
 	# smtp_do_tls = True
-    #
+	#
 	# server = smtplib.SMTP(
 	#     host = smtp_server,
 	#     port = smtp_port,
 	#     timeout = 30
 	# )
-    #
+	#
 	# server.set_debuglevel(10)
 	# server.starttls()
 	# server.ehlo()
@@ -6748,13 +6748,13 @@ def send_signup_mail(name,phone,email_id):
 
 	# smtp_port = '25'
 	# smtp_do_tls = True
-    #
+	#
 	# server = smtplib.SMTP(
 	#     host = smtp_server,
 	#     port = smtp_port,
 	#     timeout = 30
 	# )
-    #
+	#
 	# server.set_debuglevel(10)
 	# server.starttls()
 	# server.ehlo()
@@ -6793,9 +6793,9 @@ def send_adwords_mail(name,phone,service,definition):
 	smtp_do_tls = True
 
 	server = smtplib.SMTP(
-	    host = smtp_server,
-	    port = smtp_port,
-	    timeout = 30
+		host = smtp_server,
+		port = smtp_port,
+		timeout = 30
 	)
 
 	server.set_debuglevel(10)
@@ -6816,10 +6816,10 @@ def send_mail(server_name,port,username,password,fromadd,toadd,subject,text):
 	smtp_do_tls = True
 
 	server = smtplib.SMTP(
-	    host = smtp_server,
-	    port = smtp_port,
-	    timeout = 30
-	)	
+		host = smtp_server,
+		port = smtp_port,
+		timeout = 30
+	)
 	server.set_debuglevel(10)
 	server.starttls()
 	server.ehlo()
@@ -7847,9 +7847,9 @@ def send_mail_coupon(to_address,wash,bike,service):
 	smtp_do_tls = True
 
 	server = smtplib.SMTP(
-	    host = smtp_server,
-	    port = smtp_port,
-	    timeout = 30
+		host = smtp_server,
+		port = smtp_port,
+		timeout = 30
 	)
 	server.set_debuglevel(10)
 	server.starttls()
@@ -8009,6 +8009,62 @@ def send_booking_confirm(email,name,booking_id,number,service_list,car_bike):
 			booking_id) + ". Booking tracking link: https://www.clickgarage.in/track/" + booking.id + "/details"
 		# print message
 		send_sms_2factor_EZY(number, message)
+
+
+
+
+def send_bill_estimate(dataid,bill_estimate):
+	me = from_address
+	booking = Bookings.objects.filter(id = dataid)[0]
+	email = booking.cust_email
+	serviceitems = booking.service_items
+	name = booking.cust_name
+	booking_id = booking.booking_id
+	price_total = booking.price_total
+
+	you = email
+	msg = MIMEMultipart('alternative')
+	if bill_estimate == "Bill":
+		msg['Subject'] = "Job Completed! Booking ID: " + str(booking_id)
+	elif bill_estimate == "Estimate":
+		msg['Subject'] = "Job Estimate! Booking ID: " + str(booking_id)
+	msg['From'] = me
+	msg['To'] = you
+
+	html = html_to_send_bill_estimate(name=name, booking_id=booking_id, bill_estimate= bill_estimate, total_amount=price_total , service_list=serviceitems, data_id=dataid)
+	script = MIMEText(html, 'html')
+	msg.attach(script)
+
+	if bill_estimate == "Bill":
+		bill_id = booking.bill_id
+		bill = Bills.objects.filter(id = bill_id)[0]
+		filename = bill.file_name
+		part = MIMEApplication(open(filename, 'rb').read())
+		part.add_header('Content-Disposition', 'attachment', filename='Invoice.pdf')
+		msg.attach(part)
+
+	conn = boto.ses.connect_to_region(region,aws_access_key_id=aws_access,aws_secret_access_key=aws_secret)
+	# print email
+	if email == "--":
+		print "check"
+		None
+	else:
+		if booking.clickgarage_flag == True:
+			result = conn.send_raw_email(msg.as_string())
+
+
+
+
+def send_sms_customer_manual(dataid,message):
+	booking = Bookings.objects.filter(id=dataid)[0]
+	customer_number = booking.cust_number
+	if booking.clickgarage_flag:
+		message = "Hello " + booking.cust_name + "," + message + " Happy Motoring, Team ClickGarage!"
+		send_sms_2factor(customer_number, message)
+	else:
+		message = "Hello " + booking.cust_name + "," + message
+		send_sms_2factor_EZY(customer_number, message)
+
 
 def send_sms_customer(name,number,booking_id,date,time,agent_details = None,estimate=None, status=None, status2=None):
 	booking = Bookings.objects.filter(booking_id = booking_id)[0]
@@ -9656,6 +9712,228 @@ def html_to_send(name, booking_id, service_list,car_bike):
 
 	return html
 
+
+
+
+def html_to_send_bill_estimate(name, booking_id, bill_estimate, total_amount, service_list,data_id):
+	summary_html2 = ""
+	summary_html2 = "<table style = 'border: 1px solid; width: 100%; border-collapse: collapse;'><tr style = 'border: 1px solid;'><th>Item name</th><th>Units</th><th>Unit Cost</th><th>Amount</th></tr>"
+	for serv in service_list:
+		summary_html2 += "<tr><td>" + serv['name'] + "</td><td>" + str(serv['quantity']) + "</td><td>Rs. &nbsp;" + str(serv['unit_price']) + "</td><td>Rs. &nbsp;" + str(serv['price']) + "</td></tr>"
+
+
+	summary_html2 += "</table>"
+	summary_html = str(summary_html2)
+	booking_id = str(booking_id)
+	html = ""
+	html = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" data-dnd="true">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+<!--[if !mso]><!-->
+<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+<!--<![endif]-->
+
+<!--[if (gte mso 9)|(IE)]><style type="text/css">
+table {border-collapse: collapse;}
+table, td {mso-table-lspace: 0pt;mso-table-rspace: 0pt;}
+img {-ms-interpolation-mode: bicubic;}
+</style>
+<![endif]-->
+<style type="text/css">
+body {
+color: #000000;
+}
+body a {
+color: #1188e6;
+text-decoration: none;
+}
+p { margin: 0; padding: 0; }
+table[class="wrapper"] {
+width:100% !important;
+table-layout: fixed;
+-webkit-font-smoothing: antialiased;
+-webkit-text-size-adjust: 100%;
+-moz-text-size-adjust: 100%;
+-ms-text-size-adjust: 100%;
+}
+img[class="max-width"] {
+max-width: 100% !important;
+}
+@media screen and (max-width:480px) {
+.preheader .rightColumnContent,
+.footer .rightColumnContent {
+	text-align: left !important;
+}
+.preheader .rightColumnContent div,
+.preheader .rightColumnContent span,
+.footer .rightColumnContent div,
+.footer .rightColumnContent span {
+  text-align: left !important;
+}
+.preheader .rightColumnContent,
+.preheader .leftColumnContent {
+  font-size: 80% !important;
+  padding: 5px 0;
+}
+table[class="wrapper-mobile"] {
+  width: 100% !important;
+  table-layout: fixed;
+}
+img[class="max-width"] {
+  height: auto !important;
+}
+a[class="bulletproof-button"] {
+  display: block !important;
+  width: auto !important;
+  font-size: 80%;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+// 2 columns
+#templateColumns{
+	width:100% !important;
+}
+
+.templateColumnContainer{
+	display:block !important;
+	width:100% !important;
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+}
+</style>
+<style>
+body, p, div { font-family: arial,sans-serif; }
+</style>
+
+</head>
+<body yahoofix="true" style="min-width: 100%; margin: 0; padding: 0; font-size: 14pxpx; font-family: arial,sans-serif; color: #000000; background-color: #FFFFFF; color: #000000;" data-attributes='%7B%22dropped%22%3Atrue%2C%22bodybackground%22%3A%22%23FFFFFF%22%2C%22bodyfontname%22%3A%22arial%2Csans-serif%22%2C%22bodytextcolor%22%3A%22%23000000%22%2C%22bodylinkcolor%22%3A%22%231188e6%22%2C%22bodyfontsize%22%3A%2214px%22%7D'>
+<center class="wrapper">
+<div class="webkit">
+  <table cellpadding="0" cellspacing="0" border="0" width="100%" class="wrapper" bgcolor="#FFFFFF">
+  <tr><td valign="top" bgcolor="#FFFFFF" width="100%">
+  <!--[if (gte mso 9)|(IE)]>
+  <table width="600" align="center" cellpadding="0" cellspacing="0" border="0">
+	<tr>
+	  <td>
+	  <![endif]-->
+		<table width="100%" role="content-container" class="outer" data-attributes='%7B%22dropped%22%3Atrue%2C%22containerpadding%22%3A%220%2C0%2C0%2C0%22%2C%22containerwidth%22%3A600%2C%22containerbackground%22%3A%22%23FFFFFF%22%7D' align="center" cellpadding="0" cellspacing="0" border="0">
+		  <tr>
+			<td width="100%"><table width="100%" cellpadding="0" cellspacing="0" border="0">
+			  <tr>
+				<td>
+				<!--[if (gte mso 9)|(IE)]>
+				  <table width="600" align="center" cellpadding="0" cellspacing="0" border="0">
+					<tr>
+					  <td>
+						<![endif]-->
+						  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width:600px;" align="center">
+							<tr><td role="modules-container" style="padding: 0px 0px 0px 0px; color: #000000; text-align: left;" bgcolor="#FFFFFF" width="100%" align="left">
+							  <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" style="display:none !important; visibility:hidden; opacity:0; color:transparent; height:0; width:0;" class="module preheader preheader-hide" role="module" data-type="preheader">
+<tr><td role="module-content"><p></p></td></tr>
+</table>
+<table class="module" role="module" data-type="wysiwyg" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div>
+
+</div></td></tr></table>
+<table role="module" data-type="image" border="0" align="center" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" class="wrapper" data-attributes='%7B%22child%22%3Afalse%2C%22link%22%3A%22%22%2C%22width%22%3A%22600%22%2C%22height%22%3A%22107%22%2C%22imagebackground%22%3A%22%23FFFFFF%22%2C%22url%22%3A%22https%3A//marketing-image-production.s3.amazonaws.com/uploads/bb5c8b37fb8b5c18fa56b1adbdf4ea31daedb73c1df75bc47974c47504873b3b58f73a89ce248498a65fd30bb1dbf308b456ef84787f9c516588b95bb4e21728.jpg%22%2C%22alt_text%22%3A%22%22%2C%22dropped%22%3Atrue%2C%22imagemargin%22%3A%220%2C0%2C0%2C0%22%2C%22alignment%22%3A%22%22%2C%22responsive%22%3Atrue%7D'>
+<tr>
+<td style="font-size:6px;line-height:10px;background-color:#FFFFFF;padding: 0px 0px 0px 0px;" valign="top" align="" role="module-content"><!--[if mso]>
+<center>
+<table width="600" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+<tr>
+<td width="600" valign="top">
+<![endif]-->
+
+<img class="max-width"  width="600"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/bb5c8b37fb8b5c18fa56b1adbdf4ea31daedb73c1df75bc47974c47504873b3b58f73a89ce248498a65fd30bb1dbf308b456ef84787f9c516588b95bb4e21728.jpg" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 600px !important; width: 100% !important; height: auto !important; " />
+
+<!--[if mso]>
+</td></tr></table>
+</center>
+<![endif]--></td>
+</tr>
+</table><table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A30%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 30px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C12%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>"""
+	if bill_estimate == "Bill":
+		if booking_id:
+			html += """<td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """+name+"""<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Your order of Booking ID: """+booking_id+""" is complete. Your total due amount is """+total_amount + """ Please find attached your bill with the email. The bill summary is as follows: &nbsp;</div> </td>"""
+		else:
+			html += """<td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """ + name + """<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>. Your total due amount is """ + total_amount + """ Please find attached your bill with the email. The bill summary is as follows: &nbsp;</div> </td>"""
+	elif bill_estimate == "Estimate":
+		html += """<td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """+name+"""<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Your vehicle inspection is complete for the booking ID: """+booking_id+""". The total estimated amount is Rs."""+total_amount + """. Detailed breakup of the jobs is as follows.&nbsp;</div> </td>"""
+	html += """</tr>
+	</table>
+	<table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A16%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+	<tr><td role="module-content" style="padding: 0px 0px 16px 0px;" bgcolor="#ffffff"></td></tr></table>
+
+	"""+summary_html+"""
+
+<br>"""
+	if bill_estimate == "Estimate":
+		html += """<div style="margin-left: -56px; padding-left: 50%;"><a style="display: block;
+    width: 115px;
+    height: 25px;
+    background: #4a148c;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;" href='https://www.clickgarage.in/track/""" + data_id + """/estimate'>Approve Items</a></div>"""
+	html +="""<table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A30%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+	<tr><td role="module-content" style="padding: 0px 0px 30px 0px;" bgcolor="#ffffff"></td></tr></table>
+	<table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" class="module footer" role="module" data-type="footer" data-attributes='%7B%22dropped%22%3Atrue%2C%22columns%22%3A1%2C%22padding%22%3A%2210%2C5%2C10%2C5%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+	  <tr><td style="padding: 10px 5px 10px 5px;" bgcolor="#ffffff">
+		<table border="0" cellpadding="0" cellspacing="0" align="center" width="100%">
+		  <tr role="module-content">
+
+			<td align="center" valign="top" width="100%" height="100%" class="templateColumnContainer">
+			  <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%">
+				<tr>
+				  <td class="leftColumnContent" role="column-one" height="100%" style="height:100%;"><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+	<tr>
+	  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="font-size:12px;line-height:150%;margin:0;text-align:center;">This email was sent by: ClickGarage (Sui Generis Innovations Private Limited), &nbsp;W-22, Green Park, New Delhi</div> </td>
+	</tr>
+	</table>
+	</td>
+				</tr>
+			  </table>
+			</td>
+
+		  </tr>
+		</table>
+	  </td></tr>
+	</table>
+
+									</tr></td>
+								  </table>
+								<!--[if (gte mso 9)|(IE)]>
+							  </td>
+							</td>
+						  </table>
+						<![endif]-->
+						</td>
+					  </tr>
+					</table></td>
+				  </tr>
+				</table>
+			  <!--[if (gte mso 9)|(IE)]>
+			  </td>
+			</tr>
+		  </table>
+		  <![endif]-->
+		  </tr></td>
+		  </table>
+		</div>
+	  </center>
+	</body>
+	</html>"""
+	return html
+
+
 def send_bill(cust_name,cust_email,cust_number,filename):
 	me = from_address
 	# Create message container - the correct MIME type is multipart/alternative.
@@ -9681,10 +9959,7 @@ def send_bill(cust_name,cust_email,cust_number,filename):
 
 
 
-	# the attachment
-
-
-
+# the attachment
 
 
 def bill_html(agent_name,agent_address,invoice_number,booking_id,created_date,tin_number,cin_number,stax_number,cust_name,cust_address,cust_locality,cust_city,cust_reg,cust_veh,service_items,vat_part_percent,vat_lube_percent,vat_consumable_percent,stax_percent,vat_part,vat_lube,vat_consumable,stax_amount,total,recommendation,logo):
