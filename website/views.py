@@ -1420,9 +1420,11 @@ def adminpanel(request,cat_type= '',all_single='',data_id='',pre_post = ''):
     return HttpResponse(template.render(context))
 
 def tracking(request,data_id='',page=''):
-    template = loader.get_template('revamp/track.html')
     if data_id =="591315bc5e1b2d1481df5fb7":
-        data_id =''
+        template = ''
+    else:
+        template = loader.get_template('revamp/track.html')
+
     context = RequestContext(request, locals())
     return HttpResponse(template.render(context))
 
