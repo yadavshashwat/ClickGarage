@@ -9577,6 +9577,24 @@ def update_bill(request):
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+
+def send_booking_bill_estimate(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    data_id = get_param(request, 'data_id', None)
+    bill_estimate = get_param(request, 'bill_estimate', None)
+    mviews.send_bill_estimate(data_id,bill_estimate)
+    booking = Bookings.objects.filter(id = data_id)[0]
+    booking_id = booking.booking_id
+    if booking.booking_flag and bill_estimate == "Estimate":
+        change_status_actual(booking_id=booking_id, status_id="Estimate Shared", send_sms=True)
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
 def send_bill(request):
     obj = {}
     obj['status'] = False
@@ -9587,7 +9605,18 @@ def send_bill(request):
     bill = Bills.objects.filter(id=data_id)[0]
     filename = bill.file_name
     cust_name = bill.cust_name
-    mviews.send_bill(cust_name,cust_email,cust_number,filename)
+    price_total = bill.total_amount
+    serviceitems = bill.components
+    booking = None
+
+    if bill.booking_data_id != "" and bill.booking_data_id != None:
+        booking = Bookings.objects.filter(id = bill.booking_data_id)[0]
+    if booking:
+        booking_id = booking.booking_id
+    else:
+        booking_id = ''
+
+    mviews.send_bill(cust_name,booking_id,cust_email,price_total,serviceitems,cust_number,filename)
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"

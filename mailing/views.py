@@ -8044,7 +8044,7 @@ def send_bill_estimate(dataid,bill_estimate):
 		msg.attach(part)
 
 	conn = boto.ses.connect_to_region(region,aws_access_key_id=aws_access,aws_secret_access_key=aws_secret)
-	# print email
+	print email
 	if email == "--":
 		print "check"
 		None
@@ -8078,11 +8078,11 @@ def send_sms_customer(name,number,booking_id,date,time,agent_details = None,esti
 	if status =="Confirmed":
 		if booking.clickgarage_flag == True:
 			message = "Hi " + name + "! Your ClickGarage order has been confirmed for "+ str(time) + " on " + str(date) +". You will recieve the engineer details shortly. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
-				booking_id) + "."
+				booking_id) + ". Booking tracking link: https://www.clickgarage.in/track/" + booking.id + "/details"
 			send_sms_2factor(number, message)
 		else:
 			message = "Hi " + name + "! Your booking with"+ full_agent_name +" has been confirmed for " + str(time) + " on " + str(date) + ".  For further assistance, please contact us on " + agent_num + " and quote your booking ID: " + str(
-				booking_id) + "."
+				booking_id) + ". Booking tracking link: https://www.clickgarage.in/track/" + booking.id + "/details"
 			send_sms_2factor_EZY(number, message)
 	if status == "Assigned":
 		if booking.clickgarage_flag == True:
@@ -9717,6 +9717,13 @@ def html_to_send(name, booking_id, service_list,car_bike):
 
 def html_to_send_bill_estimate(name, booking_id, bill_estimate, total_amount, service_list,data_id):
 	summary_html2 = ""
+	confirmed = False
+	if booking_id != "":
+		booking = Bookings.objects.filter(booking_id = booking_id)[0]
+		confirmed = booking.booking_flag
+	else:
+		booking = None
+		confirmed = False
 	summary_html2 = "<table style = 'border: 1px solid; width: 100%; border-collapse: collapse;'><tr style = 'border: 1px solid;'><th>Item name</th><th>Units</th><th>Unit Cost</th><th>Amount</th></tr>"
 	for serv in service_list:
 		summary_html2 += "<tr><td>" + serv['name'] + "</td><td>" + str(serv['quantity']) + "</td><td>Rs. &nbsp;" + str(serv['unit_price']) + "</td><td>Rs. &nbsp;" + str(serv['price']) + "</td></tr>"
@@ -9859,12 +9866,15 @@ body, p, div { font-family: arial,sans-serif; }
 <table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C12%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
 <tr>"""
 	if bill_estimate == "Bill":
-		if booking_id:
-			html += """<td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """+name+"""<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Your order of Booking ID: """+booking_id+""" is complete. Your total due amount is """+total_amount + """ Please find attached your bill with the email. The bill summary is as follows: &nbsp;</div> </td>"""
+		if booking_id != "":
+			html += """<td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """+name+"""<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Thank you for using ClickGarage. Your order of Booking ID: """+booking_id+""" is complete. Your total due amount is Rs."""+total_amount + """ Please find attached your bill with the email. The bill summary is as follows: &nbsp;</div> </td>"""
 		else:
-			html += """<td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """ + name + """<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>. Your total due amount is """ + total_amount + """ Please find attached your bill with the email. The bill summary is as follows: &nbsp;</div> </td>"""
-	elif bill_estimate == "Estimate":
+			html += """<td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """ + name + """<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Thank you for using ClickGarage. Your total due amount is  Rs.""" + total_amount + """ Please find attached your bill with the email. The bill summary is as follows: &nbsp;</div> </td>"""
+	elif bill_estimate == "Estimate" and confirmed:
 		html += """<td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """+name+"""<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Your vehicle inspection is complete for the booking ID: """+booking_id+""". The total estimated amount is Rs."""+total_amount + """. Detailed breakup of the jobs is as follows.&nbsp;</div> </td>"""
+	elif bill_estimate == "Estimate":
+		html += """<td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """ + name + """<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>The total estimated amount for your request is Rs.""" + total_amount + """. Detailed breakup of the jobs is as follows.&nbsp;</div> </td>"""
+
 	html += """</tr>
 	</table>
 	<table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A16%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
@@ -9873,7 +9883,7 @@ body, p, div { font-family: arial,sans-serif; }
 	"""+summary_html+"""
 
 <br>"""
-	if bill_estimate == "Estimate":
+	if bill_estimate == "Estimate" and confirmed:
 		html += """<div style="margin-left: -56px; padding-left: 50%;"><a style="display: block;
     width: 115px;
     height: 25px;
@@ -9934,22 +9944,35 @@ body, p, div { font-family: arial,sans-serif; }
 	return html
 
 
-def send_bill(cust_name,cust_email,cust_number,filename):
+def send_bill(cust_name,booking_id,cust_email,price_total,serviceitems,cust_number,filename):
 	me = from_address
 	# Create message container - the correct MIME type is multipart/alternative.
 	msg = MIMEMultipart('alternative')
-	msg['Subject'] = "Thanks for using ClickGarage"
+
+	# booking = Bookings.objects.filter(id = dataid)[0]
+	# name = booking.cust_name
+	# booking_id = booking.booking_id
+	# price_total = booking.price_total
+	# serviceitems = booking.service_items
+	# cust_email = booking.cust_email
+	bill_estimate = "Bill"
 	msg['From'] = me
 	msg['To'] = cust_email
 
-	message = "Hi "+cust_name+","
-	message += "Thanks for using ClickGarage. Please find attached your detailed invoice for the booking in the mail."
-	message += "Happy Motoring,"
-	message += "Team ClickGarage"
+	#
+	if booking_id != "":
+		msg['Subject'] = "Job Completed! Booking ID: " + str(booking_id)
+	else:
+		msg['Subject'] = "ClickGarage | Bill"
 
-	script = MIMEText(message, 'html')
+	html = html_to_send_bill_estimate(name=cust_name, booking_id=booking_id, bill_estimate=bill_estimate,total_amount=price_total, service_list=serviceitems,data_id= "")
+	script = MIMEText(html, 'html')
 	msg.attach(script)
 
+	#
+
+	script = MIMEText(html, 'html')
+	msg.attach(script)
 	part = MIMEApplication(open(filename, 'rb').read())
 	part.add_header('Content-Disposition', 'attachment', filename='Invoice.pdf')
 	msg.attach(part)
