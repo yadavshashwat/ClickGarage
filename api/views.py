@@ -9588,6 +9588,7 @@ def send_booking_bill_estimate(request):
     booking = Bookings.objects.filter(id = data_id)[0]
     booking_id = booking.booking_id
     if booking.booking_flag and bill_estimate == "Estimate":
+        print "Change Status"
         change_status_actual(booking_id=booking_id, status_id="Estimate Shared", send_sms=True)
     obj['status'] = True
     obj['counter'] = 1

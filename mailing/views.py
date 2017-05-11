@@ -9853,9 +9853,12 @@ body, p, div { font-family: arial,sans-serif; }
 <tr>
 <td width="600" valign="top">
 <![endif]-->
-
-<img class="max-width"  width="600"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/bb5c8b37fb8b5c18fa56b1adbdf4ea31daedb73c1df75bc47974c47504873b3b58f73a89ce248498a65fd30bb1dbf308b456ef84787f9c516588b95bb4e21728.jpg" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 600px !important; width: 100% !important; height: auto !important; " />
-
+<img class="max-width"  width="600"   height=""  src='"""
+	if bill_estimate == "Bill":
+		html += """https://www.clickgarage.in/static/revamp/img/bill_email.jpg"""
+	elif bill_estimate == "Estimate":
+		html += """https://www.clickgarage.in/static/revamp/img/estimate_email.jpg"""
+	html += """' alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 600px !important; width: 100% !important; height: auto !important; " />
 <!--[if mso]>
 </td></tr></table>
 </center>
@@ -9884,7 +9887,7 @@ body, p, div { font-family: arial,sans-serif; }
 
 <br>"""
 	if bill_estimate == "Estimate" and confirmed:
-		html += """<div style="margin-left: -56px; padding-left: 50%;"><a style="display: block;
+		html += """<div style="padding-left: 50%;margin-left: -57.5px;"><a style="display: block;
     width: 115px;
     height: 25px;
     background: #4a148c;
