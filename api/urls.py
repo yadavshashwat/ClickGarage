@@ -166,5 +166,6 @@ urlpatterns = [
     url(r'settle_freeze_booking/$', 'api.views.settle_freeze_booking', name='settle_freeze_booking'),
     url(r'send_sms_customer/$', 'api.views.send_sms_customer', name='send_sms_customer'),
     url(r'send_booking_bill_estimate/$', 'api.views.send_booking_bill_estimate', name='send_booking_bill_estimate'),
+    url(r'add_delete_payment_bill/$', 'api.views.add_delete_payment_bill', name='add_delete_payment_bill'),
 
 ]

@@ -9730,7 +9730,10 @@ def html_to_send_bill_estimate(name, booking_id, bill_estimate, total_amount, se
 
 
 	summary_html2 += "</table>"
-	summary_html = str(summary_html2)
+	if bill_estimate == "Estimate":
+		summary_html = str(summary_html2)
+	else:
+		summary_html= ""
 	booking_id = str(booking_id)
 	html = ""
 	html = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -9870,7 +9873,7 @@ body, p, div { font-family: arial,sans-serif; }
 <tr>"""
 	if bill_estimate == "Bill":
 		if booking_id != "":
-			html += """<td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """+name+"""<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Thank you for using ClickGarage. Your order of Booking ID: """+booking_id+""" is complete. Your total due amount is Rs."""+total_amount + """ Please find attached your bill with the email. The bill summary is as follows: &nbsp;</div> </td>"""
+			html += """<td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """+name+"""<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Thank you for using ClickGarage. Your order of Booking ID: """+booking_id+""" is complete. Your total due amount is Rs."""+total_amount + """ Please find attached your bill with the email. &nbsp;</div> </td>"""
 		else:
 			html += """<td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """ + name + """<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Thank you for using ClickGarage. Your total due amount is  Rs.""" + total_amount + """ Please find attached your bill with the email. The bill summary is as follows: &nbsp;</div> </td>"""
 	elif bill_estimate == "Estimate" and confirmed:
@@ -9988,7 +9991,7 @@ def send_bill(cust_name,booking_id,cust_email,price_total,serviceitems,cust_numb
 # the attachment
 
 
-def bill_html(agent_name,agent_address,invoice_number,booking_id,created_date,tin_number,cin_number,stax_number,cust_name,cust_address,cust_locality,cust_city,cust_reg,cust_veh,service_items,vat_part_percent,vat_lube_percent,vat_consumable_percent,stax_percent,vat_part,vat_lube,vat_consumable,stax_amount,total,recommendation,logo):
+def bill_html(agent_name,agent_address,invoice_number,booking_id,created_date,tin_number,cin_number,stax_number,cust_name,cust_address,cust_locality,cust_city,cust_reg,cust_veh,service_items,vat_part_percent,vat_lube_percent,vat_consumable_percent,stax_percent,vat_part,vat_lube,vat_consumable,stax_amount,total,recommendation,logo,amount_paid):
 	html = """<!DOCTYPE html>
 <html id="bill-data" lang="en"><head>
 	<style>
@@ -10347,17 +10350,19 @@ page[size="A5"][layout="portrait"] {
 				marker2 = 1
 				html6 += """<tr class="item"><td>"""+service['name']+"""</td><td>Rs. """+str(service['pre_tax_price'])+"""</td></tr>"""
 		html7+="""</tbody></table>"""
-	if marker2 == 1:
-		html += html5
-		html += html6
-		html += html7
-	html+="""<br>"""
+	if len(service_items):
+		Discount = 0
+		for service in service_items:
+			if (service['type'] == "Discount"):
+				Discount = Discount + float(service['pre_tax_price'])
+
 	marker3 = 0
+
 	if len(service_items):
 		html8 = ''
 		html9 = ''
 		html10 = ''
-
+		marker3 = 0
 		html8 += """<table class="service-table">
 			<thead class="heading">
 			<td>
@@ -10402,11 +10407,38 @@ page[size="A5"][layout="portrait"] {
 				</td>
 			</tr>"""
 	html += """<tr class="total">
+					<td>
+						Total Amount: Rs.  <span id="cust-total">""" + str(round((float(total)+float(Discount)), 0)) + """</span>
+					</td>
+				</tr>"""
+
+	if Discount > 0:
+		html += """<tr class="total-2">
+	    			<td>
+	    				<b>Discount Amount: Rs.  <span id="cust-total">""" + str(round(float(Discount), 0)) + """ ("""+str(round((float(Discount)/(float(total)+float(Discount)))*100, 2))+"""%)</span></b>
+	    			</td>
+	    		</tr>"""
+
+	html += """<tr class="total">
 				<td>
-					Total Amount: Rs.  <span id="cust-total">"""+str(total)+"""</span>
+					Final Amount: Rs.  <span id="cust-total">"""+str(round(float(total),0))+"""</span>
 				</td>
-			</tr>
-		</table>"""
+			</tr>"""
+	if float(amount_paid) != 0:
+		print amount_paid
+		# html +="""<hr>"""
+		html += """<tr class="total-2">
+					<td>
+						Paid Amount: Rs.  <span id="cust-total">""" + str(round(float(amount_paid), 0)) + """</span>
+					</td>
+				</tr>"""
+
+		html += """<tr class="total">
+					<td>
+						Due Amount: Rs.  <span id="cust-total">""" + str(round((float(total)-float(amount_paid)), 0)) + """</span>
+					</td>
+				</tr>"""
+	html +="""</table>"""
 	if recommendation != "" and recommendation != "null":
 		html+="""<div class="recommendations">
 			<div class="row">
@@ -10416,6 +10448,7 @@ page[size="A5"][layout="portrait"] {
 				<span class="recommendation">"""+recommendation+"""</span>
 			</div>
 		</div>"""
+	html +="""<div style="text-align:center">This is a computer generated invoice and does not require any stamp or signature</div>"""
 	html+="""</div>
 </page>
 

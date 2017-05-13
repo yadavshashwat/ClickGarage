@@ -46,7 +46,7 @@ if os.getcwd()=='/home/ubuntu/beta/suigen':
 
 tempSecretKey = 'dmFydW5ndWxhdGlsaWtlc2dhbG91dGlrZWJhYg=='
 tempSecretParkwheel = 'dGhpcyBrZXkgaXMgZm9yIFBhcmt3aGVlbHM='
-superadmin = ["9717353148"]
+superadmin = ["9717353148","9953008804"]
 
 repair_map = {
     'diagnostics':{'name':'Diagnostics','detail':"I don't know what is wrong with my car"},
@@ -4986,16 +4986,45 @@ def verify_otp_password_cookie(request):
 
     # print request.user.username
     # print admin_status
-
+    god_view = False
     if login_flag:
         if request.user.username in superadmin:
-            admin_status = True
-        else:
-            admin_status = request.user.is_admin
-        obj['result']['auth_rights'] = {'admin': admin_status, 'b2b': request.user.is_b2b,
+            god_view = True
+            # set_cookie(response, "god_user", "True")
+            cookieview = request.COOKIES.get('view_type')
+            if cookieview == "Admin":
+                request.user.is_admin = True
+                request.user.is_b2b = False
+                request.user.is_agent = False
+                request.user.is_staff = False
+            elif cookieview == "Staff":
+                request.user.is_admin = False
+                request.user.is_b2b = False
+                request.user.is_agent = False
+                request.user.is_staff = True
+            elif cookieview == "Engineer":
+                request.user.is_admin = False
+                request.user.is_b2b = False
+                request.user.is_agent = True
+                request.user.is_staff = False
+            elif cookieview == "B2B":
+                request.user.is_admin = False
+                request.user.is_b2b = True
+                request.user.is_agent = False
+                request.user.is_staff = False
+            request.user.save()
+            obj['result']['god'] = True
+            obj['result']['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b,
                                         'agent': request.user.is_agent,
                                         'staff': request.user.is_staff}
+        else:
+            obj['result']['god'] = False
+            obj['result']['auth_rights'] = {'admin': request.user.is_admin, 'b2b': request.user.is_b2b,
+                                            'agent': request.user.is_agent,
+                                            'staff': request.user.is_staff}
+
     else:
+        obj['result']['god'] = False
         obj['result']['auth_rights'] = {'admin': False, 'b2b': False,
                                         'agent': False,
                                         'staff': False}
@@ -5008,6 +5037,10 @@ def verify_otp_password_cookie(request):
         set_cookie(response, "c_user_first_name", user.first_name)
         set_cookie(response, "c_user_last_name", user.last_name)
         set_cookie(response, "c_user_number", user.contact_no)
+        if god_view:
+            set_cookie(response, "god_view", "True")
+        else:
+            set_cookie(response, "god_view", "False")
         try:
             set_cookie(response, "c_user_email", user.email)
             set_cookie(response, "c_user_address", user.user_saved_address[0]['address'])
@@ -5015,6 +5048,15 @@ def verify_otp_password_cookie(request):
             set_cookie(response, "c_user_city", user.user_saved_address[0]['city'])
         except:
             None
+    else:
+        set_cookie(response, "c_user_first_name", "")
+        set_cookie(response, "c_user_last_name", "")
+        set_cookie(response, "c_user_number", "")
+        set_cookie(response, "god_view", "False")
+        set_cookie(response, "c_user_email", "")
+        set_cookie(response, "c_user_address", "")
+        set_cookie(response, "c_user_locality", "")
+        set_cookie(response, "c_user_city", "")
     return response
 
 
@@ -6606,6 +6648,7 @@ def view_all_bookings(request):
             bill_agent_cin = bill.agent_cin
             bill_agent_stax = bill.agent_stax
             bill_cust_name = bill.cust_name
+            bill_cust_number = bill.cust_number
             bill_cust_address = bill.cust_address
             bill_cust_locality = bill.cust_locality
             bill_cust_city = bill.cust_city
@@ -6614,6 +6657,7 @@ def view_all_bookings(request):
             # bill_model = bill.model
             bill_type  = bill.bill_type
             bill_owner = bill.owner
+            bill_clickgarage = bill.clickgarage_flag
         else:
             components = ""
             payment_mode = ""
@@ -6642,6 +6686,8 @@ def view_all_bookings(request):
             bill_type = ""
             bill_owner = ""
             bill_file_name = ""
+            bill_cust_number = ""
+            bill_clickgarage = False
 
         if trans.feedback_2:
             print "1"
@@ -6970,18 +7016,21 @@ def view_all_bookings(request):
             'bill_agent_name' : bill_agent_name,
             'bill_agent_address' : bill_agent_address,
             'bill_file_name':bill_file_name,
+            'bill_owner':bill_owner,
             # 'bill_agent_locality' : bill_agent_locality,
             # 'bill_agent_city' : bill_agent_city,
             'bill_agent_vat_no' : bill_agent_vat_no,
             'bill_agent_cin' : bill_agent_cin,
             'bill_agent_stax' : bill_agent_stax,
             'bill_cust_name' : bill_cust_name,
+            'bill_cust_number': bill_cust_number,
             'bill_cust_address' : bill_cust_address,
             'bill_cust_locality': bill_cust_locality,
             'bill_cust_city': bill_cust_city,
             'bill_reg_number': bill_reg_number,
             'bill_vehicle': bill_vehicle,
-            'bill_owner':bill_owner,
+            'bill_clickgarage': bill_clickgarage,
+
             # 'bill_model': bill_model,
             'bill_type':bill_type,
             'time_stamp' : time_stamp,
@@ -7442,7 +7491,7 @@ def update_booking(request):
 def add_delete_payment(request):
     obj = {}
     obj['status'] = False
-    obj['result'] = []
+    obj['result'] = {}
     data_id = get_param(request, 'data_id', None)
     payment_id = get_param(request,'payment_id',None)
     add_delete = get_param(request,'add_del',None)
@@ -7457,7 +7506,7 @@ def add_delete_payment(request):
     total_paid = float(booking.amount_paid)
     if add_delete == "Add":
         if amount != "" and amount != None:
-            obj = {
+            obj2 = {
                 "payment_id" : str(time.time()),
                 "collected_by":col_by,
                 "amount":amount,
@@ -7465,7 +7514,7 @@ def add_delete_payment(request):
                 "date_collected": date_today_new
             }
             total_paid = float(booking.amount_paid) + float(amount)
-            booking.payment_booking.append(obj)
+            booking.payment_booking.append(obj2)
             booking.amount_paid = str(total_paid)
     if add_delete == "Delete":
         payment2 = []
@@ -7483,11 +7532,82 @@ def add_delete_payment(request):
         booking.payment_booking = payment2
 
     booking.save()
+    obj['result']['billid'] = data_id
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+def add_delete_payment_bill(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = {}
+    data_id = get_param(request, 'data_id', None)
+    payment_id = get_param(request,'payment_id',None)
+    add_delete = get_param(request,'add_del',None)
+    medium = get_param(request,'medium',None)
+    amount= get_param(request, 'amount', None)
+    col_by = get_param(request, 'col_by', None)
+    bill = Bills.objects.filter(id = data_id)[0]
+    date_today = datetime.date.today()
+    oldformat_b = str(date_today)
+    datetimeobject = datetime.datetime.strptime(oldformat_b, '%Y-%m-%d')
+    date_today_new= datetimeobject.strftime('%d-%m-%Y')
+    total_paid = float(bill.total_recieved_amount)
+    booking = None
+    try:
+        booking = Bookings.objects.filter(id = bill.booking_data_id)[0]
+    except:
+        booking = None
+
+    if add_delete == "Add":
+        if amount != "" and amount != None:
+            obj2 = {
+                "payment_id" : str(time.time()),
+                "collected_by":col_by,
+                "amount":amount,
+                "medium":medium,
+                "date_collected": date_today_new
+            }
+            total_paid = float(bill.total_recieved_amount) + float(amount)
+            bill.payment_bill.append(obj2)
+            bill.total_recieved_amount = str(total_paid)
+            if float(bill.total_amount) <= total_paid:
+                bill.amount_paid = True
+            else:
+                bill.amount_paid = False
+
+            if booking:
+                booking.payment_booking.append(obj)
+                booking.amount_paid = str(total_paid)
+    if add_delete == "Delete":
+        payment2 = []
+        items = bill.payment_bill
+        # print payment_id
+        for item in items:
+            # print item['payment_id']
+            if item['payment_id'] == payment_id:
+                print "1"
+                total_paid = float(bill.total_recieved_amount) - float(item['amount'])
+            else:
+                # print "2"
+                payment2.append(item)
+        bill.total_recieved_amount = str(total_paid)
+        bill.payment_bill = payment2
+        if float(bill.total_amount) <= total_paid:
+            bill.amount_paid = True
+        else:
+            bill.amount_paid = False
+        if booking:
+            booking.amount_paid = str(total_paid)
+            booking.payment_booking = payment2
+    booking.save()
+    bill.save()
+    obj['result']['billid'] = data_id
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
 
@@ -8640,6 +8760,8 @@ def generate_bill(request):
     vehicle                 = get_param(request,'vehicle',None)
     service_items           = get_param(request,'service_items',None)
     invoice_number          = get_param(request,'invoice_number',None)
+    cust_number          = get_param(request,'cust_number',None)
+
     booking = None
     agent_vas_share = 0
     agent_part_share = 0
@@ -8675,12 +8797,25 @@ def generate_bill(request):
         for bill in billsobjs:
             bill.status = "Cancelled"
             bill.save()
+    cust_id = ""
 
+    if cust_number != "" and cust_number != None:
+        if request.user.is_agent:
+            user2 = create_check_user_modified(name=cust_name, number=cust_number, owner=request.user.id)
+        else:
+            user2 = create_check_user(name=cust_name, number=cust_number)
+        cust_id = user2.id
+
+    pre_paid_amount = "0"
+    payment_bill = []
 
     if booking:
         clickgarage_flag = booking.clickgarage_flag
         cust_number = booking.cust_number
+        cust_id = booking.cust_id
         cust_email = booking.cust_email
+        pre_paid_amount = booking.amount_paid
+        payment_bill = booking.payment_booking
         if bill_owner == "Agent Bill" or bill_owner == "":
             bill_owner = booking.agent
         if not pre_invoice:
@@ -8823,7 +8958,7 @@ def generate_bill(request):
                     total_discount_comm = total_discount_comm + float(item['purchase_price'])
                     total_discount_pre_tax = total_discount_pre_tax + float(item['purchase_price_pretax'])
                     total_commission = total_commission + (float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
-                print item
+                # print item
                 obj2 = {
                     'comment': item['comment'],
                     'name': item['name'],
@@ -8840,10 +8975,6 @@ def generate_bill(request):
                 }
                 # print obj2
                 estimate2.append(obj2)
-
-
-
-
                 # print item
             booking.service_items = estimate2
             booking.price_total = str(total_price)
@@ -8971,6 +9102,9 @@ def generate_bill(request):
                ,cust_number             = cust_number
                ,cust_email              = cust_email
                ,amount_paid             = False
+               ,cust_id                 = cust_id
+               ,total_recieved_amount = pre_paid_amount
+               ,payment_bill=payment_bill
                )
     tt.save()
     tt2 = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner, time_stamp= time_stamp, booking_data_id=data_id, status="Generated", bill_type=bill_type, invoice_number=invoice_number)[0]
@@ -8986,8 +9120,8 @@ def generate_bill(request):
     import sys
     reload(sys)
     sys.setdefaultencoding('utf8')
-    print vat_part
-    print service_tax
+    # print vat_part
+    # print service_tax
     if pre_invoice:
         if booking:
             html = mviews.bill_html(agent_name = full_agent_name,agent_address= agent_address,invoice_number="Pre-Invoice",booking_id = booking_id,created_date = date_today ,tin_number = agent_vat_no, cin_number=agent_cin,stax_number = agent_stax,cust_name= cust_name,cust_address= cust_address,cust_locality=cust_locality,cust_city=cust_city,cust_reg=reg_number,cust_veh=vehicle,service_items = service_items,vat_part_percent=vat_part_percent,vat_lube_percent=vat_lube_percent,vat_consumable_percent=vat_consumable_percent,stax_percent=service_tax_percent,vat_part=vat_part,vat_lube=vat_lube,vat_consumable=vat_consumable,stax_amount=service_tax,total=total_amount,recommendation=notes,logo=clickgarage_flag)
@@ -9003,7 +9137,7 @@ def generate_bill(request):
                                     vat_lube_percent=vat_lube_percent, vat_consumable_percent=vat_consumable_percent,
                                     stax_percent=service_tax_percent, vat_part=vat_part, vat_lube=vat_lube,
                                     vat_consumable=vat_consumable, stax_amount=service_tax, total=total_amount,
-                                    recommendation=notes,logo=clickgarage_flag)
+                                    recommendation=notes,logo=clickgarage_flag,amount_paid =pre_paid_amount)
         else:
             html = mviews.bill_html(agent_name=full_agent_name, agent_address=agent_address,
                                     invoice_number=invoice_number,
@@ -9016,7 +9150,7 @@ def generate_bill(request):
                                     vat_lube_percent=vat_lube_percent, vat_consumable_percent=vat_consumable_percent,
                                     stax_percent=service_tax_percent, vat_part=vat_part, vat_lube=vat_lube,
                                     vat_consumable=vat_consumable, stax_amount=service_tax, total=total_amount,
-                                    recommendation=notes,logo=clickgarage_flag)
+                                    recommendation=notes,logo=clickgarage_flag,amount_paid = "0")
             #     import subprocess
             #
     if socket.gethostname().startswith('ip-'):
@@ -9455,6 +9589,16 @@ def view_all_bills(request):
         jobObjs = jobObjs.filter(bill_type=bill_type)
 
     # jobObjs = Bills.objects.all()
+    if request.user.is_authenticated():
+        is_agent = request.user.is_agent
+        is_staff = request.user.is_staff
+        is_admin = request.user.is_admin
+        is_b2b = request.user.is_b2b
+    else:
+        is_agent = False
+        is_staff = False
+        is_admin = False
+        is_b2b = False
 
     for job in jobObjs:
         booking = None
@@ -9511,6 +9655,11 @@ def view_all_bills(request):
             'service_tax_percent': job.service_tax_percent,
             'agent_name': job.agent_name,
             'agent_address': job.agent_address,
+            'req_user_agent': is_agent,
+            'req_user_staff': is_staff,
+            'req_user_b2b': is_b2b,
+            'req_user_admin': is_admin,
+
             # 'agent_locality': job.agent_locality,
             # 'agent_city': job.agent_city,
             'agent_vat_no': job.agent_vat_no,
@@ -9523,7 +9672,9 @@ def view_all_bills(request):
             'date_due': newformat_d,
             'cust_email': job.cust_email,
             'cust_number': job.cust_number,
-
+            'cust_id': job.cust_id,
+            'total_recieved_amount': job.total_recieved_amount,
+            'payment_bill': job.payment_bill,
         })
 
     obj['status'] = True
@@ -9536,12 +9687,12 @@ def view_all_bills(request):
 def update_bill(request):
     obj = {}
     obj['status'] = False
-    obj['result'] = []
+    obj['result'] = {}
     data_id = get_param(request, 'data_id', None)
     cust_number = get_param(request, 'cust_number', None)
     cust_email = get_param(request,'cust_email',None)
-    payment_mode = get_param(request, 'payment_mode', None)
-    amount_paid = get_param(request, 'amount_paid', None)
+    # payment_mode = get_param(request, 'payment_mode', None)
+    # amount_paid = get_param(request, 'amount_paid', None)
     due_date = get_param(request, 'due_date', None)
     status = get_param(request, 'status', None)
     bill = Bills.objects.filter(id=data_id)[0]
@@ -9552,26 +9703,32 @@ def update_bill(request):
     if cust_email != "" and cust_email != None:
         bill.cust_email = cust_email
 
-    if payment_mode != "" and payment_mode != None:
-        bill.payment_mode = payment_mode
+    # if payment_mode != "" and payment_mode != None:
+    #     bill.payment_mode = payment_mode
 
-    if amount_paid != "" and amount_paid != None:
-        if amount_paid == "true":
-            bill.amount_paid = True
-        else:
-            bill.amount_paid = False
+    # if amount_paid != "" and amount_paid != None:
+    #     if amount_paid == "true":
+    #         bill.amount_paid = True
+    #     else:
+    #         bill.amount_paid = False
 
     if due_date != "" and due_date != None:
         oldformat = due_date
         datetimeobject = datetime.datetime.strptime(oldformat, '%d-%m-%Y')
         newformat = datetimeobject.strftime('%Y-%m-%d')
         due_date = newformat
-        bill.due_date = due_date
+        bill.date_due = due_date
 
     if status != "" and status != None:
         bill.status = status
+        booking = Bookings.objects.filter(bill_id = data_id)[0]
+        if booking:
+            booking.bill_generation_flag = False
+            booking.bill_id = ""
+            booking.save()
 
     bill.save()
+    obj['result']['billid'] = data_id
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
@@ -9594,7 +9751,6 @@ def send_booking_bill_estimate(request):
     obj['counter'] = 1
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
-
 
 def send_bill(request):
     obj = {}
