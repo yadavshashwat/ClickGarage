@@ -10350,6 +10350,12 @@ page[size="A5"][layout="portrait"] {
 				marker2 = 1
 				html6 += """<tr class="item"><td>"""+service['name']+"""</td><td>Rs. """+str(service['pre_tax_price'])+"""</td></tr>"""
 		html7+="""</tbody></table>"""
+
+	if marker2 == 1:
+		html += html5
+		html += html6
+		html += html7
+
 	if len(service_items):
 		Discount = 0
 		for service in service_items:
