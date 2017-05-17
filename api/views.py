@@ -7654,9 +7654,9 @@ def update_estimate(request):
             if taxes['result'][0]['vat_parts'] == "":
                 vat_part = 0
             else:
-                vat_part = float(taxes['result'][0]['vat_consumables'])
+                vat_part = float(taxes['result'][0]['vat_parts'])
 
-            if taxes['result'][0]['vat_parts'] == "":
+            if taxes['result'][0]['vat_consumables'] == "":
                 vat_consumable = 0
             else:
                 vat_consumable = float(taxes['result'][0]['vat_consumables'])
@@ -7754,6 +7754,8 @@ def update_estimate(request):
                     total_discount = total_discount + float(item['price'])
                     total_puchase_price = total_puchase_price - float(item['purchase_price'])
                     applicable_tax = 0
+
+                print (item['type'] +' - ' + str(applicable_tax))
 
                 if item['settlement_cat'] == "Part":
                     applicable_commission_share = float(agent_part_share)
