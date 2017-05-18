@@ -7133,6 +7133,8 @@ def fetch_all_users(request):
     obj['status'] = False
     obj['result'] = []
     type = get_param(request, 'type', None)
+    number = get_param(request, 'number', None)
+    number2 = get_param(request, 'number2', None)
     userid = get_param(request,'u_id',None)
 
     # WMS Modification Start
@@ -7147,6 +7149,13 @@ def fetch_all_users(request):
     # WMS Modification End
     if userid != None:
         tranObjs = tranObjs.filter(id=userid)
+
+    if number != None:
+        tranObjs = tranObjs.filter(contact_no__icontains = number)
+
+    if number2 != None:
+        tranObjs = tranObjs.filter(contact_no = number2)
+
 
     if type != None:
         if type == "agent":
