@@ -6311,17 +6311,21 @@ def view_all_bookings(request):
 
         if name != None and name != "":
             # print "filter name"
-            tranObjs = tranObjs.filter(cust_name=name)
+            tranObjs = tranObjs.filter(cust_name__icontains=name)
 
         if source_id != None and source_id != "":
             tranObjs = tranObjs.filter(source=source_id)
 
         if phone_num != None and phone_num != "":
-            tranObjs = tranObjs.filter(cust_number=phone_num)
+            tranObjs = tranObjs.filter(cust_number__icontains=phone_num)
 
         if reg_number != None and reg_number != "":
             # print "filter reg number"
-            tranObjs = tranObjs.filter(cust_regnumber=reg_number)
+            # tranObjs = tranObjs.filter(cust_regnumber=reg_number)
+            tranObjs = tranObjs.filter(cust_regnumber__icontains=reg_number)
+
+            # tranObjs = tranObjs.findOne({"cust_regnumber": {$regex: reg_number}});
+
 
         if agent_id != None and agent_id != "":
             # print "filter reg number"
