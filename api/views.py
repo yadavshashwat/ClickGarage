@@ -9736,7 +9736,11 @@ def update_bill(request):
 
     if status != "" and status != None:
         bill.status = status
-        booking = Bookings.objects.filter(bill_id = data_id)[0]
+        try:
+            booking = Bookings.objects.filter(bill_id = data_id)[0]
+        except:
+            booking = None
+
         if booking:
             booking.bill_generation_flag = False
             booking.bill_id = ""
