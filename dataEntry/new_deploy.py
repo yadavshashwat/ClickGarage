@@ -1,12 +1,14 @@
 from dataEntry import runentry
 from api.models import *
+from activity.models import Transactions, CGUser, CGUserNew
+
 import datetime
 
 # Taxes.objects.all().delete()
 # runentry.loadTaxes('States_Taxes.csv')
 #
-Bills.objects.all().delete()
-bookings = Bookings.objects.all()
+# Bills.objects.all().delete()
+# bookings = Bookings.objects.all()
 
 # BookingsBackup.objects.all().delete()
 # for booking in bookings:
@@ -60,9 +62,9 @@ bookings = Bookings.objects.all()
 #                         follow_up_status=booking.follow_up_status)
 #     tt.save()
 
-for booking in bookings:
-    booking.bill_generation_flag = False
-    booking.bill_id = ""
+# for booking in bookings:
+#     booking.bill_generation_flag = False
+#     booking.bill_id = ""
     # if booking.status == "Job Completed" or booking.status == "Feedback Taken":
     #     booking.job_completion_flag = True
     # item_list =[]
@@ -100,7 +102,7 @@ for booking in bookings:
     # booking.frozen_flag = False
     # booking.settlement_flag = False
     # booking.purchase_price_total = total_price
-    booking.save()
+    # booking.save()
 
 
 
@@ -116,3 +118,23 @@ for booking in bookings:
 #             items.append(obj)
 #     booking.jobssummary = items
 #     booking.save()
+
+users = CGUserNew.objects.all()
+
+for user in users:
+    print user.contact_no
+    if user.user_address == "":
+        try:
+            user.user_address = user.user_saved_address[0]['address']
+        except:
+            None
+        try:
+            user.user_locality = user.user_saved_address[0]['locality']
+        except:
+            None
+        try:
+            user.user_city = user.user_saved_address[0]['city']
+        except:
+            None
+        user.save()
+# Users = CGUser

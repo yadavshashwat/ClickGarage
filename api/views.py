@@ -4634,6 +4634,10 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
         address2 = {'address':address, 'locality':locality, 'city':city}
         if address2 not in user.user_saved_address:
             user.user_saved_address.append(address2)
+        user.user_address = address
+        user.user_locality = locality
+        user.user_city = city
+
         vehicle = {'type':veh_type,'make':make,'model':model,'fuel':fuel,"reg_num":reg_number}
         if vehicle not in user.user_veh_list:
             user.user_veh_list.append(vehicle)
@@ -5043,9 +5047,9 @@ def verify_otp_password_cookie(request):
             set_cookie(response, "god_view", "False")
         try:
             set_cookie(response, "c_user_email", user.email)
-            set_cookie(response, "c_user_address", user.user_saved_address[0]['address'])
-            set_cookie(response, "c_user_locality", user.user_saved_address[0]['locality'])
-            set_cookie(response, "c_user_city", user.user_saved_address[0]['city'])
+            set_cookie(response, "c_user_address", user.user_address)
+            set_cookie(response, "c_user_locality", user.user_locality)
+            set_cookie(response, "c_user_city", user.user_city)
         except:
             None
     else:
