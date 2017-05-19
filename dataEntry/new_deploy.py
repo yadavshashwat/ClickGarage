@@ -123,7 +123,7 @@ users = CGUserNew.objects.all()
 
 for user in users:
     print user.contact_no
-    if user.user_address == "":
+    if user.user_address == "" or user.user_address == None:
         try:
             user.user_address = user.user_saved_address[0]['address']
         except:
