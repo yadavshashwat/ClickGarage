@@ -58,6 +58,13 @@ additionalFeatures = {
     'car' : ['Clutch Overhaul', 'Interior Dry-cleaning', 'Brake Repair', 'Wheel Balancing', 'Wheel Alignment', 'AC Servicing', 'Injector Cleaning'],
     'bike' : ['Front Brake Repair',  'Rear Brake repair', 'Wheel Balancing', 'Wheel Alignment']
 }
+
+# car_servicing_checklist = ["Alfa","Beta","Gamma","Delta"]
+# car_repairing_checklist = ["Alfa","Beta","Gamma","Delta"]
+# bike_servicing_checklist = ["Alfa","Beta","Gamma","Bike"]
+# bike_servicing_checklist = ["Alfa","Beta","Gamma","Bike"]
+# car_denting_checklist = ["Alfa","Beta","Gamma","Delta"]
+
 #login views
 
 staffmails = ["shashwat@clickgarage.in", "bhuvan@clickgarage.in","bookings@clickgarage.in","smriti.parmar@clickgarage.in", "rajiv@clickgarage.in","amit.kumar@clickgarage.in"]
@@ -4602,7 +4609,7 @@ def create_check_user_modified(name,number,owner):
 def place_booking(user_id, name, number, email, reg_number, address, locality, city, order_list, make, veh_type, model,
                   fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary,send_sms = "1",booking_type="User",booking_user_name=None,booking_user_number=None, owner="ClickGarage", follow_up_date_book = "",follow_up_time_book = "",odometer=""):
 
-    print email
+    # print email
 
     name = cleanstring(name).title()
     address = cleanstring(address).title()
@@ -4624,7 +4631,29 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
     if booking_user_number == None:
         booking_user_number = number
     booking_user_name = cleanstring(booking_user_name).title()
+    append_service = []
+    append_denting = []
+    # print jobsummary_list
+    # for job in jobsummary_list:
+    #     # print job
+    #     if veh_type == "Car":
+    #         if job['Category']=="Servicing" or job['Category'] == "Repairing":
+    #             for item in car_servicing_checklist:
+    #                 obj_append = {"Job": str(item),"Category":"Servicing","Price":"0"}
+    #                 append_service.append(obj_append)
+    #         elif job['Category'] == "Denting":
+    #             for item in car_denting_checklist:
+    #                 obj_append = {"Job": str(item), "Category": "Servicing", "Price": "0"}
+    #                 append_service.append(obj_append)
+    #     elif veh_type == "Bike":
+    #         for item in car_servicing_checklist:
+    #             obj_append = {"Job": str(item), "Category": "Servicing", "Price": "0"}
+    #             append_service.append(obj_append)
+    #
+    # jobsummary_list.extend(append_service)
+    # jobsummary_list.extend(append_denting)
 
+    print append_service
     if booking_flag:
         if owner == "ClickGarage":
             status = "Confirmed"
@@ -4637,7 +4666,6 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
         user.user_address = address
         user.user_locality = locality
         user.user_city = city
-
         vehicle = {'type':veh_type,'make':make,'model':model,'fuel':fuel,"reg_num":reg_number}
         if vehicle not in user.user_veh_list:
             user.user_veh_list.append(vehicle)
@@ -6547,6 +6575,8 @@ def view_all_bookings(request):
         if trans.status == "Lead" 			    :
             status_next = "Confirmed"
         if trans.status =="Confirmed"			:
+            status_next = "Acknowledged"
+        if trans.status == "Acknowledged"		:
             status_next = "Assigned"
         if trans.status =="Assigned"			:
             status_next = "Engineer Left"
@@ -8482,7 +8512,9 @@ def change_status_actual(booking_id,status_id,send_sms):
                     print "SMS Sent"
                     mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking,booking.time_booking,status="Confirmed")
             print "SMS not Sent"
-        if (status_id == "Assigned" and old_status == "Confirmed" ):
+
+
+        if (status_id == "Assigned" and (old_status == "Confirmed" or old_status == "Acknowledged")):
             agent = fetch_user(booking.agent)
             agent_name = agent['result'][0]['first_name']
             agent_num = agent['result'][0]['phone']
