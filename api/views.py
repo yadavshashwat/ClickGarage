@@ -8838,7 +8838,7 @@ def generate_bill(request):
                 tran = Bills.objects.filter(owner=bill_owner,bill_type = "Invoice").aggregate(Max('invoice_number'))
                 invoice_number = int(tran['invoice_number__max'] + 1)
             else:
-                invoice_number = 10000
+                invoice_number = 10001
 
     # if bill_owner == "Agent Bill" or bill_owner = "":
     #     bill_owner

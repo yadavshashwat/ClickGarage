@@ -1436,6 +1436,11 @@ def completion(request):
     context = RequestContext(request, locals())
     return HttpResponse(template.render(context))
 
+def ezgarage(request):
+    template = loader.get_template('revamp/indexez.html')
+    context = RequestContext(request, locals())
+    return HttpResponse(template.render(context))
+
 
 # def adminpanel(request):
 #     template = loader.get_template('revamp/admin.html')
