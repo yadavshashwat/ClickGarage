@@ -569,6 +569,8 @@ class Bookings(models.Model):
     frozen_flag             = models.BooleanField(default=False)
     settlement_flag         = models.BooleanField(default=False)
     delay_count             = models.IntegerField(default=0)
+    status_history          = ListField(DictField())
+
     # int_job_summary         = ListField(DictField(), null=True)
 
 

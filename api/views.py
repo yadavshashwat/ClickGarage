@@ -59,11 +59,11 @@ additionalFeatures = {
     'bike' : ['Front Brake Repair',  'Rear Brake repair', 'Wheel Balancing', 'Wheel Alignment']
 }
 
-# car_servicing_checklist = ["Alfa","Beta","Gamma","Delta"]
-# car_repairing_checklist = ["Alfa","Beta","Gamma","Delta"]
+car_servicing_checklist = ['Test Drive','Hinge Noises','Scratches and Dents','Electricals (Indicators/ Front Light/ Rear Lights/ Horn)','Tyre Condition','Wiper Assembly','Side Mirror Operations','Power Windows','Brakes','Clutch Check/ Gear Check','AC (Heating/ Cooling) Check','Fluids Check','Filters Check','Battery Check','Wheel Allgn/Balancing','Cluster Lights','Suspension']
+car_repairing_checklist = ['Test Drive','Hinge Noises','Scratches and Dents','Electricals (Indicators/ Front Light/ Rear Lights/ Horn)','Tyre Condition','Wiper Assembly','Side Mirror Operations','Power Windows','Brakes','Clutch Check/ Gear Check','AC (Heating/ Cooling) Check','Fluids Check','Filters Check','Battery Check','Wheel Allgn/Balancing','Cluster Lights','Suspension']
+bike_servicing_checklist = ['Test Drive','Engine Oil Check','Spark Plugs Check','Air Filter Check','Petrol T Check','Chain Cleaning and Greasing','Fuel Pipe Check','Battery Check','Tappet Check/Adjust','Brake Check']
 # bike_servicing_checklist = ["Alfa","Beta","Gamma","Bike"]
-# bike_servicing_checklist = ["Alfa","Beta","Gamma","Bike"]
-# car_denting_checklist = ["Alfa","Beta","Gamma","Delta"]
+car_denting_checklist = []
 
 #login views
 
@@ -4602,14 +4602,13 @@ def create_check_user_modified(name,number,owner):
 # comments = models.CharField(max_length=300)
 # source = models.CharField(max_length=200)
 # done_by = models.CharField(max_length=200)
-
 # print newformat
+
+
 
 
 def place_booking(user_id, name, number, email, reg_number, address, locality, city, order_list, make, veh_type, model,
                   fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary,send_sms = "1",booking_type="User",booking_user_name=None,booking_user_number=None, owner="ClickGarage", follow_up_date_book = "",follow_up_time_book = "",odometer=""):
-
-    # print email
 
     name = cleanstring(name).title()
     address = cleanstring(address).title()
@@ -4633,25 +4632,25 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
     booking_user_name = cleanstring(booking_user_name).title()
     append_service = []
     append_denting = []
-    # print jobsummary_list
-    # for job in jobsummary_list:
-    #     # print job
-    #     if veh_type == "Car":
-    #         if job['Category']=="Servicing" or job['Category'] == "Repairing":
-    #             for item in car_servicing_checklist:
-    #                 obj_append = {"Job": str(item),"Category":"Servicing","Price":"0"}
-    #                 append_service.append(obj_append)
-    #         elif job['Category'] == "Denting":
-    #             for item in car_denting_checklist:
-    #                 obj_append = {"Job": str(item), "Category": "Servicing", "Price": "0"}
-    #                 append_service.append(obj_append)
-    #     elif veh_type == "Bike":
-    #         for item in car_servicing_checklist:
-    #             obj_append = {"Job": str(item), "Category": "Servicing", "Price": "0"}
-    #             append_service.append(obj_append)
-    #
-    # jobsummary_list.extend(append_service)
-    # jobsummary_list.extend(append_denting)
+    print jobsummary_list
+    for job in jobsummary_list:
+        # print job
+        if veh_type == "Car":
+            if job['Category']=="Servicing" or job['Category'] == "Repairing":
+                for item in car_servicing_checklist:
+                    obj_append = {"Job": str(item),"Category":"Servicing","Price":"0"}
+                    append_service.append(obj_append)
+            elif job['Category'] == "Denting":
+                for item in car_denting_checklist:
+                    obj_append = {"Job": str(item), "Category": "Servicing", "Price": "0"}
+                    append_service.append(obj_append)
+        elif veh_type == "Bike":
+            for item in car_servicing_checklist:
+                obj_append = {"Job": str(item), "Category": "Servicing", "Price": "0"}
+                append_service.append(obj_append)
+
+    jobsummary_list.extend(append_service)
+    jobsummary_list.extend(append_denting)
 
     print append_service
     if booking_flag:
@@ -4681,6 +4680,8 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
             follow_up_time = datetime.time(9,30,0,0)
         else:
             follow_up_time = datetime.time(9, 30, 0, 0)
+        status_history = [{"Status":"Confirmed","Timestamp":time.time()}]
+
 
 
     else:
@@ -4694,6 +4695,7 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
             follow_up_time = datetime.time(9,30,0,0)
         else:
             follow_up_time = follow_up_time_book
+        status_history = [{"Status":"Lead","Timestamp":time.time()}]
 
     # import time.strftime("%d/%m/%Y"))
     # update estimate history
@@ -4750,7 +4752,8 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
                  booking_owner = owner,
                  follow_up_date = follow_up_date,
                  follow_up_time = follow_up_time,
-                 odometer = odometer)
+                 odometer = odometer,
+                 status_history = status_history)
     tt.save()
 
     send_sms_bool = True
@@ -5306,9 +5309,13 @@ def analyse_bookings(request):
     vol_warm_lead = 0
     num_cold_lead = 0
     vol_cold_lead = 0
+    num_er_lead = 0
+    vol_er_lead = 0
 
     num_confirmed_booking = 0
     vol_confirmed_booking = 0
+    num_ack_booking = 0
+    vol_ack_booking = 0
     num_assigned_booking = 0
     vol_assigned_booking = 0
     num_reachedworkshop_booking = 0
@@ -5477,9 +5484,13 @@ def analyse_bookings(request):
     vol_mahindraauthorized_expense = 0
     vol_exotel_expense = 0
     vol_other_expense = 0
+    total_bookings_kpi = 0
+    total_time_ack = 0
+    total_time_pick = 0
+    total_time_share_est = 0
 
     if len(custObjs):
-        print len(custObjs)
+        # print len(custObjs)
         for cust in custObjs:
             num_users = num_users + 1
 
@@ -5558,11 +5569,21 @@ def analyse_bookings(request):
                 for item in trans.service_items:
                     vol_cold_lead = vol_cold_lead + float(item['price'])
 
+            elif trans.status == "Estimate Required":
+                num_er_lead = num_er_lead + 1
+                for item in trans.service_items:
+                    vol_er_lead = vol_er_lead + float(item['price'])
+
 
             elif trans.status == "Confirmed":
                 num_confirmed_booking = num_confirmed_booking + 1
                 for item in trans.service_items:
                     vol_confirmed_booking = vol_confirmed_booking + float(item['price'])
+
+            elif trans.status == "Acknowledged":
+                num_ack_booking = num_ack_booking + 1
+                for item in trans.service_items:
+                    vol_ack_booking = vol_ack_booking + float(item['price'])
 
 
             elif trans.status == "Assigned":
@@ -5839,18 +5860,133 @@ def analyse_bookings(request):
                     nps_completed = "NA"
 
 
+        lead_min = 0
+        warm_min = 0
+        cold_min = 0
+        er_min = 0
+        confirmed_min = 0
+        acknowledged_min = 0
+        el_min = 0
+        rw_min = 0
+        es_min = 0
+        jc_min = 0
+        ft_min = 0
+        cancelled_min = 0
+        escalation_min = 0
+        assigned_min = 0
+        time_to_ack = 0
+        time_to_pick = 0
+        time_to_share_est = 0
+        for status in trans.status_history:
+            if (status['Status'] == "Lead" and lead_min == 0) or (status['Status'] == "Lead" and lead_min > status['Timestamp']):
+                lead_min = status['Timestamp']
+            if (status['Status'] == "Warm" and warm_min == 0) or (status['Status'] == "Warm" and warm_min > status['Timestamp']):
+                warm_min = status['Timestamp']
+            if (status['Status'] == "Cold" and cold_min == 0) or (status['Status'] == "Cold" and cold_min > status['Timestamp']):
+               cold_min = status['Timestamp']
+            if (status['Status'] == "Estimate Required" and er_min == 0) or (status['Status'] == "Estimate Required" and er_min > status['Timestamp']):
+                er_min = status['Timestamp']
+            if (status['Status'] == "Confirmed" and confirmed_min == 0) or (status['Status'] == "Confirmed" and confirmed_min > status['Timestamp']):
+                confirmed_min = status['Timestamp']
+            if (status['Status'] == "Acknowledged" and acknowledged_min == 0) or (status['Status'] == "Acknowledged" and acknowledged_min > status['Timestamp']):
+                acknowledged_min = status['Timestamp']
+            if (status['Status'] == "Assigned" and assigned_min == 0) or (status['Status'] == "Assigned" and assigned_min > status['Timestamp']):
+                assigned_min = status['Timestamp']
+
+            if (status['Status'] == "Engineer Left" and el_min == 0) or (status['Status'] == "Engineer Left" and el_min > status['Timestamp']):
+                el_min = status['Timestamp']
+            if (status['Status'] == "Reached Workshop" and rw_min == 0) or (status['Status'] == "Reached Workshop" and rw_min > status['Timestamp']):
+                rw_min = status['Timestamp']
+            if (status['Status'] == "Estimate Shared" and es_min == 0) or (status['Status'] == "Estimate Shared" and es_min > status['Timestamp']):
+                es_min = status['Timestamp']
+            if (status['Status'] == "Job Completed" and jc_min == 0) or (status['Status'] == "Job Completed" and jc_min > status['Timestamp']):
+                jc_min = status['Timestamp']
+            if (status['Status'] == "Feedback Taken" and ft_min == 0) or (status['Status'] == "Feedback Taken" and ft_min > status['Timestamp']):
+                ft_min = status['Timestamp']
+            if (status['Status'] == "Cancelled" and cancelled_min == 0) or (status['Status'] == "Cancelled" and cancelled_min > status['Timestamp']):
+                cancelled_min = status['Timestamp']
+            if (status['Status'] == "Escalation" and escalation_min == 0) or (status['Status'] == "Escalation" and escalation_min > status['Timestamp']):
+                escalation_min = status['Timestamp']
+
+        if acknowledged_min != 0:
+            time_to_ack = confirmed_min - acknowledged_min
+        elif assigned_min != 0:
+            time_to_ack = confirmed_min - assigned_min
+        elif el_min != 0:
+            time_to_ack = confirmed_min - el_min
+        elif rw_min != 0:
+            time_to_ack = confirmed_min - rw_min
+        elif es_min != 0:
+            time_to_ack = confirmed_min - es_min
+        elif jc_min != 0:
+            time_to_ack = confirmed_min - jc_min
+        time_to_ack = -1* time_to_ack
+
+        time_pick = trans.time_booking
+        time_pick = time_pick[:7]
+        oldformat_b = str(trans.date_booking)
+        datetimeobject_b = datetime.datetime.strptime(oldformat_b, '%Y-%m-%d')
+        newformat_b = datetimeobject_b.strftime('%d-%m-%Y')
+
+        datetimeobject = datetime.datetime.strptime( (newformat_b + ' ' + time_pick), '%d-%m-%Y %H:%M%p')
+
+        if el_min != 0:
+            value = datetime.datetime.fromtimestamp(el_min)
+            time_to_pick = datetimeobject - value -  datetime.timedelta(hours = 5, minutes = 30)
+            time_to_pick = time_to_pick.seconds
+        elif rw_min != 0:
+            value = datetime.datetime.fromtimestamp(rw_min)
+            time_to_pick = datetimeobject - value -  datetime.timedelta(hours = 5, minutes = 30)
+            time_to_pick = time_to_pick.seconds
+        elif es_min != 0:
+            value = datetime.datetime.fromtimestamp(es_min)
+            time_to_pick = datetimeobject - value -  datetime.timedelta(hours = 5, minutes = 30)
+            time_to_pick = time_to_pick.seconds
+        elif jc_min != 0:
+            value = datetime.datetime.fromtimestamp(jc_min)
+            time_to_pick = datetimeobject - value -  datetime.timedelta(hours = 5, minutes = 30)
+            time_to_pick = time_to_pick.seconds
+        time_to_pick = -1*time_to_pick
+
+        if es_min != 0:
+            if rw_min != 0:
+                time_to_share_est = es_min - rw_min
+            elif el_min != 0:
+                time_to_share_est = es_min - el_min
+
+        if trans.job_completion_flag and len(trans.status_history):
+            print "Check"
+            total_time_ack = time_to_ack + total_time_ack
+            total_time_pick = time_to_pick + total_time_pick
+            total_time_share_est = time_to_share_est + total_time_share_est
+            total_bookings_kpi = total_bookings_kpi + 1
+            print total_bookings_kpi
+    if total_bookings_kpi > 0:
+        avg_time_ack = (total_time_ack/total_bookings_kpi)
+        avg_time_pick = (total_time_pick/total_bookings_kpi)
+        avg_time_share_est = (total_time_share_est/total_bookings_kpi)
+    else:
+        avg_time_ack = 0
+        avg_time_pick = 0
+        avg_time_share_est = 0
     obj['status'] = True
     obj['counter'] = 1
     obj['result'] = {
-
+        'avg_time_ack':avg_time_ack,
+        'avg_time_pick': avg_time_pick,
+        'avg_time_share_est':avg_time_share_est,
         'num_lead_lead':   num_lead_lead ,
         'vol_lead_lead':   vol_lead_lead ,
         'num_warm_lead':   num_warm_lead ,
         'vol_warm_lead':   vol_warm_lead ,
         'num_cold_lead':   num_cold_lead ,
         'vol_cold_lead':   vol_cold_lead ,
+        'num_estimaterequired_lead': num_er_lead,
+        'vol_estimaterequired_lead': vol_er_lead,
         'num_confirmed_booking':   num_confirmed_booking ,
         'vol_confirmed_booking':   vol_confirmed_booking ,
+        'num_acknowledged_booking': num_ack_booking,
+        'vol_acknowledged_booking': vol_ack_booking,
         'num_assigned_booking':   num_assigned_booking ,
         'vol_assigned_booking':   vol_assigned_booking ,
         'num_reachedworkshop_booking':   num_reachedworkshop_booking ,
@@ -7090,8 +7226,8 @@ def view_all_bookings(request):
             'job_completion_flag': trans.job_completion_flag,
             'payment_booking': trans.payment_booking,
             'purchase_price_total': trans.purchase_price_total,
+            'status_history': trans.status_history,
             'lead_delay_count': trans.delay_count
-
         })
     if getcsv == "True":
         # obj['datacheck'] = datarow
@@ -8442,7 +8578,10 @@ def change_status_actual(booking_id,status_id,send_sms):
     booking = Bookings.objects.filter(booking_id=booking_id)[0]
     booking_user = booking.booking_user_type
     send_sms_bool = True
-
+    status_obj = {"Status":status_id,"Timestamp":time.time()}
+    status_history = booking.status_history
+    status_history.append(status_obj)
+    booking.status_history = status_history
     if send_sms:
         if booking.clickgarage_flag:
             send_sms_bool = True
@@ -8569,7 +8708,7 @@ def change_status_actual(booking_id,status_id,send_sms):
                     mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,estimate=booking.price_total,status="Job Completed", status2 ="Escalation")
 
         if (status_id == "Job Completed" and old_status != "Escalation"):
-            # booking.job_completion_flag = True
+            booking.job_completion_flag = True
             # send email to customer about bill reciept and a thank you note
             if (booking_user == "User"):
                 if send_sms_bool:
