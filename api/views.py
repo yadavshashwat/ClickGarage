@@ -5959,7 +5959,11 @@ def analyse_bookings(request):
             # print trans.booking_id
             # print  (newformat_b + ' ' + time_pick)
             # print newformat_b
-            datetimeobject = datetime.datetime.strptime( (newformat_b + ' ' + time_pick), '%d-%m-%Y %H:%M%p')
+            try:
+                datetimeobject = datetime.datetime.strptime( (newformat_b + ' ' + time_pick), '%d-%m-%Y %H:%M%p')
+            except:
+                datetimeobject = datetime.datetime.strptime( (newformat_b + ' ' + '09:30AM'), '%d-%m-%Y %H:%M%p')
+
             # print datetimeobject
             if el_min != 0:
                 value = datetime.datetime.fromtimestamp(el_min)
