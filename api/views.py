@@ -5944,6 +5944,7 @@ def analyse_bookings(request):
                 # time_p
                 time_pick = time_pick[:7]
                 time_pick = time_pick.replace(" ", "")
+                time_pick = str(time_pick)
                 # print time_pick
                 # print len(time_pick)
                 if len(time_pick) == 6:
