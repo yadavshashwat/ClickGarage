@@ -6353,6 +6353,7 @@ def view_all_bookings(request):
     cg_book = get_param(request, 'cg_book', None)
     complete_flag = get_param(request, 'complete_flag', None)
     page_num = get_param(request, 'page_num', None)
+    escalation_flag = get_param(request, 'escalation_flag', "False")
     getcsv = get_param(request, 'getcsv', "False")
     getcsv2 = get_param(request, 'getcsv2', "False")
 
@@ -6547,7 +6548,6 @@ def view_all_bookings(request):
 
             # tranObjs = tranObjs.findOne({"cust_regnumber": {$regex: reg_number}});
 
-
         if agent_id != None and agent_id != "":
             # print "filter reg number"
             tranObjs = tranObjs.filter(agent=agent_id)
@@ -6563,6 +6563,8 @@ def view_all_bookings(request):
         if data_id != None and data_id != "":
             tranObjs = tranObjs.filter(id=data_id)
 
+        if escalation_flag != "False":
+            tranObjs = tranObjs.filter(escalation_flag = True)
 
         if date != None and date != "":
             # print "date filter"
@@ -7277,6 +7279,9 @@ def view_all_bookings(request):
             'settlement_flag': trans.settlement_flag,
             'frozen_flag': trans.frozen_flag,
             'job_completion_flag': trans.job_completion_flag,
+            'escalation_flag': trans.escalation_flag,
+            'escalation_reason': trans.escalation_reason,
+            'escalation_resolution': trans.escalation_resolution,
             'payment_booking': trans.payment_booking,
             'purchase_price_total': trans.purchase_price_total,
             'status_history': trans.status_history,
@@ -7611,6 +7616,8 @@ def update_booking(request):
     follow_status = get_param(request, 'follow_status', None)
     odometer = get_param(request, 'odometer', None)
     job_summary = get_param(request, 'job_summary', None)
+    es_reason = get_param(request,'es_reason',None)
+    es_resolution = get_param(request,'es_resolution',None)
 
     booking = Bookings.objects.filter(booking_id=booking_id)[0]
 
@@ -7662,7 +7669,11 @@ def update_booking(request):
 
     if city != None:
         booking.cust_city = city
+    if es_reason != None:
+        booking.escalation_reason = es_reason
 
+    if es_resolution != None:
+        booking.escalation_resolution = es_resolution
 
     if reg_number_n != None:
         booking.cust_regnumber = reg_number_n
@@ -8810,6 +8821,7 @@ def change_status_actual(booking_id,status_id,send_sms):
 
         if (status_id == "Escalation"):
             booking.job_completion_flag = False
+            booking.escalation_flag = True
             if send_sms:
                 print "SMS Sent"
                 mviews.send_sms_customer(booking.cust_name, booking.cust_number, booking.booking_id, booking.date_booking,

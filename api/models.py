@@ -570,7 +570,8 @@ class Bookings(models.Model):
     settlement_flag         = models.BooleanField(default=False)
     delay_count             = models.IntegerField(default=0)
     status_history          = ListField(DictField())
-
+    escalation_reason       = models.CharField(max_length=500,null=True)
+    escalation_resolution   = models.CharField(max_length=500,null=True)
     # int_job_summary         = ListField(DictField(), null=True)
 
 
