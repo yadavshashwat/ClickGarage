@@ -5956,8 +5956,8 @@ def analyse_bookings(request):
             oldformat_b = str(trans.date_booking)
             datetimeobject_b = datetime.datetime.strptime(oldformat_b, '%Y-%m-%d')
             newformat_b = datetimeobject_b.strftime('%d-%m-%Y')
-            print trans.booking_id
-            print  (newformat_b + ' ' + time_pick)
+            # print trans.booking_id
+            # print  (newformat_b + ' ' + time_pick)
             # print newformat_b
             datetimeobject = datetime.datetime.strptime( (newformat_b + ' ' + time_pick), '%d-%m-%Y %H:%M%p')
             # print datetimeobject
