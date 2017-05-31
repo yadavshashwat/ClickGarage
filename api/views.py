@@ -4652,7 +4652,7 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
     jobsummary_list.extend(append_service)
     jobsummary_list.extend(append_denting)
 
-    print append_service
+    # print append_service
     if booking_flag:
         if owner == "ClickGarage":
             status = "Confirmed"
