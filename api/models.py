@@ -541,6 +541,7 @@ class Bookings(models.Model):
     status                  = models.CharField(max_length=200)
     comments                = models.CharField(max_length=500, null=True)
     jobssummary             = ListField(DictField())
+
     # Price Job Item
     source                  = models.CharField(max_length= 200, null=True)
     agent                   = models.CharField(max_length= 200, null=True)
@@ -572,6 +573,11 @@ class Bookings(models.Model):
     status_history          = ListField(DictField())
     escalation_reason       = models.CharField(max_length=500,null=True)
     escalation_resolution   = models.CharField(max_length=500,null=True)
+    driver_pick_name        = models.CharField(max_length=200,null=True)
+    driver_drop_name        = models.CharField(max_length=200,null=True)
+    driver_pick_number      = models.CharField(max_length=200,null=True)
+    driver_drop_number      = models.CharField(max_length=200,null=True)
+
     # int_job_summary         = ListField(DictField(), null=True)
 
 

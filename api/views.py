@@ -7285,7 +7285,12 @@ def view_all_bookings(request):
             'payment_booking': trans.payment_booking,
             'purchase_price_total': trans.purchase_price_total,
             'status_history': trans.status_history,
-            'lead_delay_count': trans.delay_count
+            'lead_delay_count': trans.delay_count,
+            'driver_pick_name': trans.driver_pick_name,
+            'driver_pick_number': trans.driver_pick_number,
+            'driver_drop_name': trans.driver_drop_name,
+            'driver_drop_number': trans.driver_drop_number
+
         })
     if getcsv == "True":
         # obj['datacheck'] = datarow
@@ -7618,6 +7623,10 @@ def update_booking(request):
     job_summary = get_param(request, 'job_summary', None)
     es_reason = get_param(request,'es_reason',None)
     es_resolution = get_param(request,'es_resolution',None)
+    driver_pick_name = get_param(request,'driver_pick_name',None)
+    driver_pick_number = get_param(request,'driver_pick_number',None)
+    driver_drop_name = get_param(request,'driver_drop_name',None)
+    driver_drop_number = get_param(request,'driver_drop_number',None)
 
     booking = Bookings.objects.filter(booking_id=booking_id)[0]
 
@@ -7680,6 +7689,15 @@ def update_booking(request):
 
     if comment_n != None:
         booking.comments = comment_n
+
+    if driver_pick_name != None:
+        booking.driver_pick_name = driver_pick_name
+    if driver_pick_number != None:
+        booking.driver_pick_number = driver_pick_number
+    if driver_drop_name != None:
+        booking.driver_drop_name = driver_drop_name
+    if driver_drop_number != None:
+        booking.driver_drop_number = driver_drop_number
 
     if job_summary != None:
         booking.jobssummary = json.loads(job_summary)
@@ -8744,21 +8762,21 @@ def change_status_actual(booking_id,status_id,send_sms):
             if (booking_user == "User"):
                 if send_sms_bool:
                     print "SMS Sent"
-                    mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,status="Engineer Left")
+                    # mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,status="Engineer Left")
 
 
         if (status_id == "Reached Workshop"):
             if (booking_user == "User"):
                 if send_sms_bool:
                     print "SMS Sent"
-                    mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,status="Reached Workshop")
+                    # mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,status="Reached Workshop")
 
         if (status_id == "Estimate Shared"):
             # send email to customer about estimate breakup
             if (booking_user == "User"):
                 if send_sms_bool:
                     print "SMS Sent"
-                    mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,estimate=booking.price_total,status="Estimate Shared")
+                    # mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,estimate=booking.price_total,status="Estimate Shared")
 
         if (status_id == "Job Completed" and old_status == "Escalation"):
 
@@ -8769,7 +8787,7 @@ def change_status_actual(booking_id,status_id,send_sms):
             if (booking_user == "User"):
                 if send_sms_bool:
                     print "SMS Sent"
-                    mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,estimate=booking.price_total,status="Job Completed", status2 ="Escalation")
+                    # mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,estimate=booking.price_total,status="Job Completed", status2 ="Escalation")
 
         if (status_id == "Job Completed" and old_status != "Escalation"):
             booking.job_completion_flag = True
@@ -8777,9 +8795,9 @@ def change_status_actual(booking_id,status_id,send_sms):
             if (booking_user == "User"):
                 if send_sms_bool:
                     print "SMS Sent"
-                    mviews.send_sms_customer(booking.cust_name, booking.cust_number, booking.booking_id, booking.date_booking,
-                                         booking.time_booking, estimate=booking.price_total,
-                                         status="Job Completed")
+                    # mviews.send_sms_customer(booking.cust_name, booking.cust_number, booking.booking_id, booking.date_booking,
+                    #                      booking.time_booking, estimate=booking.price_total,
+                    #                      status="Job Completed")
                 # if booking.cust_vehicle_type == "Car":
                     # if booking.price_total >= 3500:
                     #     date_today = datetime.date.today() + datetime.timedelta(days=180)
@@ -8824,9 +8842,9 @@ def change_status_actual(booking_id,status_id,send_sms):
             booking.escalation_flag = True
             if send_sms:
                 print "SMS Sent"
-                mviews.send_sms_customer(booking.cust_name, booking.cust_number, booking.booking_id, booking.date_booking,
-                                     booking.time_booking, estimate=booking.price_total,
-                                     status="Escalation")
+                # mviews.send_sms_customer(booking.cust_name, booking.cust_number, booking.booking_id, booking.date_booking,
+                #                      booking.time_booking, estimate=booking.price_total,
+                #                      status="Escalation")
             booking.escalation_flag = True
             #     # send sms to customer that sorry something happend we will take care of the same - Share number of agent diretly to sort his problems
             #     # send a sorry note to the customer over email

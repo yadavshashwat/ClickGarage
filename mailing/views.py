@@ -7967,7 +7967,7 @@ def send_booking_confirm(email,name,booking_id,number,service_list,car_bike):
 	# print email
 	me = from_address
 	you = email
-
+	cgpoc = "Amit - 9560059744 "
 	# Create message container - the correct MIME type is multipart/alternative.
 	msg = MIMEMultipart('alternative')
 	msg['Subject'] = "Booking Confirmation! Booking ID: " + str(booking_id)
@@ -7998,8 +7998,8 @@ def send_booking_confirm(email,name,booking_id,number,service_list,car_bike):
 		agent_num = agent.contact_no
 
 	if booking.clickgarage_flag == True and booking.status != "Lead":
-		message = "Hi " + name + "! Your ClickGarage order has been placed. You will recieve a call shortly to confirm the order. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
-			booking_id) + ". Booking tracking link: https://www.clickgarage.in/track/" + booking.id + "/details"
+		message = "Hi " + name + "! Your ClickGarage order has been placed. You will recieve a call shortly to confirm the order. For further assistance, please contact your relationship manager " + cgpoc + " and quote your booking ID: " + str(
+			booking_id)
 		send_sms_2factor(number, message)
 	elif booking.clickgarage_flag == True and booking.status == "Lead":
 		message = "Hi " + name + "! Thank you for visiting ClickGarage! Your relationship manager will get in touch with you shortly to understand your requirements. Happy Motoring! Team ClickGarage."
@@ -8068,6 +8068,8 @@ def send_sms_customer_manual(dataid,message):
 
 def send_sms_customer(name,number,booking_id,date,time,agent_details = None,estimate=None, status=None, status2=None):
 	booking = Bookings.objects.filter(booking_id = booking_id)[0]
+	cgpoc = "Amit - 9560059744 "
+
 	if booking.agent != "":
 		agent = CGUserNew.objects.filter(id = booking.agent)[0]
 		agent_name = agent.first_name
@@ -8077,21 +8079,19 @@ def send_sms_customer(name,number,booking_id,date,time,agent_details = None,esti
 
 	if status =="Confirmed":
 		if booking.clickgarage_flag == True:
-			message = "Hi " + name + "! Your ClickGarage order has been confirmed for "+ str(time) + " on " + str(date) +". You will recieve the engineer details shortly. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
-				booking_id) + ". Booking tracking link: https://www.clickgarage.in/track/" + booking.id + "/details"
+			message = "Hi " + name + "! Your ClickGarage order has been confirmed for "+ str(time) + " on " + str(date) +". You will recieve the engineer details shortly. For further assistance, please contact your relationship manager " + cgpoc + " and quote your booking ID: " + str(
+				booking_id)
 			send_sms_2factor(number, message)
 		else:
-			message = "Hi " + name + "! Your booking with"+ full_agent_name +" has been confirmed for " + str(time) + " on " + str(date) + ".  For further assistance, please contact us on " + agent_num + " and quote your booking ID: " + str(
-				booking_id) + ". Booking tracking link: https://www.clickgarage.in/track/" + booking.id + "/details"
+			message = "Hi " + name + "! Your booking with"+ full_agent_name +" has been confirmed for " + str(time) + " on " + str(date) + ".  For further assistance, please contact us on " + agent_num + " and quote your booking ID: " + str(booking_id) + ". Booking tracking link: https://www.clickgarage.in/track/" + booking.id + "/details"
 			send_sms_2factor_EZY(number, message)
 	if status == "Assigned":
 		if booking.clickgarage_flag == True:
-			message = "Hi " + name + "! CG Service engineer "+agent_details+ " has been assigned for your order. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
-				booking_id) + "."
+			message = "Hi " + name + "! CG Service engineer "+full_agent_name+ " has been assigned for your order. For further assistance, please contact your relationship manager " + cgpoc + " and quote your booking ID: " + str(booking_id)  + ".For driver details and other relevant info. use our Booking tracking link: https://www.clickgarage.in/track/" + booking.id + "/details"
 			send_sms_2factor(number, message)
 	if status =="Engineer Left":
 		if booking.clickgarage_flag == True:
-			message = "Hi " + name + "! Our engineer " + str(agent_details) + " has left and is on his way for your booking. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
+			message = "Hi " + name + "! Our engineer " + str(agent_details) + " has left and is on his way for your booking. For further assistance, please contact us on " + cgpoc + " and quote your booking ID: " + str(
 				booking_id)
 			send_sms_2factor(number, message)
 		else:
@@ -8101,7 +8101,7 @@ def send_sms_customer(name,number,booking_id,date,time,agent_details = None,esti
 
 	if status == "Reached Workshop":
 		if booking.clickgarage_flag == True:
-			message = "Hi " + name + "! Your vehicle has reached the workshop. You will recieve and updated estimate post inspection. For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
+			message = "Hi " + name + "! Your vehicle has reached the workshop. You will recieve and updated estimate post inspection. For further assistance, please contact us on " + cgpoc + " and quote your booking ID: " + str(
 				booking_id) + "."
 			send_sms_2factor(number, message)
 		else:
@@ -8112,7 +8112,7 @@ def send_sms_customer(name,number,booking_id,date,time,agent_details = None,esti
 	if status == "Estimate Shared":
 		if booking.clickgarage_flag == True:
 			message = "Hi " + name + "! We have done the complete inspection. Your updated estimate post inspection is Rs." + str(
-				estimate) + ". if there is any discrepency or for any further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
+				estimate) + ". if there is any discrepency or for any further assistance, please contact us on " + cgpoc + " and quote your booking ID: " + str(
 				booking_id) + "."
 			send_sms_2factor(number, message)
 		else:
@@ -8123,7 +8123,7 @@ def send_sms_customer(name,number,booking_id,date,time,agent_details = None,esti
 
 	if status == "Job Complete" and status2=="Escalation":
 		if booking.clickgarage_flag == True:
-			message = "Hi " + name + "! Your order is complete. We apologize for the incovenience caused. If you require any further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
+			message = "Hi " + name + "! Your order is complete. We apologize for the incovenience caused. If you require any further assistance, please contact us on " + cgpoc + " and quote your booking ID: " + str(
 				booking_id) + "."
 			send_sms_2factor(number, message)
 		else:
@@ -8133,7 +8133,7 @@ def send_sms_customer(name,number,booking_id,date,time,agent_details = None,esti
 
 	if status =="Job Complete" and status2==None:
 		if booking.clickgarage_flag == True:
-			message = "Hi " + name + "! Your order is complete. If you require any further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + str(
+			message = "Hi " + name + "! Your order is complete. If you require any further assistance, please contact us on " + cgpoc + " and quote your booking ID: " + str(
 				booking_id) + "."
 			send_sms_2factor(number, message)
 		else:
