@@ -541,7 +541,7 @@ class Bookings(models.Model):
     status                  = models.CharField(max_length=200)
     comments                = models.CharField(max_length=500, null=True)
     jobssummary             = ListField(DictField())
-
+    time_job_summary        = models.CharField(max_length=200,null=True)
     # Price Job Item
     source                  = models.CharField(max_length= 200, null=True)
     agent                   = models.CharField(max_length= 200, null=True)

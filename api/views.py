@@ -4634,9 +4634,8 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
     append_denting = []
     print jobsummary_list
     for job in jobsummary_list:
-        # print job
         if veh_type == "Car":
-            if job['Category']=="Servicing" or job['Category'] == "Repairing":
+            if job['Category']=="Servicing":
                 for item in car_servicing_checklist:
                     obj_append = {"Job": str(item),"Category":"Servicing","Price":"0"}
                     append_service.append(obj_append)
@@ -4753,7 +4752,9 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
                  follow_up_date = follow_up_date,
                  follow_up_time = follow_up_time,
                  odometer = odometer,
-                 status_history = status_history)
+                 status_history = status_history
+                 # time_job_summary =time.time()
+                 )
     tt.save()
 
     send_sms_bool = True
@@ -6542,11 +6543,7 @@ def view_all_bookings(request):
             tranObjs = tranObjs.filter(cust_number__icontains=phone_num)
 
         if reg_number != None and reg_number != "":
-            # print "filter reg number"
-            # tranObjs = tranObjs.filter(cust_regnumber=reg_number)
             tranObjs = tranObjs.filter(cust_regnumber__icontains=reg_number)
-
-            # tranObjs = tranObjs.findOne({"cust_regnumber": {$regex: reg_number}});
 
         if agent_id != None and agent_id != "":
             # print "filter reg number"
@@ -7162,8 +7159,13 @@ def view_all_bookings(request):
                                 str(trans.feedback_2),
                                 str(trans.follow_up_date),
                                 str(trans.follow_up_time)])
-
-
+        try:
+            if ((time.time() - float(trans.time_job_summary)) >= 3600):
+                post_check_enable = True
+            else:
+                post_check_enable = False
+        except:
+            post_check_enable = False
 
         obj['result'].append({
             'id'                : trans.id              ,
@@ -7289,8 +7291,9 @@ def view_all_bookings(request):
             'driver_pick_name': trans.driver_pick_name,
             'driver_pick_number': trans.driver_pick_number,
             'driver_drop_name': trans.driver_drop_name,
-            'driver_drop_number': trans.driver_drop_number
-
+            'driver_drop_number': trans.driver_drop_number,
+            'post_check_enable': post_check_enable,
+            'time_job_summary':trans.time_job_summary
         })
     if getcsv == "True":
         # obj['datacheck'] = datarow
@@ -7627,9 +7630,7 @@ def update_booking(request):
     driver_pick_number = get_param(request,'driver_pick_number',None)
     driver_drop_name = get_param(request,'driver_drop_name',None)
     driver_drop_number = get_param(request,'driver_drop_number',None)
-
     booking = Bookings.objects.filter(booking_id=booking_id)[0]
-
     name = cleanstring(name).title()
     address = cleanstring(address).title()
     locality = cleanstring(locality).title()
@@ -7699,8 +7700,30 @@ def update_booking(request):
     if driver_drop_number != None:
         booking.driver_drop_number = driver_drop_number
 
+    old_itemlist = []
+    new_itemlist = []
+    total_jobs = 0
+    pre_check_completed = 0
+    old_job_summary = booking.jobssummary
+    for olditem in old_job_summary:
+        old_itemlist.append(olditem['Job'])
     if job_summary != None:
-        booking.jobssummary = json.loads(job_summary)
+        new_job_summary = json.loads(job_summary)
+        booking.jobssummary = new_job_summary
+        for newitem in new_job_summary:
+            new_itemlist.append(newitem['Job'])
+            total_jobs = total_jobs + 1
+            try:
+                if (newitem['Preok'] or newitem['Prenotok']):
+                    pre_check_completed = pre_check_completed + 1
+            except:
+                pre_check_completed = pre_check_completed
+
+        if (old_itemlist == new_itemlist) and (pre_check_completed == total_jobs):
+            booking.time_job_summary = time.time()
+        else:
+            booking.time_job_summary = None
+
 
     if time_n != None or time_n != "":
         booking.time_booking = time_n
