@@ -59,8 +59,8 @@ additionalFeatures = {
     'bike' : ['Front Brake Repair',  'Rear Brake repair', 'Wheel Balancing', 'Wheel Alignment']
 }
 
-car_servicing_checklist = ['Test Drive','Hinge Noises','Scratches and Dents','Electricals (Indicators/ Front Light/ Rear Lights/ Horn)','Tyre Condition','Wiper Assembly','Side Mirror Operations','Power Windows','Brakes','Clutch Check/ Gear Check','AC (Heating/ Cooling) Check','Fluids Check','Filters Check','Battery Check','Wheel Allgn/Balancing','Cluster Lights','Suspension']
-car_repairing_checklist = ['Test Drive','Hinge Noises','Scratches and Dents','Electricals (Indicators/ Front Light/ Rear Lights/ Horn)','Tyre Condition','Wiper Assembly','Side Mirror Operations','Power Windows','Brakes','Clutch Check/ Gear Check','AC (Heating/ Cooling) Check','Fluids Check','Filters Check','Battery Check','Wheel Allgn/Balancing','Cluster Lights','Suspension']
+car_servicing_checklist = ['Test Drive','Hinge Noises','Scratches and Dents','Electricals (Indicators/Front Light/Rear Lights/Horn/Power Windows/Cluster Lights)','Tyre Condition','Wiper Assembly','Brakes','Clutch Check/ Gear Check','AC (Heating/ Cooling) Check','Battery Check','Suspension / WA-WB']
+car_repairing_checklist = ['Test Drive','Hinge Noises','Scratches and Dents','Electricals (Indicators/Front Light/Rear Lights/Horn/Power Windows/Cluster Lights)','Tyre Condition','Wiper Assembly','Brakes','Clutch Check/ Gear Check','AC (Heating/ Cooling) Check','Battery Check','Suspension / WA-WB']
 bike_servicing_checklist = ['Test Drive','Engine Oil Check','Spark Plugs Check','Air Filter Check','Petrol T Check','Chain Cleaning and Greasing','Fuel Pipe Check','Battery Check','Tappet Check/Adjust','Brake Check']
 # bike_servicing_checklist = ["Alfa","Beta","Gamma","Bike"]
 car_denting_checklist = []
@@ -4637,15 +4637,15 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
         if veh_type == "Car":
             if job['Category']=="Servicing":
                 for item in car_servicing_checklist:
-                    obj_append = {"Job": str(item),"Category":"Servicing","Price":"0"}
+                    obj_append = {"Job": str(item),"Category":"Servicing","Price":"0","Type":"Check"}
                     append_service.append(obj_append)
             elif job['Category'] == "Denting":
                 for item in car_denting_checklist:
-                    obj_append = {"Job": str(item), "Category": "Servicing", "Price": "0"}
+                    obj_append = {"Job": str(item), "Category": "Servicing", "Price": "0","Type":"Check"}
                     append_service.append(obj_append)
         elif veh_type == "Bike":
             for item in car_servicing_checklist:
-                obj_append = {"Job": str(item), "Category": "Servicing", "Price": "0"}
+                obj_append = {"Job": str(item), "Category": "Servicing", "Price": "0","Type":"Check"}
                 append_service.append(obj_append)
 
     jobsummary_list.extend(append_service)
@@ -7612,6 +7612,10 @@ def update_booking(request):
     date_n = get_param(request, 'date', None)
     notes_n = get_param(request,'note',None)
     amount_paid = get_param(request, 'amount_paid', None)
+    make = get_param(request, 'make', None)
+    model = get_param(request, 'model', None)
+    fuel = get_param(request, 'fuel', None)
+
     name = get_param(request, 'name', None)
     number = get_param(request, 'number', None)
     address = get_param(request, 'address', None)
@@ -7724,6 +7728,12 @@ def update_booking(request):
         else:
             booking.time_job_summary = None
 
+    if make != None and  make != "":
+        booking.cust_make = make
+    if model != None and model != "":
+        booking.cust_model = model
+    if fuel != None and fuel != "":
+        booking.cust_fuel_varient = fuel
 
     if time_n != None or time_n != "":
         booking.time_booking = time_n
