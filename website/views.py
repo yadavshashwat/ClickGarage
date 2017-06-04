@@ -1404,7 +1404,7 @@ def advert(request,service='',veh_type='', source=''):
 def index(request):
 
     website_name =  request.META.get('HTTP_HOST')
-    if website_name == "www.ezgarage.co" or "ezgarage.co":
+    if website_name == "www.ezgarage.co" or website_name =="ezgarage.co":
         template = loader.get_template('revamp/indexez.html')
     else:
         template = loader.get_template('revamp/index.html')
