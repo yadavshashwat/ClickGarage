@@ -6358,9 +6358,10 @@ def view_all_bookings(request):
     getcsv = get_param(request, 'getcsv', "False")
     getcsv2 = get_param(request, 'getcsv2', "False")
 
-    if request.user.is_admin or request.user.is_staff:
-        if lead_booking == "Lead":
-            lead_correct()
+    if request.user.is_authenticated():
+        if request.user.is_admin or request.user.is_staff:
+            if lead_booking == "Lead":
+                lead_correct()
 
 
     if data_id == "" or data_id == None:
@@ -6516,10 +6517,7 @@ def view_all_bookings(request):
                 tranObjs = Bookings.objects.filter(booking_id=booking_id)
                 tranObjs = tranObjs.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id))
         else:
-            try:
-                tranObjs = Bookings.objects.filter(id=data_id)
-            except:
-                transObjs = None
+            tranObjs = None
 
         if lead_booking =="Lead":
             # print "Lead"
