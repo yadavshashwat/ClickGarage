@@ -6516,7 +6516,10 @@ def view_all_bookings(request):
                 tranObjs = Bookings.objects.filter(booking_id=booking_id)
                 tranObjs = tranObjs.filter(Q(booking_owner=request.user.id) | Q(agent=request.user.id))
         else:
-            tranObjs=None
+            try:
+                tranObjs = Bookings.objects.filter(id=data_id)
+            except:
+                transObjs = None
 
         if lead_booking =="Lead":
             # print "Lead"
