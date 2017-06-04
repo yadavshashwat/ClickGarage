@@ -1402,7 +1402,12 @@ def advert(request,service='',veh_type='', source=''):
     return HttpResponse(template.render(context))
 
 def index(request):
-    template = loader.get_template('revamp/index.html')
+
+    website_name =  request.META.get('HTTP_HOST')
+    if website_name == "www.ezgarage.co" or "ezgarage.co":
+        template = loader.get_template('revamp/indexez.html')
+    else:
+        template = loader.get_template('revamp/index.html')
     context = RequestContext(request, {
     })
     return HttpResponse(template.render(context))
