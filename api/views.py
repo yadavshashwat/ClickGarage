@@ -6548,8 +6548,10 @@ def view_all_bookings(request):
 
         if agent_id != None and agent_id != "":
             # print "filter reg number"
-            tranObjs = tranObjs.filter(agent=agent_id)
-
+            if agent_id == "Not Assigned":
+                tranObjs = tranObjs.filter(agent="")
+            else:
+                tranObjs = tranObjs.filter(agent=agent_id)
         if cg_book != None and cg_book != "":
             if cg_book == "True":
                 tranObjs = tranObjs.filter(clickgarage_flag=True)
@@ -7711,7 +7713,10 @@ def update_booking(request):
     pre_check_completed = 0
     old_job_summary = booking.jobssummary
     for olditem in old_job_summary:
-        old_itemlist.append(olditem['Job'])
+        try:
+            old_itemlist.append(olditem['Job'])
+        except:
+            old_itemlist.append('NA')
     if job_summary != None:
         new_job_summary = json.loads(job_summary)
         booking.jobssummary = new_job_summary
