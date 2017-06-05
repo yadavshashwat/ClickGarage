@@ -8,7 +8,7 @@ import datetime
 # runentry.loadTaxes('States_Taxes.csv')
 #
 # Bills.objects.all().delete()
-# bookings = Bookings.objects.all()
+bookings = Bookings.objects.all()
 
 # BookingsBackup.objects.all().delete()
 # for booking in bookings:
@@ -62,11 +62,11 @@ import datetime
 #                         follow_up_status=booking.follow_up_status)
 #     tt.save()
 
-# for booking in bookings:
+for booking in bookings:
 #     booking.bill_generation_flag = False
 #     booking.bill_id = ""
-    # if booking.status == "Job Completed" or booking.status == "Feedback Taken":
-    #     booking.job_completion_flag = True
+    if booking.status == "Job Completed" or booking.status == "Feedback Taken":
+        booking.job_completion_flag = True
     # item_list =[]
     # total_price = 0
     # total_part = 0
@@ -119,22 +119,22 @@ import datetime
 #     booking.jobssummary = items
 #     booking.save()
 
-users = CGUserNew.objects.all()
-
-for user in users:
-    print user.contact_no
-    if user.user_address == "" or user.user_address == None:
-        try:
-            user.user_address = user.user_saved_address[0]['address']
-        except:
-            None
-        try:
-            user.user_locality = user.user_saved_address[0]['locality']
-        except:
-            None
-        try:
-            user.user_city = user.user_saved_address[0]['city']
-        except:
-            None
-        user.save()
+# users = CGUserNew.objects.all()
+#
+# for user in users:
+#     print user.contact_no
+#     if user.user_address == "" or user.user_address == None:
+#         try:
+#             user.user_address = user.user_saved_address[0]['address']
+#         except:
+#             None
+#         try:
+#             user.user_locality = user.user_saved_address[0]['locality']
+#         except:
+#             None
+#         try:
+#             user.user_city = user.user_saved_address[0]['city']
+#         except:
+#             None
+#         user.save()
 # Users = CGUser
