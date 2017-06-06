@@ -9721,8 +9721,13 @@ def html_to_send_bill_estimate(name, booking_id, bill_estimate, total_amount, se
 	if booking_id != "":
 		booking = Bookings.objects.filter(booking_id = booking_id)[0]
 		confirmed = booking.booking_flag
+		reg_number = booking.cust_regnumber
+		car_name = booking.cust_make + " " + booking.cust_model
+
 	else:
 		booking = None
+		reg_number = ""
+		car_name = ""
 		confirmed = False
 	summary_html2 = "<table style = 'border: 1px solid; width: 100%; border-collapse: collapse;'><tr style = 'border: 1px solid;'><th>Item name</th><th>Units</th><th>Unit Cost</th><th>Amount</th></tr>"
 	for serv in service_list:
@@ -9881,8 +9886,14 @@ body, p, div { font-family: arial,sans-serif; }
 	elif bill_estimate == "Estimate":
 		html += """<td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """ + name + """<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>The total estimated amount for your request is Rs.""" + total_amount + """. Detailed breakup of the jobs is as follows.&nbsp;</div> </td>"""
 
-	html += """</tr>
-	</table>
+	html += """</tr><tr><br>"""
+
+	if car_name != "":
+		html += """Vehicle Name: """ + car_name + """<br>"""
+	if reg_number != "":
+		html += """Registration Number: """ + reg_number + """<br><br>"""
+
+	html +="""</tr></table>
 	<table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A16%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
 	<tr><td role="module-content" style="padding: 0px 0px 16px 0px;" bgcolor="#ffffff"></td></tr></table>
 
@@ -9890,7 +9901,7 @@ body, p, div { font-family: arial,sans-serif; }
 
 <br>"""
 	if bill_estimate == "Estimate" and confirmed:
-		html += """<div style="padding-left: 50%;margin-left: -57.5px;"><a style="display: block;
+		html += """<div><a style="display: block;
     width: 115px;
     height: 25px;
     background: #4a148c;
@@ -9898,6 +9909,9 @@ body, p, div { font-family: arial,sans-serif; }
     text-align: center;
     border-radius: 5px;
     color: white;
+    text-decoration: none;
+    line-height: 25px;
+    width:100%;
     font-weight: bold;" href='https://www.clickgarage.in/track/""" + data_id + """/estimate'>Approve Items</a></div>"""
 	html +="""<table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A30%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
 	<tr><td role="module-content" style="padding: 0px 0px 30px 0px;" bgcolor="#ffffff"></td></tr></table>
