@@ -6630,7 +6630,7 @@ def view_all_bookings(request):
             is_admin = False
             is_b2b = False
 
-    if getcsv == "True" or getcsv2 == "True":
+    if getcsv == "True":
         tranObjs = tranObjs
     else:
         if page_num != None and page_num != "":
@@ -6735,6 +6735,7 @@ def view_all_bookings(request):
         oldformat_b = str(trans.date_booking)
         datetimeobject = datetime.datetime.strptime(oldformat_b, '%Y-%m-%d')
         newformat_b = datetimeobject.strftime('%d-%m-%Y')
+        print trans.payment_booking
 
         if trans.date_delivery is None:
             oldformat_d = str(trans.date_booking)
@@ -6941,9 +6942,12 @@ def view_all_bookings(request):
             experience = "NA"
             additional = "NA"
             recommend_factor = "NA"
-
         if getcsv2 == "True":
+            # print trans
             commission = trans.commission
+            payments = trans.payment_booking
+            # print commission
+            print payments
             if socket.gethostname().startswith('ip-'):
                 if PRODUCTION:
                     filename = '/home/ubuntu/beta/suigen/csvfiles/allbookings_commission.csv'
@@ -7011,20 +7015,31 @@ def view_all_bookings(request):
                     discount_price = comm['purchase_price']
                     discount_price_pretax = comm['purchase_price_pre_tax']
                     discount_comm = comm['clickgarage_share']
+
             payment_cg = 0
             payment_uc = 0
             payment_hj = 0
             payment_credit = 0
-            for paymentdic in trans.payment_booking:
-                if len(paymentdic):
-                    if paymentdic['collected_by'] == "ClickGarage":
-                        payment_cg = payment_cg + float(paymentdic['amount'])
-                    if paymentdic['collected_by'] == "ClickGarage UC":
-                        payment_uc = payment_uc + float(paymentdic['amount'])
-                    if paymentdic['collected_by'] == "ClickGarage HJ":
-                        payment_hj = payment_hj + float(paymentdic['amount'])
-                    if paymentdic['collected_by'] == "ClickGarage Credit":
-                        payment_credit = payment_credit + float(paymentdic['amount'])
+            # print payments
+            # if len(payments):
+            # payments = []
+
+            for payment in payments:
+                # print payment
+                # try:
+                if payment['medium'] == "Credit":
+                    if payment['collected_by'] != "Workshop":
+                        payment_credit = payment_credit + float(payment['amount'])
+                else:
+                    if payment['collected_by'] == "ClickGarage":
+                        payment_cg = payment_cg + float(payment['amount'])
+                    if payment['collected_by'] == "ClickGarage UC":
+                        payment_uc = payment_uc + float(payment['amount'])
+                    if payment['collected_by'] == "ClickGarage HJ":
+                        payment_hj = payment_hj + float(payment['amount'])
+
+            if payment_credit > float(trans.purchase_price_total):
+                payment_credit = float(trans.purchase_price_total)
 
             datarow2.append([str(full_agent_name),
                              str(trans.booking_id),
@@ -7039,7 +7054,7 @@ def view_all_bookings(request):
                              str(payment_uc),
                              str(payment_hj),
                              str(payment_credit),
-                             str(trans.price_total),
+                             str(trans.purchase_price_total),
                              str(labour_price),
                              str(part_price),
                              str(lube_price),
@@ -7810,14 +7825,42 @@ def add_delete_payment(request):
     total_paid = float(booking.amount_paid)
     if add_delete == "Add":
         if amount != "" and amount != None:
-            obj2 = {
-                "payment_id" : str(time.time()),
-                "collected_by":col_by,
-                "amount":amount,
-                "medium":medium,
-                "date_collected": date_today_new
-            }
-            total_paid = float(booking.amount_paid) + float(amount)
+            if (request.user.is_admin or request.user.is_staff):
+                if medium == "Credit":
+                    obj2 = {
+                        "payment_id": str(time.time()),
+                        "collected_by": "ClickGarage",
+                        "amount": amount,
+                        "medium": medium,
+                        "date_collected": date_today_new
+                    }
+                else:
+                    obj2 = {
+                        "payment_id" : str(time.time()),
+                        "collected_by":col_by,
+                        "amount":amount,
+                        "medium":medium,
+                        "date_collected": date_today_new
+                    }
+                    total_paid = float(booking.amount_paid) + float(amount)
+            elif request.user.is_agent:
+                if medium == "Credit":
+                    obj2 = {
+                        "payment_id": str(time.time()),
+                        "collected_by": "Workshop",
+                        "amount": amount,
+                        "medium": medium,
+                        "date_collected": date_today_new
+                    }
+                else:
+                    obj2 = {
+                        "payment_id": str(time.time()),
+                        "collected_by": col_by,
+                        "amount": amount,
+                        "medium": medium,
+                        "date_collected": date_today_new
+                    }
+                    total_paid = float(booking.amount_paid) + float(amount)
             booking.payment_booking.append(obj2)
             booking.amount_paid = str(total_paid)
     if add_delete == "Delete":
@@ -7828,7 +7871,8 @@ def add_delete_payment(request):
             print item['payment_id']
             if item['payment_id'] == payment_id:
                 print "1"
-                total_paid = float(booking.amount_paid) - float(item['amount'])
+                if item['medium'] != "Credit":
+                    total_paid = float(booking.amount_paid) - float(item['amount'])
             else:
                 # print "2"
                 payment2.append(item)
@@ -7866,14 +7910,42 @@ def add_delete_payment_bill(request):
 
     if add_delete == "Add":
         if amount != "" and amount != None:
-            obj2 = {
-                "payment_id" : str(time.time()),
-                "collected_by":col_by,
-                "amount":amount,
-                "medium":medium,
-                "date_collected": date_today_new
-            }
-            total_paid = float(bill.total_recieved_amount) + float(amount)
+            if (request.user.is_admin or request.user.is_staff):
+                if medium == "Credit":
+                    obj2 = {
+                        "payment_id": str(time.time()),
+                        "collected_by": "ClickGarage",
+                        "amount": amount,
+                        "medium": medium,
+                        "date_collected": date_today_new
+                    }
+                else:
+                    obj2 = {
+                        "payment_id": str(time.time()),
+                        "collected_by": col_by,
+                        "amount": amount,
+                        "medium": medium,
+                        "date_collected": date_today_new
+                    }
+                    total_paid = float(booking.amount_paid) + float(amount)
+            elif request.user.is_agent:
+                if medium == "Credit":
+                    obj2 = {
+                        "payment_id": str(time.time()),
+                        "collected_by": "Workshop",
+                        "amount": amount,
+                        "medium": medium,
+                        "date_collected": date_today_new
+                    }
+                else:
+                    obj2 = {
+                        "payment_id": str(time.time()),
+                        "collected_by": col_by,
+                        "amount": amount,
+                        "medium": medium,
+                        "date_collected": date_today_new
+                    }
+                    total_paid = float(booking.amount_paid) + float(amount)
             bill.payment_bill.append(obj2)
             bill.total_recieved_amount = str(total_paid)
             if float(bill.total_amount) <= total_paid:
@@ -7882,7 +7954,7 @@ def add_delete_payment_bill(request):
                 bill.amount_paid = False
 
             if booking:
-                booking.payment_booking.append(obj)
+                booking.payment_booking.append(obj2)
                 booking.amount_paid = str(total_paid)
     if add_delete == "Delete":
         payment2 = []
@@ -7892,7 +7964,8 @@ def add_delete_payment_bill(request):
             # print item['payment_id']
             if item['payment_id'] == payment_id:
                 print "1"
-                total_paid = float(bill.total_recieved_amount) - float(item['amount'])
+                if item['medium'] != "Credit":
+                    total_paid = float(bill.total_recieved_amount) - float(item['amount'])
             else:
                 # print "2"
                 payment2.append(item)
@@ -8774,23 +8847,26 @@ def change_status_actual(booking_id,status_id,send_sms):
             print "SMS not Sent"
 
 
-        if (status_id == "Assigned" and (old_status == "Confirmed" or old_status == "Acknowledged")):
+        if (status_id == "Assigned"):
             agent = fetch_user(booking.agent)
             agent_name = agent['result'][0]['first_name']
             agent_num = agent['result'][0]['phone']
             agent_details = agent_name + " - " + agent_num
             vehicle = booking.cust_make +" "+booking.cust_model+" "+booking.cust_fuel_varient
             address = booking.cust_address +", "+booking.cust_locality+", "+booking.cust_city
+
+            datetimeobject = booking.date_booking
+            date_booking = datetimeobject.strftime('%d-%m-%Y')
+
             if (booking_user == "User"):
                 # print "SMS Sent"
 
-
-
                 if send_sms_bool:
                     print "SMS Sent"
-                    mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking,booking.time_booking,agent_details,status="Assigned")
+                    mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,date_booking,booking.time_booking,agent_details,status="Assigned")
             if booking.clickgarage_flag:
-                mviews.send_sms_agent(agent_name, agent_num, booking.booking_user_number, booking.date_booking, booking.time_booking, booking.booking_id, booking.booking_user_name, booking.jobssummary ,
+
+                mviews.send_sms_agent(agent_name, agent_num, booking.booking_user_number, date_booking, booking.time_booking, booking.booking_id, booking.booking_user_name, booking.jobssummary ,
                                   booking.price_total, address, vehicle)
 
         if(status_id == "Engineer Left"  and old_status == "Assigned"):
