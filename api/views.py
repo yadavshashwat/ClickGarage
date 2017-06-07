@@ -7948,7 +7948,7 @@ def add_delete_payment_bill(request):
                     total_paid = float(bill.total_recieved_amount) + float(amount)
             bill.payment_bill.append(obj2)
             bill.total_recieved_amount = str(total_paid)
-            if float(bill.total_amount) <= total_paid:
+            if float(bill.total_recieved_amount) <= total_paid:
                 bill.amount_paid = True
             else:
                 bill.amount_paid = False
