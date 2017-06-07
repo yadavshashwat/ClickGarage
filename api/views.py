@@ -6735,7 +6735,7 @@ def view_all_bookings(request):
         oldformat_b = str(trans.date_booking)
         datetimeobject = datetime.datetime.strptime(oldformat_b, '%Y-%m-%d')
         newformat_b = datetimeobject.strftime('%d-%m-%Y')
-        print trans.payment_booking
+        # print trans.payment_booking
 
         if trans.date_delivery is None:
             oldformat_d = str(trans.date_booking)
