@@ -6947,7 +6947,7 @@ def view_all_bookings(request):
             commission = trans.commission
             payments = trans.payment_booking
             # print commission
-            print payments
+            # print payments
             if socket.gethostname().startswith('ip-'):
                 if PRODUCTION:
                     filename = '/home/ubuntu/beta/suigen/csvfiles/allbookings_commission.csv'
@@ -7948,7 +7948,7 @@ def add_delete_payment_bill(request):
                     total_paid = float(bill.total_recieved_amount) + float(amount)
             bill.payment_bill.append(obj2)
             bill.total_recieved_amount = str(total_paid)
-            if float(bill.total_recieved_amount) <= total_paid:
+            if float(bill.total_amount) <= total_paid:
                 bill.amount_paid = True
             else:
                 bill.amount_paid = False
