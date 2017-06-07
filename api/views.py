@@ -7927,7 +7927,7 @@ def add_delete_payment_bill(request):
                         "medium": medium,
                         "date_collected": date_today_new
                     }
-                    total_paid = float(booking.amount_paid) + float(amount)
+                    total_paid = float(bill.amount_paid) + float(amount)
             elif request.user.is_agent:
                 if medium == "Credit":
                     obj2 = {
@@ -7945,7 +7945,7 @@ def add_delete_payment_bill(request):
                         "medium": medium,
                         "date_collected": date_today_new
                     }
-                    total_paid = float(booking.amount_paid) + float(amount)
+                    total_paid = float(bill.total_recieved_amount) + float(amount)
             bill.payment_bill.append(obj2)
             bill.total_recieved_amount = str(total_paid)
             if float(bill.total_amount) <= total_paid:
