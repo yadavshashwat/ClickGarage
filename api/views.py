@@ -8600,8 +8600,8 @@ def send_booking(request):
     date =newformat
     obj2 = {}
     obj2['status'] = False
-    obj2['result'] = []
-
+    obj2['result'] = {}
+    obj2['result']['user_type_control'] = False
     if follow_time != None and follow_time != "":
         oldformat_time = follow_time
         time_format = datetime.datetime.strptime(oldformat_time, '%I:%M %p')
@@ -8635,8 +8635,9 @@ def send_booking(request):
                                     price_total, source, booking_flag,
                                     job_summary_int, send_sms=send_confirm,owner=request.user.id,follow_up_date_book=date,follow_up_time_book=time_format,odometer=odometer)
         # WMS Modification End
-
+            obj2['result']['user_type_control'] = True
         elif request.user.is_staff or request.user.is_admin:
+            obj2['result']['user_type_control'] = True
             if booking_flag_user == "True":
                 booking_flag = True
             else:
@@ -8679,7 +8680,7 @@ def send_booking(request):
                                         make,
                                         veh_type, model, fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon,
                                         price_total, source, booking_flag,job_summary_int,send_confirm,odometer=odometer)
-        obj2['result'] = {}
+        # obj2['result'] = {}
         obj2['result']['userid'] = user.id
         obj2['result']['booking'] = booking
         obj2['result']['auth'] = True
@@ -8692,7 +8693,7 @@ def send_booking(request):
         booking_flag = True
         booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city, order_list, make,
                                 veh_type, model, fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon, price_total,source,booking_flag,job_summary_int,send_confirm,odometer=odometer)
-        obj2['result'] = {}
+        # obj2['result'] = {}
         obj2['result']['userid'] = user.id
         obj2['result']['booking'] = booking
         obj2['result']['auth'] = True
