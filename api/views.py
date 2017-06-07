@@ -7927,7 +7927,7 @@ def add_delete_payment_bill(request):
                         "medium": medium,
                         "date_collected": date_today_new
                     }
-                    total_paid = float(bill.amount_paid) + float(amount)
+                    total_paid = float(bill.total_recieved_amount) + float(amount)
             elif request.user.is_agent:
                 if medium == "Credit":
                     obj2 = {
@@ -7963,7 +7963,7 @@ def add_delete_payment_bill(request):
         for item in items:
             # print item['payment_id']
             if item['payment_id'] == payment_id:
-                print "1"
+                # print "1"
                 if item['medium'] != "Credit":
                     total_paid = float(bill.total_recieved_amount) - float(item['amount'])
             else:
