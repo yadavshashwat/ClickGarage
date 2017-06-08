@@ -8,9 +8,32 @@ import datetime
 # runentry.loadTaxes('States_Taxes.csv')
 #
 # Bills.objects.all().delete()
-bookings = Bookings.objects.all()
 
-# BookingsBackup.objects.all().delete()
+# Bookings Job Flag Correctionn
+# bookings = Bookings.objects.all()
+# for booking in bookings:
+#     if booking.status == "Job Completed" or booking.status == "Feedback Taken":
+#         booking.job_completion_flag = True
+
+# CRV Correction
+
+vehicles = Vehicle.objects.filter(make = "Honda", model = "CR-V",fuel_type = "Petrol")
+for vehicle in vehicles:
+    vehicle.model = "CRV"
+    vehicle.save()
+
+ServiceParts = ServicePart.objects.filter(make="Honda", model="CR-V",fuel_type = "Petrol")
+for sparts in ServiceParts:
+    sparts.model = "CRV"
+    sparts.save()
+
+Services = Services.objects.filter(make="Honda", model="CR-V", fuel_type="Petrol")
+for Service in Services:
+    Service.model = "CRV"
+    Service.save()
+
+
+        # BookingsBackup.objects.all().delete()
 # for booking in bookings:
 #     tt = BookingsBackup(booking_flag=booking.booking_flag,
 #                         booking_id=booking.booking_id,
@@ -62,11 +85,8 @@ bookings = Bookings.objects.all()
 #                         follow_up_status=booking.follow_up_status)
 #     tt.save()
 
-for booking in bookings:
 #     booking.bill_generation_flag = False
 #     booking.bill_id = ""
-    if booking.status == "Job Completed" or booking.status == "Feedback Taken":
-        booking.job_completion_flag = True
     # item_list =[]
     # total_price = 0
     # total_part = 0
