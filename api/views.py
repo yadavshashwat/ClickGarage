@@ -8055,7 +8055,7 @@ def update_estimate(request):
         else:
             service_tax = 0
 
-    if request.user.is_authenticated:
+    if request.user.is_authenticated():
         estimate_by_id_comp = request.user.id
         estimate_by_number_comp = request.user.contact_no
         estimate_by_name_comp = request.user.first_name + " " + request.user.last_name
