@@ -8056,13 +8056,13 @@ def update_estimate(request):
             service_tax = 0
 
     if request.user.is_authenticated:
-        estimate_by_id = request.user.id
-        estimate_by_number = request.user.contact_no
-        estimate_by_name = request.user.first_name + " " + request.user.last_name
+        estimate_by_id_comp = request.user.id
+        estimate_by_number_comp = request.user.contact_no
+        estimate_by_name_comp = request.user.first_name + " " + request.user.last_name
     else:
-        estimate_by_id = "Anonymous"
-        estimate_by_number = "Anonymous"
-        estimate_by_name = "Anonymous"
+        estimate_by_id_comp = "Anonymous"
+        estimate_by_number_comp = "Anonymous"
+        estimate_by_name_comp = "Anonymous"
 
 
     if estimate != None:
@@ -8070,9 +8070,9 @@ def update_estimate(request):
         estimate = json.loads(estimate)
         if estimate != old_estimate:
             new_estimate_timestamp = time.time()
-            estimate_by_id = request.user.id
-            estimate_by_number = request.user.contact_no
-            estimate_by_name = request.user.first_name + " " + request.user.last_name
+            estimate_by_id = estimate_by_id_comp
+            estimate_by_number = estimate_by_number_comp
+            estimate_by_name = estimate_by_name_comp
             total_price = 0
             total_part = 0
             total_labour = 0
