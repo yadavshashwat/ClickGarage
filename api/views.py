@@ -8055,6 +8055,16 @@ def update_estimate(request):
         else:
             service_tax = 0
 
+    if request.user.is_authenticated:
+        estimate_by_id = request.user.id
+        estimate_by_number = request.user.contact_no
+        estimate_by_name = request.user.first_name + " " + request.user.last_name
+    else:
+        estimate_by_id = "Anonymous"
+        estimate_by_number = "Anonymous"
+        estimate_by_name = "Anonymous"
+
+
     if estimate != None:
         old_estimate = booking.service_items
         estimate = json.loads(estimate)
