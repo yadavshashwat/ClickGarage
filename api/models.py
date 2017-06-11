@@ -577,6 +577,7 @@ class Bookings(models.Model):
     driver_drop_name        = models.CharField(max_length=200,null=True)
     driver_pick_number      = models.CharField(max_length=200,null=True)
     driver_drop_number      = models.CharField(max_length=200,null=True)
+    files_list              = ListField(models.CharField(max_length=200,null=True))
 
     # int_job_summary         = ListField(DictField(), null=True)
 

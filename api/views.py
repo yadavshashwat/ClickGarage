@@ -4608,7 +4608,7 @@ def create_check_user_modified(name,number,owner):
 
 
 def place_booking(user_id, name, number, email, reg_number, address, locality, city, order_list, make, veh_type, model,
-                  fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary,send_sms = "1",booking_type="User",booking_user_name=None,booking_user_number=None, owner="ClickGarage", follow_up_date_book = "",follow_up_time_book = "",odometer=""):
+                  fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary,send_sms = "1",booking_type="User",booking_user_name=None,booking_user_number=None, owner="ClickGarage", follow_up_date_book = "",follow_up_time_book = "",odometer="",done_by="User"):
 
     name = cleanstring(name).title()
     address = cleanstring(address).title()
@@ -4702,9 +4702,12 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
     estimate_by_id = user_id
     estimate_by_number = number
     estimate_by_name = name
+
     estimate_history = [{"timestamp": new_estimate_timestamp, "change_by_userid": estimate_by_id,
                          "change_by_number": estimate_by_number, "change_by_name": estimate_by_name,
-                         'work_estimate': order_list}]
+                         'work_estimate': order_list,
+                         'update_by':done_by}]
+
 
     # update user
 
@@ -7185,6 +7188,18 @@ def view_all_bookings(request):
         except:
             post_check_enable = False
 
+        total_estimate_len = 1
+        try:
+            if trans.clickgarage_flag:
+                for estimate in trans.estimate_history:
+                    if (estimate['update_by'] == "Staff"):
+                        total_estimate_len  = total_estimate_len + 1
+            else:
+                total_estimate_len = total_estimate_len + 1
+
+        except:
+            total_estimate_len = total_estimate_len + 1
+
         obj['result'].append({
             'id'                : trans.id              ,
             'booking_flag'      : trans.booking_flag    ,
@@ -7233,7 +7248,8 @@ def view_all_bookings(request):
             'agent_cin'             :agent_cin,
             'agent_stax'            : agent_stax,
             # 'estimate_history'      : trans.estimate_history,
-            'estimate_history_len': len(trans.estimate_history),
+            # 'estimate_history_len': len(trans.estimate_history),
+            'estimate_history_len': total_estimate_len,
             'agent_details'         : agent_details,
             'status_next'           :status_next,
             'customer_notes'        :trans.customer_notes,
@@ -8054,11 +8070,18 @@ def update_estimate(request):
                 service_tax = float(taxes['result'][0]['service_tax'])
         else:
             service_tax = 0
-
+    update_by = "User"
+    staff_marker = False
     if request.user.is_authenticated():
         estimate_by_id_comp = request.user.id
         estimate_by_number_comp = request.user.contact_no
         estimate_by_name_comp = request.user.first_name + " " + request.user.last_name
+        if request.user.is_admin or request.user.is_staff:
+            update_by = "Staff"
+            staff_marker = True
+        elif request.user.is_agent:
+           update_by = "Agent"
+           staff_marker = False
     else:
         estimate_by_id_comp = "Anonymous"
         estimate_by_number_comp = "Anonymous"
@@ -8068,7 +8091,7 @@ def update_estimate(request):
     if estimate != None:
         old_estimate = booking.service_items
         estimate = json.loads(estimate)
-        if estimate != old_estimate:
+        if estimate != old_estimate or staff_marker:
             new_estimate_timestamp = time.time()
             estimate_by_id = estimate_by_id_comp
             estimate_by_number = estimate_by_number_comp
@@ -8197,6 +8220,7 @@ def update_estimate(request):
                     'type': item['type'],
                     'approved': item['approved'],
                     'quantity': item['quantity'],
+                    'parttype': item['parttype'],
                     'purchase_price': item['purchase_price'],
                     'purchase_price_pretax': float(item['purchase_price']) / (1 + applicable_tax / 100),
                     'clickgarage_share': (float(item['purchase_price']) / (1 + applicable_tax / 100)*(applicable_commission_share)/100),
@@ -8263,7 +8287,7 @@ def update_estimate(request):
             booking.price_labour = str(total_labour)
             booking.price_part = str(total_part)
             booking.price_discount = str(total_discount)
-            a = booking.estimate_history.append({"timestamp": new_estimate_timestamp, "change_by_userid" : estimate_by_id, "change_by_number": estimate_by_number, "change_by_name":  estimate_by_name, 'estimate':old_estimate})
+            a = booking.estimate_history.append({"timestamp": new_estimate_timestamp, "change_by_userid" : estimate_by_id, "change_by_number": estimate_by_number, "change_by_name":  estimate_by_name, 'estimate':old_estimate,'update_by':update_by})
             print a
 
     booking.save()
@@ -9219,7 +9243,10 @@ def generate_bill(request):
             tran_len = len(Bills.objects.filter(owner=bill_owner,bill_type = "Invoice"))
             if tran_len:
                 tran = Bills.objects.filter(owner=bill_owner,bill_type = "Invoice").aggregate(Max('invoice_number'))
-                invoice_number = int(tran['invoice_number__max'] + 1)
+                if invoice_number > 10000:
+                    invoice_number = int(tran['invoice_number__max'] + 1)
+                else:
+                    invoice_number = 10001
             else:
                 invoice_number = 10001
 
@@ -9400,6 +9427,7 @@ def generate_bill(request):
                     'price': item['price'],
                     'unit_price': item['unit_price'],
                     'pre_tax_price': item['pre_tax_price'],
+                    'parttype': item['parttype'],
                     'type': item['type'],
                     'approved': item['approved'],
                     'quantity': item['quantity'],
