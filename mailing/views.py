@@ -8001,7 +8001,7 @@ def send_booking_confirm(email,name,booking_id,number,service_list,car_bike):
 		if booking.cust_vehicle_type == "Car":
 			message = "Hi " + name + "! Your ClickGarage order has been placed. You will recieve a call shortly to confirm the order. For further assistance, please contact your relationship manager " + cgpoc + " and quote your booking ID: " + str(booking_id)
 		else:
-			message = "Hi " + name + "! Currently our bike operations are on hold for operational improvements. Apologies for the inconvinience caused. Happy Motoring, Team ClickGarage!"
+			message = "Hi " + name + "! Currently our bike operations are on hold for improvements. Apologies for the inconvinience caused. Happy Motoring, Team ClickGarage!"
 		send_sms_2factor(number, message)
 	elif booking.clickgarage_flag == True and booking.status == "Lead":
 		message = "Hi " + name + "! Thank you for visiting ClickGarage! Your relationship manager will get in touch with you shortly to understand your requirements. Happy Motoring! Team ClickGarage."
