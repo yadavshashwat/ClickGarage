@@ -4784,6 +4784,19 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
         mviews.send_booking_confirm(email=email,name=name,booking_id=booking_id,number=number, service_list= int_summary, car_bike=veh_type)
     if clickgarage_flag:
         mviews.send_booking(firstname=name,lastname ="", number=number,email=email, car_bike=veh_type, make=make, model=model, fuel_type=fuel,locality=locality,address=address,date_requested=date,time_requested=time_str)
+        if booking_flag:
+            number_list = ["9717353148","9899125443","9560059744"]
+            message = "Job | Name: "+str(name)+" | Number: "+str(number)+" | Vehicle: "+str(make)+" "+str(model)+" "+str(fuel)+" | Jobs: "
+        else:
+            # number_list = ["9953008804","9910060501"]
+            number_list = ["9953008804"]
+            message = "Lead | Name: "+str(name)+" | Number: "+str(number)+" | Vehicle: "+str(make)+" "+str(model)+" "+str(fuel)+" | Jobs: "
+
+        for job in jobsummary_list:
+            if job['Type'] == "Request":
+                message += job['Job'] + ", "
+        for num in number_list:
+            mviews.send_sms_2factor(num,message)
     return {'Status': "Order Placed", 'booking_id': str(tt.booking_id),'price_total':str(tt.price_total),'Summary':str(tt.comments), 'id':str(tt.id)}
 
 def send_sms_customer(request):
@@ -6358,6 +6371,7 @@ def view_all_bookings(request):
     complete_flag = get_param(request, 'complete_flag', None)
     page_num = get_param(request, 'page_num', None)
     escalation_flag = get_param(request, 'escalation_flag', "False")
+    ongoing_flag = get_param(request, 'ongoing_flag', "False")
     getcsv = get_param(request, 'getcsv', "False")
     getcsv2 = get_param(request, 'getcsv2', "False")
 
@@ -6528,9 +6542,10 @@ def view_all_bookings(request):
         elif lead_booking =="Booking":
             # print "Booking"
             tranObjs = tranObjs.filter(booking_flag = True)
-        else:
+            tranObjs = tranObjs.exclude(status = "Cancelled")
+        elif lead_booking == "Cancelled":
             # print "Other All"
-            tranObjs = tranObjs
+            tranObjs = tranObjs.filter(booking_flag = True, status="Cancelled")
 
         if status != None and status !="":
             # print "filter status"
@@ -6568,6 +6583,11 @@ def view_all_bookings(request):
 
         if escalation_flag != "False":
             tranObjs = tranObjs.filter(escalation_flag = True)
+
+        if ongoing_flag != "False":
+            tranObjs = tranObjs.filter(job_completion_flag = False)
+            tranObjs = tranObjs.exclude(status = "Confirmed")
+            tranObjs = tranObjs.exclude(status = "Cancelled")
 
         if date != None and date != "":
             # print "date filter"
@@ -8983,9 +9003,11 @@ def change_status_actual(booking_id,status_id,send_sms):
         #     # send_sms to customer about vehicle reaching the workshop
         if (status_id == "Cancelled"):
             booking.job_completion_flag = False
-
-        #     # send sms saying sorry to let you go
-        #     # send email to the customer about cancellation
+            booking.booking_flag = False
+            booking.status = "Lead"
+            date_today = datetime.date.today() + datetime.timedelta(days=90)
+            booking.follow_up_date = date_today
+            follow_up_time = datetime.time(9, 30, 0, 0)
 
         if (status_id == "Escalation"):
             booking.job_completion_flag = False

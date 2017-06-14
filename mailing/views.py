@@ -8014,7 +8014,6 @@ def send_booking_confirm(email,name,booking_id,number,service_list,car_bike):
 
 
 
-
 def send_bill_estimate(dataid,bill_estimate):
 	me = from_address
 	booking = Bookings.objects.filter(id = dataid)[0]

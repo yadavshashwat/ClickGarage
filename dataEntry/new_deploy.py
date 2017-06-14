@@ -17,21 +17,31 @@ import datetime
 
 # CRV Correction
 
-vehicles = Vehicle.objects.filter(make = "Honda", model = "CR-V",fuel_type = "Petrol")
-for vehicle in vehicles:
-    vehicle.model = "CRV"
-    vehicle.save()
+# vehicles = Vehicle.objects.filter(make = "Honda", model = "CR-V",fuel_type = "Petrol")
+# for vehicle in vehicles:
+#     vehicle.model = "CRV"
+#     vehicle.save()
+#
+# ServiceParts = ServicePart.objects.filter(make="Honda", model="CR-V",fuel_type = "Petrol")
+# for sparts in ServiceParts:
+#     sparts.model = "CRV"
+#     sparts.save()
+#
+# Services = Services.objects.filter(make="Honda", model="CR-V", fuel_type="Petrol")
+# for Service in Services:
+#     Service.model = "CRV"
+#     Service.save()
 
-ServiceParts = ServicePart.objects.filter(make="Honda", model="CR-V",fuel_type = "Petrol")
-for sparts in ServiceParts:
-    sparts.model = "CRV"
-    sparts.save()
 
-Services = Services.objects.filter(make="Honda", model="CR-V", fuel_type="Petrol")
-for Service in Services:
-    Service.model = "CRV"
-    Service.save()
-
+bookings = Bookings.objects.filter(status="Cancelled",booking_flag = True)
+for booking in bookings:
+    if booking.status == "Cancelled":
+        print booking.booking_id
+        booking.booking_flag = False
+        booking.status = "Lead"
+        booking.follow_up_date = booking.date_booking + datetime.timedelta(days=90)
+        booking.follow_up_time = datetime.time(9, 30, 0, 0)
+        booking.save()
 
         # BookingsBackup.objects.all().delete()
 # for booking in bookings:
