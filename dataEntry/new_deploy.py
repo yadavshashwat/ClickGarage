@@ -10,11 +10,11 @@ import datetime
 # Bills.objects.all().delete()
 
 # Bookings Job Flag Correctionn
-# bookings = Bookings.objects.all()
-# for booking in bookings:
-#     if booking.status == "Job Completed" or booking.status == "Feedback Taken":
-#         booking.job_completion_flag = True
-
+bookings = Bookings.objects.all()
+for booking in bookings:
+    if booking.status == "Job Completed" or booking.status == "Feedback Taken":
+        booking.job_completion_flag = True
+        booking.save()
 # CRV Correction
 
 # vehicles = Vehicle.objects.filter(make = "Honda", model = "CR-V",fuel_type = "Petrol")
@@ -33,15 +33,15 @@ import datetime
 #     Service.save()
 
 
-bookings = Bookings.objects.filter(status="Cancelled",booking_flag = True)
-for booking in bookings:
-    if booking.status == "Cancelled":
-        print booking.booking_id
-        booking.booking_flag = False
-        booking.status = "Lead"
-        booking.follow_up_date = booking.date_booking + datetime.timedelta(days=90)
-        booking.follow_up_time = datetime.time(9, 30, 0, 0)
-        booking.save()
+# bookings = Bookings.objects.filter(status="Cancelled",booking_flag = True)
+# for booking in bookings:
+#     if booking.status == "Cancelled":
+#         print booking.booking_id
+#         booking.booking_flag = False
+#         booking.status = "Lead"
+#         booking.follow_up_date = booking.date_booking + datetime.timedelta(days=90)
+#         booking.follow_up_time = datetime.time(9, 30, 0, 0)
+#         booking.save()
 
         # BookingsBackup.objects.all().delete()
 # for booking in bookings:
