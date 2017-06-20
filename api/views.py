@@ -4795,6 +4795,12 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
         for job in jobsummary_list:
             if job['Type'] == "Request":
                 message += job['Job'] + ", "
+
+        if booking_flag:
+            message += " | Link :" + "https://www.clickgarage.in/adminpanel/bookings/single/" + tt.id
+        else:
+            message += " | Link :" + "https://www.clickgarage.in/adminpanel/leads/single/" + tt.id
+
         for num in number_list:
             mviews.send_sms_2factor(num,message)
     return {'Status': "Order Placed", 'booking_id': str(tt.booking_id),'price_total':str(tt.price_total),'Summary':str(tt.comments), 'id':str(tt.id)}
@@ -8899,6 +8905,18 @@ def change_status_actual(booking_id,status_id,send_sms):
                 if send_sms_bool:
                     print "SMS Sent"
                     mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking,booking.time_booking,status="Confirmed")
+            number_list = ["9717353148", "9899125443", "9560059744"]
+            message = "Job | Name: " + str(booking.cust_name) + " | Number: " + str(booking.cust_number) + " | Vehicle: " + str(booking.cust_make) + " " + str(booking.cust_model) + " " + str(booking.cust_fuel_varient) + " | Jobs: "
+            for job in booking.jobssummary:
+                try:
+                    if job['Type'] == "Request":
+                        message += job['Job'] + ", "
+                except:
+                    None
+            message += " | Link :" + "https://www.clickgarage.in/adminpanel/leads/single/" + booking.id
+            for num in number_list:
+                mviews.send_sms_2factor(num, message)
+
             print "SMS not Sent"
 
 
@@ -9003,11 +9021,12 @@ def change_status_actual(booking_id,status_id,send_sms):
         #     # send_sms to customer about vehicle reaching the workshop
         if (status_id == "Cancelled"):
             booking.job_completion_flag = False
-            booking.booking_flag = False
-            booking.status = "Lead"
-            date_today = datetime.date.today() + datetime.timedelta(days=90)
-            booking.follow_up_date = date_today
-            follow_up_time = datetime.time(9, 30, 0, 0)
+            if booking.booking_flag == True:
+                booking.booking_flag = False
+                booking.status = "Lead"
+                date_today = datetime.date.today() + datetime.timedelta(days=90)
+                booking.follow_up_date = date_today
+                follow_up_time = datetime.time(9, 30, 0, 0)
 
         if (status_id == "Escalation"):
             booking.job_completion_flag = False
