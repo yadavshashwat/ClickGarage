@@ -7989,7 +7989,6 @@ def send_booking_confirm(email,name,booking_id,number,service_list,car_bike):
 		if booking.clickgarage_flag == True:
 			result = conn.send_raw_email(msg.as_string())
 
-
 	print booking.agent
 	if booking.agent != "":
 		agent = CGUserNew.objects.filter(id = booking.agent)[0]
@@ -8186,7 +8185,7 @@ def html_to_send(name, booking_id, service_list,car_bike):
 
 	# print doorstep_list
 	# print category_list
-
+	service_cat = "Other"
 	if "0" in doorstep_list:
 		doorstep = "0"
 		if "Servicing" in category_list or "Repairing" in category_list or "Denting" in category_list or "Emergency" in category_list:
