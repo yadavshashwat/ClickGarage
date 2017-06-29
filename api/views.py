@@ -8978,7 +8978,6 @@ def change_status_actual(booking_id,status_id,send_sms):
                     # mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking, booking.time_booking,estimate=booking.price_total,status="Job Completed", status2 ="Escalation")
 
         if (status_id == "Job Completed" and old_status != "Escalation"):
-            booking.job_completion_flag = True
             # send email to customer about bill reciept and a thank you note
             if (booking_user == "User"):
                 if send_sms_bool:
@@ -9001,7 +9000,7 @@ def change_status_actual(booking_id,status_id,send_sms):
                     booking.job_completion_flag = True
                     if booking.clickgarage_flag == True:
                         new_lead = place_booking(booking.cust_id, booking.cust_name, booking.cust_number, booking.cust_email, booking.cust_regnumber, booking.cust_address,booking.cust_locality, booking.cust_city, booking.service_items,
-                                                 booking.cust_make, booking.cust_vehicle_type,booking.cust_model, booking.cust_fuel_varient, str(date_today), "09:30 AM - 12:30 PM", [{'Job':'Servicing/Repair - Reminder','Price':'0'}], False, "0", "NA",
+                                                 booking.cust_make, booking.cust_vehicle_type,booking.cust_model, booking.cust_fuel_varient, str(date_today), "09:30 AM - 12:30 PM", [{'Job':'Servicing/Repair - Reminder','Category':'Servicing','Type':'Request','Price':'0'}], False, "0", "NA",
                                                  "0", "Repeat Customer", False, "NA", send_sms="0",follow_up_date_book=str(date_today))
                     else:
                         new_lead = place_booking(booking.cust_id, booking.cust_name, booking.cust_number,
@@ -9009,7 +9008,7 @@ def change_status_actual(booking_id,status_id,send_sms):
                                                  booking.cust_locality, booking.cust_city, booking.service_items,
                                                  booking.cust_make, booking.cust_vehicle_type, booking.cust_model,
                                                  booking.cust_fuel_varient, str(date_today), "09:30 AM - 12:30 PM",
-                                                 [{'Job':'Servicing/Repair - Reminder','Price':'0'}], False, "0", "NA",
+                                                 [{'Job':'Servicing/Repair - Reminder','Category':'Servicing','Type':'Request','Price':'0'}], False, "0", "NA",
                                                  "0", "Repeat Customer", False, "NA", send_sms="0",owner=booking.booking_owner, follow_up_date_book=str(date_today))
                         # add a lead to the leads data base with follow_up_date as (bike - 60 days , car (bill_amount < 2000) - 30 days, car (bill_amount> 2000) 90 days
 
