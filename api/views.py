@@ -4767,6 +4767,7 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
         else:
             send_sms_bool = False
     else:
+
         user1 = CGUserNew.objects.filter(id=agent)[0]
         sms_credits = user1.agent_sms_credits
         credits_per_message = 1
@@ -4779,6 +4780,10 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
         else:
             send_sms_bool = False
 
+        if send_sms == "1":
+            send_sms_bool = send_sms_bool
+        else:
+            send_sms_bool = False
 
     if send_sms_bool:
         mviews.send_booking_confirm(email=email,name=name,booking_id=booking_id,number=number, service_list= int_summary, car_bike=veh_type)
@@ -9010,7 +9015,10 @@ def change_status_actual(booking_id,status_id,send_sms):
                                                  booking.cust_fuel_varient, str(date_today), "09:30 AM - 12:30 PM",
                                                  [{'Job':'Servicing/Repair - Reminder','Category':'Servicing','Type':'Request','Price':'0'}], False, "0", "NA",
                                                  "0", "Repeat Customer", False, "NA", send_sms="0",owner=booking.booking_owner, follow_up_date_book=str(date_today))
-                        # add a lead to the leads data base with follow_up_date as (bike - 60 days , car (bill_amount < 2000) - 30 days, car (bill_amount> 2000) 90 days
+            else:
+                booking.job_completion_flag = True
+
+                # add a lead to the leads data base with follow_up_date as (bike - 60 days , car (bill_amount < 2000) - 30 days, car (bill_amount> 2000) 90 days
 
         if (status_id == "Feedback Taken"):
             booking.job_completion_flag = True
