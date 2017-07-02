@@ -647,6 +647,12 @@ class Bills(models.Model):
     vat_lube                    = models.CharField(max_length=200)
     vat_consumable              = models.CharField(max_length=200)
     service_tax                 = models.CharField(max_length=200)
+
+    gst_part                    = models.CharField(max_length=200)
+    gst_lube                    = models.CharField(max_length=200)
+    gst_consumable              = models.CharField(max_length=200)
+    gst_service                 = models.CharField(max_length=200)
+
     components                  = ListField(DictField())
     status                      = models.CharField(max_length=200)
     booking_data_id             = models.CharField(max_length=200)
@@ -663,11 +669,18 @@ class Bills(models.Model):
     vat_lube_percent            = models.CharField(max_length=50)
     vat_consumable_percent      = models.CharField(max_length=50)
     service_tax_percent         = models.CharField(max_length=50)
+
+    gst_part_percent = models.CharField(max_length=50)
+    gst_lube_percent = models.CharField(max_length=50)
+    gst_consumable_percent = models.CharField(max_length=50)
+    gst_service_percent = models.CharField(max_length=50)
+    
     agent_name                  = models.CharField(max_length=200)
     agent_address               = models.CharField(max_length=200)
     # agent_locality              = models.CharField(max_length=200)
     # agent_city                  = models.CharField(max_length=200)
     agent_vat_no                = models.CharField(max_length=200)
+    agent_gst_no = models.CharField(max_length=200)
     agent_cin                   = models.CharField(max_length=200)
     agent_stax                  = models.CharField(max_length=200)
     cust_name                   = models.CharField(max_length=200)
@@ -737,13 +750,16 @@ class CouponNew(models.Model):
     car_bike            = models.CharField(max_length=50)
     cap                 = models.FloatField(null=True)
 
-
 class Taxes(models.Model):
     state             = models.CharField(max_length=200)
     vat_parts         = models.CharField(max_length=50)
     vat_lubes            = models.CharField(max_length=50)
     vat_consumable = models.CharField(max_length=50)
     service_tax = models.CharField(max_length=50)
+    gst_parts = models.CharField(max_length=50)
+    gst_lubes = models.CharField(max_length=50)
+    gst_consumable = models.CharField(max_length=50)
+    gst_service = models.CharField(max_length=50)
 
 
 

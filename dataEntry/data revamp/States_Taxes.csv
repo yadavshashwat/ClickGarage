@@ -1,37 +1,1 @@
-States,Parts VAT,Lubes VAT,Consumables VAT,Service Tax
-Andaman and Nicobar Islands,,,,
-Andhra Pradesh,,,,
-Arunachal Pradesh,,,,
-Assam,,,,
-Bihar,,,,
-Chandigarh,,,,
-Chhattisgarh,,,,
-Dadra and Nagar Haveli,,,,
-Daman and Diu,,,,
-Delhi,12.5,20,5,15
-Goa,,,,
-Gujarat,,,,
-Haryana,13.125,13.125,13.125,15
-Himachal Pradesh,,,,
-Jammu and Kashmir,,,,
-Jharkhand,,,,
-Karnataka,,,,
-Kerala,,,,
-Lakshadweep,,,,
-Madhya Pradesh,,,,
-Maharashtra,,,,
-Manipur,,,,
-Meghalaya,,,,
-Mizoram,,,,
-Nagaland,,,,
-Odisha,,,,
-Puducherry,,,,
-Punjab,,,,
-Rajasthan,,,,
-Sikkim,,,,
-Tamil Nadu,,,,
-Telangana,,,,
-Tripura,,,,
-Uttar Pradesh,14.5,21,5,15
-Uttarakhand,,,,
-West Bengal,,,,
+States,Parts VAT,Lubes VAT,Consumables VAT,Service Tax,GST Parts ,GST Lubes ,GST Cosumables,GST ServiceAndaman and Nicobar Islands,,,,,28,18,28,18Andhra Pradesh,,,,,28,18,28,18Arunachal Pradesh,,,,,28,18,28,18Assam,,,,,28,18,28,18Bihar,,,,,28,18,28,18Chandigarh,,,,,28,18,28,18Chhattisgarh,,,,,28,18,28,18Dadra and Nagar Haveli,,,,,28,18,28,18Daman and Diu,,,,,28,18,28,18Delhi,12.5,20,5,15,28,18,28,18Goa,,,,,28,18,28,18Gujarat,,,,,28,18,28,18Haryana,13.125,13.125,13.125,15,28,18,28,18Himachal Pradesh,,,,,28,18,28,18Jammu and Kashmir,,,,,28,18,28,18Jharkhand,,,,,28,18,28,18Karnataka,,,,,28,18,28,18Kerala,,,,,28,18,28,18Lakshadweep,,,,,28,18,28,18Madhya Pradesh,,,,,28,18,28,18Maharashtra,,,,,28,18,28,18Manipur,,,,,28,18,28,18Meghalaya,,,,,28,18,28,18Mizoram,,,,,28,18,28,18Nagaland,,,,,28,18,28,18Odisha,,,,,28,18,28,18Puducherry,,,,,28,18,28,18Punjab,,,,,28,18,28,18Rajasthan,,,,,28,18,28,18Sikkim,,,,,28,18,28,18Tamil Nadu,,,,,28,18,28,18Telangana,,,,,28,18,28,18Tripura,,,,,28,18,28,18Uttar Pradesh,14.5,21,5,15,28,18,28,18Uttarakhand,,,,,28,18,28,18West Bengal,,,,,28,18,28,18

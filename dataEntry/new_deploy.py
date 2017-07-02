@@ -4,17 +4,17 @@ from activity.models import Transactions, CGUser, CGUserNew
 
 import datetime
 
-# Taxes.objects.all().delete()
-# runentry.loadTaxes('States_Taxes.csv')
+Taxes.objects.all().delete()
+runentry.loadTaxes('States_Taxes.csv')
 #
 # Bills.objects.all().delete()
 
 # Bookings Job Flag Correctionn
-bookings = Bookings.objects.all()
-for booking in bookings:
-    if booking.status == "Job Completed" or booking.status == "Feedback Taken":
-        booking.job_completion_flag = True
-        booking.save()
+# bookings = Bookings.objects.all()
+# for booking in bookings:
+#     if booking.status == "Job Completed" or booking.status == "Feedback Taken":
+#         booking.job_completion_flag = True
+#         booking.save()
 # CRV Correction
 
 # vehicles = Vehicle.objects.filter(make = "Honda", model = "CR-V",fuel_type = "Petrol")

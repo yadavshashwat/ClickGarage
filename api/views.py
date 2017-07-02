@@ -6831,6 +6831,7 @@ def view_all_bookings(request):
             agent_locality = agent['result'][0]['user_locality']
             agent_city = agent['result'][0]['user_city']
             agent_vat = agent['result'][0]['agent_vat']
+            agent_gst = agent['result'][0]['agent_gst']
             agent_cin = agent['result'][0]['agent_cin']
             agent_stax = agent['result'][0]['agent_stax']
             agent_state = agent['result'][0]['user_state']
@@ -6844,22 +6845,48 @@ def view_all_bookings(request):
                         service_tax = taxes['result'][0]['service_tax']
                     else:
                         service_tax = 0
+                        
+                    if agent_gst:
+                        gst_part = taxes['result'][0]['gst_parts']
+                        gst_consumable = taxes['result'][0]['gst_consumables']
+                        gst_lube = taxes['result'][0]['gst_lube']
+                        gst_service = taxes['result'][0]['gst_service']
+                    else:
+                        gst_part = 0
+                        gst_consumable = 0
+                        gst_lube = 0
+                        gst_service = 0
+
                 else:
                     vat_part = 0
                     vat_consumable = 0
                     vat_lube = 0
                     service_tax = 0
+                    gst_part = 0
+                    gst_consumable = 0
+                    gst_lube = 0
+                    gst_service = 0
+
             elif state == "NA":
                 vat_part = 0
                 vat_consumable = 0
                 vat_lube = 0
                 service_tax = 0
+                gst_part = 0
+                gst_consumable = 0
+                gst_lube = 0
+                gst_service = 0
+
             else:
                 taxes = get_tax(state)
                 vat_part = taxes['result'][0]['vat_parts']
                 vat_consumable = taxes['result'][0]['vat_consumables']
                 vat_lube = taxes['result'][0]['vat_lube']
                 service_tax = taxes['result'][0]['service_tax']
+                gst_part = taxes['result'][0]['gst_parts']
+                gst_consumable = taxes['result'][0]['gst_consumables']
+                gst_lube = taxes['result'][0]['gst_lube']
+                gst_service = taxes['result'][0]['gst_service']
         else:
             agent_name = "NA"
             full_agent_name = "NA"
@@ -6868,6 +6895,7 @@ def view_all_bookings(request):
             agent_locality = "NA"
             agent_city = "NA"
             agent_vat = "NA"
+            agent_gst = "NA"
             agent_cin = "NA"
             agent_stax = "NA"
             agent_details = "Not Assigned"
@@ -6877,19 +6905,31 @@ def view_all_bookings(request):
                 vat_consumable = 0
                 vat_lube = 0
                 service_tax = 0
+                gst_part = 0
+                gst_consumable = 0
+                gst_lube = 0
+                gst_service = 0
+
             elif state == "NA":
                 vat_part = 0
                 vat_consumable = 0
                 vat_lube = 0
                 service_tax = 0
+                gst_part = 0
+                gst_consumable = 0
+                gst_lube = 0
+                gst_service = 0
+
             else:
                 taxes = get_tax(state)
                 vat_part = taxes['result'][0]['vat_parts']
                 vat_consumable = taxes['result'][0]['vat_consumables']
                 vat_lube = taxes['result'][0]['vat_lube']
                 service_tax = taxes['result'][0]['service_tax']
-
-
+                gst_part = taxes['result'][0]['gst_parts']
+                gst_consumable = taxes['result'][0]['gst_consumables']
+                gst_lube = taxes['result'][0]['gst_lube']
+                gst_service = taxes['result'][0]['gst_service']
 
         if trans.bill_id != "":
             bill = Bills.objects.filter(id = trans.bill_id)[0]
@@ -6903,12 +6943,21 @@ def view_all_bookings(request):
             bill_vat_lube_percent = bill.vat_lube_percent
             bill_vat_consumable_percent = bill.vat_consumable_percent
             bill_service_tax_percent = bill.service_tax_percent
+            
+            bill_gst_part_percent = bill.gst_part_percent
+            bill_gst_lube_percent = bill.gst_lube_percent
+            bill_gst_consumable_percent = bill.gst_consumable_percent
+            bill_gst_service_percent = bill.gst_service_percent
+
+            
             bill_agent_name = bill.agent_name
             bill_agent_address = bill.agent_address
             bill_file_name = bill.file_name
             # bill_agent_locality =  bill.agent_locality
             # bill_agent_city = bill.agent_city
             bill_agent_vat_no = bill.agent_vat_no
+            bill_agent_gst_no = bill.agent_gst_no
+
             bill_agent_cin = bill.agent_cin
             bill_agent_stax = bill.agent_stax
             bill_cust_name = bill.cust_name
@@ -6929,15 +6978,27 @@ def view_all_bookings(request):
             invoice_number = ""
             bill_notes = ""
             bill_state = ""
+
             bill_vat_part_percent = ""
             bill_vat_lube_percent = ""
             bill_vat_consumable_percent = ""
             bill_service_tax_percent = ""
+
+            bill_gst_part_percent = ""
+            bill_gst_lube_percent = ""
+            bill_gst_consumable_percent = ""
+            bill_gst_service_percent = ""
+
+
+
             bill_agent_name = ""
             bill_agent_address = ""
             # bill_agent_locality = ""
             # bill_agent_city = ""
             bill_agent_vat_no = ""
+
+            bill_agent_gst_no = ""
+
             bill_agent_cin = ""
             bill_agent_stax = ""
             bill_cust_name = ""
@@ -7275,7 +7336,14 @@ def view_all_bookings(request):
             'vat_consumable'    : vat_consumable,
             'vat_lube'          : vat_lube,
             'service_tax'           : service_tax,
+
+            'gst_part': gst_part,
+            'gst_consumable': gst_consumable,
+            'gst_lube': gst_lube,
+            'gst_service': gst_service,
+
             'agent_vat'             : agent_vat,
+            'agent_gst': agent_gst,
             'agent_cin'             :agent_cin,
             'agent_stax'            : agent_stax,
             # 'estimate_history'      : trans.estimate_history,
@@ -7305,10 +7373,17 @@ def view_all_bookings(request):
             'invoice_number'        : invoice_number,
             'bill_notes'            :bill_notes,
             'bill_state'            : bill_state,
+
             'bill_vat_part_percent' : bill_vat_part_percent,
             'bill_vat_lube_percent' : bill_vat_lube_percent,
             'bill_vat_consumable_percent' : bill_vat_consumable_percent,
             'bill_service_tax_percent' : bill_service_tax_percent,
+
+            'bill_gst_part_percent': bill_gst_part_percent,
+            'bill_gst_lube_percent': bill_gst_lube_percent,
+            'bill_gst_consumable_percent': bill_gst_consumable_percent,
+            'bill_gst_service_percent': bill_gst_service_percent,
+
             'bill_agent_name' : bill_agent_name,
             'bill_agent_address' : bill_agent_address,
             'bill_file_name':bill_file_name,
@@ -7316,6 +7391,7 @@ def view_all_bookings(request):
             # 'bill_agent_locality' : bill_agent_locality,
             # 'bill_agent_city' : bill_agent_city,
             'bill_agent_vat_no' : bill_agent_vat_no,
+            'bill_agent_gst_no': bill_agent_gst_no,
             'bill_agent_cin' : bill_agent_cin,
             'bill_agent_stax' : bill_agent_stax,
             'bill_cust_name' : bill_cust_name,
@@ -7417,6 +7493,7 @@ def fetch_user(user_id):
             , 'user_state':trans.user_state
             , 'agent_cin': trans.agent_cin
             , 'agent_vat': trans.agent_vat
+            , 'agent_gst': trans.agent_gst
             , 'agent_stax': trans.agent_stax
             ,  'user_address':trans.user_address
             , 'user_locality': trans.user_locality
@@ -7468,7 +7545,7 @@ def fetch_all_users(request):
         elif type == "admin":
             tranObjs = tranObjs.filter(is_admin=True)
         elif type == "staff":
-            tranObjs = tranObjs.filter(is_admin=True)
+            tranObjs = tranObjs.filter(is_staff=True)
             # else:
             #     tranObjs = CGUserNew.objects.all()
     if request.user.is_authenticated():
@@ -7502,6 +7579,7 @@ def fetch_all_users(request):
             , 'agent_cin': trans.agent_cin
             , 'agent_stax': trans.agent_stax
             , 'agent_vat': trans.agent_vat
+            , 'agent_gst': trans.agent_gst
             ,'clickgarage_flag' : trans.clickgarage_flag
             # ,'email_list' : trans.email_list
             , 'owner_user': trans.owner_user
@@ -7554,6 +7632,7 @@ def update_user(request):
     admin = get_param(request, 'admin_st', None)
     staff = get_param(request, 'staff_st', None)
     agent_vat = get_param(request, 'agent_vat', None)
+    agent_gst = get_param(request, 'agent_gst', None)
     agent_stax = get_param(request, 'agent_stax', None)
     agent_cin = get_param(request, 'agent_cin', None)
     sms_credits = get_param(request, 'sms_credits', None)
@@ -7591,6 +7670,7 @@ def update_user(request):
         user2.agent_stax = agent_stax
         # if agent_cin:
         user2.agent_cin = agent_cin
+        user2.agent_gst = agent_gst
         if sms_credits:
             user2.agent_sms_credits = sms_credits
 
@@ -8034,19 +8114,24 @@ def add_delete_payment_bill(request):
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 
-
+# GST Correction - Corrected
 def update_estimate(request):
     obj = {}
     obj['status'] = False
     obj['result'] = []
     booking_id = get_param(request, 'b_id', None)
     estimate = get_param(request,'estimate',None)
-
     booking = Bookings.objects.filter(booking_id=booking_id)[0]
     vat_part = 0
     vat_consumable = 0
     vat_lube = 0
     service_tax = 0
+
+    gst_part= 0
+    gst_consumable = 0
+    gst_lube = 0
+    gst_service = 0
+
     agent_vas_share = 0
     agent_part_share = 0
     agent_lube_share = 0
@@ -8089,6 +8174,9 @@ def update_estimate(request):
                 vat_lube = 0
             else:
                 vat_lube = float(taxes['result'][0]['vat_lube'])
+
+
+
         else:
             vat_part = 0
             vat_consumable = 0
@@ -8101,6 +8189,33 @@ def update_estimate(request):
                 service_tax = float(taxes['result'][0]['service_tax'])
         else:
             service_tax = 0
+
+        if agent.agent_gst != "" and agent.agent_gst != None:
+            if taxes['result'][0]['gst_parts'] == "":
+                gst_part = 0
+            else:
+                gst_part = float(taxes['result'][0]['gst_parts'])
+
+            if taxes['result'][0]['gst_consumables'] == "":
+                gst_consumable = 0
+            else:
+                gst_consumable = float(taxes['result'][0]['gst_consumables'])
+
+            if taxes['result'][0]['gst_lube'] == "":
+                gst_lube = 0
+            else:
+                gst_lube = float(taxes['result'][0]['gst_lube'])
+
+            if taxes['result'][0]['gst_service'] == "":
+                gst_service = 0
+            else:
+                gst_service = float(taxes['result'][0]['gst_service'])
+        else:
+            gst_service = 0
+            gst_part = 0
+            gst_consumable = 0
+            gst_lube = 0
+
     update_by = "User"
     staff_marker = False
     if request.user.is_authenticated():
@@ -8172,23 +8287,30 @@ def update_estimate(request):
                     total_price = total_price + float(item['price'])
                     total_part = total_part + float(item['price'])
                     total_puchase_price = total_puchase_price + float(item['purchase_price'])
-                    applicable_tax = vat_part
+                    applicable_tax = gst_part
+                    # applicable_tax = vat_part
+
                 elif item['type'] == "Consumable":
                     total_price = total_price + float(item['price'])
                     total_part = total_part + float(item['price'])
                     total_puchase_price = total_puchase_price + float(item['purchase_price'])
-                    applicable_tax = vat_consumable
+                    applicable_tax = gst_consumable
+                    # applicable_tax = vat_consumable
+
                 elif item['type'] == "Lube":
                     total_price = total_price + float(item['price'])
                     total_part = total_part + float(item['price'])
                     total_puchase_price = total_puchase_price + float(item['purchase_price'])
-                    applicable_tax = vat_lube
+                    applicable_tax = gst_lube
+                    # applicable_tax = vat_lube
 
                 elif item['type']=="Labour":
                     total_price = total_price + float(item['price'])
                     total_labour = total_labour + float(item['price'])
                     total_puchase_price = total_puchase_price + float(item['purchase_price'])
-                    applicable_tax = service_tax
+                    applicable_tax = gst_service
+
+                    # applicable_tax = service_tax
 
                 elif item['type'] == "Discount":
                     total_price = total_price - float(item['price'])
@@ -9164,6 +9286,11 @@ def get_tax(state):
             'vat_consumables': tax.vat_consumable,
             'vat_lube': tax.vat_lubes,
             'service_tax': tax.service_tax,
+            'gst_parts': tax.gst_parts,
+            'gst_consumables': tax.gst_consumable,
+            'gst_lube': tax.gst_lubes,
+            'gst_service': tax.gst_service,
+
         })
     obj['status'] = True
     obj['counter'] = 1
@@ -9188,6 +9315,10 @@ def get_all_taxes(request):
             'vat_consumables':tax.vat_consumable               ,
             'vat_lube':tax.vat_lubes              ,
             'service_tax':tax.service_tax               ,
+            'gst_parts': tax.gst_parts,
+            'gst_consumables': tax.gst_consumable,
+            'gst_lube': tax.gst_lubes,
+            'gst_service': tax.gst_service,
 
         })
 
@@ -9197,6 +9328,8 @@ def get_all_taxes(request):
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
 @csrf_exempt
+
+# GST Correction - corrected
 def generate_bill(request):
     obj = {}
     obj['status'] = False
@@ -9212,10 +9345,17 @@ def generate_bill(request):
     vat_lube                = get_param(request, 'vat_lube', None)
     vat_consumable          = get_param(request, 'vat_consumable', None)
     service_tax             = get_param(request, 'service_tax', None)
+
+    gst_part = get_param(request, 'gst_part', None)
+    gst_lube = get_param(request, 'gst_lube', None)
+    gst_consumable = get_param(request, 'gst_consumable', None)
+    gst_service = get_param(request, 'gst_service', None)
+
     payment_mode            = get_param(request, 'payment_mode', None)
     full_agent_name         = get_param(request, 'full_agent_name', None)
     agent_address           = get_param(request, 'agent_address', None)
     agent_vat_no            = get_param(request, 'agent_vat_no', None)
+    agent_gst_no            = get_param(request, 'agent_gst_no', None)
     agent_cin               = get_param(request, 'agent_cin', None)
     agent_stax              = get_param(request, 'agent_stax', None)
     state                   = get_param(request, 'state', None)
@@ -9223,16 +9363,23 @@ def generate_bill(request):
     vat_lube_percent        = get_param(request, 'vat_lube_percent', None)
     vat_consumable_percent  = get_param(request, 'vat_consumable_percent', None)
     service_tax_percent     = get_param(request, 'service_tax_percent', None)
+
+    gst_part_percent        = get_param(request, 'gst_part_percent', None)
+    gst_lube_percent        = get_param(request, 'gst_lube_percent', None)
+    gst_consumable_percent  = get_param(request, 'gst_consumable_percent', None)
+    gst_service_percent     = get_param(request, 'gst_service_percent', None)
+
+
     notes                   = get_param(request, 'notes', None)
-    cust_name               = get_param(request,'cust_name',None)
-    cust_address            = get_param(request,'cust_address',None)
-    cust_locality           = get_param(request,'cust_locality',None)
-    cust_city               = get_param(request,'cust_city',None)
-    reg_number              = get_param(request,'reg_number',None)
-    vehicle                 = get_param(request,'vehicle',None)
-    service_items           = get_param(request,'service_items',None)
-    invoice_number          = get_param(request,'invoice_number',None)
-    cust_number          = get_param(request,'cust_number',None)
+    cust_name               = get_param(request,'cust_name', None)
+    cust_address            = get_param(request,'cust_address', None)
+    cust_locality           = get_param(request,'cust_locality', None)
+    cust_city               = get_param(request,'cust_city', None)
+    reg_number              = get_param(request,'reg_number', None)
+    vehicle                 = get_param(request,'vehicle', None)
+    service_items           = get_param(request,'service_items', None)
+    invoice_number          = get_param(request,'invoice_number', None)
+    cust_number          = get_param(request,'cust_number', None)
 
     booking = None
     agent_vas_share = 0
@@ -9249,10 +9396,17 @@ def generate_bill(request):
     lube_amount = urllib.unquote(lube_amount)
     consumable_amount = urllib.unquote(consumable_amount)
     labour_amount = urllib.unquote(labour_amount)
+    
     vat_part = urllib.unquote(vat_part)
     vat_lube = urllib.unquote(vat_lube)
     vat_consumable = urllib.unquote(vat_consumable)
     service_tax = urllib.unquote(service_tax)
+
+    gst_part = urllib.unquote(gst_part)
+    gst_lube = urllib.unquote(gst_lube)
+    gst_consumable = urllib.unquote(gst_consumable)
+    gst_service = urllib.unquote(gst_service)
+
     payment_mode = urllib.unquote(payment_mode)
     full_agent_name = urllib.unquote(full_agent_name)
     agent_address = urllib.unquote(agent_address)
@@ -9260,10 +9414,17 @@ def generate_bill(request):
     agent_cin = urllib.unquote(agent_cin)
     agent_stax = urllib.unquote(agent_stax)
     state = urllib.unquote(state)
+    
     vat_part_percent = urllib.unquote(vat_part_percent)
     vat_lube_percent = urllib.unquote(vat_lube_percent)
     vat_consumable_percent = urllib.unquote(vat_consumable_percent)
     service_tax_percent = urllib.unquote(service_tax_percent)
+
+    gst_part_percent = urllib.unquote(gst_part_percent)
+    gst_lube_percent = urllib.unquote(gst_lube_percent)
+    gst_consumable_percent = urllib.unquote(gst_consumable_percent)
+    gst_service_percent = urllib.unquote(gst_service_percent)
+
     notes = urllib.unquote(notes)
     cust_name = urllib.unquote(cust_name)
     cust_address = urllib.unquote(cust_address)
@@ -9580,6 +9741,12 @@ def generate_bill(request):
                , vat_lube               = vat_lube
                , vat_consumable         = vat_consumable
                , service_tax            = service_tax
+
+               , gst_part       =gst_part
+               , gst_lube       =gst_lube
+               , gst_consumable =gst_consumable
+               , gst_service    =gst_service
+
                , components             = service_items
                , status                 = status
                , date_created           = date_today
@@ -9592,13 +9759,21 @@ def generate_bill(request):
                , payment_mode           = payment_mode
                , notes                  = notes
                , state                  = state
+
                , vat_part_percent       =vat_part_percent
                , vat_lube_percent       =vat_lube_percent
                , vat_consumable_percent =vat_consumable_percent
                , service_tax_percent    =service_tax_percent
+
+               , gst_part_percent=gst_part_percent
+               , gst_lube_percent=gst_lube_percent
+               , gst_consumable_percent=gst_consumable_percent
+               , gst_service_percent=gst_service_percent
+
                , agent_name             =full_agent_name
                , agent_address          =agent_address
                , agent_vat_no           =agent_vat_no
+               , agent_gst_no = agent_gst_no
                , agent_cin              =agent_cin
                , agent_stax             =agent_stax
                , cust_name              =cust_name
@@ -9620,6 +9795,7 @@ def generate_bill(request):
     tt2 = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner, time_stamp= time_stamp, booking_data_id=data_id, status="Generated", bill_type=bill_type, invoice_number=invoice_number)[0]
     if booking:
         booking.bill_id = tt2.id
+        cust_odo = booking.odometer
         if tt2.bill_type == "Pre-Invoice":
             booking.bill_generation_flag  = False
         else:
@@ -9634,9 +9810,9 @@ def generate_bill(request):
     # print service_tax
     if pre_invoice:
         if booking:
-            html = mviews.bill_html(agent_name = full_agent_name,agent_address= agent_address,invoice_number="Pre-Invoice",booking_id = booking_id,created_date = date_today ,tin_number = agent_vat_no, cin_number=agent_cin,stax_number = agent_stax,cust_name= cust_name,cust_address= cust_address,cust_locality=cust_locality,cust_city=cust_city,cust_reg=reg_number,cust_veh=vehicle,service_items = service_items,vat_part_percent=vat_part_percent,vat_lube_percent=vat_lube_percent,vat_consumable_percent=vat_consumable_percent,stax_percent=service_tax_percent,vat_part=vat_part,vat_lube=vat_lube,vat_consumable=vat_consumable,stax_amount=service_tax,total=total_amount,recommendation=notes,logo=clickgarage_flag,amount_paid =pre_paid_amount)
+            html = mviews.bill_html(agent_name = full_agent_name,agent_address= agent_address,invoice_number="Pre-Invoice",booking_id = booking_id,created_date = date_today ,tin_number = agent_vat_no, cin_number=agent_cin,stax_number = agent_stax,cust_name= cust_name,cust_address= cust_address,cust_locality=cust_locality,cust_city=cust_city,cust_reg=reg_number,cust_veh=vehicle,service_items = service_items,vat_part_percent=vat_part_percent,vat_lube_percent=vat_lube_percent,vat_consumable_percent=vat_consumable_percent,stax_percent=service_tax_percent,vat_part=vat_part,vat_lube=vat_lube,vat_consumable=vat_consumable,stax_amount=service_tax,total=total_amount,recommendation=notes,logo=clickgarage_flag,amount_paid =pre_paid_amount,gst_number=agent_gst_no,gst_part_percent=gst_part_percent,gst_lube_percent=gst_lube_percent,gst_consumable_percent=gst_consumable_percent,gst_service_percent=gst_service_percent,gst_part=gst_part,gst_lube=gst_lube,gst_consumable=gst_consumable,gst_service=gst_service,cust_odo=cust_odo)
         else:
-            html = mviews.bill_html(agent_name = full_agent_name,agent_address= agent_address,invoice_number="Pre-Invoice",booking_id = "",created_date = date_today ,tin_number = agent_vat_no, cin_number=agent_cin,stax_number = agent_stax,cust_name= cust_name,cust_address= cust_address,cust_locality=cust_locality,cust_city=cust_city,cust_reg=reg_number,cust_veh=vehicle,service_items = service_items,vat_part_percent=vat_part_percent,vat_lube_percent=vat_lube_percent,vat_consumable_percent=vat_consumable_percent,stax_percent=service_tax_percent,vat_part=vat_part,vat_lube=vat_lube,vat_consumable=vat_consumable,stax_amount=service_tax,total=total_amount,recommendation=notes,logo=clickgarage_flag,amount_paid ="0")
+            html = mviews.bill_html(agent_name = full_agent_name,agent_address= agent_address,invoice_number="Pre-Invoice",booking_id = "",created_date = date_today ,tin_number = agent_vat_no, cin_number=agent_cin,stax_number = agent_stax,cust_name= cust_name,cust_address= cust_address,cust_locality=cust_locality,cust_city=cust_city,cust_reg=reg_number,cust_veh=vehicle,service_items = service_items,vat_part_percent=vat_part_percent,vat_lube_percent=vat_lube_percent,vat_consumable_percent=vat_consumable_percent,stax_percent=service_tax_percent,vat_part=vat_part,vat_lube=vat_lube,vat_consumable=vat_consumable,stax_amount=service_tax,total=total_amount,recommendation=notes,logo=clickgarage_flag,amount_paid ="0",gst_number=agent_gst_no,gst_part_percent=gst_part_percent,gst_lube_percent=gst_lube_percent,gst_consumable_percent=gst_consumable_percent,gst_service_percent=gst_service_percent,gst_part=gst_part,gst_lube=gst_lube,gst_consumable=gst_consumable,gst_service=gst_service,cust_odo=cust_odo)
     else:
         if booking:
             html = mviews.bill_html(agent_name=full_agent_name, agent_address=agent_address, invoice_number=invoice_number,
@@ -9647,7 +9823,7 @@ def generate_bill(request):
                                     vat_lube_percent=vat_lube_percent, vat_consumable_percent=vat_consumable_percent,
                                     stax_percent=service_tax_percent, vat_part=vat_part, vat_lube=vat_lube,
                                     vat_consumable=vat_consumable, stax_amount=service_tax, total=total_amount,
-                                    recommendation=notes,logo=clickgarage_flag,amount_paid =pre_paid_amount)
+                                    recommendation=notes,logo=clickgarage_flag,amount_paid =pre_paid_amount,gst_number=agent_gst_no,gst_part_percent=gst_part_percent,gst_lube_percent=gst_lube_percent,gst_consumable_percent=gst_consumable_percent,gst_service_percent=gst_service_percent,gst_part=gst_part,gst_lube=gst_lube,gst_consumable=gst_consumable,gst_service=gst_service,cust_odo=cust_odo)
         else:
             html = mviews.bill_html(agent_name=full_agent_name, agent_address=agent_address,
                                     invoice_number=invoice_number,
@@ -9660,7 +9836,7 @@ def generate_bill(request):
                                     vat_lube_percent=vat_lube_percent, vat_consumable_percent=vat_consumable_percent,
                                     stax_percent=service_tax_percent, vat_part=vat_part, vat_lube=vat_lube,
                                     vat_consumable=vat_consumable, stax_amount=service_tax, total=total_amount,
-                                    recommendation=notes,logo=clickgarage_flag,amount_paid = "0")
+                                    recommendation=notes,logo=clickgarage_flag,amount_paid = "0",gst_number=agent_gst_no,gst_part_percent=gst_part_percent,gst_lube_percent=gst_lube_percent,gst_consumable_percent=gst_consumable_percent,gst_service_percent=gst_service_percent,gst_part=gst_part,gst_lube=gst_lube,gst_consumable=gst_consumable,gst_service=gst_service,cust_odo=cust_odo)
             #     import subprocess
             #
     if socket.gethostname().startswith('ip-'):

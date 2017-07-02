@@ -1729,6 +1729,11 @@ def loadTaxes(fileName):
             vat_lubes           = cleanstring(tax[2])
             vat_consumable      = cleanstring(tax[3])
             service_tax         = cleanstring(tax[4])
+            gst_parts           = cleanstring(tax[5])
+            gst_lubes           = cleanstring(tax[6])
+            gst_consumable      = cleanstring(tax[7])
+            gst_service         = cleanstring(tax[8])
+
             findTax = Taxes.objects.filter(state=state)
             if len(findTax):
                 findTax = findTax[0]
@@ -1737,13 +1742,24 @@ def loadTaxes(fileName):
                 findTax.vat_lubes      = vat_lubes
                 findTax.vat_consumable = vat_consumable
                 findTax.service_tax = service_tax
+
+                findTax.gst_parts      = gst_parts
+                findTax.gst_lubes      = gst_lubes
+                findTax.gst_consumable = gst_consumable
+                findTax.gst_service    = gst_service
+
                 findTax.save()
             else:
                 tax = Taxes(state=state,
                                      vat_parts=vat_parts,
                                      vat_lubes=vat_lubes,
                                      vat_consumable=vat_consumable,
-                                     service_tax=service_tax)
+                                     service_tax=service_tax,
+                                     gst_parts=gst_parts,
+                                     gst_lubes=gst_lubes,
+                                     gst_consumable=gst_consumable,
+                                     gst_service=gst_service
+                )
                 tax.save()
 
 

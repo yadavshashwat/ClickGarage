@@ -10009,7 +10009,7 @@ def send_bill(cust_name,booking_id,cust_email,price_total,serviceitems,cust_numb
 # the attachment
 
 
-def bill_html(agent_name,agent_address,invoice_number,booking_id,created_date,tin_number,cin_number,stax_number,cust_name,cust_address,cust_locality,cust_city,cust_reg,cust_veh,service_items,vat_part_percent,vat_lube_percent,vat_consumable_percent,stax_percent,vat_part,vat_lube,vat_consumable,stax_amount,total,recommendation,logo,amount_paid):
+def bill_html(agent_name,agent_address,invoice_number,booking_id,created_date,tin_number,cin_number,stax_number,cust_name,cust_address,cust_locality,cust_city,cust_reg,cust_veh,service_items,vat_part_percent,vat_lube_percent,vat_consumable_percent,stax_percent,vat_part,vat_lube,vat_consumable,stax_amount,total,recommendation,logo,amount_paid,gst_number,gst_part_percent,gst_lube_percent,gst_consumable_percent,gst_service_percent,gst_part,gst_lube,gst_consumable,gst_service,cust_odo):
 	html = """<!DOCTYPE html>
 <html id="bill-data" lang="en"><head>
 	<style>
@@ -10272,12 +10272,16 @@ page[size="A5"][layout="portrait"] {
 		html += """<tr><td>Booking #: </td><td><span id="booking-id">"""+str(booking_id)+"""</span></td></tr>"""
 	if created_date != "":
 		html += """<tr><td>Created: </td><td><span id="bill-date">""" + str(created_date) +"""</span></td></tr>"""
-	if tin_number != "":
-		html += """<tr class="reciept tin"><td>TIN : </td><td><span id = "agent-tin">"""+tin_number+"""</span></td></tr>"""
+	# if tin_number != "":
+	# 	html += """<tr class="reciept tin"><td>TIN : </td><td><span id = "agent-tin">"""+tin_number+"""</span></td></tr>"""
 	if cin_number != "":
 		html += """<tr class="reciept cin"><td>CIN : </td><td><span id = "agent-cin">"""+cin_number+"""</span></td></tr>"""
-	if stax_number != "":
-		html += """<tr class="reciept stax"><td>Service Tax : </td><td><span id = "agent-stax">"""+stax_number+"""</span></td></tr>"""
+
+	if gst_number != "":
+		html += """<tr class="reciept cin"><td>GST : </td><td><span id = "agent-cin">"""+gst_number+"""</span></td></tr>"""
+
+	# if stax_number != "":
+	# 	html += """<tr class="reciept stax"><td>Service Tax : </td><td><span id = "agent-stax">"""+stax_number+"""</span></td></tr>"""
 
 	html += """</table>
 				</td>
@@ -10300,10 +10304,17 @@ page[size="A5"][layout="portrait"] {
 				</td>
 				<td>
 					<b>Vehicle Details: </b><br>
-					<table class="customer-details">
-						<tr><td>&nbsp;&nbsp;Registration </td><td><span id="veh-reg">"""+cust_reg+"""</span></td></tr>
-						<tr><td>&nbsp;&nbsp;Vehicle Name </td><td><span id="veh-name">"""+cust_veh+"""</span></td></tr>
-					</table>
+					<table class="customer-details">"""
+	if cust_reg != "":
+		html +="""<tr><td>&nbsp;&nbsp;Registration </td><td><span id="veh-reg">"""+cust_reg+"""</span></td></tr>"""
+
+	if cust_odo != "":
+		html +="""<tr><td>&nbsp;&nbsp;Odometer </td><td><span id="veh-reg">"""+cust_odo+"""</span></td></tr>"""
+
+	if cust_veh != "":
+		html += """<tr><td>&nbsp;&nbsp;Vehicle Name </td><td><span id="veh-name">"""+cust_veh+"""</span></td></tr>"""
+
+	html += """</table>
 				</td>
 
 			</tr>
@@ -10408,28 +10419,51 @@ page[size="A5"][layout="portrait"] {
 
 
 	html+="""<table class="summary">"""
-	if tin_number != "":
-		html+="""<tr class="tax reciept">
-				<td>
-					VAT (Parts) @ <span id="vat-part-percent">"""+str(vat_part_percent)+"""</span>%: Rs. <span class="vat-part-amount">"""+str(vat_part)+"""</span>
-				</td>
-			</tr>
-			<tr class="tax reciept">
-				<td>
-					VAT (Lubes) @ <span id="vat-lube-percent">"""+str(vat_lube_percent)+"""</span>%: Rs. <span class="vat-lube-amount">"""+str(vat_lube)+"""</span>
-				</td>
-			</tr>
-			<tr class="tax reciept">
-				<td>
-					VAT (Consumables) @ <span id="vat-consumable-percent">"""+str(vat_consumable_percent)+"""</span>%: Rs. <span class="vat-consumable-amount">"""+str(vat_consumable)+"""</span>
-				</td>
-			</tr>"""
-	if stax_number != "":
-		html += """<tr class="tax reciept stax">
-				<td>
-					Service Tax + Krishi Kalyan Cess + Swachha Bharat Cess @ <span id="stax-percent">"""+str(stax_percent)+"""</span>%: Rs. <span class="stax-amount">"""+str(stax_amount)+"""</span>
-				</td>
-			</tr>"""
+	# if tin_number != "":
+	# 	html+="""<tr class="tax reciept">
+	# 			<td>
+	# 				VAT (Parts) @ <span id="vat-part-percent">"""+str(vat_part_percent)+"""</span>%: Rs. <span class="vat-part-amount">"""+str(vat_part)+"""</span>
+	# 			</td>
+	# 		</tr>
+	# 		<tr class="tax reciept">
+	# 			<td>
+	# 				VAT (Lubes) @ <span id="vat-lube-percent">"""+str(vat_lube_percent)+"""</span>%: Rs. <span class="vat-lube-amount">"""+str(vat_lube)+"""</span>
+	# 			</td>
+	# 		</tr>
+	# 		<tr class="tax reciept">
+	# 			<td>
+	# 				VAT (Consumables) @ <span id="vat-consumable-percent">"""+str(vat_consumable_percent)+"""</span>%: Rs. <span class="vat-consumable-amount">"""+str(vat_consumable)+"""</span>
+	# 			</td>
+	# 		</tr>"""
+	# if stax_number != "":
+	# 	html += """<tr class="tax reciept stax">
+	# 			<td>
+	# 				Service Tax + Krishi Kalyan Cess + Swachha Bharat Cess @ <span id="stax-percent">"""+str(stax_percent)+"""</span>%: Rs. <span class="stax-amount">"""+str(stax_amount)+"""</span>
+	# 			</td>
+	# 		</tr>"""
+
+	if gst_number != "":
+		html += """<tr class="tax reciept">
+	    				<td>
+	    					GST (Parts) @ <span id="vat-part-percent">""" + str(gst_part_percent) + """</span>%: Rs. <span class="vat-part-amount">""" + str(gst_part) + """</span>
+	    				</td>
+	    			</tr>
+	    			<tr class="tax reciept">
+	    				<td>
+	    					GST (Lubes) @ <span id="vat-lube-percent">""" + str(gst_lube_percent) + """</span>%: Rs. <span class="vat-lube-amount">""" + str(gst_lube) + """</span>
+	    				</td>
+	    			</tr>
+	    			<tr class="tax reciept">
+	    				<td>
+	    					GST (Consumables) @ <span id="vat-consumable-percent">""" + str(gst_consumable_percent) + """</span>%: Rs. <span class="vat-consumable-amount">""" + str(gst_consumable) + """</span>
+	    				</td>
+	    			</tr>
+					<tr class="tax reciept">
+	    				<td>
+	    					GST (Service) @ <span id="vat-lube-percent">""" + str(gst_service_percent) + """</span>%: Rs. <span class="vat-lube-amount">""" + str(gst_service) + """</span>
+	    				</td>
+	    			</tr>"""
+
 	html += """<tr class="total">
 					<td>
 						Total Amount: Rs.  <span id="cust-total">""" + str(round((float(total)+float(Discount)), 0)) + """</span>

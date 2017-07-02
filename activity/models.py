@@ -117,6 +117,7 @@ class CGUserNew(AbstractUser):
     is_b2b = models.BooleanField(default=False)
     user_saved_address = ListField(DictField())
     user_veh_list = ListField(DictField())
+    agent_gst = models.CharField(max_length=100, null=True)
     agent_vat = models.CharField(max_length=100, null=True)
     agent_stax = models.CharField(max_length=100, null=True)
     agent_cin = models.CharField(max_length=100, null=True)
