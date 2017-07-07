@@ -7350,8 +7350,9 @@ def view_all_bookings(request):
             # 'estimate_history_len': len(trans.estimate_history),
             'estimate_history_len': total_estimate_len,
             'agent_details'         : agent_details,
-            'status_next'           :status_next,
-            'customer_notes'        :trans.customer_notes,
+            'status_next'           : status_next,
+            'customer_notes'        : trans.customer_notes,
+            'customer_remarks'      : trans.customer_remarks,
             'booking_user_type'     : trans.booking_user_type,
             'delivery_date'         :newformat_d,
             'job_summary': trans.jobssummary ,
@@ -7533,7 +7534,6 @@ def fetch_all_users(request):
 
     if number2 != None:
         tranObjs = tranObjs.filter(contact_no = number2)
-
 
     if type != None:
         if type == "agent":
@@ -7756,6 +7756,7 @@ def update_booking(request):
     time_n = get_param(request,'time',None)
     date_n = get_param(request, 'date', None)
     notes_n = get_param(request,'note',None)
+    remarks_n = get_param(request,'remark',None)
     amount_paid = get_param(request, 'amount_paid', None)
     make = get_param(request, 'make', None)
     model = get_param(request, 'model', None)
@@ -7902,6 +7903,9 @@ def update_booking(request):
 
     if notes_n != None:
         booking.customer_notes = notes_n
+
+    if remarks_n != None:
+        booking.customer_remarks = remarks_n
 
     if email_n != None:
         booking.cust_email = email_n

@@ -546,6 +546,7 @@ class Bookings(models.Model):
     source                  = models.CharField(max_length= 200, null=True)
     agent                   = models.CharField(max_length= 200, null=True)
     estimate_history        = ListField(DictField())
+    customer_remarks        = models.CharField(max_length= 500, null=True)
     customer_notes          = models.CharField(max_length= 500, null=True)
     booking_user_type       = models.CharField(max_length= 500, default="User", null=True)
     booking_user_name       = models.CharField(max_length= 200)
