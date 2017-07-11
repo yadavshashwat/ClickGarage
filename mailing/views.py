@@ -12,6 +12,8 @@ from email import Encoders
 
 helpline_number = "9555950000"
 escalation_number = "9899125443"
+
+
 key = "ab33f626-fba5-4bff-9a2b-68a7e9eed43c"
 # ab33f626-fba5-4bff-9a2b-68a7e9eed43c
 sendername = "CLKGRG"
@@ -28,6 +30,7 @@ smtp_username = 'AKIAJ4U5VOXPWBT37X4A'
 smtp_password = 'AkJxDBO/FOsxkF1Ucd1EhblV5DTAVLpFfqWQv/KI2gn7'
 from_address = "ClickGarage <bookings@clickgarage.in>"
 helpline_number = "9555950000"
+
 import boto
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
@@ -7967,7 +7970,8 @@ def send_booking_confirm(email,name,booking_id,number,service_list,car_bike):
 	# print email
 	me = from_address
 	you = email
-	cgpoc = "Amit - 9560059744 "
+	# cgpoc = "Amit - 9560059744 "
+	cgpoc = "Shubham - 9910060501 "
 	# Create message container - the correct MIME type is multipart/alternative.
 	msg = MIMEMultipart('alternative')
 	msg['Subject'] = "Booking Confirmation! Booking ID: " + str(booking_id)
@@ -8133,12 +8137,10 @@ def send_sms_customer(name,number,booking_id,date,time,agent_details = None,esti
 
 	if status =="Job Complete" and status2==None:
 		if booking.clickgarage_flag == True:
-			message = "Hi " + name + "! Your order is complete. If you require any further assistance, please contact us on " + cgpoc + " and quote your booking ID: " + str(
-				booking_id) + "."
+			message = "Hi " + name + "! Your order is complete. If you require any further assistance, please contact us on " + cgpoc + " and quote your booking ID: " + str(booking_id) + ". For any complaints please contact: " + str(complaint_num)
 			send_sms_2factor(number, message)
 		else:
-			message = "Hi " + name + "! Your order is complete. If you require any further assistance, please contact us on " + agent_num + " and quote your booking ID: " + str(
-				booking_id) + "."
+			message = "Hi " + name + "! Your order is complete. If you require any further assistance, please contact us on " + agent_num + " and quote your booking ID: " + str(booking_id) + "."
 			send_sms_2factor_EZY(number, message)
 
 	if status == "Escalation":
@@ -10298,8 +10300,8 @@ page[size="A5"][layout="portrait"] {
 					<b>Customer Details:  </b><br>
 					<table class="customer-details">
 						<tr><td>&nbsp;&nbsp;Name </td><td><span id="cust-name">"""+cust_name+"""</span></td></tr>
-						<tr><td>&nbsp;&nbsp;Address </td><td><span id="cust-address">"""+cust_address+"""</span>, <span id="cust-locality">"""+cust_locality+"""</span>, <span id="cust-city">"""+cust_city+"""</span></td></tr>
-
+						<tr><td>&nbsp;&nbsp;Address </td><td><span id="cust-address">"""+cust_address+"""</span>, <span id="cust-locality">"""+cust_locality+"""</span></tr>
+						<tr><td>&nbsp;&nbsp;Place of Supply </td><td><span id="cust-city">"""+cust_city+"""</span></td></tr>
 					</table>
 				</td>
 				<td>
@@ -10445,24 +10447,50 @@ page[size="A5"][layout="portrait"] {
 	if gst_number != "":
 		html += """<tr class="tax reciept">
 	    				<td>
-	    					GST (Parts) @ <span id="vat-part-percent">""" + str(gst_part_percent) + """</span>%: Rs. <span class="vat-part-amount">""" + str(gst_part) + """</span>
+	    					CGST  @ <span id="vat-part-percent">""" + str(float(gst_part_percent)/2) + """</span>%: Rs. <span class="vat-part-amount">""" + str((float(gst_part)+float(gst_consumable))/2) + """</span>
 	    				</td>
 	    			</tr>
 	    			<tr class="tax reciept">
 	    				<td>
-	    					GST (Lubes) @ <span id="vat-lube-percent">""" + str(gst_lube_percent) + """</span>%: Rs. <span class="vat-lube-amount">""" + str(gst_lube) + """</span>
-	    				</td>
-	    			</tr>
-	    			<tr class="tax reciept">
-	    				<td>
-	    					GST (Consumables) @ <span id="vat-consumable-percent">""" + str(gst_consumable_percent) + """</span>%: Rs. <span class="vat-consumable-amount">""" + str(gst_consumable) + """</span>
-	    				</td>
-	    			</tr>
-					<tr class="tax reciept">
-	    				<td>
-	    					GST (Service) @ <span id="vat-lube-percent">""" + str(gst_service_percent) + """</span>%: Rs. <span class="vat-lube-amount">""" + str(gst_service) + """</span>
+	    					CGST @ <span id="vat-lube-percent">""" + str(float(gst_lube_percent)/2) + """</span>%: Rs. <span class="vat-lube-amount">""" + str((float(gst_lube) + float(gst_service))/2) + """</span>
 	    				</td>
 	    			</tr>"""
+	    			# <tr class="tax reciept">
+	    			# 	<td>
+	    			# 		CGST  @ <span id="vat-consumable-percent">""" + str(float(gst_consumable_percent)/2) + """</span>%: Rs. <span class="vat-consumable-amount">""" + str(float(gst_consumable)/2) + """</span>
+	    			# 	</td>
+	    			# </tr>"""
+                    # <tr class="tax reciept">
+	    			# 	<td>
+	    			# 		CGST (Service) @ <span id="vat-lube-percent">""" + str(float(gst_service_percent)/2) + """</span>%: Rs. <span class="vat-lube-amount">""" + str(float(gst_service)/2) + """</span>
+	    			# 	</td>
+	    			# </tr>"""
+
+		html += """<tr class="tax reciept">
+			    				<td>
+	    					SGST  @ <span id="vat-part-percent">""" + str(float(gst_part_percent)/2) + """</span>%: Rs. <span class="vat-part-amount">""" + str((float(gst_part)+float(gst_consumable))/2) + """</span>
+			    				</td>
+			    			</tr>
+	    			<tr class="tax reciept">
+	    				<td>
+	    					SGST @ <span id="vat-lube-percent">""" + str(float(gst_lube_percent)/2) + """</span>%: Rs. <span class="vat-lube-amount">""" + str((float(gst_lube) + float(gst_service))/2) + """</span>
+	    				</td>
+	    			</tr>"""
+			#     			<tr class="tax reciept">
+			#     				<td>
+			#     					SGST  @ <span id="vat-consumable-percent">""" + str(
+			# float(gst_consumable_percent) / 2) + """</span>%: Rs. <span class="vat-consumable-amount">""" + str(
+			# float(gst_consumable) / 2) + """</span>
+			#     				</td>
+			#     			</tr>"""
+			# 				<tr class="tax reciept">
+			#     				<td>
+			#     					SGST (Service) @ <span id="vat-lube-percent">""" + str(
+			# float(gst_service_percent) / 2) + """</span>%: Rs. <span class="vat-lube-amount">""" + str(
+			# float(gst_service) / 2) + """</span>
+			#     				</td>
+			#     			</tr>"""
+
 
 	html += """<tr class="total">
 					<td>

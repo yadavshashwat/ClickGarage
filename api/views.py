@@ -4790,7 +4790,7 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
     if clickgarage_flag:
         mviews.send_booking(firstname=name,lastname ="", number=number,email=email, car_bike=veh_type, make=make, model=model, fuel_type=fuel,locality=locality,address=address,date_requested=date,time_requested=time_str)
         if booking_flag:
-            number_list = ["9717353148","9899125443","9560059744"]
+            number_list = ["9717353148",  "9910060501", "9555950000"]
             message = "Job | Name: "+str(name)+" | Number: "+str(number)+" | Vehicle: "+str(make)+" "+str(model)+" "+str(fuel)+" | Jobs: "
         else:
             # number_list = ["9953008804","9910060501"]
@@ -9036,7 +9036,7 @@ def change_status_actual(booking_id,status_id,send_sms):
                 if send_sms_bool:
                     print "SMS Sent"
                     mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking,booking.time_booking,status="Confirmed")
-            number_list = ["9717353148", "9899125443", "9560059744"]
+            number_list = ["9717353148",  "9910060501", "9555950000"]
             message = "Job | Name: " + str(booking.cust_name) + " | Number: " + str(booking.cust_number) + " | Vehicle: " + str(booking.cust_make) + " " + str(booking.cust_model) + " " + str(booking.cust_fuel_varient) + " | Jobs: "
             for job in booking.jobssummary:
                 try:
