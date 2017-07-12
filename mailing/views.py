@@ -10308,13 +10308,13 @@ page[size="A5"][layout="portrait"] {
 					<b>Vehicle Details: </b><br>
 					<table class="customer-details">"""
 	if cust_reg != "":
-		html +="""<tr><td>&nbsp;&nbsp;Registration </td><td><span id="veh-reg">"""+cust_reg+"""</span></td></tr>"""
+		html +="""<tr><td>&nbsp;&nbsp;Registration </td><td><span id="veh-reg">"""+str(cust_reg)+"""</span></td></tr>"""
 
 	if cust_odo != "":
-		html +="""<tr><td>&nbsp;&nbsp;Odometer </td><td><span id="veh-reg">"""+cust_odo+"""</span></td></tr>"""
+		html +="""<tr><td>&nbsp;&nbsp;Odometer </td><td><span id="veh-reg">"""+str(cust_odo)+"""</span></td></tr>"""
 
 	if cust_veh != "":
-		html += """<tr><td>&nbsp;&nbsp;Vehicle Name </td><td><span id="veh-name">"""+cust_veh+"""</span></td></tr>"""
+		html += """<tr><td>&nbsp;&nbsp;Vehicle Name </td><td><span id="veh-name">"""+str(cust_veh)+"""</span></td></tr>"""
 
 	html += """</table>
 				</td>
