@@ -654,6 +654,10 @@ class Bills(models.Model):
     gst_consumable              = models.CharField(max_length=200)
     gst_service                 = models.CharField(max_length=200)
 
+    gst_18              = models.CharField(max_length=200,default="0")
+    gst_28                 = models.CharField(max_length=200,default="0")
+    state_of_supply         = models.CharField(max_length=500,default="")
+
     components                  = ListField(DictField())
     status                      = models.CharField(max_length=200)
     booking_data_id             = models.CharField(max_length=200)

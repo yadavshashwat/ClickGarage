@@ -6971,6 +6971,10 @@ def view_all_bookings(request):
             bill_type  = bill.bill_type
             bill_owner = bill.owner
             bill_clickgarage = bill.clickgarage_flag
+            bill_type = bill.bill_type
+            bill_supply_state = bill.state_of_supply
+
+
         else:
             components = ""
             payment_mode = ""
@@ -7013,6 +7017,7 @@ def view_all_bookings(request):
             bill_file_name = ""
             bill_cust_number = ""
             bill_clickgarage = False
+            bill_supply_state = ""
 
         if trans.feedback_2:
             print "1"
@@ -7403,7 +7408,7 @@ def view_all_bookings(request):
             'bill_reg_number': bill_reg_number,
             'bill_vehicle': bill_vehicle,
             'bill_clickgarage': bill_clickgarage,
-
+            'bill_supply_state': bill_supply_state,
             # 'bill_model': bill_model,
             'bill_type':bill_type,
             'time_stamp' : time_stamp,
@@ -8287,12 +8292,17 @@ def update_estimate(request):
                 obj2 = {}
                 applicable_tax = 0
                 # print item
-                if item['type'] == "Part":
+                if item['type'] == "Part" or item['type'] == "Part28":
                     total_price = total_price + float(item['price'])
                     total_part = total_part + float(item['price'])
                     total_puchase_price = total_puchase_price + float(item['purchase_price'])
                     applicable_tax = gst_part
                     # applicable_tax = vat_part
+                elif item['type'] == "Part18":
+                    total_price = total_price + float(item['price'])
+                    total_part = total_part + float(item['price'])
+                    total_puchase_price = total_puchase_price + float(item['purchase_price'])
+                    applicable_tax = gst_lube
 
                 elif item['type'] == "Consumable":
                     total_price = total_price + float(item['price'])
@@ -8301,12 +8311,18 @@ def update_estimate(request):
                     applicable_tax = gst_consumable
                     # applicable_tax = vat_consumable
 
-                elif item['type'] == "Lube":
+                elif item['type'] == "Lube" or item['type'] == "Lube18":
                     total_price = total_price + float(item['price'])
                     total_part = total_part + float(item['price'])
                     total_puchase_price = total_puchase_price + float(item['purchase_price'])
                     applicable_tax = gst_lube
                     # applicable_tax = vat_lube
+
+                elif item['type'] == "Lube28":
+                    total_price = total_price + float(item['price'])
+                    total_part = total_part + float(item['price'])
+                    total_puchase_price = total_puchase_price + float(item['purchase_price'])
+                    applicable_tax = gst_part
 
                 elif item['type']=="Labour":
                     total_price = total_price + float(item['price'])
@@ -9355,6 +9371,11 @@ def generate_bill(request):
     gst_consumable = get_param(request, 'gst_consumable', None)
     gst_service = get_param(request, 'gst_service', None)
 
+    gst_18 = get_param(request, 'gst_18', None)
+    gst_28 = get_param(request, 'gst_28', None)
+    state_of_supply = get_param(request, 'state_of_supply', None)
+
+
     payment_mode            = get_param(request, 'payment_mode', None)
     full_agent_name         = get_param(request, 'full_agent_name', None)
     agent_address           = get_param(request, 'agent_address', None)
@@ -9456,12 +9477,12 @@ def generate_bill(request):
             tran_len = len(Bills.objects.filter(owner=bill_owner,bill_type = "Invoice"))
             if tran_len:
                 tran = Bills.objects.filter(owner=bill_owner,bill_type = "Invoice").aggregate(Max('invoice_number'))
-                if invoice_number > 10000:
+                if invoice_number > 20000:
                     invoice_number = int(tran['invoice_number__max'] + 1)
                 else:
-                    invoice_number = 10001
+                    invoice_number = 20001
             else:
-                invoice_number = 10001
+                invoice_number = 20001
 
     # if bill_owner == "Agent Bill" or bill_owner = "":
     #     bill_owner
@@ -9751,6 +9772,9 @@ def generate_bill(request):
                , gst_consumable =gst_consumable
                , gst_service    =gst_service
 
+               , gst_18=gst_18
+               , gst_28=gst_28
+                ,state_of_supply = state_of_supply
                , components             = service_items
                , status                 = status
                , date_created           = date_today
@@ -9812,11 +9836,14 @@ def generate_bill(request):
     sys.setdefaultencoding('utf8')
     # print vat_part
     # print service_tax
+    gst_type = "S"
+    if state != state_of_supply:
+        gst_type = "I"
     if pre_invoice:
         if booking:
-            html = mviews.bill_html(agent_name = full_agent_name,agent_address= agent_address,invoice_number="Pre-Invoice",booking_id = booking_id,created_date = date_today ,tin_number = agent_vat_no, cin_number=agent_cin,stax_number = agent_stax,cust_name= cust_name,cust_address= cust_address,cust_locality=cust_locality,cust_city=cust_city,cust_reg=reg_number,cust_veh=vehicle,service_items = service_items,vat_part_percent=vat_part_percent,vat_lube_percent=vat_lube_percent,vat_consumable_percent=vat_consumable_percent,stax_percent=service_tax_percent,vat_part=vat_part,vat_lube=vat_lube,vat_consumable=vat_consumable,stax_amount=service_tax,total=total_amount,recommendation=notes,logo=clickgarage_flag,amount_paid =pre_paid_amount,gst_number=agent_gst_no,gst_part_percent=gst_part_percent,gst_lube_percent=gst_lube_percent,gst_consumable_percent=gst_consumable_percent,gst_service_percent=gst_service_percent,gst_part=gst_part,gst_lube=gst_lube,gst_consumable=gst_consumable,gst_service=gst_service,cust_odo=cust_odo)
+            html = mviews.bill_html(agent_name = full_agent_name,agent_address= agent_address,invoice_number="Pre-Invoice",booking_id = booking_id,created_date = date_today ,tin_number = agent_vat_no, cin_number=agent_cin,stax_number = agent_stax,cust_name= cust_name,cust_address= cust_address,cust_locality=cust_locality,cust_city=cust_city,cust_reg=reg_number,cust_veh=vehicle,service_items = service_items,vat_part_percent=vat_part_percent,vat_lube_percent=vat_lube_percent,vat_consumable_percent=vat_consumable_percent,stax_percent=service_tax_percent,vat_part=vat_part,vat_lube=vat_lube,vat_consumable=vat_consumable,stax_amount=service_tax,total=total_amount,recommendation=notes,logo=clickgarage_flag,amount_paid =pre_paid_amount,gst_number=agent_gst_no,gst_part_percent=gst_part_percent,gst_lube_percent=gst_lube_percent,gst_consumable_percent=gst_consumable_percent,gst_service_percent=gst_service_percent,gst_18=gst_18,gst_28=gst_28,cust_odo=cust_odo,gst_type =gst_type, state_of_supply = state_of_supply)
         else:
-            html = mviews.bill_html(agent_name = full_agent_name,agent_address= agent_address,invoice_number="Pre-Invoice",booking_id = "",created_date = date_today ,tin_number = agent_vat_no, cin_number=agent_cin,stax_number = agent_stax,cust_name= cust_name,cust_address= cust_address,cust_locality=cust_locality,cust_city=cust_city,cust_reg=reg_number,cust_veh=vehicle,service_items = service_items,vat_part_percent=vat_part_percent,vat_lube_percent=vat_lube_percent,vat_consumable_percent=vat_consumable_percent,stax_percent=service_tax_percent,vat_part=vat_part,vat_lube=vat_lube,vat_consumable=vat_consumable,stax_amount=service_tax,total=total_amount,recommendation=notes,logo=clickgarage_flag,amount_paid ="0",gst_number=agent_gst_no,gst_part_percent=gst_part_percent,gst_lube_percent=gst_lube_percent,gst_consumable_percent=gst_consumable_percent,gst_service_percent=gst_service_percent,gst_part=gst_part,gst_lube=gst_lube,gst_consumable=gst_consumable,gst_service=gst_service,cust_odo=cust_odo)
+            html = mviews.bill_html(agent_name = full_agent_name,agent_address= agent_address,invoice_number="Pre-Invoice",booking_id = "",created_date = date_today ,tin_number = agent_vat_no, cin_number=agent_cin,stax_number = agent_stax,cust_name= cust_name,cust_address= cust_address,cust_locality=cust_locality,cust_city=cust_city,cust_reg=reg_number,cust_veh=vehicle,service_items = service_items,vat_part_percent=vat_part_percent,vat_lube_percent=vat_lube_percent,vat_consumable_percent=vat_consumable_percent,stax_percent=service_tax_percent,vat_part=vat_part,vat_lube=vat_lube,vat_consumable=vat_consumable,stax_amount=service_tax,total=total_amount,recommendation=notes,logo=clickgarage_flag,amount_paid ="0",gst_number=agent_gst_no,gst_part_percent=gst_part_percent,gst_lube_percent=gst_lube_percent,gst_consumable_percent=gst_consumable_percent,gst_service_percent=gst_service_percent,gst_18=gst_18,gst_28=gst_28,cust_odo=cust_odo,gst_type =gst_type, state_of_supply = state_of_supply)
     else:
         if booking:
             html = mviews.bill_html(agent_name=full_agent_name, agent_address=agent_address, invoice_number=invoice_number,
@@ -9827,7 +9854,7 @@ def generate_bill(request):
                                     vat_lube_percent=vat_lube_percent, vat_consumable_percent=vat_consumable_percent,
                                     stax_percent=service_tax_percent, vat_part=vat_part, vat_lube=vat_lube,
                                     vat_consumable=vat_consumable, stax_amount=service_tax, total=total_amount,
-                                    recommendation=notes,logo=clickgarage_flag,amount_paid =pre_paid_amount,gst_number=agent_gst_no,gst_part_percent=gst_part_percent,gst_lube_percent=gst_lube_percent,gst_consumable_percent=gst_consumable_percent,gst_service_percent=gst_service_percent,gst_part=gst_part,gst_lube=gst_lube,gst_consumable=gst_consumable,gst_service=gst_service,cust_odo=cust_odo)
+                                    recommendation=notes,logo=clickgarage_flag,amount_paid =pre_paid_amount,gst_number=agent_gst_no,gst_part_percent=gst_part_percent,gst_lube_percent=gst_lube_percent,gst_consumable_percent=gst_consumable_percent,gst_service_percent=gst_service_percent,gst_18=gst_18,gst_28=gst_28,cust_odo=cust_odo,gst_type =gst_type, state_of_supply = state_of_supply)
         else:
             html = mviews.bill_html(agent_name=full_agent_name, agent_address=agent_address,
                                     invoice_number=invoice_number,
@@ -9840,7 +9867,7 @@ def generate_bill(request):
                                     vat_lube_percent=vat_lube_percent, vat_consumable_percent=vat_consumable_percent,
                                     stax_percent=service_tax_percent, vat_part=vat_part, vat_lube=vat_lube,
                                     vat_consumable=vat_consumable, stax_amount=service_tax, total=total_amount,
-                                    recommendation=notes,logo=clickgarage_flag,amount_paid = "0",gst_number=agent_gst_no,gst_part_percent=gst_part_percent,gst_lube_percent=gst_lube_percent,gst_consumable_percent=gst_consumable_percent,gst_service_percent=gst_service_percent,gst_part=gst_part,gst_lube=gst_lube,gst_consumable=gst_consumable,gst_service=gst_service,cust_odo=cust_odo)
+                                    recommendation=notes,logo=clickgarage_flag,amount_paid = "0",gst_number=agent_gst_no,gst_part_percent=gst_part_percent,gst_lube_percent=gst_lube_percent,gst_consumable_percent=gst_consumable_percent,gst_service_percent=gst_service_percent,gst_18=gst_18,gst_28=gst_28,cust_odo=cust_odo,gst_type =gst_type, state_of_supply = state_of_supply)
             #     import subprocess
             #
     if socket.gethostname().startswith('ip-'):
@@ -10342,6 +10369,7 @@ def view_all_bills(request):
         'payment_mode',
         'notes',
         'state',
+        'state_of_supply',
         'vat_part_percent',
         'vat_lube_percent',
         'vat_consumable_percent',
@@ -10435,6 +10463,7 @@ def view_all_bills(request):
                 str(job.payment_mode),
                 str(job.notes),
                 str(job.state),
+                str(job.state_of_supply),
                 str(job.vat_part_percent),
                 str(job.vat_lube_percent),
                 str(job.vat_consumable_percent),
@@ -10487,6 +10516,8 @@ def view_all_bills(request):
             'payment_mode': job.payment_mode,
             'notes': job.notes,
             'state': job.state,
+            'state_of_supply': job.state_of_supply,
+
             'vat_part_percent': job.vat_part_percent,
             'vat_lube_percent': job.vat_lube_percent,
             'vat_consumable_percent': job.vat_consumable_percent,

@@ -11,7 +11,7 @@ from email.MIMEBase import MIMEBase
 from email import Encoders
 
 helpline_number = "9555950000"
-escalation_number = "9899125443"
+escalation_number = "9717353148"
 
 
 key = "ab33f626-fba5-4bff-9a2b-68a7e9eed43c"
@@ -8137,7 +8137,7 @@ def send_sms_customer(name,number,booking_id,date,time,agent_details = None,esti
 
 	if status =="Job Complete" and status2==None:
 		if booking.clickgarage_flag == True:
-			message = "Hi " + name + "! Your order is complete. If you require any further assistance, please contact us on " + cgpoc + " and quote your booking ID: " + str(booking_id) + ". For any complaints please contact: " + str(complaint_num)
+			message = "Hi " + name + "! Your order is complete. If you require any further assistance, please contact us on " + cgpoc + " and quote your booking ID: " + str(booking_id) + ". For any escalations please contact: " + str(escalation_number)
 			send_sms_2factor(number, message)
 		else:
 			message = "Hi " + name + "! Your order is complete. If you require any further assistance, please contact us on " + agent_num + " and quote your booking ID: " + str(booking_id) + "."
@@ -8145,11 +8145,11 @@ def send_sms_customer(name,number,booking_id,date,time,agent_details = None,esti
 
 	if status == "Escalation":
 		if booking.clickgarage_flag == True:
-			message = "Hi " + name + "! We apologize for the inconvenience caused. We are taking necessary action to solve the issue. If you require any further assistance, directly call our escaltion number : " + escalation_number + " and quote your booking ID: " + str(
+			message = "Hi " + name + "! We apologize for the inconvenience caused. We are taking necessary action to solve the issue. If you require any further assistance, directly call our escaltion number : " + str(escalation_number) + " and quote your booking ID: " + str(
 				booking_id) + "."
 			send_sms_2factor(number, message)
 		else:
-			message = "Hi " + name + "! We apologize for the inconvenience caused. We are taking necessary action to solve the issue. If you require any further assistance, directly call our escaltion number : " + agent_num + " and quote your booking ID: " + str(
+			message = "Hi " + name + "! We apologize for the inconvenience caused. We are taking necessary action to solve the issue. If you require any further assistance, directly call our escaltion number : " + str(agent_num) + " and quote your booking ID: " + str(
 				booking_id) + "."
 			send_sms_2factor_EZY(number, message)
 
@@ -10011,7 +10011,7 @@ def send_bill(cust_name,booking_id,cust_email,price_total,serviceitems,cust_numb
 # the attachment
 
 
-def bill_html(agent_name,agent_address,invoice_number,booking_id,created_date,tin_number,cin_number,stax_number,cust_name,cust_address,cust_locality,cust_city,cust_reg,cust_veh,service_items,vat_part_percent,vat_lube_percent,vat_consumable_percent,stax_percent,vat_part,vat_lube,vat_consumable,stax_amount,total,recommendation,logo,amount_paid,gst_number,gst_part_percent,gst_lube_percent,gst_consumable_percent,gst_service_percent,gst_part,gst_lube,gst_consumable,gst_service,cust_odo):
+def bill_html(agent_name,agent_address,invoice_number,booking_id,created_date,tin_number,cin_number,stax_number,cust_name,cust_address,cust_locality,cust_city,cust_reg,cust_veh,service_items,vat_part_percent,vat_lube_percent,vat_consumable_percent,stax_percent,vat_part,vat_lube,vat_consumable,stax_amount,total,recommendation,logo,amount_paid,gst_number,gst_part_percent,gst_lube_percent,gst_consumable_percent,gst_service_percent,gst_18,gst_28,cust_odo,gst_type,state_of_supply):
 	html = """<!DOCTYPE html>
 <html id="bill-data" lang="en"><head>
 	<style>
@@ -10300,8 +10300,8 @@ page[size="A5"][layout="portrait"] {
 					<b>Customer Details:  </b><br>
 					<table class="customer-details">
 						<tr><td>&nbsp;&nbsp;Name </td><td><span id="cust-name">"""+cust_name+"""</span></td></tr>
-						<tr><td>&nbsp;&nbsp;Address </td><td><span id="cust-address">"""+cust_address+"""</span>, <span id="cust-locality">"""+cust_locality+"""</span></tr>
-						<tr><td>&nbsp;&nbsp;Place of Supply </td><td><span id="cust-city">"""+cust_city+"""</span></td></tr>
+						<tr><td>&nbsp;&nbsp;Address </td><td><span id="cust-address">"""+cust_address+"""</span>, <span id="cust-locality">"""+cust_locality+"""</span>, <span id="cust-city">"""+cust_city+"""</span></td></tr>
+						<tr><td>&nbsp;&nbsp;State of Supply </td><td><span id="cust-city">"""+state_of_supply+"""</span></td></tr>
 					</table>
 				</td>
 				<td>
@@ -10347,7 +10347,7 @@ page[size="A5"][layout="portrait"] {
 			<tbody class="parts-list">"""
 
 		for part in service_items:
-			if (part['type'] == "Part" or part['type'] == "Lube" or part['type'] == "Consumable") and float(part['unit_price'])>0 :
+			if (part['type'] == "Part" or part['type'] == "Lube" or part['type'] == "Consumable" or part['type'] == "Part18" or part['type'] == "Part28" or part['type'] == "Lube18" or part['type'] == "Lube28") and float(part['unit_price'])>0 :
 				marker = 1
 				html3 += """<tr class="item"><td>"""+part['name']+"""</td><td>"""+str(part['quantity'])+"""</td><td>"""+str(round((float(part['pre_tax_price'])/float(part['quantity'])),2))+"""</td><td>Rs. """+str(part['pre_tax_price'])+"""</td></tr>"""
 		html4 += """</tbody></table>"""
@@ -10445,38 +10445,55 @@ page[size="A5"][layout="portrait"] {
 	# 		</tr>"""
 
 	if gst_number != "":
-		html += """<tr class="tax reciept">
-	    				<td>
-	    					CGST  @ <span id="vat-part-percent">""" + str(float(gst_part_percent)/2) + """</span>%: Rs. <span class="vat-part-amount">""" + str((float(gst_part)+float(gst_consumable))/2) + """</span>
-	    				</td>
-	    			</tr>
-	    			<tr class="tax reciept">
-	    				<td>
-	    					CGST @ <span id="vat-lube-percent">""" + str(float(gst_lube_percent)/2) + """</span>%: Rs. <span class="vat-lube-amount">""" + str((float(gst_lube) + float(gst_service))/2) + """</span>
-	    				</td>
-	    			</tr>"""
-	    			# <tr class="tax reciept">
-	    			# 	<td>
-	    			# 		CGST  @ <span id="vat-consumable-percent">""" + str(float(gst_consumable_percent)/2) + """</span>%: Rs. <span class="vat-consumable-amount">""" + str(float(gst_consumable)/2) + """</span>
-	    			# 	</td>
-	    			# </tr>"""
-                    # <tr class="tax reciept">
-	    			# 	<td>
-	    			# 		CGST (Service) @ <span id="vat-lube-percent">""" + str(float(gst_service_percent)/2) + """</span>%: Rs. <span class="vat-lube-amount">""" + str(float(gst_service)/2) + """</span>
-	    			# 	</td>
-	    			# </tr>"""
+		if gst_type == "S":
+			html += """<tr class="tax reciept">
+							<td>
+								CGST  @ <span id="vat-part-percent">""" + str(float(gst_part_percent)/2) + """</span>%: Rs. <span class="vat-part-amount">""" + str((float(gst_28))/2) + """</span>
+							</td>
+						</tr>
+						<tr class="tax reciept">
+							<td>
+								CGST @ <span id="vat-lube-percent">""" + str(float(gst_lube_percent)/2) + """</span>%: Rs. <span class="vat-lube-amount">""" + str((float(gst_18))/2) + """</span>
+							</td>
+						</tr>"""
+						# <tr class="tax reciept">
+						# 	<td>
+						# 		CGST  @ <span id="vat-consumable-percent">""" + str(float(gst_consumable_percent)/2) + """</span>%: Rs. <span class="vat-consumable-amount">""" + str(float(gst_consumable)/2) + """</span>
+						# 	</td>
+						# </tr>"""
+						# <tr class="tax reciept">
+						# 	<td>
+						# 		CGST (Service) @ <span id="vat-lube-percent">""" + str(float(gst_service_percent)/2) + """</span>%: Rs. <span class="vat-lube-amount">""" + str(float(gst_service)/2) + """</span>
+						# 	</td>
+						# </tr>"""
 
-		html += """<tr class="tax reciept">
-			    				<td>
-	    					SGST  @ <span id="vat-part-percent">""" + str(float(gst_part_percent)/2) + """</span>%: Rs. <span class="vat-part-amount">""" + str((float(gst_part)+float(gst_consumable))/2) + """</span>
-			    				</td>
-			    			</tr>
-	    			<tr class="tax reciept">
-	    				<td>
-	    					SGST @ <span id="vat-lube-percent">""" + str(float(gst_lube_percent)/2) + """</span>%: Rs. <span class="vat-lube-amount">""" + str((float(gst_lube) + float(gst_service))/2) + """</span>
-	    				</td>
-	    			</tr>"""
-			#     			<tr class="tax reciept">
+			html += """<tr class="tax reciept">
+									<td>
+								SGST  @ <span id="vat-part-percent">""" + str(float(gst_part_percent)/2) + """</span>%: Rs. <span class="vat-part-amount">""" + str((float(gst_28))/2) + """</span>
+									</td>
+								</tr>
+						<tr class="tax reciept">
+							<td>
+								SGST @ <span id="vat-lube-percent">""" + str(float(gst_lube_percent)/2) + """</span>%: Rs. <span class="vat-lube-amount">""" + str((float(gst_18))/2) + """</span>
+							</td>
+						</tr>"""
+		else:
+			html += """<tr class="tax reciept">
+		    							<td>
+		    								IGST  @ <span id="vat-part-percent">""" + str(
+				float(gst_part_percent)) + """</span>%: Rs. <span class="vat-part-amount">""" + str(
+				(float(gst_28))) + """</span>
+		    							</td>
+		    						</tr>
+		    						<tr class="tax reciept">
+		    							<td>
+		    								IGST @ <span id="vat-lube-percent">""" + str(
+				float(gst_lube_percent)) + """</span>%: Rs. <span class="vat-lube-amount">""" + str(
+				(float(gst_18))) + """</span>
+		    							</td>
+		    						</tr>"""
+
+		#     			<tr class="tax reciept">
 			#     				<td>
 			#     					SGST  @ <span id="vat-consumable-percent">""" + str(
 			# float(gst_consumable_percent) / 2) + """</span>%: Rs. <span class="vat-consumable-amount">""" + str(
