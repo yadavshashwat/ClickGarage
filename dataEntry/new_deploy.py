@@ -4,8 +4,8 @@ from activity.models import Transactions, CGUser, CGUserNew
 
 import datetime
 
-Taxes.objects.all().delete()
-runentry.loadTaxes('States_Taxes.csv')
+# Taxes.objects.all().delete()
+# runentry.loadTaxes('States_Taxes.csv')
 #
 # Bills.objects.all().delete()
 
@@ -168,3 +168,9 @@ runentry.loadTaxes('States_Taxes.csv')
 #             None
 #         user.save()
 # Users = CGUser
+
+bookings = Bookings.objects.filter(booking_flag = False)
+for booking in bookings:
+    if booking.source == "Repeat Customer":
+        booking.reminder_flag = True
+    booking.save()

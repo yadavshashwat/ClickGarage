@@ -4608,7 +4608,7 @@ def create_check_user_modified(name,number,owner):
 
 
 def place_booking(user_id, name, number, email, reg_number, address, locality, city, order_list, make, veh_type, model,
-                  fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary,send_sms = "1",booking_type="User",booking_user_name=None,booking_user_number=None, owner="ClickGarage", follow_up_date_book = "",follow_up_time_book = "",odometer="",done_by="User"):
+                  fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary,send_sms = "1",booking_type="User",booking_user_name=None,booking_user_number=None, owner="ClickGarage", follow_up_date_book = "",follow_up_time_book = "",odometer="",done_by="User", reminder=False):
 
     name = cleanstring(name).title()
     address = cleanstring(address).title()
@@ -4755,6 +4755,7 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
                  follow_up_date = follow_up_date,
                  follow_up_time = follow_up_time,
                  odometer = odometer,
+                 reminder_flag=reminder,
                  status_history = status_history
                  # time_job_summary =time.time()
                  )
@@ -4806,8 +4807,9 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
         else:
             message += " | Link :" + "https://www.clickgarage.in/adminpanel/leads/single/" + tt.id
 
-        for num in number_list:
-            mviews.send_sms_2factor(num,message)
+        if not reminder:
+            for num in number_list:
+                mviews.send_sms_2factor(num,message)
     return {'Status': "Order Placed", 'booking_id': str(tt.booking_id),'price_total':str(tt.price_total),'Summary':str(tt.comments), 'id':str(tt.id)}
 
 def send_sms_customer(request):
@@ -6379,6 +6381,7 @@ def view_all_bookings(request):
     phone_num = get_param(request, 'phone_num', None)
     agent_id = get_param(request, 'agent_id', None)
     cg_book = get_param(request, 'cg_book', None)
+    lead_follow = get_param(request, 'lead_follow', None)
     complete_flag = get_param(request, 'complete_flag', None)
     page_num = get_param(request, 'page_num', None)
     escalation_flag = get_param(request, 'escalation_flag', "False")
@@ -6390,7 +6393,6 @@ def view_all_bookings(request):
         if request.user.is_admin or request.user.is_staff:
             if lead_booking == "Lead":
                 lead_correct()
-
 
     if data_id == "" or data_id == None:
         if request.user.is_admin:
@@ -6550,6 +6552,11 @@ def view_all_bookings(request):
         if lead_booking =="Lead":
             # print "Lead"
             tranObjs = tranObjs.filter(booking_flag = False)
+            if lead_follow != None and lead_follow != "":
+                if lead_follow == "Lead":
+                    tranObjs = tranObjs.filter(reminder_flag=False)
+                elif lead_follow == "Reminder":
+                    tranObjs = tranObjs.filter(reminder_flag=True)
         elif lead_booking =="Booking":
             # print "Booking"
             tranObjs = tranObjs.filter(booking_flag = True)
@@ -7325,6 +7332,7 @@ def view_all_bookings(request):
             # 'follow_up_date': newformat_f,
             'time_booking'      : trans.time_booking,
             'is_paid'           : trans.is_paid,
+            'reminder_flag'     : trans.reminder_flag,
             'amount_paid'       : trans.amount_paid,
             'coupon'            : trans.coupon,
             'status'            : trans.status,
@@ -9038,6 +9046,7 @@ def change_status_actual(booking_id,status_id,send_sms):
             if (booking_user=="User"):
                 user = create_check_user(booking.cust_name,booking.cust_number)
                 booking.cust_id = user.id
+                booking.reminder_flag = False
                 address2 = {'address': booking.cust_address, 'locality': booking.cust_locality, 'city': booking.cust_city}
                 if address2 not in user.user_saved_address:
                     user.user_saved_address.append(address2)
@@ -9060,7 +9069,7 @@ def change_status_actual(booking_id,status_id,send_sms):
                         message += job['Job'] + ", "
                 except:
                     None
-            message += " | Link :" + "https://www.clickgarage.in/adminpanel/leads/single/" + booking.id
+            message += " | Link :" + "https://www.clickgarage.in/adminpanel/bookings/single/" + booking.id
             for num in number_list:
                 mviews.send_sms_2factor(num, message)
 
@@ -9148,7 +9157,7 @@ def change_status_actual(booking_id,status_id,send_sms):
                     if booking.clickgarage_flag == True:
                         new_lead = place_booking(booking.cust_id, booking.cust_name, booking.cust_number, booking.cust_email, booking.cust_regnumber, booking.cust_address,booking.cust_locality, booking.cust_city, booking.service_items,
                                                  booking.cust_make, booking.cust_vehicle_type,booking.cust_model, booking.cust_fuel_varient, str(date_today), "09:30 AM - 12:30 PM", [{'Job':'Servicing/Repair - Reminder','Category':'Servicing','Type':'Request','Price':'0'}], False, "0", "NA",
-                                                 "0", "Repeat Customer", False, "NA", send_sms="0",follow_up_date_book=str(date_today))
+                                                 "0", "Repeat Customer", False, "NA", send_sms="0",follow_up_date_book=str(date_today),reminder=True)
                     else:
                         new_lead = place_booking(booking.cust_id, booking.cust_name, booking.cust_number,
                                                  booking.cust_email, booking.cust_regnumber, booking.cust_address,
@@ -9156,7 +9165,7 @@ def change_status_actual(booking_id,status_id,send_sms):
                                                  booking.cust_make, booking.cust_vehicle_type, booking.cust_model,
                                                  booking.cust_fuel_varient, str(date_today), "09:30 AM - 12:30 PM",
                                                  [{'Job':'Servicing/Repair - Reminder','Category':'Servicing','Type':'Request','Price':'0'}], False, "0", "NA",
-                                                 "0", "Repeat Customer", False, "NA", send_sms="0",owner=booking.booking_owner, follow_up_date_book=str(date_today))
+                                                 "0", "Repeat Customer", False, "NA", send_sms="0",owner=booking.booking_owner, follow_up_date_book=str(date_today),reminder=True)
             else:
                 booking.job_completion_flag = True
 

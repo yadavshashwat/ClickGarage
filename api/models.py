@@ -542,7 +542,7 @@ class Bookings(models.Model):
     comments                = models.CharField(max_length=500, null=True)
     jobssummary             = ListField(DictField())
     time_job_summary        = models.CharField(max_length=200,null=True)
-    # Price Job Item
+    reminder_flag           = models.BooleanField(default=False)
     source                  = models.CharField(max_length= 200, null=True)
     agent                   = models.CharField(max_length= 200, null=True)
     estimate_history        = ListField(DictField())
