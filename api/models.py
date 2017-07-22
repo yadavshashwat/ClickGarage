@@ -400,6 +400,7 @@ class ServiceLabour(models.Model):
     time                = models.CharField(max_length=50)
     price_active        = models.CharField(max_length=20)
     priority            = models.CharField(max_length=50)
+    discount            = models.CharField(max_length=50)
     settlement_cat      = models.CharField(max_length=50)
 
 class ServicePart(models.Model):
@@ -447,6 +448,7 @@ class Services(models.Model):
     model 				= models.CharField(max_length=50)
     default_components  = ListField(DictField())
     optional_components = ListField(DictField())
+    discount            = models.CharField(max_length=50)
     total_part          = models.FloatField(max_length=50, null=True)
     total_labour        = models.FloatField(max_length=50, null=True)
     total_discount      = models.FloatField(max_length=50, null=True)

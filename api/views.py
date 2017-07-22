@@ -4156,6 +4156,8 @@ def get_jobs_vehicle(request):
             , "total_price_comp"    : job.total_price_comp
             , "time"    : job.time
             , "priority"    : job.priority
+            , "discount": job.discount
+
         })
 
     obj['status'] = True
