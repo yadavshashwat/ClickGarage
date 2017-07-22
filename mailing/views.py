@@ -7867,6 +7867,7 @@ region ='us-west-2'
 aws_access='AKIAJNAYBONVQTNTSLZQ'
 aws_secret='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'
 
+cgpoc = "Shubham - 8800249924 "
 
 import requests
 import json
@@ -7971,7 +7972,7 @@ def send_booking_confirm(email,name,booking_id,number,service_list,car_bike):
 	me = from_address
 	you = email
 	# cgpoc = "Amit - 9560059744 "
-	cgpoc = "Shubham - 9910060501 "
+	# cgpoc = "Shubham - 8800249924 "
 	# Create message container - the correct MIME type is multipart/alternative.
 	msg = MIMEMultipart('alternative')
 	msg['Subject'] = "Booking Confirmation! Booking ID: " + str(booking_id)
@@ -8072,8 +8073,7 @@ def send_sms_customer_manual(dataid,message):
 
 def send_sms_customer(name,number,booking_id,date,time,agent_details = None,estimate=None, status=None, status2=None):
 	booking = Bookings.objects.filter(booking_id = booking_id)[0]
-	cgpoc = "Amit - 9560059744 "
-
+	# cgpoc = "Amit - 9560059744 "
 	if booking.agent != "":
 		agent = CGUserNew.objects.filter(id = booking.agent)[0]
 		agent_name = agent.first_name

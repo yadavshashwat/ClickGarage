@@ -1347,7 +1347,10 @@ def loadService(fileName):
 def loadServiceParts(fileName):
     with open(path+'/data revamp/'+fileName, 'rU') as csvfile:
         serviceData = csv.reader(csvfile, delimiter='\t', quotechar='|')
+        i = 0
         for service in serviceData:
+            i = i + 1
+            print i
             city                = cleanstring(service[0])
             vendor              = cleanstring(service[1])
             make                = cleanstring(service[2])
@@ -1359,15 +1362,19 @@ def loadServiceParts(fileName):
             car_bike            = cleanstring(service[8])
             service_cat         = cleanstring(service[9])
             job_name            = cleanstring(service[10])
-            doorstep            = cleanstring(service[11])
-            part_name           = cleanstring(service[12])
-            action              = cleanstring(service[13])
-            quantity            = cleanstring(service[14])
-            units               = cleanstring(service[15])
-            price               = cleanstring(service[16])
-            part_cat            = cleanstring(service[17])
-            price_comp          = cleanstring(service[18])
-            default             = cleanstring(service[19])
+            if car_bike == "Car":
+                doorstep = "0"
+            else:
+                doorstep = "1"
+            # doorstep            = cleanstring(service[12])
+            part_name           = cleanstring(service[11])
+            action              = cleanstring(service[12])
+            quantity            = cleanstring(service[13])
+            units               = cleanstring(service[14])
+            price               = cleanstring(service[15])
+            part_cat            = cleanstring(service[16])
+            price_comp          = cleanstring(service[17])
+            default             = cleanstring(service[18])
 
             findService = ServicePart.objects.filter(
                 city             =city              ,
@@ -1407,8 +1414,12 @@ def loadServiceParts(fileName):
                 obj['price'] = price
                 obj['category'] = part_cat
                 obj['price_comp'] = price_comp
-                obj['type'] = "Part"
-                obj['settlement_cat'] = "Part"
+                if part_name == "Engine Oil":
+                    obj['type'] = "Lube18"
+                    obj['settlement_cat'] = "Lube"
+                else:
+                    obj['type'] = "Part28"
+                    obj['settlement_cat'] = "Part"
 
                 # price_float_t = 0
                 # price_float_c = 0
@@ -1442,8 +1453,12 @@ def loadServiceParts(fileName):
                 obj['price'] = price
                 obj['category'] = part_cat
                 obj['price_comp'] = price_comp
-                obj['type'] = "Part"
-                obj['settlement_cat'] = "Part"
+                if part_name == "Engine Oil":
+                    obj['type'] = "Lube18"
+                    obj['settlement_cat'] = "Lube"
+                else:
+                    obj['type'] = "Part28"
+                    obj['settlement_cat'] = "Part"
 
                 price_float_t_2 = 0
                 price_float_c_2 = 0
@@ -1502,7 +1517,8 @@ def loadServiceLabour(fileName):
                 price_active        = cleanstring(service[14])
                 total_price_comp    = cleanstring(service[15])
                 priority            = cleanstring(service[16])
-                settlement_cat      = cleanstring(service[17])
+                discount_pre        = cleanstring(service[17])
+                # settlement_cat      = cleanstring(service[17])
             # print type
                 findService = ServiceLabour.objects.filter(
                                 city        =city,
@@ -1536,6 +1552,7 @@ def loadServiceLabour(fileName):
                     findService.total_price_comp = round(float(total_price_comp),0)
                     findService.price_active = price_active
                     findService.priority = priority
+                    findService.discount = discount_pre
                     findService.save()
                     # print findService.job_name
 
@@ -1558,7 +1575,8 @@ def loadServiceLabour(fileName):
                         total_price_comp   = round(float(total_price_comp),0)        ,
                         price_active       = price_active            ,
                         priority     = priority,
-                        settlement_cat = settlement_cat
+                        discount=discount_pre,
+                        settlement_cat = "Labour"
                     )
                     print serv
                     serv.save()
@@ -1606,12 +1624,12 @@ def CreateJobList():
                 obj['name'] = service.job_name
                 obj['action'] = "Labour"
                 obj['quantity'] = "1"
-                obj['unit_price'] = str(service.total_price)
-                obj['price'] = str(service.total_price)
+                obj['unit_price'] = str((float(service.total_price) - float(service.discount))*1.18)
+                obj['price'] = str((float(service.total_price) - float(service.discount))*1.18)
                 obj['category'] = "Labour"
-                obj['price_comp'] = str(service.total_price_comp)
+                obj['price_comp'] = str((float(service.total_price_comp) - float(service.discount))*1.18)
                 obj['type'] = "Labour"
-                obj['settlement_cat'] = service.settlement_cat
+                obj['settlement_cat'] = "Labour"
                 # print obj
                 # final_obj = []
                 final_obj = Parts.default_components
@@ -1625,8 +1643,8 @@ def CreateJobList():
                 job_name 	        = service.job_name,
                 job_sub_cat         = service.job_sub_cat,
                 type                = service.type,
-                total_price         = round((service.total_price + Parts.total_price),0),
-                total_price_comp    = round((service.total_price_comp + Parts.total_price_comp),0),
+                total_price         = round(float(service.total_price) - float(service.discount) + float(Parts.total_price),0),
+                total_price_comp    = round(float(service.total_price_comp) - float(service.discount)  + float(Parts.total_price_comp),0),
                 doorstep            = service.doorstep,
                 year 				= vehicle.year,
                 fuel_type 			= vehicle.fuel_type,
@@ -1639,23 +1657,24 @@ def CreateJobList():
                 time                = service.time,
                 price_active        = service.price_active,
                 priority            = service.priority,
+                discount            = service.discount,
                 make 				= vehicle.make,
                 model 				= vehicle.model,
                 default_components  = final_obj,
                 optional_components = Parts.optional_components,
                 total_part          = Parts.total_price,
-                total_labour        = (service.total_price),
-                total_discount      = 0)
+                total_labour        = float(service.total_price) - float(service.discount),
+                total_discount      = service.discount)
                 serv.save()
             else:
                 obj = {}
                 obj['name'] = service.job_name
                 obj['action'] = "Labour"
                 obj['quantity'] = "1"
-                obj['unit_price'] = service.total_price
-                obj['price'] = service.total_price
+                obj['unit_price'] = str((float(service.total_price) - float(service.discount))*1.18)
+                obj['price'] = str((float(service.total_price) - float(service.discount))*1.18)
                 obj['category'] = "Labour"
-                obj['price_comp'] = service.total_price_comp
+                obj['price_comp'] = str((float(service.total_price_comp) - float(service.discount))*1.18)
                 obj['type'] = "Labour"
                 obj['settlement_cat'] = service.settlement_cat
 
@@ -1667,8 +1686,8 @@ def CreateJobList():
                 job_name 	        = service.job_name,
                 job_sub_cat         = service.job_sub_cat,
                 type                = service.type,
-                total_price         = round((service.total_price),0),
-                total_price_comp    = round((service.total_price_comp),0),
+                total_price         = round(float(service.total_price) - float(service.discount),0),
+                total_price_comp    = round(float(service.total_price_comp) - float(service.discount),0),
                 doorstep            = service.doorstep,
                 year 				= vehicle.year,
                 fuel_type 			= vehicle.fuel_type,
@@ -1683,10 +1702,11 @@ def CreateJobList():
                 priority            = service.priority,
                 make 				= vehicle.make,
                 model 				= vehicle.model,
+                discount            = service.discount,
                 default_components  = [obj],
                 optional_components = [],
                 total_part          = 0,
-                total_labour        = round((service.total_price),0),
+                total_labour        = round(float(service.total_price) - float(service.discount),0),
                 total_discount      = 0)
                 serv.save()
 

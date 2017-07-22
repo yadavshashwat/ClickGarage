@@ -62,14 +62,17 @@ from api.models import *
 # ------------------------- Website Revamp---------------------------
 # runentry.loadService('service_data_2.txt')
 
-# Vehicle.objects.all().delete()
-# Services.objects.all().delete()
-# ServiceLabour.objects.all().delete()
-# ServicePart.objects.all().delete()
-# runentry.loadVehicles('vehicle_list.csv')
-# runentry.loadServiceLabour('Labour_Final.txt')
-# runentry.loadServiceParts('Parts_Final.txt')
-# runentry.CreateJobList()
+Vehicle.objects.all().delete()
+runentry.loadVehicles('vehicle_list.csv')
+
+Services.objects.all().delete()
+ServiceLabour.objects.all().delete()
+runentry.loadServiceLabour('Labour_Final.txt')
+#
+ServicePart.objects.all().delete()
+runentry.loadServiceParts('Parts_Final.txt')
+
+runentry.CreateJobList()
 # runentry.settlementCat()
 # Taxes.objects.all().delete()
 # runentry.loadTaxes('States_Taxes.csv')

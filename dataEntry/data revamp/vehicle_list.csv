@@ -1,5 +1,3 @@
-Toyota,Corolla Altis,NA,Petrol,Toyota Corolla Altis (Petrol),NA,Sedan,Car,NA,1
-Maruti Suzuki,Wagon R,NA,Petrol,Maruti Suzuki Wagon R (Petrol),NA,Hatchback,Car,NA,1
 BMW,1 Series,NA,Diesel,BMW 1 Series (Diesel),NA,Luxury Hatchback,Car,NA,1
 Mini,3 Door,NA,Petrol,Mini 3 Door (Petrol),NA,Luxury Hatchback,Car,NA,1
 Mini,3 Door,NA,Diesel,Mini 3 Door (Diesel),NA,Luxury Hatchback,Car,NA,1
@@ -9,61 +7,8 @@ BMW,6 Series,NA,Diesel,BMW 6 Series (Diesel),NA,Luxury Sedan,Car,NA,1
 BMW,7 Series,NA,Petrol,BMW 7 Series (Petrol),NA,Luxury Sedan,Car,NA,1
 BMW,7 Series,NA,Diesel,BMW 7 Series (Diesel),NA,Luxury Sedan,Car,NA,1
 Porsche,911,NA,Petrol,Porsche 911 (Petrol),NA,Ultra Luxury,Car,NA,1
-Volkswagen,Vento,NA,Petrol,Volkswagen Vento (Petrol),NA,Sedan,Car,NA,1
-Volkswagen,Polo,NA,Petrol,Volkswagen Polo (Petrol),NA,Hatchback,Car,NA,1
-Volkswagen,Jetta,NA,Petrol,Volkswagen Jetta (Petrol),NA,Sedan,Car,NA,1
-Volkswagen,Cross Polo,NA,Petrol,Volkswagen Cross Polo (Petrol),NA,Sedan,Car,NA,1
 Volkswagen,Beetle,NA,Petrol,Volkswagen Beetle (Petrol),NA,Luxury Hatchback,Car,NA,1
-Volkswagen,Vento,NA,Diesel,Volkswagen Vento (Diesel),NA,Sedan,Car,NA,1
-Volkswagen,Polo,NA,Diesel,Volkswagen Polo (Diesel),NA,Hatchback,Car,NA,1
-Volkswagen,Jetta,NA,Diesel,Volkswagen Jetta (Diesel),NA,Sedan,Car,NA,1
-Volkswagen,Cross Polo,NA,Diesel,Volkswagen Cross Polo (Diesel),NA,Sedan,Car,NA,1
 Toyota,Prius,NA,Petrol,Toyota Prius (Petrol),NA,Luxury Sedan,Car,NA,1
-Toyota,Etios Liva,NA,Petrol,Toyota Etios Liva (Petrol),NA,Hatchback,Car,NA,1
-Toyota,Etios Cross,NA,Petrol,Toyota Etios Cross (Petrol),NA,Sedan,Car,NA,1
-Toyota,Etios,NA,Petrol,Toyota Etios (Petrol),NA,Sedan,Car,NA,1
-Toyota,Camry,NA,Petrol,Toyota Camry (Petrol),NA,Luxury Sedan,Car,NA,1
-Toyota,Land Cruiser prade,NA,Diesel,Toyota Land Cruiser prade (Diesel),NA,Luxury SUV,Car,NA,1
-Toyota,Land Cruiser 200,NA,Diesel,Toyota Land Cruiser 200 (Diesel),NA,Luxury SUV,Car,NA,1
-Toyota,Innova,NA,Diesel,Toyota Innova (Diesel),NA,SUV,Car,NA,1
-Toyota,Fortuner,NA,Diesel,Toyota Fortuner (Diesel),NA,SUV,Car,NA,1
-Toyota,Etios Liva,NA,Diesel,Toyota Etios Liva (Diesel),NA,Hatchback,Car,NA,1
-Toyota,Etios Cross,NA,Diesel,Toyota Etios Cross (Diesel),NA,Sedan,Car,NA,1
-Toyota,Etios,NA,Diesel,Toyota Etios (Diesel),NA,Sedan,Car,NA,1
-Toyota,Corolla Altis,NA,Diesel,Toyota Corolla Altis (Diesel),NA,Sedan,Car,NA,1
-Tata,Zest,NA,Petrol,Tata Zest (Petrol),NA,Sedan,Car,NA,1
-Tata,Nano,NA,Petrol,Tata Nano (Petrol),NA,Hatchback,Car,NA,1
-Tata,Indigo eCS,NA,Petrol,Tata Indigo eCS (Petrol),NA,Sedan,Car,NA,1
-Tata,Bolt,NA,Petrol,Tata Bolt (Petrol),NA,Hatchback,Car,NA,1
-Tata,Zest,NA,Diesel,Tata Zest (Diesel),NA,Sedan,Car,NA,1
-Tata,Xenon XT,NA,Diesel,Tata Xenon XT (Diesel),NA,SUV,Car,NA,1
-Tata,Sumo,NA,Diesel,Tata Sumo (Diesel),NA,SUV,Car,NA,1
-Tata,Safari Storme,NA,Diesel,Tata Safari Storme (Diesel),NA,SUV,Car,NA,1
-Tata,Safari,NA,Diesel,Tata Safari (Diesel),NA,SUV,Car,NA,1
-Tata,Indigo eCS,NA,Diesel,Tata Indigo eCS (Diesel),NA,Sedan,Car,NA,1
-Tata,Indica eV2,NA,Diesel,Tata Indica eV2 (Diesel),NA,Hatchback,Car,NA,1
-Tata,Bolt,NA,Diesel,Tata Bolt (Diesel),NA,Hatchback,Car,NA,1
-Tata,Aria,NA,Diesel,Tata Aria (Diesel),NA,SUV,Car,NA,1
-Tata,Nano,NA,CNG,Tata Nano (CNG),NA,Hatchback,Car,NA,1
-Tata,Indigo eCS,NA,CNG,Tata Indigo eCS (CNG),NA,Sedan,Car,NA,1
-Tata,Indica eV2,NA,CNG,Tata Indica eV2 (CNG),NA,Hatchback,Car,NA,1
-Skoda,Superb,NA,Petrol,Skoda Superb (Petrol),NA,Luxury Sedan,Car,NA,1
-Skoda,Rapid,NA,Petrol,Skoda Rapid (Petrol),NA,Sedan,Car,NA,1
-Skoda,Octavia,NA,Petrol,Skoda Octavia (Petrol),NA,Sedan,Car,NA,1
-Skoda,Yeti,NA,Diesel,Skoda Yeti (Diesel),NA,Sedan,Car,NA,1
-Skoda,Superb,NA,Diesel,Skoda Superb (Diesel),NA,Luxury Sedan,Car,NA,1
-Skoda,Rapid,NA,Diesel,Skoda Rapid (Diesel),NA,Sedan,Car,NA,1
-Skoda,Octavia,NA,Diesel,Skoda Octavia (Diesel),NA,Sedan,Car,NA,1
-Renault,Scala,NA,Petrol,Renault Scala (Petrol),NA,Sedan,Car,NA,1
-Renault,Pulse,NA,Petrol,Renault Pulse (Petrol),NA,Hatchback,Car,NA,1
-Renault,Kwid,NA,Petrol,Renault Kwid (Petrol),NA,Hatchback,Car,NA,1
-Renault,Duster,NA,Petrol,Renault Duster (Petrol),NA,SUV,Car,NA,1
-Renault,Scala,NA,Diesel,Renault Scala (Diesel),NA,Sedan,Car,NA,1
-Renault,Pulse,NA,Diesel,Renault Pulse (Diesel),NA,Hatchback,Car,NA,1
-Renault,Lodgy,NA,Diesel,Renault Lodgy (Diesel),NA,Sedan,Car,NA,1
-Renault,Koleos,NA,Diesel,Renault Koleos (Diesel),NA,SUV,Car,NA,1
-Renault,Fluence,NA,Diesel,Renault Fluence (Diesel),NA,Sedan,Car,NA,1
-Renault,Duster,NA,Diesel,Renault Duster (Diesel),NA,SUV,Car,NA,1
 Audi,A3,NA,Petrol,Audi A3 (Petrol),NA,Luxury Sedan,Car,NA,1
 Audi,A3,NA,Diesel,Audi A3 (Diesel),NA,Luxury Sedan,Car,NA,1
 Audi,A3 Cabriolet,NA,Petrol,Audi A3 Cabriolet (Petrol),NA,Luxury Sedan,Car,NA,1
@@ -71,91 +16,42 @@ Audi,A6,NA,Petrol,Audi A6 (Petrol),NA,Luxury Sedan,Car,NA,1
 Audi,A6,NA,Diesel,Audi A6 (Diesel),NA,Luxury Sedan,Car,NA,1
 Audi,A8,NA,Petrol,Audi A8 (Petrol),NA,Luxury Sedan,Car,NA,1
 Audi,A8,NA,Diesel,Audi A8 (Diesel),NA,Luxury Sedan,Car,NA,1
-Mercedes,A-Class,NA,Petrol,Mercedes A-Class (Petrol),NA,Luxury Hatchback,Car,NA,1
-Mercedes,A-Class,NA,Diesel,Mercedes A-Class (Diesel),NA,Luxury Hatchback,Car,NA,1
-Nissan,Terrano,NA,Petrol,Nissan Terrano (Petrol),NA,SUV,Car,NA,1
-Nissan,Sunny,NA,Petrol,Nissan Sunny (Petrol),NA,Sedan,Car,NA,1
-Nissan,Micra,NA,Petrol,Nissan Micra (Petrol),NA,Hatchback,Car,NA,1
-Nissan,Micra Active,NA,Petrol,Nissan Micra Active (Petrol),NA,Hatchback,Car,NA,1
-Nissan,Terrano,NA,Diesel,Nissan Terrano (Diesel),NA,SUV,Car,NA,1
-Nissan,Sunny,NA,Diesel,Nissan Sunny (Diesel),NA,Sedan,Car,NA,1
-Nissan,Micra,NA,Diesel,Nissan Micra (Diesel),NA,Hatchback,Car,NA,1
-Nissan,Evalia,NA,Diesel,Nissan Evalia (Diesel),NA,SUV,Car,NA,1
-Mitsubishi,Pajero Sport,NA,Diesel,Mitsubishi Pajero Sport (Diesel),NA,SUV,Car,NA,1
+Mercedes,A Class,NA,Petrol,Mercedes A-Class (Petrol),NA,Luxury Hatchback,Car,NA,1
+Mercedes,A Class,NA,Diesel,Mercedes A-Class (Diesel),NA,Luxury Hatchback,Car,NA,1
 Mercedes,AMG GT,NA,Petrol,Mercedes AMG GT (Petrol),NA,Ultra Luxury,Car,NA,1
-Mercedes,B-Class,NA,Petrol,Mercedes B-Class (Petrol),NA,Luxury Hatchback,Car,NA,1
-Mercedes,B-Class,NA,Diesel,Mercedes B-Class (Diesel),NA,Luxury Hatchback,Car,NA,1
+Mercedes,B Class,NA,Petrol,Mercedes B-Class (Petrol),NA,Luxury Hatchback,Car,NA,1
+Mercedes,B Class,NA,Diesel,Mercedes B-Class (Diesel),NA,Luxury Hatchback,Car,NA,1
 Porsche,Boxster,NA,Petrol,Porsche Boxster (Petrol),NA,Ultra Luxury,Car,NA,1
 Porsche,Cayenne,NA,Petrol,Porsche Cayenne (Petrol),NA,Ultra Luxury,Car,NA,1
 Porsche,Cayenne,NA,Diesel,Porsche Cayenne (Diesel),NA,Ultra Luxury,Car,NA,1
 Porsche,Cayman,NA,Petrol,Porsche Cayman (Petrol),NA,Ultra Luxury,Car,NA,1
-Mercedes,C-Class,NA,Petrol,Mercedes C-Class (Petrol),NA,Luxury Sedan,Car,NA,1
-Mercedes,C-Class,NA,Diesel,Mercedes C-Class (Diesel),NA,Luxury Sedan,Car,NA,1
-Mercedes,CLA-Class,NA,Petrol,Mercedes CLA-Class (Petrol),NA,Luxury Sedan,Car,NA,1
-Mercedes,CLA-Class,NA,Diesel,Mercedes CLA-Class (Diesel),NA,Luxury Sedan,Car,NA,1
-Mercedes,CLS-Class,NA,Diesel,Mercedes CLS-Class (Diesel),NA,Luxury Sedan,Car,NA,1
+Mercedes,C Class,NA,Petrol,Mercedes C-Class (Petrol),NA,Luxury Sedan,Car,NA,1
+Mercedes,C Class,NA,Diesel,Mercedes C-Class (Diesel),NA,Luxury Sedan,Car,NA,1
+Mercedes,CLA Class,NA,Petrol,Mercedes CLA-Class (Petrol),NA,Luxury Sedan,Car,NA,1
+Mercedes,CLA Class,NA,Diesel,Mercedes CLA-Class (Diesel),NA,Luxury Sedan,Car,NA,1
+Mercedes,CLS Class,NA,Diesel,Mercedes CLS-Class (Diesel),NA,Luxury Sedan,Car,NA,1
 Mini,Cooper Convertible,NA,Petrol,Mini Cooper Convertible (Petrol),NA,Luxury Hatchback,Car,NA,1
 Mini,Countryman,NA,Diesel,Mini Countryman (Diesel),NA,Luxury Hatchback,Car,NA,1
 Land Rover,Discovery Sport,NA,Diesel,Land Rover Discovery Sport (Diesel),NA,Luxury SUV,Car,NA,1
 Land Rover,Discovery4,NA,Diesel,Land Rover Discovery4 (Diesel),NA,Luxury SUV,Car,NA,1
-Mercedes,E-Class,NA,Petrol,Mercedes E-Class (Petrol),NA,Luxury Sedan,Car,NA,1
-Mercedes,E-Class,NA,Diesel,Mercedes E-Class (Diesel),NA,Luxury Sedan,Car,NA,1
+Mercedes,E Class,NA,Petrol,Mercedes E-Class (Petrol),NA,Luxury Sedan,Car,NA,1
+Mercedes,E Class,NA,Diesel,Mercedes E-Class (Diesel),NA,Luxury Sedan,Car,NA,1
 Jaguar,F Type,NA,Petrol,Jaguar F Type (Petrol),NA,Ultra Luxury,Car,NA,1
 Land Rover,Freelander2,NA,Diesel,Land Rover Freelander2 (Diesel),NA,Luxury SUV,Car,NA,1
-Mercedes,G-Class,NA,Petrol,Mercedes G-Class (Petrol),NA,Luxury SUV,Car,NA,1
+Mercedes,G Class,NA,Petrol,Mercedes G-Class (Petrol),NA,Luxury SUV,Car,NA,1
 Mercedes,GLA,NA,Petrol,Mercedes GLA (Petrol),NA,Luxury SUV,Car,NA,1
-Mercedes,GLA-Class,NA,Petrol,Mercedes GLA-Class (Petrol),NA,Luxury SUV,Car,NA,1
-Mercedes,GLA-Class,NA,Diesel,Mercedes GLA-Class (Diesel),NA,Luxury SUV,Car,NA,1
-Mercedes,GL-Class,NA,Petrol,Mercedes GL-Class (Petrol),NA,Luxury SUV,Car,NA,1
-Mercedes,GL-Class,NA,Diesel,Mercedes GL-Class (Diesel),NA,Luxury SUV,Car,NA,1
-Mercedes,GLE-Class,NA,Petrol,Mercedes GLE-Class (Petrol),NA,Luxury SUV,Car,NA,1
-Mercedes,GLE-Class,NA,Diesel,Mercedes GLE-Class (Diesel),NA,Luxury SUV,Car,NA,1
+Mercedes,GLA Class,NA,Petrol,Mercedes GLA-Class (Petrol),NA,Luxury SUV,Car,NA,1
+Mercedes,GLA Class,NA,Diesel,Mercedes GLA-Class (Diesel),NA,Luxury SUV,Car,NA,1
+Mercedes,GL Class,NA,Petrol,Mercedes GL-Class (Petrol),NA,Luxury SUV,Car,NA,1
+Mercedes,GL Class,NA,Diesel,Mercedes GL-Class (Diesel),NA,Luxury SUV,Car,NA,1
+Mercedes,GLE Class,NA,Petrol,Mercedes GLE-Class (Petrol),NA,Luxury SUV,Car,NA,1
+Mercedes,GLE Class,NA,Diesel,Mercedes GLE-Class (Diesel),NA,Luxury SUV,Car,NA,1
 BMW,i8,NA,Petrol,BMW i8 (Petrol),NA,Ultra Luxury,Car,NA,1
-Maruti Suzuki,Swift,NA,Petrol,Maruti Suzuki Swift (Petrol),NA,Hatchback,Car,NA,1
-Maruti Suzuki,Alto 800,NA,Petrol,Maruti Suzuki Alto 800 (Petrol),NA,Hatchback,Car,NA,1
-Maruti Suzuki,Alto k10,NA,Petrol,Maruti Suzuki Alto k10 (Petrol),NA,Hatchback,Car,NA,1
-Maruti Suzuki,Baleno,NA,Petrol,Maruti Suzuki Baleno (Petrol),NA,Hatchback,Car,NA,1
-Maruti Suzuki,Celerio,NA,Petrol,Maruti Suzuki Celerio (Petrol),NA,Hatchback,Car,NA,1
-Maruti Suzuki,Ciaz,NA,Petrol,Maruti Suzuki Ciaz (Petrol),NA,Sedan,Car,NA,1
-Maruti Suzuki,Eeco,NA,Petrol,Maruti Suzuki Eeco (Petrol),NA,SUV,Car,NA,1
-Maruti Suzuki,Wagon R Stingray,NA,Petrol,Maruti Suzuki Wagon R Stingray (Petrol),NA,Hatchback,Car,NA,1
-Maruti Suzuki,Swift Dzire,NA,Petrol,Maruti Suzuki Swift Dzire (Petrol),NA,Sedan,Car,NA,1
-Maruti Suzuki,Ritz,NA,Petrol,Maruti Suzuki Ritz (Petrol),NA,Hatchback,Car,NA,1
-Maruti Suzuki,Omni,NA,Petrol,Maruti Suzuki Omni (Petrol),NA,Hatchback,Car,NA,1
-Maruti Suzuki,Gypsy,NA,Petrol,Maruti Suzuki Gypsy (Petrol),NA,SUV,Car,NA,1
-Maruti Suzuki,Ertiga,NA,Petrol,Maruti Suzuki Ertiga (Petrol),NA,SUV,Car,NA,1
-Maruti Suzuki,Baleno,NA,Diesel,Maruti Suzuki Baleno (Diesel),NA,Hatchback,Car,NA,1
-Maruti Suzuki,Celerio,NA,Diesel,Maruti Suzuki Celerio (Diesel),NA,Hatchback,Car,NA,1
-Maruti Suzuki,Ciaz,NA,Diesel,Maruti Suzuki Ciaz (Diesel),NA,Sedan,Car,NA,1
-Maruti Suzuki,Grand Vitara Brezza,NA,Diesel,Maruti Suzuki Grand Vitara Brezza (Diesel),NA,Sedan,Car,NA,1
-Maruti Suzuki,S-Cross,NA,Diesel,Maruti Suzuki S-Cross (Diesel),NA,Sedan,Car,NA,1
-Maruti Suzuki,Swift,NA,Diesel,Maruti Suzuki Swift (Diesel),NA,Hatchback,Car,NA,1
-Maruti Suzuki,Swift Dzire,NA,Diesel,Maruti Suzuki Swift Dzire (Diesel),NA,Sedan,Car,NA,1
-Maruti Suzuki,Ritz,NA,Diesel,Maruti Suzuki Ritz (Diesel),NA,Hatchback,Car,NA,1
-Maruti Suzuki,Ertiga,NA,Diesel,Maruti Suzuki Ertiga (Diesel),NA,SUV,Car,NA,1
-Maruti Suzuki,Alto 800,NA,CNG,Maruti Suzuki Alto 800 (CNG),NA,Hatchback,Car,NA,1
-Maruti Suzuki,Celerio,NA,CNG,Maruti Suzuki Celerio (CNG),NA,Hatchback,Car,NA,1
-Maruti Suzuki,Eeco,NA,CNG,Maruti Suzuki Eeco (CNG),NA,SUV,Car,NA,1
-Maruti Suzuki,Alto k10,NA,CNG,Maruti Suzuki Alto k10 (CNG),NA,Hatchback,Car,NA,1
-Maruti Suzuki,Ertiga,NA,CNG,Maruti Suzuki Ertiga (CNG),NA,SUV,Car,NA,1
-Maruti Suzuki,Wagon R,NA,CNG,Maruti Suzuki Wagon R (CNG),NA,Hatchback,Car,NA,1
 BMW,M Series,NA,Petrol,BMW M Series (Petrol),NA,Luxury SUV,Car,NA,1
-Mahindra,KUV 100,NA,Petrol,Mahindra KUV 100 (Petrol),NA,Sedan,Car,NA,1
-Mahindra,Xylo,NA,Diesel,Mahindra Xylo (Diesel),NA,SUV,Car,NA,1
-Mahindra,XUV 500,NA,Diesel,Mahindra XUV 500 (Diesel),NA,SUV,Car,NA,1
-Mahindra,Verito Vibe,NA,Diesel,Mahindra Verito Vibe (Diesel),NA,Sedan,Car,NA,1
-Mahindra,Verito,NA,Diesel,Mahindra Verito (Diesel),NA,Sedan,Car,NA,1
-Mahindra,TUV 300,NA,Diesel,Mahindra TUV 300 (Diesel),NA,SUV,Car,NA,1
-Mahindra,Thar,NA,Diesel,Mahindra Thar (Diesel),NA,SUV,Car,NA,1
-Mahindra,Supro,NA,Diesel,Mahindra Supro (Diesel),NA,Hatchback,Car,NA,1
-Mahindra,Scorpio,NA,Diesel,Mahindra Scorpio (Diesel),NA,SUV,Car,NA,1
-Mahindra,Quanto,NA,Diesel,Mahindra Quanto (Diesel),NA,Sedan,Car,NA,1
-Mahindra,KUV 100,NA,Diesel,Mahindra KUV 100 (Diesel),NA,Sedan,Car,NA,1
-Mahindra,Bolero,NA,Diesel,Mahindra Bolero (Diesel),NA,SUV,Car,NA,1
 BMW,M Series,NA,Diesel,BMW M Series (Diesel),NA,Luxury SUV,Car,NA,1
 Porsche,Macan,NA,Petrol,Porsche Macan (Petrol),NA,Ultra Luxury,Car,NA,1
 Porsche,Macan,NA,Diesel,Porsche Macan (Diesel),NA,Ultra Luxury,Car,NA,1
-Mercedes,M-Class,NA,Petrol,Mercedes M-Class (Petrol),NA,Luxury SUV,Car,NA,1
+Mercedes,M Class,NA,Petrol,Mercedes M-Class (Petrol),NA,Luxury SUV,Car,NA,1
 Isuzu,MU7,NA,Diesel,Isuzu MU7 (Diesel),NA,SUV,Car,NA,1
 Porsche,Panamera,NA,Petrol,Porsche Panamera (Petrol),NA,Ultra Luxury,Car,NA,1
 Porsche,Panamera,NA,Diesel,Porsche Panamera (Diesel),NA,Ultra Luxury,Car,NA,1
@@ -167,73 +63,10 @@ Audi,R8,NA,Petrol,Audi R8 (Petrol),NA,Ultra Luxury,Car,NA,1
 Jaguar,XJ,NA,Diesel,Jaguar XJ (Diesel),NA,Luxury Sedan,Car,NA,1
 Land Rover,Range Rover,NA,Petrol,Land Rover Range Rover (Petrol),NA,Luxury SUV,Car,NA,1
 Land Rover,Range Rover,NA,Diesel,Land Rover Range Rover (Diesel),NA,Luxury SUV,Car,NA,1
-Hyundai,Xcent,NA,Petrol,Hyundai Xcent (Petrol),NA,Sedan,Car,NA,1
-Hyundai,Verna,NA,Petrol,Hyundai Verna (Petrol),NA,Sedan,Car,NA,1
-Hyundai,i20 Active,NA,Petrol,Hyundai i20 Active (Petrol),NA,Hatchback,Car,NA,1
-Hyundai,Elite i10,NA,Petrol,Hyundai Elite i10 (Petrol),NA,Hatchback,Car,NA,1
-Hyundai,i10,NA,Petrol,Hyundai i10 (Petrol),NA,Hatchback,Car,NA,1
-Hyundai,Grand i10,NA,Petrol,Hyundai Grand i10 (Petrol),NA,Hatchback,Car,NA,1
-Hyundai,Eon,NA,Petrol,Hyundai Eon (Petrol),NA,Hatchback,Car,NA,1
-Hyundai,Elantra,NA,Petrol,Hyundai Elantra (Petrol),NA,Sedan,Car,NA,1
-Hyundai,Creta,NA,Petrol,Hyundai Creta (Petrol),NA,SUV,Car,NA,1
-Hyundai,Eon,NA,LPG,Hyundai Eon (LPG),NA,Hatchback,Car,NA,1
-Hyundai,i10,NA,LPG,Hyundai i10 (LPG),NA,Hatchback,Car,NA,1
-Hyundai,Grand i10,NA,LPG,Hyundai Grand i10 (LPG),NA,Hatchback,Car,NA,1
-Hyundai,Xcent,NA,Diesel,Hyundai Xcent (Diesel),NA,Sedan,Car,NA,1
-Hyundai,Verna,NA,Diesel,Hyundai Verna (Diesel),NA,Sedan,Car,NA,1
-Hyundai,Santa Fe,NA,Diesel,Hyundai Santa Fe (Diesel),NA,SUV,Car,NA,1
-Hyundai,i20 Active,NA,Diesel,Hyundai i20 Active (Diesel),NA,Hatchback,Car,NA,1
-Hyundai,Elite i10,NA,Diesel,Hyundai Elite i10 (Diesel),NA,Hatchback,Car,NA,1
-Hyundai,Grand i10,NA,Diesel,Hyundai Grand i10 (Diesel),NA,Hatchback,Car,NA,1
-Hyundai,Elantra,NA,Diesel,Hyundai Elantra (Diesel),NA,Sedan,Car,NA,1
-Hyundai,Creta,NA,Diesel,Hyundai Creta (Diesel),NA,SUV,Car,NA,1
-Hyundai,Xcent,NA,CNG,Hyundai Xcent (CNG),NA,Sedan,Car,NA,1
-Hyundai,Grand i10,NA,CNG,Hyundai Grand i10 (CNG),NA,Hatchback,Car,NA,1
-Honda,Mobilio,NA,Petrol,Honda Mobilio (Petrol),NA,SUV,Car,NA,1
-Honda,CR-V,NA,Petrol,Honda CR-V (Petrol),NA,SUV,Car,NA,1
-Honda,City,NA,Petrol,Honda City (Petrol),NA,Sedan,Car,NA,1
-Honda,Brio,NA,Petrol,Honda Brio (Petrol),NA,Hatchback,Car,NA,1
-Honda,Amaze,NA,Petrol,Honda Amaze (Petrol),NA,Hatchback,Car,NA,1
-Honda,Mobilio,NA,Diesel,Honda Mobilio (Diesel),NA,SUV,Car,NA,1
-Honda,Jazz,NA,Diesel,Honda Jazz (Diesel),NA,Hatchback,Car,NA,1
-Honda,City,NA,Diesel,Honda City (Diesel),NA,Sedan,Car,NA,1
-Honda,Amaze,NA,Diesel,Honda Amaze (Diesel),NA,Hatchback,Car,NA,1
-Ford,Figo Aspire,NA,Petrol,Ford Figo Aspire (Petrol),NA,Sedan,Car,NA,1
-Ford,Figo,NA,Petrol,Ford Figo (Petrol),NA,Hatchback,Car,NA,1
-Ford,Ecosport,NA,Petrol,Ford Ecosport (Petrol),NA,Sedan,Car,NA,1
-Ford,Figo Aspire,NA,Diesel,Ford Figo Aspire (Diesel),NA,Sedan,Car,NA,1
-Ford,Figo,NA,Diesel,Ford Figo (Diesel),NA,Hatchback,Car,NA,1
-Ford,Fiesta,NA,Diesel,Ford Fiesta (Diesel),NA,Sedan,Car,NA,1
-Ford,Endeavour,NA,Diesel,Ford Endeavour (Diesel),NA,SUV,Car,NA,1
-Ford,Ecosport,NA,Diesel,Ford Ecosport (Diesel),NA,Sedan,Car,NA,1
-Fiat,Punto Pure,NA,Petrol,Fiat Punto Pure (Petrol),NA,Hatchback,Car,NA,1
 Fiat,Abarth Punto,NA,Petrol,Fiat Abarth Punto (Petrol),NA,Luxury Hatchback,Car,NA,1
-Fiat,Linea Classic,NA,Petrol,Fiat Linea Classic (Petrol),NA,Sedan,Car,NA,1
-Fiat,Linea,NA,Petrol,Fiat Linea (Petrol),NA,Sedan,Car,NA,1
-Fiat,Punto EVO,NA,Petrol,Fiat Punto EVO (Petrol),NA,Hatchback,Car,NA,1
-Fiat,Avventura,NA,Petrol,Fiat Avventura (Petrol),NA,Hatchback,Car,NA,1
 Fiat,Abarth Avventura,NA,Petrol,Fiat Abarth Avventura (Petrol),NA,Luxury SUV,Car,NA,1
 Fiat,500,NA,Petrol,Fiat 500 (Petrol),NA,Luxury Hatchback,Car,NA,1
-Fiat,Punto Pure,NA,Diesel,Fiat Punto Pure (Diesel),NA,Hatchback,Car,NA,1
-Fiat,Linea Classic,NA,Diesel,Fiat Linea Classic (Diesel),NA,Sedan,Car,NA,1
-Fiat,Linea,NA,Diesel,Fiat Linea (Diesel),NA,Sedan,Car,NA,1
-Fiat,Punto EVO,NA,Diesel,Fiat Punto EVO (Diesel),NA,Hatchback,Car,NA,1
-Fiat,Avventura,NA,Diesel,Fiat Avventura (Diesel),NA,Hatchback,Car,NA,1
-Datsun,GO Plus,NA,Petrol,Datsun GO Plus (Petrol),NA,Sedan,Car,NA,1
-Datsun,GO,NA,Petrol,Datsun GO (Petrol),NA,Hatchback,Car,NA,1
-Chevrolet,Spark,NA,Petrol,Chevrolet Spark (Petrol),NA,Hatchback,Car,NA,1
-Chevrolet,Sail Hatchback,NA,Petrol,Chevrolet Sail Hatchback (Petrol),NA,Hatchback,Car,NA,1
-Chevrolet,Sail,NA,Petrol,Chevrolet Sail (Petrol),NA,Sedan,Car,NA,1
-Chevrolet,Enjoy,NA,Petrol,Chevrolet Enjoy (Petrol),NA,Sedan,Car,NA,1
-Chevrolet,Beat,NA,Petrol,Chevrolet Beat (Petrol),NA,Hatchback,Car,NA,1
 Chevrolet,Traiblazer,NA,Diesel,Chevrolet Traiblazer (Diesel),NA,SUV,Car,NA,1
-Chevrolet,Tavera Neo 3,NA,Diesel,Chevrolet Tavera Neo 3 (Diesel),NA,SUV,Car,NA,1
-Chevrolet,Sail Hatchback,NA,Diesel,Chevrolet Sail Hatchback (Diesel),NA,Hatchback,Car,NA,1
-Chevrolet,Sail,NA,Diesel,Chevrolet Sail (Diesel),NA,Sedan,Car,NA,1
-Chevrolet,Enjoy,NA,Diesel,Chevrolet Enjoy (Diesel),NA,Sedan,Car,NA,1
-Chevrolet,Cruze,NA,Diesel,Chevrolet Cruze (Diesel),NA,Sedan,Car,NA,1
-Chevrolet,Captiva,NA,Diesel,Chevrolet Captiva (Diesel),NA,SUV,Car,NA,1
-Chevrolet,Beat,NA,Diesel,Chevrolet Beat (Diesel),NA,Hatchback,Car,NA,1
 Land Rover,Range Rover Evoque,NA,Diesel,Land Rover Range Rover Evoque (Diesel),NA,Luxury SUV,Car,NA,1
 Land Rover,Range Rover Sport,NA,Petrol,Land Rover Range Rover Sport (Petrol),NA,Luxury SUV,Car,NA,1
 Land Rover,Range Rover Sport,NA,Diesel,Land Rover Range Rover Sport (Diesel),NA,Luxury SUV,Car,NA,1
@@ -246,9 +79,9 @@ Volvo,S60,NA,Diesel,Volvo S60 (Diesel),NA,Luxury Sedan,Car,NA,1
 Volvo,S60 Cross Country,NA,Diesel,Volvo S60 Cross Country (Diesel),NA,Luxury Sedan,Car,NA,1
 Volvo,S80,NA,Diesel,Volvo S80 (Diesel),NA,Luxury Sedan,Car,NA,1
 BMW,3 Series,NA,Diesel,BMW 3 Series (Diesel),NA,Luxury Sedan,Car,NA,1
-Mercedes,S-Class,NA,Petrol,Mercedes S-Class (Petrol),NA,Ultra Luxury,Car,NA,1
-Mercedes,S-Class,NA,Diesel,Mercedes S-Class (Diesel),NA,Ultra Luxury,Car,NA,1
-Mercedes,SLK-Class,NA,Petrol,Mercedes SLK-Class (Petrol),NA,Ultra Luxury,Car,NA,1
+Mercedes,S Class,NA,Petrol,Mercedes S-Class (Petrol),NA,Ultra Luxury,Car,NA,1
+Mercedes,S Class,NA,Diesel,Mercedes S-Class (Diesel),NA,Ultra Luxury,Car,NA,1
+Mercedes,SLK Class,NA,Petrol,Mercedes SLK-Class (Petrol),NA,Ultra Luxury,Car,NA,1
 Audi,TT,NA,Petrol,Audi TT (Petrol),NA,Ultra Luxury,Car,NA,1
 Volvo,V40,NA,Diesel,Volvo V40 (Diesel),NA,Luxury Hatchback,Car,NA,1
 Volvo,V40 Cross Country,NA,Petrol,Volvo V40 Cross Country (Petrol),NA,Luxury Hatchback,Car,NA,1
@@ -265,6 +98,297 @@ Jaguar,XF,NA,Petrol,Jaguar XF (Petrol),NA,Luxury Sedan,Car,NA,1
 Jaguar,XF,NA,Diesel,Jaguar XF (Diesel),NA,Luxury Sedan,Car,NA,1
 Audi,A4,NA,Diesel,Audi A4 (Diesel),NA,Luxury Sedan,Car,NA,1
 BMW,Z4,NA,Petrol,BMW Z4 (Petrol),NA,Ultra Luxury,Car,NA,1
+Chevrolet,SRV,NA,Diesel,Chevrolet SRV (Diesel),NA,Hatchback,Car,NA,1
+Chevrolet,Vectra,NA,Diesel,Chevrolet Vectra (Diesel),NA,Sedan,Car,NA,1
+Skoda,Superb 2.5,NA,Diesel,Skoda Superb 2.5 (Diesel),NA,Luxury Sedan,Car,,1
+Toyota,Land Cruiser prade,NA,Diesel,Toyota Land Cruiser prade (Diesel),NA,Luxury SUV,Car,NA,1
+Toyota,Land Cruiser 200,NA,Diesel,Toyota Land Cruiser 200 (Diesel),NA,Luxury SUV,Car,NA,1
+Renault,Koleos,NA,Diesel,Renault Koleos (Diesel),NA,SUV,Car,NA,1
+Skoda,Superb 3.6 V6,NA,Petrol,Skoda Superb 3.6 V6 (Petrol),NA,Luxury Sedan,Car,,1
+Skoda,Superb 2.8,NA,Petrol,Skoda Superb 2.8 (Petrol),NA,Luxury Sedan,Car,,1
+Skoda,Superb 1.8,NA,Petrol,Skoda Superb 1.8 (Petrol),NA,Luxury Sedan,Car,,1
+Skoda,Superb 1.9,NA,Petrol,Skoda Superb 1.9 (Petrol),NA,Luxury Sedan,Car,,1
+Skoda,Superb 2.0,NA,Petrol,Skoda Superb 2.0 (Petrol),NA,Luxury Sedan,Car,,1
+Skoda,Superb 2001 to 2008,NA,Diesel,Skoda Superb 2001-2008 (Diesel),NA,Luxury Sedan,Car,,1
+Skoda,Superb 1.9,NA,Diesel,Skoda Superb 1.9 (Diesel),NA,Luxury Sedan,Car,,1
+Skoda,Superb 2.0,NA,Diesel,Skoda Superb 2.0 (Diesel),NA,Luxury Sedan,Car,,1
+Toyota,Camry,NA,Petrol,Toyota Camry (Petrol),NA,Luxury Sedan,Car,NA,1
+Maruti Suzuki,Eeco,NA,CNG,Maruti Suzuki Eeco (CNG),NA,SUV,Car,NA,1
+Honda,Accord,NA,Petrol,Honda Accord (Petrol),NA,Luxury Sedan,Car,NA,1
+Ford,Endeavour,NA,Diesel,Ford Endeavour (Diesel),NA,SUV,Car,NA,1
+Daewoo,Nexia,NA,Petrol,Daewoo Nexia (Petrol),NA,Sedan,Car,NA,1
+Chevrolet,Cruze,NA,Diesel,Chevrolet Cruze (Diesel),NA,Sedan,Car,NA,1
+Nissan,Teana,NA,Petrol,Nissan Teana (Petrol),NA,Sedan,Car,NA,1
+Toyota,Fortuner,NA,Diesel,Toyota Fortuner (Diesel),NA,SUV,Car,NA,1
+Mitsubishi,Pajero Sport,NA,Diesel,Mitsubishi Pajero Sport (Diesel),NA,SUV,Car,NA,1
+Mitsubishi,Montero,NA,Diesel,Mitsubishi Montero (Diesel),NA,SUV,Car,NA,1
+Mitsubishi,Outlander,NA,Diesel,Mitsubishi Outlander (Diesel),NA,SUV,Car,NA,1
+Mitsubishi,Pajero,NA,Diesel,Mitsubishi Pajero (Diesel),NA,SUV,Car,NA,1
+Skoda,Laura,NA,Petrol,Skoda Laura (Petrol),NA,Sedan,Car,NA,1
+Tata,Safari,NA,Diesel,Tata Safari (Diesel),NA,SUV,Car,NA,1
+Volkswagen,Jetta,NA,Petrol,Volkswagen Jetta (Petrol),NA,Sedan,Car,NA,1
+Volkswagen,Passat,NA,Petrol,Volkswagen Passat (Petrol),NA,Sedan,Car,NA,1
+Volkswagen,Jetta,NA,Diesel,Volkswagen Jetta (Diesel),NA,Sedan,Car,NA,1
+Volkswagen,Passat,NA,Diesel,Volkswagen Passat (Diesel),NA,Sedan,Car,NA,1
+Volkswagen,Phaeton,NA,Diesel,Volkswagen Phaeton (Diesel),NA,Sedan,Car,NA,1
+Toyota,Innova,NA,Diesel,Toyota Innova (Diesel),NA,SUV,Car,NA,1
+Tata,Safari Storme,NA,Diesel,Tata Safari Storme (Diesel),NA,SUV,Car,NA,1
+Volkswagen,Polo 1.6,NA,Diesel,Volkswagen Polo 1.6 (Diesel),NA,Hatchback,Car,,1
+Skoda,Fabia 1.2,NA,Diesel,Skoda Fabia 1.2 (Diesel),NA,Hatchback,Car,,1
+Renault,Fluence,NA,Diesel,Renault Fluence (Diesel),NA,Sedan,Car,NA,1
+Renault,Fluence,NA,Petrol,Renault Fluence (Petrol),NA,Sedan,Car,NA,1
+Skoda,Octavia 1996 to 2010,NA,Diesel,Skoda Octavia 1996-2010 (Diesel),NA,Sedan,Car,,1
+Skoda,Octavia 1.9,NA,Diesel,Skoda Octavia 1.9 (Diesel),NA,Sedan,Car,,1
+Skoda,Octavia 2.0,NA,Diesel,Skoda Octavia 2.0 (Diesel),NA,Sedan,Car,,1
+Hyundai,Santa Fe,NA,Diesel,Hyundai Santa Fe (Diesel),NA,SUV,Car,NA,1
+Hyundai,Creta,NA,Diesel,Hyundai Creta (Diesel),NA,SUV,Car,NA,1
+Hyundai,Terracan,NA,Diesel,Hyundai Terracan (Diesel),NA,SUV,Car,NA,1
+Hyundai,Tuscon,NA,Diesel,Hyundai Tuscon (Diesel),NA,SUV,Car,NA,1
+Toyota,Innova,NA,Petrol,Toyota Innova (Petrol),NA,SUV,Car,NA,1
+Tata,Xenon XT,NA,Diesel,Tata Xenon XT (Diesel),NA,SUV,Car,NA,1
+Toyota,Qualis,NA,Diesel,Toyota Qualis (Diesel),NA,SUV,Car,NA,1
+Toyota,Qualis,NA,Petrol,Toyota Qualis (Petrol),NA,SUV,Car,NA,1
+Tata,Aria,NA,Diesel,Tata Aria (Diesel),NA,SUV,Car,NA,1
+Mahindra,Xylo,NA,Diesel,Mahindra Xylo (Diesel),NA,SUV,Car,NA,1
+Volkswagen,Vento,NA,Diesel,Volkswagen Vento (Diesel),NA,Sedan,Car,NA,1
+Skoda,Laura,NA,Diesel,Skoda Laura (Diesel),NA,Sedan,Car,NA,1
+Skoda,Yeti,NA,Diesel,Skoda Yeti (Diesel),NA,Sedan,Car,NA,1
+Skoda,Fabia 1.4,NA,Diesel,Skoda Fabia 1.4 (Diesel),NA,Hatchback,Car,,1
+Skoda,Fabia 1.9,NA,Diesel,Skoda Fabia 1.9 (Diesel),NA,Hatchback,Car,,1
+Nissan,Xtrail,NA,Diesel,Nissan Xtrail (Diesel),NA,SUV,Car,NA,1
+Skoda,Fabia,NA,Petrol,Skoda Fabia (Petrol),NA,Hatchback,Car,NA,1
+Hyundai,Elantra,NA,Diesel,Hyundai Elantra (Diesel),NA,Sedan,Car,NA,1
+Hyundai,Sonata,NA,Diesel,Hyundai Sonata (Diesel),NA,Sedan,Car,NA,1
+Mahindra,Scorpio,NA,Diesel,Mahindra Scorpio (Diesel),NA,SUV,Car,NA,1
+Mahindra,XUV 500,NA,Diesel,Mahindra XUV 500 (Diesel),NA,SUV,Car,NA,1
+Volkswagen,Polo,NA,Diesel,Volkswagen Polo (Diesel),NA,Hatchback,Car,NA,1
+Volkswagen,Polo 1994 to 2001,NA,Diesel,Volkswagen Polo 1994-2001 (Diesel),NA,Hatchback,Car,,1
+Tata,Sumo,NA,Diesel,Tata Sumo (Diesel),NA,SUV,Car,NA,1
+Chevrolet,Tavera Neo 3,NA,Diesel,Chevrolet Tavera Neo 3 (Diesel),NA,SUV,Car,NA,1
+Chevrolet,Captiva,NA,Diesel,Chevrolet Captiva (Diesel),NA,SUV,Car,NA,1
+Mahindra,TUV 300,NA,Diesel,Mahindra TUV 300 (Diesel),NA,SUV,Car,NA,1
+Skoda,Rapid,NA,Diesel,Skoda Rapid (Diesel),NA,Sedan,Car,NA,1
+Mitsubishi,Cedia,NA,Diesel,Mitsubishi Cedia (Diesel),NA,Sedan,Car,NA,1
+Mitsubishi,Cedia,NA,Petrol,Mitsubishi Cedia (Petrol),NA,Sedan,Car,NA,1
+Mitsubishi,Lancer,NA,Diesel,Mitsubishi Lancer (Diesel),NA,Sedan,Car,NA,1
+Volkswagen,Vento,NA,Petrol,Volkswagen Vento (Petrol),NA,Sedan,Car,NA,1
+Volkswagen,Cross Polo,NA,Diesel,Volkswagen Cross Polo (Diesel),NA,Sedan,Car,NA,1
+Mahindra,Bolero,NA,Diesel,Mahindra Bolero (Diesel),NA,SUV,Car,NA,1
+Mahindra,Armada,NA,Diesel,Mahindra Armada (Diesel),NA,SUV,Car,NA,1
+Mahindra,Camper,NA,Diesel,Mahindra Camper (Diesel),NA,SUV,Car,NA,1
+Mahindra,Commander,NA,Diesel,Mahindra Commander (Diesel),NA,SUV,Car,NA,1
+Mahindra,Genio,NA,Diesel,Mahindra Genio (Diesel),NA,SUV,Car,NA,1
+Mahindra,Marshal Commander,NA,Diesel,Mahindra Marshal Commander (Diesel),NA,SUV,Car,NA,1
+Mahindra,Marshal Old,NA,Diesel,Mahindra Marshal Old (Diesel),NA,SUV,Car,NA,1
+Mahindra,Maxx,NA,Diesel,Mahindra Maxx (Diesel),NA,SUV,Car,NA,1
+Mahindra,Voyager,NA,Diesel,Mahindra Voyager (Diesel),NA,SUV,Car,NA,1
+Skoda,Octavia,NA,Petrol,Skoda Octavia (Petrol),NA,Sedan,Car,NA,1
+Volkswagen,Polo 1.6,NA,Petrol,Volkswagen Polo 1.6 (Petrol),NA,Hatchback,Car,,1
+Nissan,Terrano,NA,Diesel,Nissan Terrano (Diesel),NA,SUV,Car,NA,1
+Skoda,Rapid,NA,Petrol,Skoda Rapid (Petrol),NA,Sedan,Car,NA,1
+Maruti Suzuki,Ciaz,NA,Diesel,Maruti Suzuki Ciaz (Diesel),NA,Sedan,Car,NA,1
+Hyundai,Verna,NA,Diesel,Hyundai Verna (Diesel),NA,Sedan,Car,NA,1
+Hyundai,Verna Fluidic 4S,NA,Diesel,Hyundai Verna Fluidic 4S (Diesel),NA,Sedan,Car,NA,1
+Hyundai,Sonata,NA,Petrol,Hyundai Sonata (Petrol),NA,Sedan,Car,NA,1
+Hyundai,Accent,NA,Diesel,Hyundai Accent (Diesel),NA,Sedan,Car,NA,1
+Renault,Duster,NA,Diesel,Renault Duster (Diesel),NA,SUV,Car,NA,1
+Mahindra,Thar,NA,Diesel,Mahindra Thar (Diesel),NA,SUV,Car,NA,1
+Mahindra,Supro,NA,Diesel,Mahindra Supro (Diesel),NA,Hatchback,Car,NA,1
+Renault,Duster,NA,Petrol,Renault Duster (Petrol),NA,SUV,Car,NA,1
+Renault,Scala,NA,Diesel,Renault Scala (Diesel),NA,Sedan,Car,NA,1
+Mahindra,Verito Vibe,NA,Diesel,Mahindra Verito Vibe (Diesel),NA,Sedan,Car,NA,1
+Mahindra,Verito,NA,Diesel,Mahindra Verito (Diesel),NA,Sedan,Car,NA,1
+Mahindra,KUV 100,NA,Diesel,Mahindra KUV 100 (Diesel),NA,Sedan,Car,NA,1
+Renault,Lodgy,NA,Diesel,Renault Lodgy (Diesel),NA,Sedan,Car,NA,1
+Renault,Lodgy,NA,Petrol,Renault Lodgy (Petrol),NA,Sedan,Car,NA,1
+Volkswagen,Touareg,NA,Diesel,Volkswagen Touareg (Diesel),NA,Sedan,Car,NA,1
+Volkswagen,Wagon,NA,Diesel,Volkswagen Wagon (Diesel),NA,Sedan,Car,NA,1
+Ford,Ecosport,NA,Petrol,Ford Ecosport (Petrol),NA,Sedan,Car,NA,1
+Honda,CR V,NA,Petrol,Honda CR-V (Petrol),NA,SUV,Car,NA,1
+Nissan,Terrano,NA,Petrol,Nissan Terrano (Petrol),NA,SUV,Car,NA,1
+Honda,Civic,NA,Petrol,Honda Civic (Petrol),NA,Sedan,Car,NA,1
+Ford,Ikon,NA,Petrol,Ford Ikon (Petrol),NA,Sedan,Car,NA,1
+Hyundai,i20,NA,Diesel,Hyundai i20 (Diesel),NA,Hatchback,Car,NA,1
+Hyundai,Xcent,NA,Diesel,Hyundai Xcent (Diesel),NA,Sedan,Car,NA,1
+Hyundai,i20 Active,NA,Diesel,Hyundai i20 Active (Diesel),NA,Hatchback,Car,NA,1
+Toyota,Corolla Altis,NA,Petrol,Toyota Corolla Altis (Petrol),NA,Sedan,Car,NA,1
+Maruti Suzuki,Ciaz,NA,Petrol,Maruti Suzuki Ciaz (Petrol),NA,Sedan,Car,NA,1
+Renault,Kwid,NA,Petrol,Renault Kwid (Petrol),NA,Hatchback,Car,NA,1
+Volkswagen,Polo 1994 to 2001,NA,Petrol,Volkswagen Polo 1994-2001 (Petrol),NA,Hatchback,Car,,1
+Daewoo,Cielo,NA,Petrol,Daewoo Cielo (Petrol),NA,Sedan,Car,NA,1
+Volkswagen,Polo,NA,Petrol,Volkswagen Polo (Petrol),NA,Hatchback,Car,NA,1
+Nissan,Evalia,NA,Diesel,Nissan Evalia (Diesel),NA,SUV,Car,NA,1
+Mahindra,Quanto,NA,Diesel,Mahindra Quanto (Diesel),NA,Sedan,Car,NA,1
+Ford,Fiesta,NA,Petrol,Ford Fiesta (Petrol),NA,Sedan,Car,NA,1
+Fiat,Palio,NA,Diesel,Fiat Palio (Diesel),NA,Hatchback,Car,NA,1
+Toyota,Corolla Altis,NA,Diesel,Toyota Corolla Altis (Diesel),NA,Sedan,Car,NA,1
+Honda,Mobilio,NA,Diesel,Honda Mobilio (Diesel),NA,SUV,Car,NA,1
+Honda,CRV,NA,Diesel,Honda CRV (Diesel),NA,SUV,Car,NA,1
+Honda,City,NA,Diesel,Honda City (Diesel),NA,Sedan,Car,NA,1
+Honda,City Type 2,NA,Diesel,Honda City Type 2 (Diesel),NA,Sedan,Car,,1
+Honda,City Type 3,NA,Diesel,Honda City Type 3 (Diesel),NA,Sedan,Car,,1
+Honda,City Type 4,NA,Diesel,Honda City Type 4 (Diesel),NA,Sedan,Car,,1
+Honda,Mobilio,NA,Petrol,Honda Mobilio (Petrol),NA,SUV,Car,NA,1
+Ford,Ikon,NA,Diesel,Ford Ikon (Diesel),NA,Sedan,Car,NA,1
+Ford,Ecosport,NA,Diesel,Ford Ecosport (Diesel),NA,Sedan,Car,NA,1
+Tata,Indigo eCS,NA,Diesel,Tata Indigo eCS (Diesel),NA,Sedan,Car,NA,1
+Hyundai,Creta,NA,Petrol,Hyundai Creta (Petrol),NA,SUV,Car,NA,1
+Honda,City Type 5,NA,Diesel,Honda City Type 5 (Diesel),NA,Sedan,Car,,1
+Hyundai,Verna,NA,Petrol,Hyundai Verna (Petrol),NA,Sedan,Car,NA,1
+Mahindra,Logan,NA,Diesel,Mahindra Logan (Diesel),NA,Sedan,Car,NA,1
+Toyota,Etios,NA,Diesel,Toyota Etios (Diesel),NA,Sedan,Car,NA,1
+Ford,Fiesta,NA,Diesel,Ford Fiesta (Diesel),NA,Sedan,Car,NA,1
+Mahindra,KUV 100,NA,Petrol,Mahindra KUV 100 (Petrol),NA,Sedan,Car,NA,1
+Mahindra,Verito,NA,Petrol,Mahindra Verito (Petrol),NA,Sedan,Car,NA,1
+Maruti Suzuki,Kizashi,NA,Petrol,Maruti Suzuki Kizashi (Petrol),NA,Sedan,Car,NA,1
+Hyundai,Elite i10,NA,Diesel,Hyundai Elite i10 (Diesel),NA,Hatchback,Car,NA,1
+Volkswagen,Cross Polo,NA,Petrol,Volkswagen Cross Polo (Petrol),NA,Sedan,Car,NA,1
+Honda,City,NA,Petrol,Honda City (Petrol),NA,Sedan,Car,NA,1
+Honda,City Type 2,NA,Petrol,Honda City Type 2 (Petrol),NA,Sedan,Car,,1
+Honda,City Type 3,NA,Petrol,Honda City Type 3 (Petrol),NA,Sedan,Car,,1
+Honda,City Type 4,NA,Petrol,Honda City Type 4 (Petrol),NA,Sedan,Car,,1
+Toyota,Corolla,NA,Petrol,Toyota Corolla (Petrol),NA,Sedan,Car,NA,1
+Honda,City Type 5,NA,Petrol,Honda City Type 5 (Petrol),NA,Sedan,Car,,1
+Maruti Suzuki,Eeco,NA,Petrol,Maruti Suzuki Eeco (Petrol),NA,SUV,Car,NA,1
+Nissan,Sunny,NA,Diesel,Nissan Sunny (Diesel),NA,Sedan,Car,NA,1
+Maruti Suzuki,Versa,NA,Petrol,Maruti Suzuki Versa (Petrol),NA,SUV,Car,NA,1
+Hyundai,Verna Fluidic 4S,NA,Petrol,Hyundai Verna Fluidic 4S (Petrol),NA,Sedan,Car,NA,1
+Tata,Indica eV2,NA,Diesel,Tata Indica eV2 (Diesel),NA,Hatchback,Car,NA,1
+Tata,Indica Vista Quadrajet,NA,Diesel,Tata Indica Vista Quadrajet (Diesel),NA,Hatchback,Car,NA,1
+Tata,Indica Vista TDI,NA,Diesel,Tata Indica Vista TDI (Diesel),NA,Hatchback,Car,NA,1
+Hyundai,i20,NA,Petrol,Hyundai i20 (Petrol),NA,Hatchback,Car,NA,1
+Hyundai,Elantra,NA,Petrol,Hyundai Elantra (Petrol),NA,Sedan,Car,NA,1
+Toyota,Etios Liva,NA,Petrol,Toyota Etios Liva (Petrol),NA,Hatchback,Car,NA,1
+Toyota,Etios Liva,NA,Diesel,Toyota Etios Liva (Diesel),NA,Hatchback,Car,NA,1
+Hyundai,Grand i10,NA,Diesel,Hyundai Grand i10 (Diesel),NA,Hatchback,Car,NA,1
+Hyundai,i20 Active,NA,Petrol,Hyundai i20 Active (Petrol),NA,Hatchback,Car,NA,1
+Toyota,Etios Cross,NA,Diesel,Toyota Etios Cross (Diesel),NA,Sedan,Car,NA,1
+Maruti Suzuki,Sx4,NA,Petrol,Maruti Suzuki Sx4 (Petrol),NA,Sedan,Car,NA,1
+Renault,Pulse,NA,Petrol,Renault Pulse (Petrol),NA,Hatchback,Car,NA,1
+Maruti Suzuki,Ertiga,NA,Diesel,Maruti Suzuki Ertiga (Diesel),NA,SUV,Car,NA,1
+Renault,Pulse,NA,Diesel,Renault Pulse (Diesel),NA,Hatchback,Car,NA,1
+Renault,Kwid,NA,Diesel,Renault Kwid (Diesel),NA,Hatchback,Car,NA,1
+Ford,Fusion,NA,Petrol,Ford Fusion (Petrol),NA,Sedan,Car,NA,1
+Maruti Suzuki,Celerio,NA,Petrol,Maruti Suzuki Celerio (Petrol),NA,Hatchback,Car,NA,1
+Maruti Suzuki,Celerio,NA,Diesel,Maruti Suzuki Celerio (Diesel),NA,Hatchback,Car,NA,1
+Maruti Suzuki,Celerio,NA,CNG,Maruti Suzuki Celerio (CNG),NA,Hatchback,Car,NA,1
+Ford,Classic,NA,Petrol,Ford Classic (Petrol),NA,Sedan,Car,NA,1
+Ford,Escort,NA,Petrol,Ford Escort (Petrol),NA,Sedan,Car,NA,1
+Tata,Indigo eCS,NA,Petrol,Tata Indigo eCS (Petrol),NA,Sedan,Car,NA,1
+Mahindra,Logan,NA,Petrol,Mahindra Logan (Petrol),NA,Sedan,Car,NA,1
+Fiat,Palio,NA,Petrol,Fiat Palio (Petrol),NA,Hatchback,Car,NA,1
+Chevrolet,Optra,NA,Petrol,Chevrolet Optra (Petrol),NA,Sedan,Car,NA,1
+Chevrolet,Opel Astra,NA,Petrol,Chevrolet Opel Astra (Petrol),NA,Sedan,Car,NA,1
+Honda,Amaze,NA,Diesel,Honda Amaze (Diesel),NA,Hatchback,Car,NA,1
+Fiat,Linea Classic,NA,Diesel,Fiat Linea Classic (Diesel),NA,Sedan,Car,NA,1
+Fiat,Siena,NA,Diesel,Fiat Siena (Diesel),NA,Sedan,Car,NA,1
+Toyota,Etios,NA,Petrol,Toyota Etios (Petrol),NA,Sedan,Car,NA,1
+Chevrolet,Beat,NA,Diesel,Chevrolet Beat (Diesel),NA,Hatchback,Car,NA,1
+Fiat,Linea,NA,Diesel,Fiat Linea (Diesel),NA,Sedan,Car,NA,1
+Fiat,Linea,NA,Petrol,Fiat Linea (Petrol),NA,Sedan,Car,NA,1
+Honda,Jazz,NA,Diesel,Honda Jazz (Diesel),NA,Hatchback,Car,NA,1
+Honda,Jazz,NA,Petrol,Honda Jazz (Petrol),NA,Hatchback,Car,NA,1
+Ford,Figo Aspire,NA,Diesel,Ford Figo Aspire (Diesel),NA,Sedan,Car,NA,1
+Ford,Classic,NA,Diesel,Ford Classic (Diesel),NA,Sedan,Car,NA,1
+Ford,Fusion,NA,Diesel,Ford Fusion (Diesel),NA,Sedan,Car,NA,1
+Maruti Suzuki,Gypsy,NA,Petrol,Maruti Suzuki Gypsy (Petrol),NA,SUV,Car,NA,1
+Chevrolet,Aveo,NA,Petrol,Chevrolet Aveo (Petrol),NA,Sedan,Car,NA,1
+Nissan,Micra,NA,Diesel,Nissan Micra (Diesel),NA,Hatchback,Car,NA,1
+Hyundai,Accent,NA,Petrol,Hyundai Accent (Petrol),NA,Sedan,Car,NA,1
+Maruti Suzuki,Ertiga,NA,Petrol,Maruti Suzuki Ertiga (Petrol),NA,SUV,Car,NA,1
+Maruti Suzuki,Ertiga,NA,CNG,Maruti Suzuki Ertiga (CNG),NA,SUV,Car,NA,1
+Maruti Suzuki,Swift Dzire,NA,Petrol,Maruti Suzuki Swift Dzire (Petrol),NA,Sedan,Car,NA,1
+Ford,Figo,NA,Diesel,Ford Figo (Diesel),NA,Hatchback,Car,NA,1
+Ford,Figo,NA,Petrol,Ford Figo (Petrol),NA,Hatchback,Car,NA,1
+Tata,Indigo Manza,NA,Diesel,Tata Indigo Manza (Diesel),NA,Sedan,Car,NA,1
+Maruti Suzuki,Grand Vitara,NA,Petrol,Maruti Suzuki Grand Vitara (Petrol),NA,SUV,Car,NA,1
+Tata,Indigo eCS,NA,CNG,Tata Indigo eCS (CNG),NA,Sedan,Car,NA,1
+Fiat,Linea Classic,NA,Petrol,Fiat Linea Classic (Petrol),NA,Sedan,Car,NA,1
+Fiat,Siena,NA,Petrol,Fiat Siena (Petrol),NA,Sedan,Car,NA,1
+Tata,Zest,NA,Petrol,Tata Zest (Petrol),NA,Sedan,Car,NA,1
+Hyundai,Xcent,NA,Petrol,Hyundai Xcent (Petrol),NA,Sedan,Car,NA,1
+Hyundai,Xcent,NA,CNG,Hyundai Xcent (CNG),NA,Sedan,Car,NA,1
+Renault,Scala,NA,Petrol,Renault Scala (Petrol),NA,Sedan,Car,NA,1
+Fiat,Avventura,NA,Diesel,Fiat Avventura (Diesel),NA,Hatchback,Car,NA,1
+Chevrolet,Sail,NA,Petrol,Chevrolet Sail (Petrol),NA,Sedan,Car,NA,1
+Chevrolet,Enjoy,NA,Petrol,Chevrolet Enjoy (Petrol),NA,Sedan,Car,NA,1
+Chevrolet,Opel Swing,NA,Petrol,Chevrolet Opel Swing (Petrol),NA,Sedan,Car,NA,1
+Chevrolet,Beat,NA,Petrol,Chevrolet Beat (Petrol),NA,Hatchback,Car,NA,1
+Maruti Suzuki,Swift Dzire 1.2,NA,Diesel,Maruti Suzuki Swift Dzire 1.2 (Diesel),NA,Sedan,Car,,1
+Maruti Suzuki,Swift Dzire 1.3,NA,Diesel,Maruti Suzuki Swift Dzire 1.3 (Diesel),NA,Sedan,Car,,1
+Hyundai,Grand i10,NA,LPG,Hyundai Grand i10 (LPG),NA,Hatchback,Car,NA,1
+Maruti Suzuki,Sx4,NA,Diesel,Maruti Suzuki Sx4 (Diesel),NA,Sedan,Car,NA,1
+Hyundai,Elite i10,NA,Petrol,Hyundai Elite i10 (Petrol),NA,Hatchback,Car,NA,1
+Hyundai,Grand i10,NA,Petrol,Hyundai Grand i10 (Petrol),NA,Hatchback,Car,NA,1
+Hyundai,Grand i10,NA,CNG,Hyundai Grand i10 (CNG),NA,Hatchback,Car,NA,1
+Fiat,Punto Pure,NA,Petrol,Fiat Punto Pure (Petrol),NA,Hatchback,Car,NA,1
+Fiat,Punto Pure,NA,Diesel,Fiat Punto Pure (Diesel),NA,Hatchback,Car,NA,1
+Ford,Figo Aspire,NA,Petrol,Ford Figo Aspire (Petrol),NA,Sedan,Car,NA,1
+Maruti Suzuki,Baleno,NA,Diesel,Maruti Suzuki Baleno (Diesel),NA,Hatchback,Car,NA,1
+Tata,Zest,NA,Diesel,Tata Zest (Diesel),NA,Sedan,Car,NA,1
+Honda,Amaze,NA,Petrol,Honda Amaze (Petrol),NA,Hatchback,Car,NA,1
+Fiat,Palio Adventure,NA,Petrol,Fiat Palio Adventure (Petrol),NA,Hatchback,Car,NA,1
+Maruti Suzuki,S Cross,NA,Diesel,Maruti Suzuki S-Cross (Diesel),NA,Sedan,Car,NA,1
+Tata,Indigo Manza,NA,Petrol,Tata Indigo Manza (Petrol),NA,Sedan,Car,NA,1
+Fiat,Punto EVO,NA,Petrol,Fiat Punto EVO (Petrol),NA,Hatchback,Car,NA,1
+Fiat,Punto EVO,NA,Diesel,Fiat Punto EVO (Diesel),NA,Hatchback,Car,NA,1
+Maruti Suzuki,Swift,NA,Petrol,Maruti Suzuki Swift (Petrol),NA,Hatchback,Car,NA,1
+Daewoo,Matiz,NA,Petrol,Daewoo Matiz (Petrol),NA,Hatchback,Car,NA,1
+Chevrolet,Optra,NA,Diesel,Chevrolet Optra (Diesel),NA,Sedan,Car,NA,1
+Maruti Suzuki,Zen Estilo,NA,Petrol,Maruti Suzuki Zen Estilo (Petrol),NA,Hatchback,Car,NA,1
+Tata,Indica eV2,NA,CNG,Tata Indica eV2 (CNG),NA,Hatchback,Car,NA,1
+Tata,Indica eV2,NA,Petrol,Tata Indica eV2 (Petrol),NA,Hatchback,Car,NA,1
+Maruti Suzuki,Grand Vitara Brezza,NA,Diesel,Maruti Suzuki Grand Vitara Brezza (Diesel),NA,Sedan,Car,NA,1
+Fiat,Avventura,NA,Petrol,Fiat Avventura (Petrol),NA,Hatchback,Car,NA,1
+Fiat,Uno,NA,Diesel,Fiat Uno (Diesel),NA,Hatchback,Car,NA,1
+Fiat,Uno,NA,Petrol,Fiat Uno (Petrol),NA,Hatchback,Car,NA,1
+Chevrolet,Opel Corsa,NA,Petrol,Chevrolet Opel Corsa (Petrol),NA,Sedan,Car,NA,1
+Chevrolet,Sail,NA,Diesel,Chevrolet Sail (Diesel),NA,Sedan,Car,NA,1
+Chevrolet,Enjoy,NA,Diesel,Chevrolet Enjoy (Diesel),NA,Sedan,Car,NA,1
+Chevrolet,Opel Astra,NA,Diesel,Chevrolet Opel Astra (Diesel),NA,Sedan,Car,NA,1
+Tata,Bolt,NA,Petrol,Tata Bolt (Petrol),NA,Hatchback,Car,NA,1
+Honda,Brio,NA,Petrol,Honda Brio (Petrol),NA,Hatchback,Car,NA,1
+Maruti Suzuki,Ritz,NA,Diesel,Maruti Suzuki Ritz (Diesel),NA,Hatchback,Car,NA,1
+Datsun,GO Plus,NA,Petrol,Datsun GO Plus (Petrol),NA,Sedan,Car,NA,1
+Maruti Suzuki,Zen MPFI,NA,Petrol,Maruti Suzuki Zen MPFI (Petrol),NA,Hatchback,Car,,1
+Maruti Suzuki,Esteem,NA,Petrol,Maruti Suzuki Esteem (Petrol),NA,Hatchback,Car,NA,1
+Tata,Indica Vista,NA,Petrol,Tata Indica Vista (Petrol),NA,Hatchback,Car,NA,1
+Maruti Suzuki,Zen Non MPFI,NA,Petrol,Maruti Suzuki Zen Non MPFI (Petrol),NA,Hatchback,Car,,1
+Chevrolet,Sail Hatchback,NA,Petrol,Chevrolet Sail Hatchback (Petrol),NA,Hatchback,Car,NA,1
+Chevrolet,UVA,NA,Petrol,Chevrolet UVA (Petrol),NA,Hatchback,Car,NA,1
+Maruti Suzuki,Swift 1.2,NA,Diesel,Maruti Suzuki Swift 1.2 (Diesel),NA,Hatchback,Car,,1
+Maruti Suzuki,Swift 1.3,NA,Diesel,Maruti Suzuki Swift 1.3 (Diesel),NA,Hatchback,Car,,1
+Hyundai,Santro,NA,Petrol,Hyundai Santro (Petrol),NA,Hatchback,Car,NA,1
+Hyundai,Getz,NA,Petrol,Hyundai Getz (Petrol),NA,Hatchback,Car,NA,1
+Nissan,Sunny,NA,Petrol,Nissan Sunny (Petrol),NA,Sedan,Car,NA,1
+Toyota,Etios Cross,NA,Petrol,Toyota Etios Cross (Petrol),NA,Sedan,Car,NA,1
+Tata,Bolt,NA,Diesel,Tata Bolt (Diesel),NA,Hatchback,Car,NA,1
+Maruti Suzuki,Baleno,NA,Petrol,Maruti Suzuki Baleno (Petrol),NA,Hatchback,Car,NA,1
+Chevrolet,Spark,NA,Petrol,Chevrolet Spark (Petrol),NA,Hatchback,Car,NA,1
+Hyundai,i10,NA,Petrol,Hyundai i10 (Petrol),NA,Hatchback,Car,NA,1
+Hyundai,i10,NA,LPG,Hyundai i10 (LPG),NA,Hatchback,Car,NA,1
+Maruti Suzuki,SCross,NA,Petrol,Maruti Suzuki SCross (Petrol),NA,Hatchback,Car,NA,1
+Chevrolet,Sail Hatchback,NA,Diesel,Chevrolet Sail Hatchback (Diesel),NA,Hatchback,Car,NA,1
+Datsun,GO,NA,Petrol,Datsun GO (Petrol),NA,Hatchback,Car,NA,1
+Maruti Suzuki,Ritz,NA,Petrol,Maruti Suzuki Ritz (Petrol),NA,Hatchback,Car,NA,1
+Nissan,Micra,NA,Petrol,Nissan Micra (Petrol),NA,Hatchback,Car,NA,1
+Maruti Suzuki,Alto k10,NA,Petrol,Maruti Suzuki Alto k10 (Petrol),NA,Hatchback,Car,NA,1
+Maruti Suzuki,Alto k10,NA,CNG,Maruti Suzuki Alto k10 (CNG),NA,Hatchback,Car,NA,1
+Nissan,Micra Active,NA,Petrol,Nissan Micra Active (Petrol),NA,Hatchback,Car,NA,1
+Maruti Suzuki,Alto 800,NA,Petrol,Maruti Suzuki Alto 800 (Petrol),NA,Hatchback,Car,NA,1
+Maruti Suzuki,Alto,NA,Petrol,Maruti Suzuki Alto (Petrol),NA,Hatchback,Car,NA,1
+Maruti Suzuki,Wagon R,NA,Petrol,Maruti Suzuki Wagon R (Petrol),NA,Hatchback,Car,NA,1
+Maruti Suzuki,Wagon R Stingray,NA,Petrol,Maruti Suzuki Wagon R Stingray (Petrol),NA,Hatchback,Car,NA,1
+Maruti Suzuki,Wagon R,NA,CNG,Maruti Suzuki Wagon R (CNG),NA,Hatchback,Car,NA,1
+Maruti Suzuki,Omni,NA,Petrol,Maruti Suzuki Omni (Petrol),NA,Hatchback,Car,NA,1
+Maruti Suzuki,Alto 800,NA,CNG,Maruti Suzuki Alto 800 (CNG),NA,Hatchback,Car,NA,1
+Maruti Suzuki,800 Non MPFI,NA,Petrol,Maruti Suzuki 800 Non MPFI (Petrol),NA,Hatchback,Car,,1
+Maruti Suzuki,800 MPFI,NA,Petrol,Maruti Suzuki 800 MPFI (Petrol),NA,Hatchback,Car,,1
+Maruti Suzuki,A Star,NA,Petrol,Maruti Suzuki A Star (Petrol),NA,Hatchback,Car,NA,1
+Tata,Nano,NA,Petrol,Tata Nano (Petrol),NA,Hatchback,Car,NA,1
+Hyundai,Eon,NA,Petrol,Hyundai Eon (Petrol),NA,Hatchback,Car,NA,1
+Hyundai,Eon,NA,LPG,Hyundai Eon (LPG),NA,Hatchback,Car,NA,1
+Tata,Nano,NA,CNG,Tata Nano (CNG),NA,Hatchback,Car,NA,1
 Bajaj,Blade,NA,Petrol,Bajaj Blade (Petrol),NA,Scooter,Bike,NA,1
 Bajaj,Kristal,NA,Petrol,Bajaj Kristal (Petrol),NA,Scooter,Bike,NA,1
 Bajaj,Boxer,NA,Petrol,Bajaj Boxer (Petrol),NA,Normal,Bike,NA,1
@@ -470,100 +594,3 @@ Yamaha,FZ S V 2.0,NA,Petrol,Yamaha FZ S V 2.0 (Petrol),NA,Premium,Bike,NA,1
 Yamaha,FZ V 2.0,NA,Petrol,Yamaha FZ V 2.0 (Petrol),NA,Premium,Bike,NA,1
 Yamaha,FZ1,NA,Petrol,Yamaha FZ1 (Petrol),NA,Premium,Bike,NA,1
 Yamaha,YZF R15,NA,Petrol,Yamaha YZF R15 (Petrol),NA,Premium,Bike,NA,1
-Chevrolet,Aveo,NA,Petrol,Chevrolet Aveo (Petrol),NA,Sedan,Car,NA,1
-Chevrolet,Opel Astra,NA,Diesel,Chevrolet Opel Astra (Diesel),NA,Sedan,Car,NA,1
-Chevrolet,Opel Astra,NA,Petrol,Chevrolet Opel Astra (Petrol),NA,Sedan,Car,NA,1
-Chevrolet,Opel Corsa,NA,Petrol,Chevrolet Opel Corsa (Petrol),NA,Sedan,Car,NA,1
-Chevrolet,Opel Swing,NA,Petrol,Chevrolet Opel Swing (Petrol),NA,Sedan,Car,NA,1
-Chevrolet,Optra,NA,Diesel,Chevrolet Optra (Diesel),NA,Sedan,Car,NA,1
-Chevrolet,Optra,NA,Petrol,Chevrolet Optra (Petrol),NA,Sedan,Car,NA,1
-Chevrolet,SRV,NA,Diesel,Chevrolet SRV (Diesel),NA,Hatchback,Car,NA,1
-Chevrolet,UVA,NA,Petrol,Chevrolet UVA (Petrol),NA,Hatchback,Car,NA,1
-Chevrolet,Vectra,NA,Diesel,Chevrolet Vectra (Diesel),NA,Sedan,Car,NA,1
-Daewoo,Cielo,NA,Petrol,Daewoo Cielo (Petrol),NA,Sedan,Car,NA,1
-Daewoo,Matiz,NA,Petrol,Daewoo Matiz (Petrol),NA,Hatchback,Car,NA,1
-Daewoo,Nexia,NA,Petrol,Daewoo Nexia (Petrol),NA,Sedan,Car,NA,1
-Fiat,Palio Adventure,NA,Petrol,Fiat Palio Adventure (Petrol),NA,Hatchback,Car,NA,1
-Fiat,Palio,NA,Diesel,Fiat Palio (Diesel),NA,Hatchback,Car,NA,1
-Fiat,Palio,NA,Petrol,Fiat Palio (Petrol),NA,Hatchback,Car,NA,1
-Fiat,Siena,NA,Diesel,Fiat Siena (Diesel),NA,Sedan,Car,NA,1
-Fiat,Siena,NA,Petrol,Fiat Siena (Petrol),NA,Sedan,Car,NA,1
-Fiat,Uno,NA,Diesel,Fiat Uno (Diesel),NA,Hatchback,Car,NA,1
-Fiat,Uno,NA,Petrol,Fiat Uno (Petrol),NA,Hatchback,Car,NA,1
-Ford,Classic,NA,Diesel,Ford Classic (Diesel),NA,Sedan,Car,NA,1
-Ford,Classic,NA,Petrol,Ford Classic (Petrol),NA,Sedan,Car,NA,1
-Ford,Escort,NA,Petrol,Ford Escort (Petrol),NA,Sedan,Car,NA,1
-Ford,Fiesta,NA,Petrol,Ford Fiesta (Petrol),NA,Sedan,Car,NA,1
-Ford,Fusion,NA,Diesel,Ford Fusion (Diesel),NA,Sedan,Car,NA,1
-Ford,Fusion,NA,Petrol,Ford Fusion (Petrol),NA,Sedan,Car,NA,1
-Ford,Ikon,NA,Diesel,Ford Ikon (Diesel),NA,Sedan,Car,NA,1
-Ford,Ikon,NA,Petrol,Ford Ikon (Petrol),NA,Sedan,Car,NA,1
-Honda,Accord,NA,Petrol,Honda Accord (Petrol),NA,Sedan,Car,NA,1
-Honda,Civic,NA,Petrol,Honda Civic (Petrol),NA,Sedan,Car,NA,1
-Honda,CRV,NA,Diesel,Honda CRV (Diesel),NA,SUV,Car,NA,1
-Honda,Jazz,NA,Petrol,Honda Jazz (Petrol),NA,Hatchback,Car,NA,1
-Hyundai,Accent,NA,Diesel,Hyundai Accent (Diesel),NA,Sedan,Car,NA,1
-Hyundai,Accent,NA,Petrol,Hyundai Accent (Petrol),NA,Sedan,Car,NA,1
-Hyundai,Getz,NA,Petrol,Hyundai Getz (Petrol),NA,Hatchback,Car,NA,1
-Hyundai,i20,NA,Diesel,Hyundai i20 (Diesel),NA,Hatchback,Car,NA,1
-Hyundai,i20,NA,Petrol,Hyundai i20 (Petrol),NA,Hatchback,Car,NA,1
-Hyundai,Santro,NA,Petrol,Hyundai Santro (Petrol),NA,Hatchback,Car,NA,1
-Hyundai,Sonata,NA,Diesel,Hyundai Sonata (Diesel),NA,Sedan,Car,NA,1
-Hyundai,Sonata,NA,Petrol,Hyundai Sonata (Petrol),NA,Sedan,Car,NA,1
-Hyundai,Terracan,NA,Diesel,Hyundai Terracan (Diesel),NA,SUV,Car,NA,1
-Hyundai,Tuscon,NA,Diesel,Hyundai Tuscon (Diesel),NA,SUV,Car,NA,1
-Hyundai,Verna Fluidic 4S,NA,Diesel,Hyundai Verna Fluidic 4S (Diesel),NA,Sedan,Car,NA,1
-Hyundai,Verna Fluidic 4S,NA,Petrol,Hyundai Verna Fluidic 4S (Petrol),NA,Sedan,Car,NA,1
-Mahindra,Armada,NA,Diesel,Mahindra Armada (Diesel),NA,SUV,Car,NA,1
-Mahindra,Camper,NA,Diesel,Mahindra Camper (Diesel),NA,SUV,Car,NA,1
-Mahindra,Commander,NA,Diesel,Mahindra Commander (Diesel),NA,SUV,Car,NA,1
-Mahindra,Genio,NA,Diesel,Mahindra Genio (Diesel),NA,SUV,Car,NA,1
-Mahindra,Logan,NA,Diesel,Mahindra Logan (Diesel),NA,Sedan,Car,NA,1
-Mahindra,Logan,NA,Petrol,Mahindra Logan (Petrol),NA,Sedan,Car,NA,1
-Mahindra,Marshal Commander,NA,Diesel,Mahindra Marshal Commander (Diesel),NA,SUV,Car,NA,1
-Mahindra,Marshal Old,NA,Diesel,Mahindra Marshal Old (Diesel),NA,SUV,Car,NA,1
-Mahindra,Maxx,NA,Diesel,Mahindra Maxx (Diesel),NA,SUV,Car,NA,1
-Mahindra,Verito,NA,Petrol,Mahindra Verito (Petrol),NA,Sedan,Car,NA,1
-Mahindra,Voyager,NA,Diesel,Mahindra Voyager (Diesel),NA,SUV,Car,NA,1
-Maruti Suzuki,800,NA,Petrol,Maruti Suzuki 800 (Petrol),NA,Hatchback,Car,NA,1
-Maruti Suzuki,A Star,NA,Petrol,Maruti Suzuki A Star (Petrol),NA,Hatchback,Car,NA,1
-Maruti Suzuki,Alto,NA,Petrol,Maruti Suzuki Alto (Petrol),NA,Hatchback,Car,NA,1
-Maruti Suzuki,Esteem,NA,Petrol,Maruti Suzuki Esteem (Petrol),NA,Hatchback,Car,NA,1
-Maruti Suzuki,Kizashi,NA,Petrol,Maruti Suzuki Kizashi (Petrol),NA,Sedan,Car,NA,1
-Maruti Suzuki,SCross,NA,Petrol,Maruti Suzuki SCross (Petrol),NA,Hatchback,Car,NA,1
-Maruti Suzuki,Sx4,NA,Diesel,Maruti Suzuki Sx4 (Diesel),NA,Sedan,Car,NA,1
-Maruti Suzuki,Sx4,NA,Petrol,Maruti Suzuki Sx4 (Petrol),NA,Sedan,Car,NA,1
-Maruti Suzuki,Versa,NA,Petrol,Maruti Suzuki Versa (Petrol),NA,SUV,Car,NA,1
-Maruti Suzuki,Zen,NA,Petrol,Maruti Suzuki Suzuki Zen (Petrol),NA,Hatchback,Car,NA,1
-Maruti Suzuki,Zen Estilo,NA,Petrol,Maruti Suzuki Zen Estilo (Petrol),NA,Hatchback,Car,NA,1
-Mitsubishi,Cedia,NA,Diesel,Mitsubishi Cedia (Diesel),NA,Sedan,Car,NA,1
-Mitsubishi,Cedia,NA,Petrol,Mitsubishi Cedia (Petrol),NA,Sedan,Car,NA,1
-Mitsubishi,Lancer,NA,Diesel,Mitsubishi Lancer (Diesel),NA,Sedan,Car,NA,1
-Mitsubishi,Montero,NA,Diesel,Mitsubishi Montero (Diesel),NA,SUV,Car,NA,1
-Mitsubishi,Outlander,NA,Diesel,Mitsubishi Outlander (Diesel),NA,SUV,Car,NA,1
-Mitsubishi,Pajero,NA,Diesel,Mitsubishi Pajero (Diesel),NA,SUV,Car,NA,1
-Nissan,Teana,NA,Petrol,Nissan Teana (Petrol),NA,Sedan,Car,NA,1
-Nissan,Xtrail,NA,Diesel,Nissan Xtrail (Diesel),NA,SUV,Car,NA,1
-Renault,Fluence,NA,Petrol,Renault Fluence (Petrol),NA,Sedan,Car,NA,1
-Renault,Kwid,NA,Diesel,Renault Kwid (Diesel),NA,Hatchback,Car,NA,1
-Renault,Lodgy,NA,Petrol,Renault Lodgy (Petrol),NA,Sedan,Car,NA,1
-Skoda,Fabia,NA,Diesel,Skoda Fabia (Diesel),NA,Hatchback,Car,NA,1
-Skoda,Fabia,NA,Petrol,Skoda Fabia (Petrol),NA,Hatchback,Car,NA,1
-Skoda,Laura,NA,Diesel,Skoda Laura (Diesel),NA,Sedan,Car,NA,1
-Skoda,Laura,NA,Petrol,Skoda Laura (Petrol),NA,Sedan,Car,NA,1
-Tata,Indica eV2,NA,Petrol,Tata Indica eV2 (Petrol),NA,Hatchback,Car,NA,1
-Tata,Indica Vista Quadrajet,NA,Diesel,Tata Indica Vista Quadrajet (Diesel),NA,Hatchback,Car,NA,1
-Tata,Indica Vista TDI,NA,Diesel,Tata Indica Vista TDI (Diesel),NA,Hatchback,Car,NA,1
-Tata,Indica Vista,NA,Petrol,Tata Indica Vista (Petrol),NA,Hatchback,Car,NA,1
-Tata,Indigo Manza,NA,Diesel,Tata Indigo Manza (Diesel),NA,Sedan,Car,NA,1
-Tata,Indigo Manza,NA,Petrol,Tata Indigo Manza (Petrol),NA,Sedan,Car,NA,1
-Toyota,Corolla,NA,Petrol,Toyota Corolla (Petrol),NA,Sedan,Car,NA,1
-Toyota,Innova,NA,Petrol,Toyota Innova (Petrol),NA,SUV,Car,NA,1
-Toyota,Qualis,NA,Diesel,Toyota Qualis (Diesel),NA,SUV,Car,NA,1
-Toyota,Qualis,NA,Petrol,Toyota Qualis (Petrol),NA,SUV,Car,NA,1
-Volkswagen,Passat,NA,Diesel,Volkswagen Passat (Diesel),NA,Sedan,Car,NA,1
-Volkswagen,Passat,NA,Petrol,Volkswagen Passat (Petrol),NA,Sedan,Car,NA,1
-Volkswagen,Phaeton,NA,Diesel,Volkswagen Phaeton (Diesel),NA,Sedan,Car,NA,1
-Volkswagen,Touareg,NA,Diesel,Volkswagen Touareg (Diesel),NA,Sedan,Car,NA,1
-Volkswagen,Wagon,NA,Diesel,Volkswagen Wagon (Diesel),NA,Sedan,Car,NA,1
-Maruti Suzuki,Grand Vitara,NA,Petrol,Maruti Suzuki Grand Vitara (Petrol),NA,SUV,Car,NA,1
