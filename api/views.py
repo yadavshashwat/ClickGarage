@@ -10913,7 +10913,7 @@ def getfacebooklead(request):
     phone = get_param(request, 'phone', None)
     car = get_param(request, 'car', None)
 
-
+    obj['result'] = name + " | "+ email + " | " + phone + " | " + car
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
