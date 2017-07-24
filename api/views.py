@@ -4610,7 +4610,7 @@ def create_check_user_modified(name,number,owner):
 
 
 def place_booking(user_id, name, number, email, reg_number, address, locality, city, order_list, make, veh_type, model,
-                  fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary,send_sms = "1",booking_type="User",booking_user_name=None,booking_user_number=None, owner="ClickGarage", follow_up_date_book = "",follow_up_time_book = "",odometer="",done_by="User", reminder=False):
+                  fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary,send_sms = "1",booking_type="User",booking_user_name=None,booking_user_number=None, owner="ClickGarage", follow_up_date_book = "",follow_up_time_book = "",odometer="",done_by="User", reminder=False, notes="None"):
 
     name = cleanstring(name).title()
     address = cleanstring(address).title()
@@ -4758,7 +4758,8 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
                  follow_up_time = follow_up_time,
                  odometer = odometer,
                  reminder_flag=reminder,
-                 status_history = status_history
+                 status_history = status_history,
+                 customer_notes = notes
                  # time_job_summary =time.time()
                  )
     tt.save()
@@ -10912,6 +10913,71 @@ def getfacebooklead(request):
     email = get_param(request, 'email', None)
     phone = get_param(request, 'phone', None)
     car = get_param(request, 'car', None)
+
+    # name = get_param(request, 'name', None)
+    # number = get_param(request, 'number', None)
+    # email = get_param(request, 'email', None)
+    reg_number = "--"
+    address = "--"
+    locality = "--"
+    city = "--"
+    order_list = [{"category": "Labour",
+                        "name": "Service Request",
+                        "price": 0,
+                        "price_comp": 0,
+                        "unit_price": 0,
+                        "action": "Labour",
+                        "type":"Labour",
+                        "quantity": "1"}]
+
+    # if order_list:
+    #     order_list = json.loads(order_list)
+    # else:
+    #     order_list = []
+    job_summary_int = [{'category': "Servicing", 'job_name': "Servicing", 'price_total': "TBD", 'price_part': "TBD", 'price_labour': "TBD",'price_discount': "TBD", "doorstep": "0"}];
+
+    make = "NA"
+    veh_type = "Car"
+    model = "NA"
+    fuel = "NA"
+    date = datetime.date.today()
+    time_str = "--"
+    jobsummary_list =  [{"Job":"Servicing","Price":"0","Category":"Servicing","Type":"Request"}]
+
+    # comment = car
+
+    is_paid = False
+    paid_amt = get_param(request, 'paid_amt', None)
+    coupon = get_param(request, 'coupon', None)
+    price_total = "0"
+    source = "Facebook Ad"
+    send_confirm = get_param(request, 'send_confirm', "1")
+
+    # oldformat = date
+    # datetimeobject = datetime.datetime.strptime(oldformat, '%d-%m-%Y')
+    newformat = date.strftime('%Y-%m-%d')
+    date = newformat
+    # jobsummary_list = json.loads(jobsummary_list)
+    obj2 = {}
+    obj2['status'] = False
+    obj2['result'] = []
+
+    booking_flag = False
+
+    booking = place_booking('', name, phone, email, reg_number, address, locality, city, order_list,
+                            make, veh_type, model, fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon,
+                            price_total, source, booking_flag, job_summary_int, send_sms=send_confirm,notes=car)
+    obj2['result'] = {}
+    obj2['result']['userid'] = 'None'
+    obj2['result']['booking'] = booking
+    obj2['status'] = True
+    obj2['counter'] = 1
+    obj2['msg'] = "Success"
+    return HttpResponse(json.dumps(obj2), content_type='application/json')
+
+
+
+
 
     obj['result'] = name + " | "+ email + " | " + phone + " | " + car
     obj['status'] = True
