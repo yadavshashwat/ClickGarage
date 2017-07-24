@@ -10904,7 +10904,7 @@ def get_short_url(longurl):
     return json.dumps(obj)
 
 
-def getfacebooklead():
+def getfacebooklead(request):
     obj = {}
     obj['status'] = False
     obj['result'] = []
@@ -10913,7 +10913,7 @@ def getfacebooklead():
     phone = get_param(request, 'phone', None)
     car = get_param(request, 'car', None)
 
-    
+
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
