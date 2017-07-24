@@ -10904,5 +10904,22 @@ def get_short_url(longurl):
     return json.dumps(obj)
 
 
-# s = '%5B%7B%22name%22%3A%22Engine%20Oil%22%2C%22price%22%3A1280%2C%22pre_tax_price%22%3A1131.49%2C%22type%22%3A%22Part%22%2C%22settlement_cat%22%3A%22Part%22%2C%22comment%22%3A%22%22%2C%22quantity%22%3A%224%22%2C%22unit_price%22%3A%22320%22%2C%22approved%22%3A%22Yes%22%2C%22purchase_price%22%3A1280%2C%22purchase_price_pretax%22%3A1131.49%7D%2C%7B%22name%22%3A%22Coolant%22%2C%22price%22%3A300%2C%22pre_tax_price%22%3A265.19%2C%22type%22%3A%22Part%22%2C%22settlement_cat%22%3A%22Part%22%2C%22comment%22%3A%22%22%2C%22quantity%22%3A%221%22%2C%22unit_price%22%3A%22300%22%2C%22approved%22%3A%22Yes%22%2C%22purchase_price%22%3A300%2C%22purchase_price_pretax%22%3A265.19%7D%2C%7B%22name%22%3A%22Power%20Steering%20Oil%22%2C%22price%22%3A58%2C%22pre_tax_price%22%3A51.27%2C%22type%22%3A%22Part%22%2C%22settlement_cat%22%3A%22Part%22%2C%22comment%22%3A%22%22%2C%22quantity%22%3A%221%22%2C%22unit_price%22%3A%2258%22%2C%22approved%22%3A%22Yes%22%2C%22purchase_price%22%3A58%2C%22purchase_price_pretax%22%3A51.27%7D%2C%7B%22name%22%3A%22Brake%20%26%20Clutch%20Fluid%22%2C%22price%22%3A206%2C%22pre_tax_price%22%3A182.1%2C%22type%22%3A%22Part%22%2C%22settlement_cat%22%3A%22Part%22%2C%22comment%22%3A%22%22%2C%22quantity%22%3A%221%22%2C%22unit_price%22%3A%22206%22%2C%22approved%22%3A%22Yes%22%2C%22purchase_price%22%3A206%2C%22purchase_price_pretax%22%3A182.1%7D%2C%7B%22name%22%3A%22Windhield%20Washer%20Fluid%22%2C%22price%22%3A30%2C%22pre_tax_price%22%3A26.52%2C%22type%22%3A%22Part%22%2C%22settlement_cat%22%3A%22Part%22%2C%22comment%22%3A%22%22%2C%22quantity%22%3A%221%22%2C%22unit_price%22%3A%2230%22%2C%22approved%22%3A%22Yes%22%2C%22purchase_price%22%3A30%2C%22purchase_price_pretax%22%3A26.52%7D%2C%7B%22name%22%3A%22Battery%20Water%22%2C%22price%22%3A40%2C%22pre_tax_price%22%3A35.36%2C%22type%22%3A%22Part%22%2C%22settlement_cat%22%3A%22Part%22%2C%22comment%22%3A%22%22%2C%22quantity%22%3A%221%22%2C%22unit_price%22%3A%2240%22%2C%22approved%22%3A%22Yes%22%2C%22purchase_price%22%3A40%2C%22purchase_price_pretax%22%3A35.36%7D%2C%7B%22name%22%3A%22Brake%20Spray%22%2C%22price%22%3A120%2C%22pre_tax_price%22%3A106.08%2C%22type%22%3A%22Part%22%2C%22settlement_cat%22%3A%22Part%22%2C%22comment%22%3A%22%22%2C%22quantity%22%3A%224%22%2C%22unit_price%22%3A%2230%22%2C%22approved%22%3A%22Yes%22%2C%22purchase_price%22%3A120%2C%22purchase_price_pretax%22%3A106.08%7D%2C%7B%22name%22%3A%22Caliper%20Greasing%22%2C%22price%22%3A150%2C%22pre_tax_price%22%3A132.6%2C%22type%22%3A%22Part%22%2C%22settlement_cat%22%3A%22Part%22%2C%22comment%22%3A%22%22%2C%22quantity%22%3A%221%22%2C%22unit_price%22%3A%22150%22%2C%22approved%22%3A%22Yes%22%2C%22purchase_price%22%3A150%2C%22purchase_price_pretax%22%3A132.6%7D%2C%7B%22name%22%3A%22Oil%20Filter%22%2C%22price%22%3A89%2C%22pre_tax_price%22%3A78.67%2C%22type%22%3A%22Part%22%2C%22settlement_cat%22%3A%22Part%22%2C%22comment%22%3A%22%22%2C%22quantity%22%3A%221%22%2C%22unit_price%22%3A%2289%22%2C%22approved%22%3A%22Yes%22%2C%22purchase_price%22%3A89%2C%22purchase_price_pretax%22%3A78.67%7D%2C%7B%22name%22%3A%22Air%20Filter%22%2C%22price%22%3A294%2C%22pre_tax_price%22%3A259.89%2C%22type%22%3A%22Part%22%2C%22settlement_cat%22%3A%22Part%22%2C%22comment%22%3A%22%22%2C%22quantity%22%3A%221%22%2C%22unit_price%22%3A%22294%22%2C%22approved%22%3A%22Yes%22%2C%22purchase_price%22%3A294%2C%22purchase_price_pretax%22%3A259.89%7D%2C%7B%22name%22%3A%22Standard%20Service%22%2C%22price%22%3A800%2C%22pre_tax_price%22%3A695.65%2C%22type%22%3A%22Labour%22%2C%22settlement_cat%22%3A%22Labour%22%2C%22comment%22%3A%22%22%2C%22quantity%22%3A%221%22%2C%22unit_price%22%3A%22800.0%22%2C%22approved%22%3A%22Yes%22%2C%22purchase_price%22%3A800%2C%22purchase_price_pretax%22%3A695.65%7D%5D'
+def getfacebooklead():
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    name = get_param(request, 'name', None)
+    email = get_param(request, 'email', None)
+    phone = get_param(request, 'phone', None)
+    car = get_param(request, 'car', None)
+
+    
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+
+
 
