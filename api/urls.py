@@ -152,6 +152,7 @@ urlpatterns = [
     url(r'update_delete_expense/$', 'api.views.update_delete_expense', name='update_delete_expense'),
     url(r'view_all_expense/$', 'api.views.view_all_expense', name='view_all_expense'),
     url(r'getfacebooklead/$', 'api.views.getfacebooklead', name='getfacebooklead'),
+    url(r'generate_send_report/$', 'api.views.generate_send_report', name='generate_send_report'),
 
     # Website Api Check
     url(r'get_all_models/$', 'api.views.get_all_models', name='get_all_models'),

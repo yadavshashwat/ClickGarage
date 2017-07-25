@@ -10985,7 +10985,91 @@ def getfacebooklead(request):
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+def generate_report(booking_id):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    booking = Bookings.objects.filter(booking_id=booking_id)[0]
+    if (booking.clickgarage_flag):
+        agent_name = "Sui Generis Innovations Private Limited"
+        agent_address = "W22, Second Floor, Green Park Main, New Delhi - 110016"
+        logo = True
+    else:
+        agent_name = booking.agent
+        agent_address = ""
+        logo = False
+
+    cust_name = booking.cust_name
+    cust_address = booking.cust_address
+    cust_locality = booking.cust_locality
+    cust_city = booking.cust_city
+    cust_reg = booking.cust_regnumber
+    cust_veh = booking.cust_make + ' ' + booking.cust_model + ' '+ booking.cust_fuel_varient
+    service_items = booking.jobssummary
+    cust_odo = booking.odometer
+    created_date = datetime.date.today()
+    report_html = mviews.report_html(agent_name=agent_name, agent_address=agent_address, booking_id=booking_id, created_date=created_date, cust_name=cust_name, cust_address=cust_address, cust_locality=cust_locality,
+                    cust_city=cust_city, cust_reg=cust_reg, cust_veh =cust_veh, service_items=service_items,  logo=logo, cust_odo=cust_odo)
+    import pdfkit
+    import sys
+    reload(sys)
+    sys.setdefaultencoding('utf8')
+
+    if socket.gethostname().startswith('ip-'):
+        if PRODUCTION:
+            cmd = pdfkit.from_string(report_html,'/home/ubuntu/beta/website/Reports/Report_'+booking.id+'.pdf')
+        else:
+            cmd = pdfkit.from_string(report_html,'/home/ubuntu/testing/website/Reports/Report_'+booking.id+'.pdf')
+    else:
+        cmd = pdfkit.from_string(report_html, '/home/shashwat/Desktop/codebase/website/Reports/Report_'+booking.id+'.pdf')
+
+    if socket.gethostname().startswith('ip-'):
+        if PRODUCTION:
+            obj['filename'] = '/home/ubuntu/beta/website/Reports/Report_'+booking.id+'.pdf'
+        else:
+            obj['filename'] = '/home/ubuntu/beta/website/Reports/Report_'+booking.id+'.pdf'
+    else:
+        obj['filename'] = '/home/shashwat/Desktop/codebase/website/Reports/Report_'+booking.id+'.pdf'
 
 
+    booking.report_generation_flag = True
+    booking.report_file_name = obj['filename']
+    booking.save()
+
+    f = open(obj['filename'], 'r')
+
+    filename = 'Report_'+ booking.id + '.pdf'
+    content = f.read()
+    f.close()
+    response_file = HttpResponse(content, mimetype='application/pdf')
+    response_file['Content-Disposition'] = 'attachement; filename=' + filename
+
+    obj['msg'] = "Report Generated"
+    obj['status'] = True
+    obj['counter'] = 1
+
+    return response_file
+
+def generate_send_report(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+
+    booking_id = get_param(request, 'b_id', None)
+
+    generate_report(booking_id)
+
+    booking = Bookings.objects.filter(booking_id=booking_id)[0]
+
+    filename = booking.report_file_name
+    cust_name = booking.cust_name
+    cust_email = booking.cust_email
+
+    booking = None
 
 
+    mviews.send_report(cust_name=cust_name, booking_id=booking_id, cust_email=cust_email, filename=filename)
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')

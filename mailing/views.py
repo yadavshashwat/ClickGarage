@@ -9987,6 +9987,219 @@ body, p, div { font-family: arial,sans-serif; }
 	</html>"""
 	return html
 
+def html_to_send_report(name, booking_id):
+	summary_html2 = ""
+	confirmed = False
+	if booking_id != "":
+		booking = Bookings.objects.filter(booking_id = booking_id)[0]
+		confirmed = booking.booking_flag
+		reg_number = booking.cust_regnumber
+		car_name = booking.cust_make + " " + booking.cust_model
+
+	else:
+		booking = None
+		reg_number = ""
+		car_name = ""
+		confirmed = False
+
+
+	booking_id = str(booking_id)
+	html = ""
+	html = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" data-dnd="true">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+<!--[if !mso]><!-->
+<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+<!--<![endif]-->
+
+<!--[if (gte mso 9)|(IE)]><style type="text/css">
+table {border-collapse: collapse;}
+table, td {mso-table-lspace: 0pt;mso-table-rspace: 0pt;}
+img {-ms-interpolation-mode: bicubic;}
+</style>
+<![endif]-->
+<style type="text/css">
+body {
+color: #000000;
+}
+body a {
+color: #1188e6;
+text-decoration: none;
+}
+p { margin: 0; padding: 0; }
+table[class="wrapper"] {
+width:100% !important;
+table-layout: fixed;
+-webkit-font-smoothing: antialiased;
+-webkit-text-size-adjust: 100%;
+-moz-text-size-adjust: 100%;
+-ms-text-size-adjust: 100%;
+}
+img[class="max-width"] {
+max-width: 100% !important;
+}
+@media screen and (max-width:480px) {
+.preheader .rightColumnContent,
+.footer .rightColumnContent {
+	text-align: left !important;
+}
+.preheader .rightColumnContent div,
+.preheader .rightColumnContent span,
+.footer .rightColumnContent div,
+.footer .rightColumnContent span {
+  text-align: left !important;
+}
+.preheader .rightColumnContent,
+.preheader .leftColumnContent {
+  font-size: 80% !important;
+  padding: 5px 0;
+}
+table[class="wrapper-mobile"] {
+  width: 100% !important;
+  table-layout: fixed;
+}
+img[class="max-width"] {
+  height: auto !important;
+}
+a[class="bulletproof-button"] {
+  display: block !important;
+  width: auto !important;
+  font-size: 80%;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+// 2 columns
+#templateColumns{
+	width:100% !important;
+}
+
+.templateColumnContainer{
+	display:block !important;
+	width:100% !important;
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+}
+</style>
+<style>
+body, p, div { font-family: arial,sans-serif; }
+</style>
+
+</head>
+<body yahoofix="true" style="min-width: 100%; margin: 0; padding: 0; font-size: 14pxpx; font-family: arial,sans-serif; color: #000000; background-color: #FFFFFF; color: #000000;" data-attributes='%7B%22dropped%22%3Atrue%2C%22bodybackground%22%3A%22%23FFFFFF%22%2C%22bodyfontname%22%3A%22arial%2Csans-serif%22%2C%22bodytextcolor%22%3A%22%23000000%22%2C%22bodylinkcolor%22%3A%22%231188e6%22%2C%22bodyfontsize%22%3A%2214px%22%7D'>
+<center class="wrapper">
+<div class="webkit">
+  <table cellpadding="0" cellspacing="0" border="0" width="100%" class="wrapper" bgcolor="#FFFFFF">
+  <tr><td valign="top" bgcolor="#FFFFFF" width="100%">
+  <!--[if (gte mso 9)|(IE)]>
+  <table width="600" align="center" cellpadding="0" cellspacing="0" border="0">
+	<tr>
+	  <td>
+	  <![endif]-->
+		<table width="100%" role="content-container" class="outer" data-attributes='%7B%22dropped%22%3Atrue%2C%22containerpadding%22%3A%220%2C0%2C0%2C0%22%2C%22containerwidth%22%3A600%2C%22containerbackground%22%3A%22%23FFFFFF%22%7D' align="center" cellpadding="0" cellspacing="0" border="0">
+		  <tr>
+			<td width="100%"><table width="100%" cellpadding="0" cellspacing="0" border="0">
+			  <tr>
+				<td>
+				<!--[if (gte mso 9)|(IE)]>
+				  <table width="600" align="center" cellpadding="0" cellspacing="0" border="0">
+					<tr>
+					  <td>
+						<![endif]-->
+						  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width:600px;" align="center">
+							<tr><td role="modules-container" style="padding: 0px 0px 0px 0px; color: #000000; text-align: left;" bgcolor="#FFFFFF" width="100%" align="left">
+							  <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" style="display:none !important; visibility:hidden; opacity:0; color:transparent; height:0; width:0;" class="module preheader preheader-hide" role="module" data-type="preheader">
+<tr><td role="module-content"><p></p></td></tr>
+</table>
+<table class="module" role="module" data-type="wysiwyg" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div>
+
+</div></td></tr></table>
+<table role="module" data-type="image" border="0" align="center" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" class="wrapper" data-attributes='%7B%22child%22%3Afalse%2C%22link%22%3A%22%22%2C%22width%22%3A%22600%22%2C%22height%22%3A%22107%22%2C%22imagebackground%22%3A%22%23FFFFFF%22%2C%22url%22%3A%22https%3A//marketing-image-production.s3.amazonaws.com/uploads/bb5c8b37fb8b5c18fa56b1adbdf4ea31daedb73c1df75bc47974c47504873b3b58f73a89ce248498a65fd30bb1dbf308b456ef84787f9c516588b95bb4e21728.jpg%22%2C%22alt_text%22%3A%22%22%2C%22dropped%22%3Atrue%2C%22imagemargin%22%3A%220%2C0%2C0%2C0%22%2C%22alignment%22%3A%22%22%2C%22responsive%22%3Atrue%7D'>
+<tr>
+<td style="font-size:6px;line-height:10px;background-color:#FFFFFF;padding: 0px 0px 0px 0px;" valign="top" align="" role="module-content"><!--[if mso]>
+<center>
+<table width="600" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+<tr>
+<td width="600" valign="top">
+<![endif]-->
+<img class="max-width"  width="600"   height=""  src='"""
+	html += """https://www.clickgarage.in/static/revamp/img/bill_email.jpg"""
+	html += """' alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 600px !important; width: 100% !important; height: auto !important; " />
+<!--[if mso]>
+</td></tr></table>
+</center>
+<![endif]--></td>
+</tr>
+</table><table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A30%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr><td role="module-content" style="padding: 0px 0px 30px 0px;" bgcolor="#ffffff"></td></tr></table>
+<table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C12%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+<tr>"""
+	if booking_id != "":
+		html += """<td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """+name+"""<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Thank you for using ClickGarage. Your vehicle inspection is complete (Booking ID: """+booking_id+""").  Please find attached your vehicle inspection report in the email. &nbsp;</div> </td>"""
+	else:
+		html += """<td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """ + name + """<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Your vehicle inspection is complete. Thank you for using ClickGarage. Please find attached your vehicle inspection report in the email. &nbsp;</div> </td>"""
+
+	html += """</tr><tr><br>"""
+
+	if car_name != "":
+		html += """Vehicle Name: """ + car_name + """<br>"""
+	if reg_number != "":
+		html += """Registration Number: """ + reg_number + """<br><br>"""
+
+
+	html +="""<table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A30%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+	<tr><td role="module-content" style="padding: 0px 0px 30px 0px;" bgcolor="#ffffff"></td></tr></table>
+	<table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" class="module footer" role="module" data-type="footer" data-attributes='%7B%22dropped%22%3Atrue%2C%22columns%22%3A1%2C%22padding%22%3A%2210%2C5%2C10%2C5%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+	  <tr><td style="padding: 10px 5px 10px 5px;" bgcolor="#ffffff">
+		<table border="0" cellpadding="0" cellspacing="0" align="center" width="100%">
+		  <tr role="module-content">
+
+			<td align="center" valign="top" width="100%" height="100%" class="templateColumnContainer">
+			  <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%">
+				<tr>
+				  <td class="leftColumnContent" role="column-one" height="100%" style="height:100%;"><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
+	<tr>
+	  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="font-size:12px;line-height:150%;margin:0;text-align:center;">This email was sent by: ClickGarage (Sui Generis Innovations Private Limited), &nbsp;W-22, Green Park, New Delhi</div> </td>
+	</tr>
+	</table>
+	</td>
+				</tr>
+			  </table>
+			</td>
+
+		  </tr>
+		</table>
+	  </td></tr>
+	</table>
+
+									</tr></td>
+								  </table>
+								<!--[if (gte mso 9)|(IE)]>
+							  </td>
+							</td>
+						  </table>
+						<![endif]-->
+						</td>
+					  </tr>
+					</table></td>
+				  </tr>
+				</table>
+			  <!--[if (gte mso 9)|(IE)]>
+			  </td>
+			</tr>
+		  </table>
+		  <![endif]-->
+		  </tr></td>
+		  </table>
+		</div>
+	  </center>
+	</body>
+	</html>"""
+	return html
+
 
 def send_bill(cust_name,booking_id,cust_email,price_total,serviceitems,cust_number,filename):
 	me = from_address
@@ -10027,6 +10240,34 @@ def send_bill(cust_name,booking_id,cust_email,price_total,serviceitems,cust_numb
 
 
 # the attachment
+def send_report(cust_name,booking_id,cust_email,filename):
+	me = from_address
+	msg = MIMEMultipart('alternative')
+
+	bill_estimate = "Report"
+	msg['From'] = me
+	msg['To'] = cust_email
+
+	#
+	if booking_id != "":
+		msg['Subject'] = "Inspection Report! Booking ID: " + str(booking_id)
+	else:
+		msg['Subject'] = "ClickGarage | Inspection Report"
+
+	html = html_to_send_report(name=cust_name, booking_id=booking_id)
+
+	script = MIMEText(html, 'html')
+	msg.attach(script)
+
+	script = MIMEText(html, 'html')
+	msg.attach(script)
+	part = MIMEApplication(open(filename, 'rb').read())
+	part.add_header('Content-Disposition', 'attachment', filename='Report.pdf')
+	msg.attach(part)
+
+	conn = boto.ses.connect_to_region(region, aws_access_key_id=aws_access, aws_secret_access_key=aws_secret)
+	result = conn.send_raw_email(msg.as_string())
+
 
 
 def bill_html(agent_name,agent_address,invoice_number,booking_id,created_date,tin_number,cin_number,stax_number,cust_name,cust_address,cust_locality,cust_city,cust_reg,cust_veh,service_items,vat_part_percent,vat_lube_percent,vat_consumable_percent,stax_percent,vat_part,vat_lube,vat_consumable,stax_amount,total,recommendation,logo,amount_paid,gst_number,gst_part_percent,gst_lube_percent,gst_consumable_percent,gst_service_percent,gst_18,gst_28,cust_odo,gst_type,state_of_supply):
@@ -10570,6 +10811,344 @@ page[size="A5"][layout="portrait"] {
 			</div>
 		</div>"""
 	html +="""<div style="text-align:center">This is a computer generated invoice and does not require any stamp or signature</div>"""
+	html+="""</div>
+</page>
+
+</body>
+</html>"""
+	return html
+
+def report_html(agent_name,agent_address,booking_id,created_date,cust_name,cust_address,cust_locality,cust_city,cust_reg,cust_veh,service_items,logo,cust_odo):
+	html = """<!DOCTYPE html>
+<html id="bill-data" lang="en"><head>
+	<style>
+/* ==========================================================================
+   Insert Your Bill Styles Below. All styles located in this file will
+   override existing main.css stylesheets.
+   ========================================================================== */
+.actionables{
+    /*background: #eaeaea;*/
+    /*padding: 4%;*/
+    margin-bottom: 2%;
+    /*width: 100%;*/
+    background: #FFF;
+    /*height: 5%;*/
+}
+
+.button-row{
+    padding: 3%;
+}
+.bill-btn{
+    width: 300px;
+    margin: 5px;
+
+}
+
+.view-pdf-box{
+    /*border:1px solid #4a148c;*/
+    /*width:100px;*/
+    /*margin-left:50%;*/
+    /*left:50px;*/
+
+}
+.invoice-box{
+    max-width:800px;
+    margin:auto;
+    padding:30px;
+    /*border:1px solid #eee;*/
+    /*box-shadow:0 0 10px rgba(0, 0, 0, .15);*/
+    font-size:16px;
+    line-height:24px;
+    font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+    color:#555;
+}
+
+.invoice-box .company-name{
+    font-size:16px!important;
+    color:#555!important;
+    line-height: 20px!important;
+}
+
+.invoice-box .bill-details{
+    font-size:16px!important;
+    color:#555!important;
+    line-height: 10px!important;
+
+}
+
+
+
+.tax{
+    font-size: 10px;
+    line-height: 5px;
+}
+
+
+.invoice-box table{
+    width:100%;
+    line-height:inherit;
+    text-align:left;
+}
+
+.invoice-box table td{
+    padding:5px;
+    vertical-align:top;
+}
+
+.invoice-box table tr td:nth-child(2){
+    text-align:right;
+}
+
+
+body {
+  background: rgb(204,204,204);
+}
+
+page {
+  background: white;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 0.5cm;
+}
+page[size="A4"] {
+  width: 21cm;
+  /*height: 29.7cm;*/
+}
+page[size="A4"][layout="portrait"] {
+  width: 29.7cm;
+  height: 21cm;
+}
+page[size="A3"] {
+  width: 29.7cm;
+  height: 42cm;
+}
+page[size="A3"][layout="portrait"] {
+  width: 42cm;
+  height: 29.7cm;
+}
+page[size="A5"] {
+  width: 14.8cm;
+  height: 21cm;
+}
+page[size="A5"][layout="portrait"] {
+  width: 21cm;
+  height: 14.8cm;
+}
+@media print {
+  body, page {
+    margin: 0;
+    box-shadow: 0;
+  }
+}
+
+
+.invoice-box .information tr td {
+     text-align:left!important;
+}
+.invoice-box table tr.top table td{
+    padding-bottom:0px;
+    padding: 0px;
+    line-height: 20px;
+}
+
+.invoice-box .customer-details td{
+    padding: 0px!important;;
+    padding-bottom: 0px!important;
+    text-align: left!important;
+}
+.invoice-box table tr.top table td.title{
+    font-size:45px;
+    line-height:45px;
+    color:#333;
+}
+
+.invoice-box table tr.information table td{
+    padding-bottom:0px;
+}
+
+.invoice-box .agent-details td:nth-child(1){
+    width: 50%;
+}
+.invoice-box .agent-details td:nth-child(2){
+    width: 50%;
+}
+
+.invoice-box .information-cust td:nth-child(1){
+    width: 50%;
+}
+.invoice-box .information-cust td:nth-child(2){
+    width: 50%;
+}
+.invoice-box .information-cust .customer-details td:nth-child(1){
+    width: 40%;
+}
+.invoice-box .information-cust .customer-details td:nth-child(2){
+    width: 60%;
+}
+
+.invoice-box table thead.heading td{
+    background:#eee;
+    border-bottom:1px solid #ddd;
+    font-weight:bold;
+}
+
+.invoice-box .parts-table td:nth-child(1){
+    width: 40%;
+}
+.invoice-box .parts-table td:nth-child(2){
+    width: 20%;
+    text-align: center;
+}
+.invoice-box .parts-table td:nth-child(3){
+    width: 20%;
+    text-align: center;
+
+}
+.row{
+    margin-bottom:5px;
+}
+.recommendation{
+    margin-left: 10px;
+}
+.invoice-box .parts-table td:nth-child(4){
+    width: 20%;
+    text-align: right;
+
+}
+
+.invoice-box .summary td{
+    text-align: right;
+}
+
+.invoice-box table tr.details td{
+    padding-bottom:20px;
+}
+
+.invoice-box table tr.item td{
+    border-bottom:1px solid #eee;
+}
+
+.invoice-box table tr.item.last td{
+    border-bottom:none;
+}
+
+
+.invoice-box .summary{
+    border-top:2px solid #eee;
+}
+.invoice-box table tr.total td:nth-child(1){
+    border-top:2px solid #eee;
+    font-weight:bold;
+}
+
+@media only screen and (max-width: 600px) {
+    .invoice-box table tr.top table td{
+        width:100%;
+        display:block;
+        text-align:center;
+    }
+
+    .invoice-box table tr.information table td{
+        width:100%;
+        display:block;
+        text-align:center;
+    }
+}
+	</style>
+</head>
+<body class="bill-page">
+<page id="bill" class="" style="" size="">
+	<div class="invoice-box">
+		<!--<table cellpadding="0" cellspacing="0">-->
+		<!--<tr class="top">-->
+		<!--<td colspan="2">-->
+		<table class="agent-details">
+			<tr>
+				<td class="title company-name">"""
+	if logo:
+		html += """<img id="bill-logo" src="https://www.clickgarage.in/static/revamp/img/Bill%20Logos/ClickGarage.png" style="width:100%; max-width:150px;"><br>"""
+	else:
+		html += """<img id="bill-logo" src="https://www.clickgarage.in/static/revamp/img/Bill%20Logos/""" + string.replace(agent_name, ' ', '%20') + """.png" style="width:100%; max-width:150px;"><br>"""
+
+	html += """<span id="agent-name">"""+ agent_name +"""</span><br>
+					<span id="agent-address">"""+ agent_address +"""</span><br>
+				</td>
+
+				<td>
+					<table class="bill-details">"""
+	if booking_id !="":
+		html += """<tr><td>Booking #: </td><td><span id="booking-id">"""+str(booking_id)+"""</span></td></tr>"""
+	if created_date != "":
+		html += """<tr><td>Created: </td><td><span id="bill-date">""" + str(created_date) +"""</span></td></tr>"""
+	# if tin_number != "":
+	# 	html += """<tr class="reciept tin"><td>TIN : </td><td><span id = "agent-tin">"""+tin_number+"""</span></td></tr>"""
+
+	# if stax_number != "":
+	# 	html += """<tr class="reciept stax"><td>Service Tax : </td><td><span id = "agent-stax">"""+stax_number+"""</span></td></tr>"""
+
+	html += """</table>
+				</td>
+			</tr>
+		</table>
+		<!--</td>-->
+		<!--</tr>-->
+		<table class="information information-cust">
+			<tr>
+				<!--<td colspan="2">-->
+				<!--<table class="">-->
+				<!--<tr>-->
+				<td>
+					<b>Customer Details:  </b><br>
+					<table class="customer-details">
+						<tr><td>&nbsp;&nbsp;Name </td><td><span id="cust-name">"""+cust_name+"""</span></td></tr>
+						<tr><td>&nbsp;&nbsp;Address </td><td><span id="cust-address">"""+cust_address+"""</span>, <span id="cust-locality">"""+cust_locality+"""</span>, <span id="cust-city">"""+cust_city+"""</span></td></tr>
+					</table>
+				</td>
+				<td>
+					<b>Vehicle Details: </b><br>
+					<table class="customer-details">"""
+	if cust_reg != "":
+		html +="""<tr><td>&nbsp;&nbsp;Registration </td><td><span id="veh-reg">"""+str(cust_reg)+"""</span></td></tr>"""
+
+	if cust_odo != "":
+		html +="""<tr><td>&nbsp;&nbsp;Odometer </td><td><span id="veh-reg">"""+str(cust_odo)+"""</span></td></tr>"""
+
+	if cust_veh != "":
+		html += """<tr><td>&nbsp;&nbsp;Vehicle Name </td><td><span id="veh-name">"""+str(cust_veh)+"""</span></td></tr>"""
+
+	html += """</table>
+				</td>
+
+			</tr>
+		</table>
+		<!--</td>-->
+		<!--</tr>-->
+		<!--</table>-->"""
+	if len(service_items):
+		html += """<table class="parts-table">
+			<thead class="heading">
+			<td>
+				Check List Item
+			</td>
+			<td>
+				Vehicle Inspection Status
+			</td>
+			</thead>
+			<tbody class="parts-list">"""
+
+		for part in service_items:
+			if (part['Preok']):
+				html += """<tr class="item"><td>"""+part['Job']+"""</td><td style="background: green;"></td></tr>"""
+			else:
+				html += """<tr class="item"><td>""" + part['Job'] + """</td><td style="background:red;"></td></tr>"""
+		html += """</tbody></table>"""
+
+	html += """<br>"""
+
+
+
+
+
 	html+="""</div>
 </page>
 
