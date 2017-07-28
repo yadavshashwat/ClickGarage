@@ -580,6 +580,7 @@ class Bookings(models.Model):
     driver_drop_name        = models.CharField(max_length=200,null=True)
     driver_pick_number      = models.CharField(max_length=200,null=True)
     driver_drop_number      = models.CharField(max_length=200,null=True)
+    cust_gst_number         = models.CharField(max_length=200,null=True)
     files_list              = ListField(models.CharField(max_length=200,null=True))
     report_generation_flag  = models.BooleanField(default = False)
     report_file_name        = models.CharField(max_length=200, null=True)
@@ -651,6 +652,7 @@ class Bills(models.Model):
     vat_lube                    = models.CharField(max_length=200)
     vat_consumable              = models.CharField(max_length=200)
     service_tax                 = models.CharField(max_length=200)
+    cust_gst_number         = models.CharField(max_length=200,null=True)
 
     gst_part                    = models.CharField(max_length=200)
     gst_lube                    = models.CharField(max_length=200)
@@ -677,7 +679,7 @@ class Bills(models.Model):
     vat_lube_percent            = models.CharField(max_length=50)
     vat_consumable_percent      = models.CharField(max_length=50)
     service_tax_percent         = models.CharField(max_length=50)
-
+    cust_gst_number             = models.CharField(max_length=200,null=True)
     gst_part_percent = models.CharField(max_length=50)
     gst_lube_percent = models.CharField(max_length=50)
     gst_consumable_percent = models.CharField(max_length=50)

@@ -4610,7 +4610,7 @@ def create_check_user_modified(name,number,owner):
 
 
 def place_booking(user_id, name, number, email, reg_number, address, locality, city, order_list, make, veh_type, model,
-                  fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary,send_sms = "1",booking_type="User",booking_user_name=None,booking_user_number=None, owner="ClickGarage", follow_up_date_book = "",follow_up_time_book = "",odometer="",done_by="User", reminder=False, notes="None"):
+                  fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon, price_total,source, booking_flag, int_summary,send_sms = "1",booking_type="User",booking_user_name=None,booking_user_number=None, owner="ClickGarage", follow_up_date_book = "",follow_up_time_book = "",odometer="",done_by="User", reminder=False, notes="None", gstnum = None):
 
     name = cleanstring(name).title()
     address = cleanstring(address).title()
@@ -4759,7 +4759,8 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
                  odometer = odometer,
                  reminder_flag=reminder,
                  status_history = status_history,
-                 customer_notes = notes
+                 customer_notes = notes,
+                 cust_gst_number= gstnum
                  # time_job_summary =time.time()
                  )
     tt.save()
@@ -6972,6 +6973,8 @@ def view_all_bookings(request):
             bill_agent_stax = bill.agent_stax
             bill_cust_name = bill.cust_name
             bill_cust_number = bill.cust_number
+            bill_cust_gst_no = bill.cust_gst_number
+
             bill_cust_address = bill.cust_address
             bill_cust_locality = bill.cust_locality
             bill_cust_city = bill.cust_city
@@ -6983,7 +6986,7 @@ def view_all_bookings(request):
             bill_clickgarage = bill.clickgarage_flag
             bill_type = bill.bill_type
             bill_supply_state = bill.state_of_supply
-
+            bill_cust_gst_no = bill.cust_gst_number
 
         else:
             components = ""
@@ -7002,7 +7005,7 @@ def view_all_bookings(request):
             bill_gst_lube_percent = ""
             bill_gst_consumable_percent = ""
             bill_gst_service_percent = ""
-
+            bill_cust_gst_no = ""
 
 
             bill_agent_name = ""
@@ -7012,7 +7015,7 @@ def view_all_bookings(request):
             bill_agent_vat_no = ""
 
             bill_agent_gst_no = ""
-
+            bill_cust_gst_no = ""
             bill_agent_cin = ""
             bill_agent_stax = ""
             bill_cust_name = ""
@@ -7322,17 +7325,18 @@ def view_all_bookings(request):
             'cust_fuel_varient' : trans.cust_fuel_varient,
             'cust_regnumber'    : trans.cust_regnumber,
             'cust_number'       : trans.cust_number,
+            'cust_gst_number'   : trans.cust_gst_number,
             'cust_email'        : trans.cust_email,
             'cust_address'      : trans.cust_address,
             'cust_locality'     : trans.cust_locality,
             'cust_city'         : trans.cust_city,
             'service_items'     : trans.service_items,
+            # 'service_items': trans.service_items,
             'part_total'        : trans.price_part,
             'labour_total'      : trans.price_labour,
             'discount_total'    : trans.price_discount,
             'price_total'       : trans.price_total,
             'date_booking'      : newformat_b,
-            # 'follow_up_date': newformat_f,
             'time_booking'      : trans.time_booking,
             'is_paid'           : trans.is_paid,
             'reminder_flag'     : trans.reminder_flag,
@@ -7352,7 +7356,6 @@ def view_all_bookings(request):
             'vat_consumable'    : vat_consumable,
             'vat_lube'          : vat_lube,
             'service_tax'           : service_tax,
-
             'gst_part': gst_part,
             'gst_consumable': gst_consumable,
             'gst_lube': gst_lube,
@@ -7413,6 +7416,7 @@ def view_all_bookings(request):
             'bill_agent_stax' : bill_agent_stax,
             'bill_cust_name' : bill_cust_name,
             'bill_cust_number': bill_cust_number,
+            'bill_cust_gst_no': bill_cust_gst_no,
             'bill_cust_address' : bill_cust_address,
             'bill_cust_locality': bill_cust_locality,
             'bill_cust_city': bill_cust_city,
@@ -8834,9 +8838,10 @@ def send_booking(request):
             name = request.user.first_name +' ' +request.user.last_name
             number = request.user.contact_no
             email = request.user.email
+            gst_num  = request.user.agent_gst
             booking = place_booking(str(request.user.id), name, number, email, reg_number, address, locality, city, order_list,
                                     make, veh_type, model, fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon,
-                                    price_total, "B2B", booking_flag,job_summary_int,send_sms="0", booking_type="B2B",booking_user_name=booking_user_name,booking_user_number=booking_user_number,odometer=odometer)
+                                    price_total, "B2B", booking_flag,job_summary_int,send_sms="0", booking_type="B2B",booking_user_name=booking_user_name,booking_user_number=booking_user_number,odometer=odometer,gstnum=gst_num)
 
         # WMS Modification Start
 
@@ -8846,12 +8851,13 @@ def send_booking(request):
             else:
                 booking_flag = False
             user = create_check_user_modified(name, number,request.user.id)
+            gst_num = user.agent_gst
             # if request.user.id not in user.owner_user:
             #     user.owner_user.append(request.user.id)
             booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city,
                                     order_list,make, veh_type, model, fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon,
                                     price_total, source, booking_flag,
-                                    job_summary_int, send_sms=send_confirm,owner=request.user.id,follow_up_date_book=date,follow_up_time_book=time_format,odometer=odometer)
+                                    job_summary_int, send_sms=send_confirm,owner=request.user.id,follow_up_date_book=date,follow_up_time_book=time_format,odometer=odometer,gstnum=gst_num)
         # WMS Modification End
             obj2['result']['user_type_control'] = True
         elif request.user.is_staff or request.user.is_admin:
@@ -8865,13 +8871,14 @@ def send_booking(request):
                 name = user.first_name + ' ' + user.last_name
                 number = user.contact_no
                 email = user.email
+                gst_num = user.agent_gst
                 booking_flag = True
 
                 booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city,
                                         order_list,
                                         make,
                                         veh_type, model, fuel, date, time_str, jobsummary_list, is_paid, paid_amt, coupon,
-                                        price_total, "B2B", booking_flag,job_summary_int,send_sms="0", booking_type="B2B",booking_user_name=booking_user_name,booking_user_number=booking_user_number,follow_up_date_book=date,follow_up_time_book=time_format,odometer=odometer)
+                                        price_total, "B2B", booking_flag,job_summary_int,send_sms="0", booking_type="B2B",booking_user_name=booking_user_name,booking_user_number=booking_user_number,follow_up_date_book=date,follow_up_time_book=time_format,odometer=odometer,gstnum=gst_num)
 
             else:
                 booking = place_booking(str(user.id), name, number, email, reg_number, address, locality, city,
@@ -9412,6 +9419,8 @@ def generate_bill(request):
     cust_address            = get_param(request,'cust_address', None)
     cust_locality           = get_param(request,'cust_locality', None)
     cust_city               = get_param(request,'cust_city', None)
+    cust_gst_number            = get_param(request, 'cust_gst_number', None)
+
     reg_number              = get_param(request,'reg_number', None)
     vehicle                 = get_param(request,'vehicle', None)
     service_items           = get_param(request,'service_items', None)
@@ -9690,6 +9699,7 @@ def generate_bill(request):
             booking.price_labour = str(total_labour)
             booking.price_part = str(total_part)
             booking.price_discount = str(total_discount)
+            booking.cust_gst_number = cust_gst_number
             obj_part = {"type": "Part",
                         "purchase_price": total_part_comm,
                         "purchase_price_pre_tax": total_part_pre_tax,
@@ -9830,6 +9840,8 @@ def generate_bill(request):
                ,cust_id                 = cust_id
                ,total_recieved_amount = pre_paid_amount
                ,payment_bill=payment_bill
+               ,cust_gst_number=cust_gst_number
+
                )
     tt.save()
     tt2 = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner, time_stamp= time_stamp, booking_data_id=data_id, status="Generated", bill_type=bill_type, invoice_number=invoice_number)[0]
@@ -9853,9 +9865,9 @@ def generate_bill(request):
         gst_type = "I"
     if pre_invoice:
         if booking:
-            html = mviews.bill_html(agent_name = full_agent_name,agent_address= agent_address,invoice_number="Pre-Invoice",booking_id = booking_id,created_date = date_today ,tin_number = agent_vat_no, cin_number=agent_cin,stax_number = agent_stax,cust_name= cust_name,cust_address= cust_address,cust_locality=cust_locality,cust_city=cust_city,cust_reg=reg_number,cust_veh=vehicle,service_items = service_items,vat_part_percent=vat_part_percent,vat_lube_percent=vat_lube_percent,vat_consumable_percent=vat_consumable_percent,stax_percent=service_tax_percent,vat_part=vat_part,vat_lube=vat_lube,vat_consumable=vat_consumable,stax_amount=service_tax,total=total_amount,recommendation=notes,logo=clickgarage_flag,amount_paid =pre_paid_amount,gst_number=agent_gst_no,gst_part_percent=gst_part_percent,gst_lube_percent=gst_lube_percent,gst_consumable_percent=gst_consumable_percent,gst_service_percent=gst_service_percent,gst_18=gst_18,gst_28=gst_28,cust_odo=cust_odo,gst_type =gst_type, state_of_supply = state_of_supply)
+            html = mviews.bill_html(agent_name = full_agent_name,agent_address= agent_address,invoice_number="Pre-Invoice",booking_id = booking_id,created_date = date_today ,tin_number = agent_vat_no, cin_number=agent_cin,stax_number = agent_stax,cust_name= cust_name,cust_address= cust_address,cust_locality=cust_locality,cust_city=cust_city,cust_reg=reg_number,cust_veh=vehicle,service_items = service_items,vat_part_percent=vat_part_percent,vat_lube_percent=vat_lube_percent,vat_consumable_percent=vat_consumable_percent,stax_percent=service_tax_percent,vat_part=vat_part,vat_lube=vat_lube,vat_consumable=vat_consumable,stax_amount=service_tax,total=total_amount,recommendation=notes,logo=clickgarage_flag,amount_paid =pre_paid_amount,gst_number=agent_gst_no,gst_part_percent=gst_part_percent,gst_lube_percent=gst_lube_percent,gst_consumable_percent=gst_consumable_percent,gst_service_percent=gst_service_percent,gst_18=gst_18,gst_28=gst_28,cust_odo=cust_odo,gst_type =gst_type, state_of_supply = state_of_supply,cust_gst=cust_gst_number)
         else:
-            html = mviews.bill_html(agent_name = full_agent_name,agent_address= agent_address,invoice_number="Pre-Invoice",booking_id = "",created_date = date_today ,tin_number = agent_vat_no, cin_number=agent_cin,stax_number = agent_stax,cust_name= cust_name,cust_address= cust_address,cust_locality=cust_locality,cust_city=cust_city,cust_reg=reg_number,cust_veh=vehicle,service_items = service_items,vat_part_percent=vat_part_percent,vat_lube_percent=vat_lube_percent,vat_consumable_percent=vat_consumable_percent,stax_percent=service_tax_percent,vat_part=vat_part,vat_lube=vat_lube,vat_consumable=vat_consumable,stax_amount=service_tax,total=total_amount,recommendation=notes,logo=clickgarage_flag,amount_paid ="0",gst_number=agent_gst_no,gst_part_percent=gst_part_percent,gst_lube_percent=gst_lube_percent,gst_consumable_percent=gst_consumable_percent,gst_service_percent=gst_service_percent,gst_18=gst_18,gst_28=gst_28,cust_odo=cust_odo,gst_type =gst_type, state_of_supply = state_of_supply)
+            html = mviews.bill_html(agent_name = full_agent_name,agent_address= agent_address,invoice_number="Pre-Invoice",booking_id = "",created_date = date_today ,tin_number = agent_vat_no, cin_number=agent_cin,stax_number = agent_stax,cust_name= cust_name,cust_address= cust_address,cust_locality=cust_locality,cust_city=cust_city,cust_reg=reg_number,cust_veh=vehicle,service_items = service_items,vat_part_percent=vat_part_percent,vat_lube_percent=vat_lube_percent,vat_consumable_percent=vat_consumable_percent,stax_percent=service_tax_percent,vat_part=vat_part,vat_lube=vat_lube,vat_consumable=vat_consumable,stax_amount=service_tax,total=total_amount,recommendation=notes,logo=clickgarage_flag,amount_paid ="0",gst_number=agent_gst_no,gst_part_percent=gst_part_percent,gst_lube_percent=gst_lube_percent,gst_consumable_percent=gst_consumable_percent,gst_service_percent=gst_service_percent,gst_18=gst_18,gst_28=gst_28,cust_odo=cust_odo,gst_type =gst_type, state_of_supply = state_of_supply,cust_gst=cust_gst_number)
     else:
         if booking:
             html = mviews.bill_html(agent_name=full_agent_name, agent_address=agent_address, invoice_number=invoice_number,
@@ -9866,7 +9878,7 @@ def generate_bill(request):
                                     vat_lube_percent=vat_lube_percent, vat_consumable_percent=vat_consumable_percent,
                                     stax_percent=service_tax_percent, vat_part=vat_part, vat_lube=vat_lube,
                                     vat_consumable=vat_consumable, stax_amount=service_tax, total=total_amount,
-                                    recommendation=notes,logo=clickgarage_flag,amount_paid =pre_paid_amount,gst_number=agent_gst_no,gst_part_percent=gst_part_percent,gst_lube_percent=gst_lube_percent,gst_consumable_percent=gst_consumable_percent,gst_service_percent=gst_service_percent,gst_18=gst_18,gst_28=gst_28,cust_odo=cust_odo,gst_type =gst_type, state_of_supply = state_of_supply)
+                                    recommendation=notes,logo=clickgarage_flag,amount_paid =pre_paid_amount,gst_number=agent_gst_no,gst_part_percent=gst_part_percent,gst_lube_percent=gst_lube_percent,gst_consumable_percent=gst_consumable_percent,gst_service_percent=gst_service_percent,gst_18=gst_18,gst_28=gst_28,cust_odo=cust_odo,gst_type =gst_type, state_of_supply = state_of_supply,cust_gst=cust_gst_number)
         else:
             html = mviews.bill_html(agent_name=full_agent_name, agent_address=agent_address,
                                     invoice_number=invoice_number,
@@ -9879,7 +9891,7 @@ def generate_bill(request):
                                     vat_lube_percent=vat_lube_percent, vat_consumable_percent=vat_consumable_percent,
                                     stax_percent=service_tax_percent, vat_part=vat_part, vat_lube=vat_lube,
                                     vat_consumable=vat_consumable, stax_amount=service_tax, total=total_amount,
-                                    recommendation=notes,logo=clickgarage_flag,amount_paid = "0",gst_number=agent_gst_no,gst_part_percent=gst_part_percent,gst_lube_percent=gst_lube_percent,gst_consumable_percent=gst_consumable_percent,gst_service_percent=gst_service_percent,gst_18=gst_18,gst_28=gst_28,cust_odo=cust_odo,gst_type =gst_type, state_of_supply = state_of_supply)
+                                    recommendation=notes,logo=clickgarage_flag,amount_paid = "0",gst_number=agent_gst_no,gst_part_percent=gst_part_percent,gst_lube_percent=gst_lube_percent,gst_consumable_percent=gst_consumable_percent,gst_service_percent=gst_service_percent,gst_18=gst_18,gst_28=gst_28,cust_odo=cust_odo,gst_type =gst_type, state_of_supply = state_of_supply,cust_gst=cust_gst_number)
             #     import subprocess
             #
     if socket.gethostname().startswith('ip-'):

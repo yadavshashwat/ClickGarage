@@ -10270,7 +10270,7 @@ def send_report(cust_name,booking_id,cust_email,filename):
 
 
 
-def bill_html(agent_name,agent_address,invoice_number,booking_id,created_date,tin_number,cin_number,stax_number,cust_name,cust_address,cust_locality,cust_city,cust_reg,cust_veh,service_items,vat_part_percent,vat_lube_percent,vat_consumable_percent,stax_percent,vat_part,vat_lube,vat_consumable,stax_amount,total,recommendation,logo,amount_paid,gst_number,gst_part_percent,gst_lube_percent,gst_consumable_percent,gst_service_percent,gst_18,gst_28,cust_odo,gst_type,state_of_supply):
+def bill_html(agent_name,agent_address,invoice_number,booking_id,created_date,tin_number,cin_number,stax_number,cust_name,cust_address,cust_locality,cust_city,cust_reg,cust_veh,service_items,vat_part_percent,vat_lube_percent,vat_consumable_percent,stax_percent,vat_part,vat_lube,vat_consumable,stax_amount,total,recommendation,logo,amount_paid,gst_number,gst_part_percent,gst_lube_percent,gst_consumable_percent,gst_service_percent,gst_18,gst_28,cust_odo,gst_type,state_of_supply,cust_gst):
 	html = """<!DOCTYPE html>
 <html id="bill-data" lang="en"><head>
 	<style>
@@ -10560,8 +10560,11 @@ page[size="A5"][layout="portrait"] {
 					<table class="customer-details">
 						<tr><td>&nbsp;&nbsp;Name </td><td><span id="cust-name">"""+cust_name+"""</span></td></tr>
 						<tr><td>&nbsp;&nbsp;Address </td><td><span id="cust-address">"""+cust_address+"""</span>, <span id="cust-locality">"""+cust_locality+"""</span>, <span id="cust-city">"""+cust_city+"""</span></td></tr>
-						<tr><td>&nbsp;&nbsp;State of Supply </td><td><span id="cust-city">"""+state_of_supply+"""</span></td></tr>
-					</table>
+						<tr><td>&nbsp;&nbsp;State of Supply </td><td><span id="cust-city">"""+state_of_supply+"""</span></td></tr>"""
+	if cust_gst != "" and cust_gst != None:
+		html += """<tr><td>&nbsp;&nbsp;Customer GST </td><td><span id="cust-gst">"""+cust_gst+"""</span></td></tr>"""
+
+	html +=				"""</table>
 				</td>
 				<td>
 					<b>Vehicle Details: </b><br>
