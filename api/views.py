@@ -4168,6 +4168,8 @@ def get_jobs_vehicle(request):
 def add_job_cart(request):
     service_ids = get_param(request,'service_names',None)
     cookieCartData = request.COOKIES.get('cgcart')
+
+    # additional_data = request.COOKIES.get('additional_service')
     obj = {}
     obj['status'] = False
     obj['result'] = {}
@@ -4186,6 +4188,8 @@ def add_job_cart(request):
         list_ids = (json.loads(service_ids))
     elif cookieCartData:
         list_ids = cookieCartData.split(',')
+
+
 
     jobObjs = Services.objects.filter(id__in=list_ids)
     for job in jobObjs:
@@ -10946,10 +10950,6 @@ def getfacebooklead(request):
                         "type":"Labour",
                         "quantity": "1"}]
 
-    # if order_list:
-    #     order_list = json.loads(order_list)
-    # else:
-    #     order_list = []
     job_summary_int = [{'category': "Servicing", 'job_name': "Servicing", 'price_total': "TBD", 'price_part': "TBD", 'price_labour': "TBD",'price_discount': "TBD", "doorstep": "0"}];
 
     make = "NA"
