@@ -1,4 +1,4 @@
-BMW,1 Series,NA,Diesel,BMW 1 Series (Diesel),NA,Luxury Hatchback,Car,NA,1
+﻿BMW,1 Series,NA,Diesel,BMW 1 Series (Diesel),NA,Luxury Hatchback,Car,NA,1
 Mini,3 Door,NA,Petrol,Mini 3 Door (Petrol),NA,Luxury Hatchback,Car,NA,1
 Mini,3 Door,NA,Diesel,Mini 3 Door (Diesel),NA,Luxury Hatchback,Car,NA,1
 Mini,5 Door,NA,Diesel,Mini 5 Door (Diesel),NA,Luxury Hatchback,Car,NA,1
@@ -114,7 +114,7 @@ Skoda,Superb 1.9,NA,Diesel,Skoda Superb 1.9 (Diesel),NA,Luxury Sedan,Car,,1
 Skoda,Superb 2.0,NA,Diesel,Skoda Superb 2.0 (Diesel),NA,Luxury Sedan,Car,,1
 Toyota,Camry,NA,Petrol,Toyota Camry (Petrol),NA,Luxury Sedan,Car,NA,1
 Maruti Suzuki,Eeco,NA,CNG,Maruti Suzuki Eeco (CNG),NA,SUV,Car,NA,1
-Honda,Accord,NA,Petrol,Honda Accord (Petrol),NA,Luxury Sedan,Car,NA,1
+Honda,Accord,NA,Petrol,Honda Accord (Petrol),NA,Sedan,Car,NA,1
 Ford,Endeavour,NA,Diesel,Ford Endeavour (Diesel),NA,SUV,Car,NA,1
 Daewoo,Nexia,NA,Petrol,Daewoo Nexia (Petrol),NA,Sedan,Car,NA,1
 Chevrolet,Cruze,NA,Diesel,Chevrolet Cruze (Diesel),NA,Sedan,Car,NA,1
@@ -225,15 +225,11 @@ Toyota,Corolla Altis,NA,Diesel,Toyota Corolla Altis (Diesel),NA,Sedan,Car,NA,1
 Honda,Mobilio,NA,Diesel,Honda Mobilio (Diesel),NA,SUV,Car,NA,1
 Honda,CRV,NA,Diesel,Honda CRV (Diesel),NA,SUV,Car,NA,1
 Honda,City,NA,Diesel,Honda City (Diesel),NA,Sedan,Car,NA,1
-Honda,City Type 2,NA,Diesel,Honda City Type 2 (Diesel),NA,Sedan,Car,,1
-Honda,City Type 3,NA,Diesel,Honda City Type 3 (Diesel),NA,Sedan,Car,,1
-Honda,City Type 4,NA,Diesel,Honda City Type 4 (Diesel),NA,Sedan,Car,,1
 Honda,Mobilio,NA,Petrol,Honda Mobilio (Petrol),NA,SUV,Car,NA,1
 Ford,Ikon,NA,Diesel,Ford Ikon (Diesel),NA,Sedan,Car,NA,1
 Ford,Ecosport,NA,Diesel,Ford Ecosport (Diesel),NA,Sedan,Car,NA,1
 Tata,Indigo eCS,NA,Diesel,Tata Indigo eCS (Diesel),NA,Sedan,Car,NA,1
 Hyundai,Creta,NA,Petrol,Hyundai Creta (Petrol),NA,SUV,Car,NA,1
-Honda,City Type 5,NA,Diesel,Honda City Type 5 (Diesel),NA,Sedan,Car,,1
 Hyundai,Verna,NA,Petrol,Hyundai Verna (Petrol),NA,Sedan,Car,NA,1
 Mahindra,Logan,NA,Diesel,Mahindra Logan (Diesel),NA,Sedan,Car,NA,1
 Toyota,Etios,NA,Diesel,Toyota Etios (Diesel),NA,Sedan,Car,NA,1
@@ -244,11 +240,7 @@ Maruti Suzuki,Kizashi,NA,Petrol,Maruti Suzuki Kizashi (Petrol),NA,Sedan,Car,NA,1
 Hyundai,Elite i10,NA,Diesel,Hyundai Elite i10 (Diesel),NA,Hatchback,Car,NA,1
 Volkswagen,Cross Polo,NA,Petrol,Volkswagen Cross Polo (Petrol),NA,Sedan,Car,NA,1
 Honda,City,NA,Petrol,Honda City (Petrol),NA,Sedan,Car,NA,1
-Honda,City Type 2,NA,Petrol,Honda City Type 2 (Petrol),NA,Sedan,Car,,1
-Honda,City Type 3,NA,Petrol,Honda City Type 3 (Petrol),NA,Sedan,Car,,1
-Honda,City Type 4,NA,Petrol,Honda City Type 4 (Petrol),NA,Sedan,Car,,1
 Toyota,Corolla,NA,Petrol,Toyota Corolla (Petrol),NA,Sedan,Car,NA,1
-Honda,City Type 5,NA,Petrol,Honda City Type 5 (Petrol),NA,Sedan,Car,,1
 Maruti Suzuki,Eeco,NA,Petrol,Maruti Suzuki Eeco (Petrol),NA,SUV,Car,NA,1
 Nissan,Sunny,NA,Diesel,Nissan Sunny (Diesel),NA,Sedan,Car,NA,1
 Maruti Suzuki,Versa,NA,Petrol,Maruti Suzuki Versa (Petrol),NA,SUV,Car,NA,1
