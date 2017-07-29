@@ -10929,6 +10929,10 @@ def getfacebooklead(request):
     # name = get_param(request, 'name', None)
     # number = get_param(request, 'number', None)
     # email = get_param(request, 'email', None)
+    if email == None:
+        email = 'na@na.com'
+    if car == None:
+        car = "NA NA NA"
     reg_number = "--"
     address = "--"
     locality = "--"
