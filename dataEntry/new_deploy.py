@@ -1,8 +1,16 @@
 from dataEntry import runentry
 from api.models import *
 from activity.models import Transactions, CGUser, CGUserNew
+import re
 
 import datetime
+def cleanstring(query):
+    query = query.strip()
+    query = re.sub('\s{2,}', ' ', query)
+    query = re.sub(r'^"|"$', '', query)
+    query = query.title()
+    return query
+
 
 # Taxes.objects.all().delete()
 # runentry.loadTaxes('States_Taxes.csv')
@@ -168,9 +176,170 @@ import datetime
 #             None
 #         user.save()
 # Users = CGUser
+Partsdatabase.objects.all().delete()
 
 bookings = Bookings.objects.filter(booking_flag = False)
-for booking in bookings:
-    if booking.source == "Repeat Customer":
-        booking.reminder_flag = True
-    booking.save()
+partsdata = ServicePart.objects.all()
+labourdata = ServiceLabour.objects.all()
+
+
+
+i =0
+for part in bookings:
+    make = part.cust_make
+    model = part.cust_model
+    fuel_type = part.cust_fuel_varient
+    partslist = part.service_items
+    for prt in partslist:
+        i = i + 1
+        name = prt['name']
+        quantity = prt['quantity']
+        unit_price = prt['unit_price']
+        price = prt['price']
+        type = prt['type']
+        # print name
+        name = cleanstring(name)
+        # name = name.title
+        print ("Booking " + str(i) + ' ' + make + ' ' + model + ' ' + fuel_type + ' ' + name)
+        findPart = Partsdatabase.objects.filter(make=make, model=model, fuel_type=fuel_type,
+                                                name=name)
+        if len(findPart):
+            findPart = findPart[0]
+            findPart.clickgarage_flag = True
+            findPart.agent_id = "ClickGarage"
+            findPart.make = make
+            findPart.model = model
+            findPart.fuel_type = fuel_type
+            findPart.name = name
+            findPart.type = type
+            findPart.quantity = quantity
+            findPart.unit_price = unit_price
+            findPart.price = price
+            findPart.save()
+        else:
+            pa = Partsdatabase(
+                clickgarage_flag=True
+                , agent_id="ClickGarage"
+                , make=make
+                , model=model
+                , fuel_type=fuel_type
+                , name=name
+                , type=type
+                , quantity=quantity
+                , unit_price=unit_price
+                , price=price)
+            pa.save()
+
+
+
+
+for part in partsdata:
+    make 				= part.make
+    model 				= part.model
+    fuel_type 			= part.fuel_type
+    partslist           = part.default_components
+    for prt in partslist:
+        i = i + 1
+
+        name = prt['name']
+        quantity = prt['quantity']
+        unit_price = prt['unit_price']
+        price = prt['price']
+        type = prt['type']
+        print ("Part " + str(i) + ' ' + make + ' ' + model + ' ' + fuel_type + ' ' + name)
+        name = cleanstring(name)
+
+        # print name
+        findPart =  Partsdatabase.objects.filter(make=make,model=model,fuel_type = fuel_type,name = name)
+        if len(findPart):
+            findPart = findPart[0]
+            findPart.clickgarage_flag = True
+            findPart.agent_id = "ClickGarage"
+            findPart.make = make
+            findPart.model = model
+            findPart.fuel_type = fuel_type
+            findPart.name = name
+            findPart.type = type
+            findPart.quantity = quantity
+            findPart.unit_price = unit_price
+            findPart.price = price
+            findPart.save()
+        else:
+            pa = Partsdatabase(
+                clickgarage_flag=True
+                , agent_id="ClickGarage"
+                , make=make
+                , model=model
+                , fuel_type=fuel_type
+                , name=name
+                , type=type
+                , quantity=quantity
+                , unit_price=unit_price
+                , price=price)
+            pa.save()
+
+AllVehicle = Vehicle.objects.filter(car_bike = "Car")
+for vehicle in AllVehicle:
+    make = vehicle.make
+    model = vehicle.model
+    fuel_type = vehicle.fuel_type
+    type = vehicle.type
+    car_bike = vehicle.car_bike
+    AllService = ServiceLabour.objects.filter(type=type, car_bike=car_bike)
+    for prt in AllService:
+        i = i + 1
+        if prt.job_sub_cat == "NA":
+            name = prt.job_name
+        else:
+            name = prt.job_name + ' ' + prt.job_sub_cat
+
+        name = cleanstring(name)
+        quantity = "1"
+        unit_price = prt.total_price
+        price = (float(prt.total_price) - float(prt.discount)) *1.18
+        type = "Labour"
+        print ("Labour " + str(i) + ' ' + make + ' ' + model + ' ' + fuel_type + ' ' + name)
+
+        findPart = Partsdatabase.objects.filter(make=make, model=model, fuel_type=fuel_type, name=name)
+        if len(findPart):
+            findPart = findPart[0]
+            findPart.clickgarage_flag = True
+            findPart.agent_id = "ClickGarage"
+            findPart.make = make
+            findPart.model = model
+            findPart.fuel_type = fuel_type
+            findPart.name = name
+            findPart.type = type
+            findPart.quantity = quantity
+            findPart.unit_price = unit_price
+            findPart.price = price
+            findPart.save()
+        else:
+            pa = Partsdatabase(
+                clickgarage_flag=True
+                , agent_id="ClickGarage"
+                , make=make
+                , model=model
+                , fuel_type=fuel_type
+                , name=name
+                , type=type
+                , quantity=quantity
+                , unit_price=unit_price
+                , price=price)
+            pa.save()
+
+
+
+
+
+
+# for booking in bookings:
+#     if booking.source == "Repeat Customer":
+#         booking.reminder_flag = True
+#     booking.save()
+
+
+
+
+
+

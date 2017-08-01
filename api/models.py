@@ -708,6 +708,22 @@ class Bills(models.Model):
     total_recieved_amount       = models.CharField(max_length=200,null=True, default = "0")
 
 
+class Partsdatabase(models.Model):
+    clickgarage_flag    = models.CharField(max_length=200)
+    agent_id            = models.CharField(max_length=200)
+    make 				= models.CharField(max_length=50)
+    model 				= models.CharField(max_length=50)
+    year 				= models.CharField(max_length=50)
+    fuel_type 			= models.CharField(max_length=50)
+    name                = models.CharField(max_length=200)
+    type 				= models.CharField(max_length=200)
+    quantity            = models.CharField(max_length=200)
+    unit_price          = models.CharField(max_length=200)
+    price               = models.CharField(max_length=200)
+
+
+
+
 class Feedback(models.Model):
     clickgarage_flag            = models.BooleanField()
     booking_data_id             = models.CharField(max_length=200)

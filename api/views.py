@@ -11089,3 +11089,36 @@ def generate_send_report(request):
     obj['counter'] = 1
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
+
+def get_parts_vehicle(request):
+    make_id = get_param(request,'make_id',None)
+    model_id = get_param(request,'model_id',None)
+    fuel_id = get_param(request,'fuel_id',None)
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+
+    jobObjs = Partsdatabase.objects.filter(make=make_id, model=model_id, fuel_type=fuel_id)
+    # jobObjs = Partsdatabase.objects.all()
+
+    for job in jobObjs:
+        obj['result'].append({
+
+            'clickgarage_flag': job.clickgarage_flag
+            , 'agent_id': job.agent_id
+            , 'make': job.make
+            , 'model': job.model
+            , 'year': job.year
+            , 'fuel_type': job.fuel_type
+            , 'name': job.name
+            , 'type:': job.type
+            , 'quantity': job.quantity
+            , 'unit_price': job.unit_price
+            , 'price': job.price
+
+        })
+
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
