@@ -21,8 +21,14 @@ if os.getcwd()=='/home/ubuntu/beta/suigen':
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # PROJECT_PATH = os.path.normpath(os.path.join(BASE_DIR, '..', '..'))
 PROJECT_PATH = os.path.normpath(os.path.join(BASE_DIR, '..'))
-WEBSITE_PATH = os.path.join(PROJECT_PATH, 'website')
+# print PROJECT_PATH
+print BASE_DIR
+if PRODUCTION:
+    WEBSITE_PATH = os.path.join(PROJECT_PATH, 'website')
+else:
+    WEBSITE_PATH = os.path.join(BASE_DIR,'../suigenwebsite')
 
+# print WEBSITE_PATH
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
@@ -58,7 +64,7 @@ INSTALLED_APPS = (
     'website',
     'mailing'
     ,'ajaxuploader',
-    'djcelery',
+    # 'djcelery',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -131,8 +137,8 @@ TEMPLATE_DIRS = (
 )
 
 print STATIC_URL
-
-WSGI_APPLICATION = 'clickgarage.wsgi.application'
+if PRODUCTION:
+    WSGI_APPLICATION = 'clickgarage.wsgi.application'
 
 
 # Database
