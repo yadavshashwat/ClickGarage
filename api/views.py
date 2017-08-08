@@ -11094,12 +11094,15 @@ def get_parts_vehicle(request):
     make_id = get_param(request,'make_id',None)
     model_id = get_param(request,'model_id',None)
     fuel_id = get_param(request,'fuel_id',None)
+    part_name = get_param(request,'part_name',None)
     obj = {}
     obj['status'] = False
     obj['result'] = []
 
     jobObjs = Partsdatabase.objects.filter(make=make_id, model=model_id, fuel_type=fuel_id)
     # jobObjs = Partsdatabase.objects.all()
+    if part_name != None and part_name != "":
+        jobObjs = jobObjs.filter(name__icontains=part_name)
 
     for job in jobObjs:
         obj['result'].append({
