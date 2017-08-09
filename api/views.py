@@ -7071,7 +7071,7 @@ def view_all_bookings(request):
                 else:
                     filename = '/home/ubuntu/testing/suigen/csvfiles/allbookings_commission.csv'
             else:
-                filename = '/home/shashwat/Desktop/codebase/ClickGarage/csvfiles/allbookings_commission.csv'
+                filename = '/Users/shashwatyadav/Desktop/Coding/ClickGarage/csvfiles/allbookings_commission.csv'
 
             file = open(filename, 'w')
             part_price = 0
@@ -7205,7 +7205,7 @@ def view_all_bookings(request):
                 else:
                     filename = '/home/ubuntu/testing/suigen/csvfiles/allbookings.csv'
             else:
-                filename = '/home/shashwat/Desktop/codebase/ClickGarage/csvfiles/allbookings.csv'
+                filename = '/Users/shashwatyadav/Desktop/Coding/ClickGarage/csvfiles/allbookings.csv'
 
             file = open(filename, 'w')
             comment = ''
@@ -9904,7 +9904,7 @@ def generate_bill(request):
         else:
             cmd = pdfkit.from_string(html,'/home/ubuntu/testing/website/Bills/'+bill_type+'-'+str(invoice_number)+'_'+tt2.id+'.pdf')
     else:
-        cmd = pdfkit.from_string(html, '/home/shashwat/Desktop/codebase/website/Bills/' + bill_type + '-' + str(invoice_number) + '_' + tt2.id + '.pdf')
+        cmd = pdfkit.from_string(html, '/Users/shashwatyadav/Desktop/Coding/website/Bills/' + bill_type + '-' + str(invoice_number) + '_' + tt2.id + '.pdf')
 
 
     if socket.gethostname().startswith('ip-'):
@@ -9913,7 +9913,7 @@ def generate_bill(request):
         else:
             obj['filename'] = '/home/ubuntu/testing/website/Bills/'+bill_type+'-'+str(invoice_number)+'_'+tt2.id+'.pdf'
     else:
-        obj['filename'] = '/home/shashwat/Desktop/codebase/website/Bills/'+bill_type+'-'+str(invoice_number)+'_'+tt2.id+'.pdf'
+        obj['filename'] = '/Users/shashwatyadav/Desktop/Coding/website/Bills/'+bill_type+'-'+str(invoice_number)+'_'+tt2.id+'.pdf'
         #
         #
     tt2.file_name = obj['filename']
@@ -10456,7 +10456,7 @@ def view_all_bills(request):
                 else:
                     filename = '/home/ubuntu/testing/suigen/csvfiles/allbills.csv'
             else:
-                filename = '/home/shashwat/Desktop/codebase/ClickGarage/csvfiles/allbills.csv'
+                filename = '/Users/shashwatyadav/Desktop/Coding/ClickGarage/csvfiles/allbills.csv'
 
             file = open(filename, 'w')
 
@@ -11037,7 +11037,7 @@ def generate_report(booking_id):
         else:
             cmd = pdfkit.from_string(report_html,'/home/ubuntu/testing/website/Reports/Report_'+booking.id+'.pdf')
     else:
-        cmd = pdfkit.from_string(report_html, '/home/shashwat/Desktop/codebase/website/Reports/Report_'+booking.id+'.pdf')
+        cmd = pdfkit.from_string(report_html, '/Users/shashwatyadav/Desktop/Coding/website/Reports/Report_'+booking.id+'.pdf')
 
     if socket.gethostname().startswith('ip-'):
         if PRODUCTION:
@@ -11045,7 +11045,7 @@ def generate_report(booking_id):
         else:
             obj['filename'] = '/home/ubuntu/beta/website/Reports/Report_'+booking.id+'.pdf'
     else:
-        obj['filename'] = '/home/shashwat/Desktop/codebase/website/Reports/Report_'+booking.id+'.pdf'
+        obj['filename'] = '/Users/shashwatyadav/Desktop/Coding/website/Reports/Report_'+booking.id+'.pdf'
 
 
     booking.report_generation_flag = True
