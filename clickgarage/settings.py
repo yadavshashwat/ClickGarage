@@ -100,8 +100,8 @@ MEDIA_ROOT = WEBSITE_PATH + 'static/'
 # def TEMPLATES_ROOT(appName):
 #     return os.path.join(BASE_DIR, appName, 'templates')
 
-print os.path.join(BASE_DIR, 'website','templates')
-print os.path.join(WEBSITE_PATH,'templates')
+# print os.path.join(BASE_DIR, 'website','templates')
+# print os.path.join(WEBSITE_PATH,'templates')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -199,7 +199,7 @@ else:
 AUTH_USER_MODEL = 'activity.CGUserNew'
 
 if PRODUCTION:
-    AUTH_USER_MODEL = 'activity.CGUser'
+    AUTH_USER_MODEL = 'activity.CGUserNew'
 
 AUTHENTICATION_BACKENDS = (
    'social.backends.facebook.FacebookOAuth2',
