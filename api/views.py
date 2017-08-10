@@ -6860,7 +6860,7 @@ def view_all_bookings(request):
                         service_tax = taxes['result'][0]['service_tax']
                     else:
                         service_tax = 0
-                        
+
                     if agent_gst:
                         gst_part = taxes['result'][0]['gst_parts']
                         gst_consumable = taxes['result'][0]['gst_consumables']
@@ -6958,13 +6958,13 @@ def view_all_bookings(request):
             bill_vat_lube_percent = bill.vat_lube_percent
             bill_vat_consumable_percent = bill.vat_consumable_percent
             bill_service_tax_percent = bill.service_tax_percent
-            
+
             bill_gst_part_percent = bill.gst_part_percent
             bill_gst_lube_percent = bill.gst_lube_percent
             bill_gst_consumable_percent = bill.gst_consumable_percent
             bill_gst_service_percent = bill.gst_service_percent
 
-            
+
             bill_agent_name = bill.agent_name
             bill_agent_address = bill.agent_address
             bill_file_name = bill.file_name
@@ -9446,7 +9446,7 @@ def generate_bill(request):
     lube_amount = urllib.unquote(lube_amount)
     consumable_amount = urllib.unquote(consumable_amount)
     labour_amount = urllib.unquote(labour_amount)
-    
+
     vat_part = urllib.unquote(vat_part)
     vat_lube = urllib.unquote(vat_lube)
     vat_consumable = urllib.unquote(vat_consumable)
@@ -9464,7 +9464,7 @@ def generate_bill(request):
     agent_cin = urllib.unquote(agent_cin)
     agent_stax = urllib.unquote(agent_stax)
     state = urllib.unquote(state)
-    
+
     vat_part_percent = urllib.unquote(vat_part_percent)
     vat_lube_percent = urllib.unquote(vat_lube_percent)
     vat_consumable_percent = urllib.unquote(vat_consumable_percent)
@@ -9612,24 +9612,67 @@ def generate_bill(request):
             for item in service_items:
                 obj2 = {}
                 # print item
-                if item['type'] == "Part":
+
+                if booking:
+                    booking_make = booking.cust_make
+                    booking_model = booking.cust_model
+                    booking_fuel = booking.cust_fuel_varient
+                    part_item_name = cleanstring(item['name']).title()
+
+                    findPart = Partsdatabase.objects.filter(make=booking_make, model=booking_model, fuel_type=booking_fuel,name=item['name'])
+                    if len(findPart):
+                        findPart = findPart[0]
+                        findPart.clickgarage_flag = True
+                        findPart.agent_id = "ClickGarage"
+                        findPart.make = booking_make
+                        findPart.model = booking_model
+                        findPart.fuel_type = booking_fuel
+                        findPart.name = item['name']
+                        findPart.type = item['type']
+                        findPart.quantity = item['quantity']
+                        findPart.unit_price = item['unit_price']
+                        findPart.price = item['price']
+                        findPart.save()
+                    else:
+                        pa = Partsdatabase(
+                            clickgarage_flag=True
+                            , agent_id="ClickGarage"
+                            , make=booking_make
+                            , model=booking_model
+                            , fuel_type=booking_fuel
+                            , name=item['name']
+                            , type=item['type']
+                            , quantity=item['quantity']
+                            , unit_price=item['unit_price']
+                            , price=item['price'])
+                        pa.save()
+
+
+                if item['type'] == "Part" or item['type'] == "Part28":
                     total_price = total_price + float(item['price'])
                     total_part = total_part + float(item['price'])
                     total_puchase_price = total_puchase_price + float(item['purchase_price'])
+                elif item['type'] == "Part18":
+                    total_price = total_price + float(item['price'])
+                    total_part = total_part + float(item['price'])
+                    total_puchase_price = total_puchase_price + float(item['purchase_price'])
+
                 elif item['type'] == "Consumable":
                     total_price = total_price + float(item['price'])
                     total_part = total_part + float(item['price'])
                     total_puchase_price = total_puchase_price + float(item['purchase_price'])
-                elif item['type'] == "Lube":
+                elif item['type'] == "Lube" or item['type'] == "Lube18":
                     total_price = total_price + float(item['price'])
                     total_part = total_part + float(item['price'])
                     total_puchase_price = total_puchase_price + float(item['purchase_price'])
-
+                elif item['type'] == "Lube28":
+                    total_price = total_price + float(item['price'])
+                    total_part = total_part + float(item['price'])
+                    total_puchase_price = total_puchase_price + float(item['purchase_price'])
                 elif item['type'] == "Labour":
                     total_price = total_price + float(item['price'])
                     total_labour = total_labour + float(item['price'])
                     total_puchase_price = total_puchase_price + float(item['purchase_price'])
-
                 elif item['type'] == "Discount":
                     total_price = total_price - float(item['price'])
                     total_discount = total_discount + float(item['price'])
@@ -9642,6 +9685,7 @@ def generate_bill(request):
                     total_part_comm = total_part_comm + float(item['purchase_price'])
                     total_part_pre_tax = total_part_pre_tax + float(item['purchase_price_pretax'])
                     total_commission = total_commission + (float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
+
                 elif item['settlement_cat'] == "Labour":
                     applicable_commission_share = float(agent_labour_share)
                     clickgarage_labour_share = clickgarage_labour_share + (float(item['purchase_price_pretax']) * (applicable_commission_share) / 100)
@@ -9904,7 +9948,7 @@ def generate_bill(request):
         else:
             cmd = pdfkit.from_string(html,'/home/ubuntu/testing/website/Bills/'+bill_type+'-'+str(invoice_number)+'_'+tt2.id+'.pdf')
     else:
-        cmd = pdfkit.from_string(html, '/Users/shashwatyadav/Desktop/Coding/website/Bills/' + bill_type + '-' + str(invoice_number) + '_' + tt2.id + '.pdf')
+        cmd = pdfkit.from_string(html, '/Users/shashwatyadav/Desktop/Coding/suigenwebsite/Bills/' + bill_type + '-' + str(invoice_number) + '_' + tt2.id + '.pdf')
 
 
     if socket.gethostname().startswith('ip-'):
@@ -9913,7 +9957,7 @@ def generate_bill(request):
         else:
             obj['filename'] = '/home/ubuntu/testing/website/Bills/'+bill_type+'-'+str(invoice_number)+'_'+tt2.id+'.pdf'
     else:
-        obj['filename'] = '/Users/shashwatyadav/Desktop/Coding/website/Bills/'+bill_type+'-'+str(invoice_number)+'_'+tt2.id+'.pdf'
+        obj['filename'] = '/Users/shashwatyadav/Desktop/Coding/suigenwebsite/Bills/'+bill_type+'-'+str(invoice_number)+'_'+tt2.id+'.pdf'
         #
         #
     tt2.file_name = obj['filename']
@@ -11037,7 +11081,7 @@ def generate_report(booking_id):
         else:
             cmd = pdfkit.from_string(report_html,'/home/ubuntu/testing/website/Reports/Report_'+booking.id+'.pdf')
     else:
-        cmd = pdfkit.from_string(report_html, '/Users/shashwatyadav/Desktop/Coding/website/Reports/Report_'+booking.id+'.pdf')
+        cmd = pdfkit.from_string(report_html, '/Users/shashwatyadav/Desktop/Coding/suigenwebsite/Reports/Report_'+booking.id+'.pdf')
 
     if socket.gethostname().startswith('ip-'):
         if PRODUCTION:
@@ -11045,7 +11089,7 @@ def generate_report(booking_id):
         else:
             obj['filename'] = '/home/ubuntu/beta/website/Reports/Report_'+booking.id+'.pdf'
     else:
-        obj['filename'] = '/Users/shashwatyadav/Desktop/Coding/website/Reports/Report_'+booking.id+'.pdf'
+        obj['filename'] = '/Users/shashwatyadav/Desktop/Coding/suigenwebsite/Reports/Report_'+booking.id+'.pdf'
 
 
     booking.report_generation_flag = True

@@ -176,6 +176,12 @@ def cleanstring(query):
 #             None
 #         user.save()
 # Users = CGUser
+
+
+
+
+# To Uncomment
+
 Partsdatabase.objects.all().delete()
 
 bookings = Bookings.objects.filter(booking_flag = False)
@@ -199,7 +205,7 @@ for part in bookings:
         type = prt['type']
         # print name
         name = cleanstring(name)
-        # name = name.title
+        name = name.title()
         print ("Booking " + str(i) + ' ' + make + ' ' + model + ' ' + fuel_type + ' ' + name)
         findPart = Partsdatabase.objects.filter(make=make, model=model, fuel_type=fuel_type,
                                                 name=name)
@@ -327,19 +333,4 @@ for vehicle in AllVehicle:
                 , unit_price=unit_price
                 , price=price)
             pa.save()
-
-
-
-
-
-
-# for booking in bookings:
-#     if booking.source == "Repeat Customer":
-#         booking.reminder_flag = True
-#     booking.save()
-
-
-
-
-
 
