@@ -11114,7 +11114,7 @@ def get_parts_vehicle(request):
             , 'year': job.year
             , 'fuel_type': job.fuel_type
             , 'name': job.name
-            , 'type:': job.type
+            , 'type': job.type
             , 'quantity': job.quantity
             , 'unit_price': job.unit_price
             , 'price': job.price
