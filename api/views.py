@@ -9464,6 +9464,7 @@ def generate_bill(request):
     agent_cin = urllib.unquote(agent_cin)
     agent_stax = urllib.unquote(agent_stax)
     state = urllib.unquote(state)
+    state_of_supply = urllib.unquote(state_of_supply)
 
     vat_part_percent = urllib.unquote(vat_part_percent)
     vat_lube_percent = urllib.unquote(vat_lube_percent)
@@ -11165,6 +11166,86 @@ def get_parts_vehicle(request):
 
         })
 
+    obj['status'] = True
+    obj['counter'] = 1
+    obj['msg'] = "Success"
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+def add_delete_campaign(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = []
+    campaign_name       = get_param(request, 'c_name', None)
+    datetime_created    = time.time()
+    campaign_desc       = get_param(request, 'c_desc', None)
+    add_del       = get_param(request, 'add_del', None)
+
+    if request.user.is_admin or request.user.is_staff:
+        clickgarage_flag = True
+        id_name = "ClickGarage"
+    elif request.user.is_agent:
+        id_name = request.user.id
+        clickgarage_flag = False
+
+    findCamp = Campaign.objects.filter(campaign_name=campaign_name,clickgarage_flag=clickgarage_flag,agent_id=id_name)
+
+    if add_del == "add":
+        if len(findCamp):
+            findCamp = findCamp[0]
+            findCamp.start_date = datetime_created
+            findCamp.campaign_name = campaign_name
+            findCamp.campaign_desc = campaign_desc
+            findCamp.agent_id = id_name
+            findCamp.clickgarage_flag = clickgarage_flag
+            findCamp.save()
+        else:
+            campaign_push = Campaign(
+                start_date= datetime_created,
+                campaign_name=campaign_name,
+                campaign_desc=campaign_desc,
+                clickgarage_flag = clickgarage_flag,
+                agent_id = id_name)
+            campaign_push.save()
+    elif add_del == "del":
+        findCamp.delete()
+
+    obj['status'] = True
+    obj['result'] = "Success"
+    obj['counter'] = 1
+    return HttpResponse(json.dumps(obj), content_type='application/json')
+
+
+
+def view_all_campaigns(request):
+    obj = {}
+    obj['status'] = False
+    obj['result'] = {}
+    obj['result']['detail'] = []
+
+    camp_list = []
+    obj['result']['list'] = camp_list
+
+    if request.user.is_admin or request.user.is_staff:
+        jobObjs = Campaign.objects.filter(clickgarage_flag = True)
+    elif request.user.is_agent:
+        jobObjs = Campaign.objects.filter(clickgarage_flag = False, agent_id = request.user.id)
+
+    for job in jobObjs:
+        obj['result']['detail'].append({
+            'clickgarage_flag': job.clickgarage_flag
+            , 'agent_id': job.agent_id
+            , 'timestamp': job.start_date
+            , 'campaign_name': job.campaign_name
+            , 'campaign_desc': job.campaign_desc
+            ,'time_generated' : time.strftime('%I:%M %p',time.localtime(float(job.start_date)+19800))
+            ,'date_generated' : time.strftime('%d-%m-%Y',time.localtime(float(job.start_date)+19800))
+
+
+        })
+        camp_list.append(job.campaign_name)
+
+    obj['result']['list'] = camp_list
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"

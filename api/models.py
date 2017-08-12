@@ -789,4 +789,11 @@ class Taxes(models.Model):
 
 
 
+class Campaign(models.Model):
+    campaign_name   = models.CharField(max_length=200)
+    campaign_desc   = models.CharField(max_length=500)
+    start_date      = models.CharField(max_length=200)
+    clickgarage_flag = models.BooleanField()
+    agent_id = models.CharField(max_length=200)
+
 
