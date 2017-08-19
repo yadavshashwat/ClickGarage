@@ -5250,19 +5250,31 @@ def connect_customer_to_agent_exo(agent_no, customer_no, timelimit=None, timeout
                              'CallType': calltype
                          })
 
+
+# import requests
+def add_customer_whitelist(number):
+    data = {
+        'VirtualNumber': callerid,
+        'Number': number,
+        'Language': 'en'
+    }
+
+    requests.post('https://'+sid+':'+token+'@api.exotel.com/v1/Accounts/'+sid+'/CustomerWhitelist/', data=data)
+
+import time
 def call_customer(request):
     obj = {}
     obj['status'] = False
     obj['result'] = []
     agent_no = request.user.contact_no
     cust_no  = get_param(request, 'cust_no', None)
+    add_customer_whitelist(cust_no)
+    time.sleep(2)
     exocall = connect_customer_to_agent_exo(agent_no= agent_no,customer_no= cust_no)
     print agent_no
     print cust_no
     print exocall.status_code
     pprint(exocall.json())
-    # obj['result']['exotel'] = r.json()
-    # obj['result']['status'] = exocall.status_code
     obj['status'] = True
     response = HttpResponse(json.dumps(obj), content_type='application/json')
     return response
