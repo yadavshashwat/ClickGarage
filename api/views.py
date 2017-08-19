@@ -5234,8 +5234,8 @@ def logout_view(request):
 sid = "clickgarage1"
 token = "bca1fb4bbe89339878eb1e08aee88f30aed8a39f"
 callerid = "01139585428"
+calltype='trans'
 # calltype='trans'
-calltype='promo'
 
 from pprint import pprint
 def connect_customer_to_agent_exo(agent_no, customer_no, timelimit=None, timeout=None):
@@ -7623,6 +7623,14 @@ def fetch_all_users(request):
             , 'agent_labour_share': trans.agent_labour_share
             , 'agent_vas_share': trans.agent_vas_share
             , 'agent_denting_share': trans.agent_denting_share
+            , 'birth_date': trans.birth_date
+            , 'anniversary': trans.anniversary
+            , 'subscribed': trans.subscribed
+            , 'num_bookings': trans.num_bookings
+            , 'total_amount': trans.total_amount
+            , 'booking_id_list': trans.booking_id_list
+            , 'last_booking_date': str(trans.last_booking_date)
+
             # , 'user_state':trans.user_state
         })
     obj['status'] = True
@@ -9657,7 +9665,6 @@ def generate_bill(request):
                     total_price = total_price + float(item['price'])
                     total_part = total_part + float(item['price'])
                     total_puchase_price = total_puchase_price + float(item['purchase_price'])
-
                 elif item['type'] == "Consumable":
                     total_price = total_price + float(item['price'])
                     total_part = total_part + float(item['price'])
@@ -10277,48 +10284,59 @@ def view_all_subscription(request):
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
-def send_sms_campaign(request):
+def send_sms_campaign(message,clickgarage,agent):
     obj = {}
     obj['status'] = False
     obj['result'] = {}
-    message = get_param(request, 'message', None)
-    if request.user.is_staff or request.user.is_admin:
-        tranObjs = CGUserNew.objects.all(clickgarage_flag = True)
+    # message = get_param(request, 'message', None)
 
-    if request.user.is_agent:
-        tranObjs = CGUserNew.objects.filter(owner_user=request.user.id)
+
+    if clickgarage:
+        tranObjs = CGUserNew.objects.filter(clickgarage_flag = True,subscribed=True)
+    else:
+        tranObjs = CGUserNew.objects.filter(owner_user=agent,subscribed=True)
+        agent_filter = CGUserNew.objects.filter(id=agent)[0]
     numbers = []
     numberString = ""
-    for tran in tranObjs:
-        numbers.append(tran.contact_no)
 
-    numberString = ",".join(numbers)
-    user1 = request.user
-    sms_credits = user1.agent_sms_credits
-    if request.user.is_staff or request.user.is_admin:
-        mviews.send_promo_campaign_agent(numberString,message)
-    if request.user.is_agent:
+        # numbers.append(tran.contact_no)
+
+    # numberString = ",".join(numbers)
+    try:
+        sms_credits = agent_filter.agent_sms_credits
+    except:
+        None
+    if clickgarage:
+        for tran in tranObjs:
+            message2 = message.replace("$name$",tran.first_name)
+            mviews.send_promo_campaign_cg(tran.contact_no,message2)
+        success = True
+    else:
         message_length = len(message)
         credits_per_message = math.ceil(float(message_length)/160)
-        num_sms = len(numbers) * credits_per_message
-
-        if num_sms <= request.user.agent_sms_credits:
-            mviews.send_promo_campaign_cg(numberString,message)
-            obj['result']['msg'] = "SMS's Sent! Campaign Success"
+        num_sms = len(tranObjs) * credits_per_message
+        if num_sms <= agent.agent_sms_credits:
+            for tran in tranObjs:
+                message2 = message.replace("$name$", tran.first_name)
+                mviews.send_promo_campaign_agent(tran.contact_no, message2)
+            result_message = "SMS's Sent! Campaign Success"
             num_sms_left = sms_credits - num_sms
 
-            request.user.agent_sms_credits = num_sms_left
-
-            request.user.save()
+            agent_filter.agent_sms_credits = num_sms_left
+            agent_filter.save()
+            success = True
         else:
-            obj['result']['msg'] = "Insufficient Credits! Campaign Failed"
-
-    print num_sms
-    print num_sms_left
+            result_message = "Insufficient Credits! Campaign Failed"
+            success = False
+    # print num_sms
+    # print num_sms_left
     obj['status'] = True
     obj['counter'] = 1
     obj['msg'] = "Success"
-    return HttpResponse(json.dumps(obj), content_type='application/json')
+    if success:
+        return len(tranObjs)
+    else:
+        return 0
 
 def download_pdf(request):
     obj = {}
@@ -11180,6 +11198,16 @@ def add_delete_campaign(request):
     datetime_created    = time.time()
     campaign_desc       = get_param(request, 'c_desc', None)
     add_del       = get_param(request, 'add_del', None)
+    sms_camp       = get_param(request, 'sms_camp', None)
+    auto_flag       = get_param(request, 'auto_flag', "False")
+    campaign_freq       = get_param(request, 'campaign_freq', "1")
+    campaign_type       = get_param(request, 'campaign_type', None)
+    campaign_target       = get_param(request, 'campaign_target', None)
+    if auto_flag == "true":
+        auto = True
+    else:
+        auto = False
+
 
     if request.user.is_admin or request.user.is_staff:
         clickgarage_flag = True
@@ -11190,14 +11218,18 @@ def add_delete_campaign(request):
 
     findCamp = Campaign.objects.filter(campaign_name=campaign_name,clickgarage_flag=clickgarage_flag,agent_id=id_name)
 
-    if add_del == "add":
+    if add_del == "add" or add_del == "run":
         if len(findCamp):
             findCamp = findCamp[0]
             findCamp.start_date = datetime_created
             findCamp.campaign_name = campaign_name
             findCamp.campaign_desc = campaign_desc
             findCamp.agent_id = id_name
-            findCamp.clickgarage_flag = clickgarage_flag
+            findCamp.sms_draft = sms_camp
+            findCamp.auto_flag = auto
+            findCamp.frequency = campaign_freq
+            findCamp.target = campaign_target
+            findCamp.type = campaign_type
             findCamp.save()
         else:
             campaign_push = Campaign(
@@ -11205,10 +11237,28 @@ def add_delete_campaign(request):
                 campaign_name=campaign_name,
                 campaign_desc=campaign_desc,
                 clickgarage_flag = clickgarage_flag,
-                agent_id = id_name)
+                agent_id = id_name,
+                sms_draft = sms_camp,
+                auto_flag = auto,
+                frequency = campaign_freq,
+                target = campaign_target,
+                type = campaign_type
+            )
             campaign_push.save()
+        if not auto and add_del == "run":
+            camp_result = send_sms_campaign(message=sms_camp,clickgarage=clickgarage_flag,agent=id_name)
+            obj['run'] = camp_result
+            if findCamp:
+                sms_sent = float(findCamp.sms_sent)
+                sms_sent = sms_sent + camp_result
+                findCamp.sms_sent = str(sms_sent)
+                findCamp.save()
+            else:
+                campaign_push.sms_sent = str(camp_result)
+                campaign_push.save()
     elif add_del == "del":
         findCamp.delete()
+
 
     obj['status'] = True
     obj['result'] = "Success"
@@ -11225,23 +11275,39 @@ def view_all_campaigns(request):
 
     camp_list = []
     obj['result']['list'] = camp_list
-
+    campaign_id       = get_param(request, 'c_id', None)
     if request.user.is_admin or request.user.is_staff:
         jobObjs = Campaign.objects.filter(clickgarage_flag = True)
     elif request.user.is_agent:
         jobObjs = Campaign.objects.filter(clickgarage_flag = False, agent_id = request.user.id)
+    if campaign_id != None and campaign_id != "":
+        jobObjs = jobObjs.filter(id=campaign_id)
 
     for job in jobObjs:
         obj['result']['detail'].append({
             'clickgarage_flag': job.clickgarage_flag
+            ,'id': job.id
             , 'agent_id': job.agent_id
             , 'timestamp': job.start_date
             , 'campaign_name': job.campaign_name
             , 'campaign_desc': job.campaign_desc
             ,'time_generated' : time.strftime('%I:%M %p',time.localtime(float(job.start_date)+19800))
             ,'date_generated' : time.strftime('%d-%m-%Y',time.localtime(float(job.start_date)+19800))
-
-
+            , 'auto_flag': job.auto_flag
+            , 'total_spent': job.total_spent
+            , 'summary': job.summary
+            , 'email_template': job.email_template
+            , 'sms_draft': job.sms_draft
+            , 'type': job.type
+            , 'target': job.target
+            , 'sms_sent': job.sms_sent
+            , 'email_sent': job.email_sent
+            , 'num_bookings': job.num_bookings
+            , 'total_amount': job.total_amount
+            , 'total_investment': job.total_investment
+            , 'invest_summary': job.invest_summary
+            , 'num_leads': job.num_leads
+            , 'frequency': job.frequency
         })
         camp_list.append(job.campaign_name)
 
@@ -11250,3 +11316,4 @@ def view_all_campaigns(request):
     obj['counter'] = 1
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
+

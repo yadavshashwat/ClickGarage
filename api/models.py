@@ -788,12 +788,24 @@ class Taxes(models.Model):
     gst_service = models.CharField(max_length=50)
 
 
-
 class Campaign(models.Model):
-    campaign_name   = models.CharField(max_length=200)
-    campaign_desc   = models.CharField(max_length=500)
-    start_date      = models.CharField(max_length=200)
+    campaign_name    = models.CharField(max_length=200)
+    campaign_desc    = models.CharField(max_length=500)
+    start_date       = models.CharField(max_length=200)
     clickgarage_flag = models.BooleanField()
-    agent_id = models.CharField(max_length=200)
-
-
+    agent_id         = models.CharField(max_length=200)
+    auto_flag        = models.BooleanField()
+    total_spent      = models.CharField(max_length=200)
+    summary          = ListField(DictField())
+    frequency        = models.CharField(max_length=50,null=True)
+    sms_draft        = models.CharField(max_length=500,null=True)
+    email_template   = models.CharField(max_length=50,null=True)
+    type             = models.CharField(max_length=50,null=True)
+    target           = models.CharField(max_length=50,null=True)
+    sms_sent         = models.CharField(max_length=50,default="0")
+    email_sent       = models.CharField(max_length=50,default="0")
+    num_bookings     = models.CharField(max_length=50)
+    total_amount     = models.CharField(max_length=200)
+    total_investment = models.CharField(max_length=200)
+    invest_summary   = ListField(DictField())
+    num_leads        = models.CharField(max_length=50)

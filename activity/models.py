@@ -125,6 +125,8 @@ class CGUserNew(AbstractUser):
     user_locality = models.CharField(max_length=200, null=True)
     user_city = models.CharField(max_length=100, null=True)
     user_state = models.CharField(max_length=100, null=True)
+    birth_date = models.DateField(null=True)
+    anniversary = models.DateField(null=True)
     # email = models.CharField(max_length=200)
     # agent_details = DictField()
     # email_primary = models.CharField(max_length=100, default=None, null=True)
@@ -138,6 +140,11 @@ class CGUserNew(AbstractUser):
     agent_labour_share = models.CharField(max_length=5, default="0", null=True)
     agent_vas_share = models.CharField(max_length=5, default="0", null=True)
     agent_denting_share = models.CharField(max_length=5, default="0", null=True)
+    subscribed = models.BooleanField(default=True)
+    num_bookings = models.CharField(max_length=100,default=0)
+    total_amount = models.CharField(max_length=100,default=0)
+    booking_id_list = ListField(models.CharField(max_length=100,null=True))
+    last_booking_date = models.DateField(null=True)
 
     # part_share
     # car_ids = ListField(models.CharField(max_length=200))

@@ -7873,25 +7873,36 @@ import requests
 import json
 
 def send_promo_campaign_cg(to,message):
-	url = "http://2factor.in/API/V1/e5fd3098-a453-11e6-a40f-00163ef91450/ADDON_SERVICES/SEND/PSMS"
-	payload = {
-		"From": "CLKGRG",
-		"To": to	,
-		"Msg" :message
-	}
-	response = requests.request("GET", url, data = json.dumps(payload))
-	print(response.text)
+	# url = "http://2factor.in/API/V1/e5fd3098-a453-11e6-a40f-00163ef91450/ADDON_SERVICES/SEND/PSMS"
+	# payload = {
+	# 	"From": "CLKGRG",
+	# 	"To": to	,
+	# 	"Msg" :message
+	# }
+	# response = requests.request("GET", url, data = json.dumps(payload))
+	# print(response.text)
+	message = message.replace(" ", "+")
+	url  = "http://api.msg91.com/api/sendhttp.php?route=4&country=IN&flash=0&unicode=0&campaign=viaSOCKET&authkey=151673AJzvZcNCte59758f85&mobiles=" + to +"&message=" + message + "&sender=CLKGRG"
+	# url = "http://sms.hspsms.com/sendSMS?username=clickgarage&message=" + message + "&sendername=" + sendername + "&smstype=" + type + "&numbers=" + to + "&apikey=" + key
+	r = urllib2.urlopen(url)
+
 
 
 def send_promo_campaign_agent(to,message):
-	url = "http://2factor.in/API/V1/e5fd3098-a453-11e6-a40f-00163ef91450/ADDON_SERVICES/SEND/PSMS"
-	payload = {
-		"From": "EZYGRG",
-		"To": to	,
-		"Msg" :message
-	}
-	response = requests.request("GET", url, data = json.dumps(payload))
-	print(response.text)
+	# url = "http://2factor.in/API/V1/e5fd3098-a453-11e6-a40f-00163ef91450/ADDON_SERVICES/SEND/PSMS"
+	# payload = {
+	# 	"From": "EZYGRG",
+	# 	"To": to	,
+	# 	"Msg" :message
+	# }
+	# response = requests.request("GET", url, data = json.dumps(payload))
+	# print(response.text)
+	message = message.replace(" ", "+")
+	url  = "http://api.msg91.com/api/sendhttp.php?route=4&country=IN&flash=0&unicode=0&campaign=viaSOCKET&authkey=151673AJzvZcNCte59758f85&mobiles=" + to +"&message=" + message + "&sender=EZYGRG"
+	# url = "http://sms.hspsms.com/sendSMS?username=clickgarage&message=" + message + "&sendername=" + sendername + "&smstype=" + type + "&numbers=" + to + "&apikey=" + key
+	r = urllib2.urlopen(url)
+
+
 
 
 
@@ -7912,6 +7923,14 @@ def send_sms_2factor(to,message):
 	url  = "http://api.msg91.com/api/sendhttp.php?route=4&country=IN&flash=0&unicode=0&campaign=viaSOCKET&authkey=151673AJzvZcNCte59758f85&mobiles=" + to +"&message=" + message + "&sender=CLKGRG"
 	# url = "http://sms.hspsms.com/sendSMS?username=clickgarage&message=" + message + "&sendername=" + sendername + "&smstype=" + type + "&numbers=" + to + "&apikey=" + key
 	r = urllib2.urlopen(url)
+
+def send_sms_msg91(to,message):
+	message = message.replace(" ", "+")
+	url  = "http://api.msg91.com/api/sendhttp.php?route=4&country=IN&flash=0&unicode=0&campaign=viaSOCKET&authkey=151673AJzvZcNCte59758f85&mobiles=" + to +"&message=" + message + "&sender=CLKGRG"
+	# url = "http://sms.hspsms.com/sendSMS?username=clickgarage&message=" + message + "&sendername=" + sendername + "&smstype=" + type + "&numbers=" + to + "&apikey=" + key
+	r = urllib2.urlopen(url)
+
+
 
 
 def send_sms_2factor_EZY(to,message):
