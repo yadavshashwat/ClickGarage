@@ -1,5 +1,7 @@
 production = 1
 
+
+
 from django.shortcuts import render
 from django.http import HttpResponseRedirect,HttpResponseForbidden,HttpResponse
 from django.shortcuts import render_to_response, redirect
@@ -39,8 +41,13 @@ from activity.models import Transactions, CGUser, CGUserNew
 import csv
 PRODUCTION = False
 
+
+
+
 if os.getcwd()=='/home/ubuntu/beta/suigen':
     PRODUCTION = True
+
+
 
 def cleanstring(query):
     query = query.strip()

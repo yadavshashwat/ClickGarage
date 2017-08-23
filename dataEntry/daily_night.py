@@ -1,21 +1,5 @@
 production = 1
 
-# from clickgarage import settings
-# from django.core.management import setup_environ
-# setup_environ(settings)
-
-from clickgarage import settings
-from django.core.management import setup_environ
-setup_environ(settings)
-
-# import os
-
-# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "../clickgarage.settings")
-
-# your imports, e.g. Django models
-# from your_project_name.models import Location
-
-
 
 from django.shortcuts import render
 from django.http import HttpResponseRedirect,HttpResponseForbidden,HttpResponse
