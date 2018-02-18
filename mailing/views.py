@@ -10,8 +10,8 @@ from email.MIMEImage import MIMEImage
 from email.MIMEBase import MIMEBase
 from email import Encoders
 
-helpline_number = "9555950000"
-escalation_number = "9717353148"
+helpline_number = "7045996415"
+escalation_number = "9953008804"
 
 
 key = "ab33f626-fba5-4bff-9a2b-68a7e9eed43c"
@@ -28,8 +28,8 @@ from email.mime.text import MIMEText
 smtp_server = 'email-smtp.us-west-2.amazonaws.com'
 smtp_username = 'AKIAJ4U5VOXPWBT37X4A'
 smtp_password = 'AkJxDBO/FOsxkF1Ucd1EhblV5DTAVLpFfqWQv/KI2gn7'
-from_address = "ClickGarage <bookings@clickgarage.in>"
-helpline_number = "9555950000"
+from_address = "CarCrew <bookings@clickgarage.in>"
+helpline_number = "7045996415"
 
 import boto
 from email.mime.application import MIMEApplication
@@ -53,12 +53,12 @@ def send_trans_sms(to, message):
 
 
 def send_booking_sms(to_name, to, date, pick_time_start, booking_id):
-	message = "Hi "+ to_name +"! Your ClickGarage appointment has been confirmed. Appointment date: " +date + ", Time: "  + pick_time_start  + ". For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + booking_id + "."
+	message = "Hi "+ to_name +"! Your CarCrew appointment has been confirmed. Appointment date: " +date + ", Time: "  + pick_time_start  + ". For further assistance, please contact us on " + helpline_number + " and quote your booking ID: " + booking_id + "."
 	message = message.replace(" ","+")
 	send_sms("TRANS",to,message)
 
 def send_cancel_sms(to_name, to, booking_id):
-	message = "Hi "+ to_name +"! Your ClickGarage appointment for booking id :#"+booking_id+"has been cancelled."
+	message = "Hi "+ to_name +"! Your CarCrew appointment for booking id :#"+booking_id+"has been cancelled."
 	message = message.replace(" ","+")
 	send_sms("TRANS",to,message)
 
@@ -89,7 +89,7 @@ def send_predrop(to_name,to, amount,booking_id):
 	send_sms("TRANS",to,message)
 
 def send_postdrop(to_name,to,booking_id):
-	message = "Hi "+to_name+", Thank you for using ClickGarage. Kindly share your valuable feedback by replying to the email which you'll receive shortly."
+	message = "Hi "+to_name+", Thank you for using CarCrew. Kindly share your valuable feedback by replying to the email which you'll receive shortly."
 	message = message.replace(" ","+")
 	send_sms("TRANS",to,message)
 
@@ -775,7 +775,7 @@ def send_booking_email_doorstep(to_address,to_name,time_start,date,booking_id):
 
                             <h1 style="text-align: left;"><span style="font-size:16px">Booking ID #"""+booking_id+"""</span></h1>
 
-<p style="text-align: left; line-height: normal;">Your ClickGarage booking for has been confirmed. Time chosen by you is between """+ time_start +""" &nbsp;on """+ date +""". If further assistance is needed, please contact us on """+helpline_number+""" and quote your booking confirmation number """+booking_id+""".</p>
+<p style="text-align: left; line-height: normal;">Your CarCrew booking for has been confirmed. Time chosen by you is between """+ time_start +""" &nbsp;on """+ date +""". If further assistance is needed, please contact us on """+helpline_number+""" and quote your booking confirmation number """+booking_id+""".</p>
 
                         </td>
                     </tr>
@@ -1110,7 +1110,7 @@ def send_booking_email_doorstep(to_address,to_name,time_start,date,booking_id):
                                                                         <tbody><tr>
 
                                                                                 <td align="center" valign="middle" width="24" class="mcnFollowIconContent">
-                                                                                    <a href="http://www.facebook.com/theclickgarage" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-facebook-48.png" style="display:block;" height="24" width="24" class=""></a>
+                                                                                    <a href="http://www.facebook.com/carcrew.in" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-facebook-48.png" style="display:block;" height="24" width="24" class=""></a>
                                                                                 </td>
 
 
@@ -1136,7 +1136,7 @@ def send_booking_email_doorstep(to_address,to_name,time_start,date,booking_id):
                                                                         <tbody><tr>
 
                                                                                 <td align="center" valign="middle" width="24" class="mcnFollowIconContent">
-                                                                                    <a href="www.clickgarage.in" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-link-48.png" style="display:block;" height="24" width="24" class=""></a>
+                                                                                    <a href="www.carcrew.in" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-link-48.png" style="display:block;" height="24" width="24" class=""></a>
                                                                                 </td>
 
 
@@ -1197,7 +1197,7 @@ def send_booking_email_doorstep(to_address,to_name,time_start,date,booking_id):
                         <td valign="top" class="mcnTextContent" style="padding: 9px 18px; line-height: normal;">
 
                             <div style="text-align: left;"><em style="background-color: #CCCCCC;color: #606060;font-family: helvetica;font-size: 11px;line-height: 13.75px;"><span style="background-color:#FFFFFF">Copyright (C) 2015 Sui Generis Innovations, All rights reserved.</span></em><br>
-<span style="color: #606060;font-family: helvetica;font-size: 11px;line-height: 13.75px;">Email : info@clickgarage.in | Phone No. : +91-9555950000</span></div>
+<span style="color: #606060;font-family: helvetica;font-size: 11px;line-height: 13.75px;">Email : sales@carcrew.in | Phone No. : +91-7045996415</span></div>
 
 <div style="text-align: left;"><br>
 <span style="color: #606060;font-family: helvetica;font-size: 11px;line-height: 13.75px;">W-22, Second Floor, Green Park, New Delhi - 110016</span></div>
@@ -1960,7 +1960,7 @@ def send_booking_email_pick(to_address,to_name,time_start,date,booking_id):
                             <h1 style="text-align: left;"><span style="font-size:16px">Booking ID #"""+booking_id+"""</span></h1>
 
 <p style="text-align: left; line-height: normal;">Hi """+to_name+""",</p>
-<p style="text-align: left; line-height: normal;">Your ClickGarage booking for has been confirmed. Pick up time chosen by you is """+ time_start +""" on """+ date +""". If further assistance is needed, please contact us on """+helpline_number+""" and quote your booking confirmation number """+booking_id+""".</p>
+<p style="text-align: left; line-height: normal;">Your CarCrew booking for has been confirmed. Pick up time chosen by you is """+ time_start +""" on """+ date +""". If further assistance is needed, please contact us on """+helpline_number+""" and quote your booking confirmation number """+booking_id+""".</p>
 
                         </td>
                     </tr>
@@ -2295,7 +2295,7 @@ def send_booking_email_pick(to_address,to_name,time_start,date,booking_id):
                                                                         <tbody><tr>
                                                                             
                                                                                 <td align="center" valign="middle" width="24" class="mcnFollowIconContent">
-                                                                                    <a href="http://www.facebook.com/theclickgarage" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-facebook-48.png" style="display:block;" height="24" width="24" class=""></a>
+                                                                                    <a href="http://www.facebook.com/carcrew.in" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-facebook-48.png" style="display:block;" height="24" width="24" class=""></a>
                                                                                 </td>
                                                                             
                                                                             
@@ -2321,7 +2321,7 @@ def send_booking_email_pick(to_address,to_name,time_start,date,booking_id):
                                                                         <tbody><tr>
                                                                             
                                                                                 <td align="center" valign="middle" width="24" class="mcnFollowIconContent">
-                                                                                    <a href="www.clickgarage.in" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-link-48.png" style="display:block;" height="24" width="24" class=""></a>
+                                                                                    <a href="www.CarCrew.in" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-link-48.png" style="display:block;" height="24" width="24" class=""></a>
                                                                                 </td>
                                                                             
                                                                             
@@ -2382,7 +2382,7 @@ def send_booking_email_pick(to_address,to_name,time_start,date,booking_id):
                         <td valign="top" class="mcnTextContent" style="padding: 9px 18px; line-height: normal;">
                         
                             <div style="text-align: left;"><em style="background-color: #CCCCCC;color: #606060;font-family: helvetica;font-size: 11px;line-height: 13.75px;"><span style="background-color:#FFFFFF">Copyright (C) 2015 Sui Generis Innovations, All rights reserved.</span></em><br>
-<span style="color: #606060;font-family: helvetica;font-size: 11px;line-height: 13.75px;">Email : info@clickgarage.in | Phone No. : +91-9555950000</span></div>
+<span style="color: #606060;font-family: helvetica;font-size: 11px;line-height: 13.75px;">Email : sales@carcrew.in | Phone No. : +91-7045996415</span></div>
 
 <div style="text-align: left;"><br>
 <span style="color: #606060;font-family: helvetica;font-size: 11px;line-height: 13.75px;">W-22, Second Floor, Green Park, New Delhi - 110016</span></div>
@@ -3086,7 +3086,7 @@ def send_booking_email1(to_address,to_name,time_start,date,booking_id):
 
 
 	<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span id="docs-internal-guid-a5acf9b5-2d61-8cb0-61dd-92f1d4247aeb"><span style="background-color: transparent;color: #000000;font-family: arial;font-size: 14.6666666666667px;vertical-align: baseline;white-space: pre-wrap;">Hi """+to_name+""",</span></span></p>
-	<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span id="docs-internal-guid-a5acf9b5-2d61-8cb0-61dd-92f1d4247aeb"><span style="background-color: transparent;color: #000000;font-family: arial;font-size: 14.6666666666667px;vertical-align: baseline;white-space: pre-wrap;">Your ClickGarage booking has been confirmed. Pick up time chosen by you is """+ time_start +""" on """+ date +""". If further assistance is needed, please contact us on """+helpline_number+""" and quote your booking confirmation number """+booking_id+""".</span></span></p>
+	<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span id="docs-internal-guid-a5acf9b5-2d61-8cb0-61dd-92f1d4247aeb"><span style="background-color: transparent;color: #000000;font-family: arial;font-size: 14.6666666666667px;vertical-align: baseline;white-space: pre-wrap;">Your CarCrew booking has been confirmed. Pick up time chosen by you is """+ time_start +""" on """+ date +""". If further assistance is needed, please contact us on """+helpline_number+""" and quote your booking confirmation number """+booking_id+""".</span></span></p>
 
 	<div>&nbsp;</div>
 
@@ -3116,14 +3116,14 @@ def send_booking_email1(to_address,to_name,time_start,date,booking_id):
 
 				                                    <tbody><tr>
 				                                        <td align="center" valign="top" class="mcnFollowIconContent" style="padding-right:10px; padding-bottom:5px;">
-				                                            <a href="http://www.facebook.com/clickgarage.in" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-facebook-96.png" alt="Facebook" class="mcnFollowBlockIcon" width="48" style="width:48px; max-width:48px; display:block;"></a>
+				                                            <a href="http://www.facebook.com/carcrew.in" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-facebook-96.png" alt="Facebook" class="mcnFollowBlockIcon" width="48" style="width:48px; max-width:48px; display:block;"></a>
 				                                        </td>
 				                                    </tr>
 
 
 				                                    <tr>
 				                                        <td align="center" valign="top" class="mcnFollowTextContent" style="padding-right:10px; padding-bottom:9px;">
-				                                            <a href="http://www.facebook.com/clickgarage.in" target="_blank" style="color: #606060;font-family: Arial;font-size: 11px;font-weight: normal;line-height: 100%;text-align: center;text-decoration: none;">Facebook</a>
+				                                            <a href="http://www.facebook.com/carcrew.in" target="_blank" style="color: #606060;font-family: Arial;font-size: 11px;font-weight: normal;line-height: 100%;text-align: center;text-decoration: none;">Facebook</a>
 				                                        </td>
 				                                    </tr>
 
@@ -3164,14 +3164,14 @@ def send_booking_email1(to_address,to_name,time_start,date,booking_id):
 
 				                                    <tbody><tr>
 				                                        <td align="center" valign="top" class="mcnFollowIconContent" style="padding-right:0; padding-bottom:5px;">
-				                                            <a href="http://www.clickgarage.in" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-link-96.png" alt="Website" class="mcnFollowBlockIcon" width="48" style="width:48px; max-width:48px; display:block;"></a>
+				                                            <a href="http://www.carcrew.in" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-link-96.png" alt="Website" class="mcnFollowBlockIcon" width="48" style="width:48px; max-width:48px; display:block;"></a>
 				                                        </td>
 				                                    </tr>
 
 
 				                                    <tr>
 				                                        <td align="center" valign="top" class="mcnFollowTextContent" style="padding-right:0; padding-bottom:9px;">
-				                                            <a href="http://www.clickgarage.in" target="_blank" style="color: #606060;font-family: Arial;font-size: 11px;font-weight: normal;line-height: 100%;text-align: center;text-decoration: none;">Website</a>
+				                                            <a href="http://www.carcrew.in" target="_blank" style="color: #606060;font-family: Arial;font-size: 11px;font-weight: normal;line-height: 100%;text-align: center;text-decoration: none;">Website</a>
 				                                        </td>
 				                                    </tr>
 
@@ -3218,7 +3218,7 @@ def send_booking_email1(to_address,to_name,time_start,date,booking_id):
 	                        <td valign="top" class="mcnTextContent" style="padding-top:9px; padding-right: 18px; padding-bottom: 9px; padding-left: 18px;">
 
 	                            <em>Copyright (C) 2015 Sui Generis Innovations, All rights reserved.</em><br>
-	Email : info@clickgarage.in | Phone No. : +91-9555950000<br>
+	Email : sales@carcrew.in | Phone No. : +91-7045996415<br>
 	<br>
 	W-22, Second Floor, Green Park, New Delhi - 110016
 	                        </td>
@@ -3271,7 +3271,7 @@ def send_booking_email1(to_address,to_name,time_start,date,booking_id):
 def send_cancel_email(to_address,to_name,booking_id_1):
 
 	# me = from_address
-	me = "ClickGarage <bookings@clickgarage.in>"
+	me = "CarCrew <bookings@clickgarage.in>"
 	you = to_address
 	booking_id = str(booking_id_1)
 
@@ -3890,7 +3890,7 @@ def send_cancel_email(to_address,to_name,booking_id_1):
 
 
 		<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span id="docs-internal-guid-a5acf9b5-2d61-8cb0-61dd-92f1d4247aeb"><span style="background-color: transparent;color: #000000;font-family: arial;font-size: 14.6666666666667px;vertical-align: baseline;white-space: pre-wrap;">Hi """+to_name+""",</span></span></p>
-		<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span id="docs-internal-guid-a5acf9b5-2d61-8cb0-61dd-92f1d4247aeb"><span style="background-color: transparent;color: #000000;font-family: arial;font-size: 14.6666666666667px;vertical-align: baseline;white-space: pre-wrap;">As requested your ClickGarage booking has been cancelled. If further assistance is needed, please contact us on """+helpline_number+""" and quote your booking confirmation number """+booking_id+""".</span></span></p>
+		<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span id="docs-internal-guid-a5acf9b5-2d61-8cb0-61dd-92f1d4247aeb"><span style="background-color: transparent;color: #000000;font-family: arial;font-size: 14.6666666666667px;vertical-align: baseline;white-space: pre-wrap;">As requested your CarCrew booking has been cancelled. If further assistance is needed, please contact us on """+helpline_number+""" and quote your booking confirmation number """+booking_id+""".</span></span></p>
 
 		<div>&nbsp;</div>
 
@@ -3920,14 +3920,14 @@ def send_cancel_email(to_address,to_name,booking_id_1):
 
 														<tbody><tr>
 															<td align="center" valign="top" class="mcnFollowIconContent" style="padding-right:10px; padding-bottom:5px;">
-																<a href="http://www.facebook.com/clickgarage.in" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-facebook-96.png" alt="Facebook" class="mcnFollowBlockIcon" width="48" style="width:48px; max-width:48px; display:block;"></a>
+																<a href="http://www.facebook.com/carcrew.in" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-facebook-96.png" alt="Facebook" class="mcnFollowBlockIcon" width="48" style="width:48px; max-width:48px; display:block;"></a>
 															</td>
 														</tr>
 
 
 														<tr>
 															<td align="center" valign="top" class="mcnFollowTextContent" style="padding-right:10px; padding-bottom:9px;">
-																<a href="http://www.facebook.com/clickgarage.in" target="_blank" style="color: #606060;font-family: Arial;font-size: 11px;font-weight: normal;line-height: 100%;text-align: center;text-decoration: none;">Facebook</a>
+																<a href="http://www.facebook.com/carcrew.in" target="_blank" style="color: #606060;font-family: Arial;font-size: 11px;font-weight: normal;line-height: 100%;text-align: center;text-decoration: none;">Facebook</a>
 															</td>
 														</tr>
 
@@ -3968,14 +3968,14 @@ def send_cancel_email(to_address,to_name,booking_id_1):
 
 														<tbody><tr>
 															<td align="center" valign="top" class="mcnFollowIconContent" style="padding-right:0; padding-bottom:5px;">
-																<a href="http://www.clickgarage.in" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-link-96.png" alt="Website" class="mcnFollowBlockIcon" width="48" style="width:48px; max-width:48px; display:block;"></a>
+																<a href="http://www.carcrew.in" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-link-96.png" alt="Website" class="mcnFollowBlockIcon" width="48" style="width:48px; max-width:48px; display:block;"></a>
 															</td>
 														</tr>
 
 
 														<tr>
 															<td align="center" valign="top" class="mcnFollowTextContent" style="padding-right:0; padding-bottom:9px;">
-																<a href="http://www.clickgarage.in" target="_blank" style="color: #606060;font-family: Arial;font-size: 11px;font-weight: normal;line-height: 100%;text-align: center;text-decoration: none;">Website</a>
+																<a href="http://www.carcrew.in" target="_blank" style="color: #606060;font-family: Arial;font-size: 11px;font-weight: normal;line-height: 100%;text-align: center;text-decoration: none;">Website</a>
 															</td>
 														</tr>
 
@@ -4022,7 +4022,7 @@ def send_cancel_email(to_address,to_name,booking_id_1):
 								<td valign="top" class="mcnTextContent" style="padding-top:9px; padding-right: 18px; padding-bottom: 9px; padding-left: 18px;">
 
 									<em>Copyright (C) 2015 Sui Generis Innovations, All rights reserved.</em><br>
-		Email : info@clickgarage.in | Phone No. : +91-9555950000<br>
+		Email : sales@carcrew.in | Phone No. : +91-7045996415<br>
 		<br>
 		W-22, Second Floor, Green Park, New Delhi - 110016
 								</td>
@@ -4755,10 +4755,10 @@ def send_feedback_report(to_address,to_name,booking_id,path_file,amount):
 	Booking ID #"""+booking_id+"""</h3>
 	&nbsp;
 
-	<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span id="docs-internal-guid-a5acf9b5-2d61-8cb0-61dd-92f1d4247aeb"><span style="background-color: transparent;color: #000000;font-family: arial;font-size: 14.6666666666667px;vertical-align: baseline;white-space: pre-wrap;">Hello """+to_name+"""! Your ClickGarage booking is complete. Your total amount paid was """+amount+""". Please find attached a detailed service report. It was a pleasure serving you. Kindly spare some time to share your valuable feedback.</span></span></p>
+	<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span id="docs-internal-guid-a5acf9b5-2d61-8cb0-61dd-92f1d4247aeb"><span style="background-color: transparent;color: #000000;font-family: arial;font-size: 14.6666666666667px;vertical-align: baseline;white-space: pre-wrap;">Hello """+to_name+"""! Your CarCrew booking is complete. Your total amount paid was """+amount+""". Please find attached a detailed service report. It was a pleasure serving you. Kindly spare some time to share your valuable feedback.</span></span></p>
 <!--Python-->
 
-<title>ClickGarage Feedback</title>
+<title>CarCrew Feedback</title>
 <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:400,700">
 
 <link href="/static/forms/client/css/251396771-formview_st_ltr.css" type="text/css" rel="stylesheet">
@@ -5027,7 +5027,7 @@ input[type='text'], input:not([type]), textarea {
 
         </script><style type="text/css"></style>
 <link rel="alternate" type="text/xml+oembed" href="https://docs.google.com/forms/d/1__CYdYzqK2NcZvz4JHCEpVqHQR3A9rRYw_guvXOC-xQ/oembed?url=https://docs.google.com/forms/d/1__CYdYzqK2NcZvz4JHCEpVqHQR3A9rRYw_guvXOC-xQ/viewform&amp;format=xml">
-<meta property="og:title" content="ClickGarage Feedback"><meta property="og:type" content="article"><meta property="og:site_name" content="Google Docs"><meta property="og:url" content="https://docs.google.com/forms/d/1__CYdYzqK2NcZvz4JHCEpVqHQR3A9rRYw_guvXOC-xQ/viewform?usp=embed_facebook"><meta property="og:image" content="https://lh4.googleusercontent.com/igig_iaW1Fqa1ZIV5gv9sOuTqGxBjfjtATYbPWEI5nGulQ2ngH1Sx07ElxUoW7x5NQc=w1200-h630-p"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:description" content="Help us serve you better!"><meta name="twitter:card" content="player"><meta name="twitter:title" content="ClickGarage Feedback"><meta name="twitter:url" content="https://docs.google.com/forms/d/1__CYdYzqK2NcZvz4JHCEpVqHQR3A9rRYw_guvXOC-xQ/viewform?usp=embed_twitter"><meta name="twitter:image" content="https://lh4.googleusercontent.com/igig_iaW1Fqa1ZIV5gv9sOuTqGxBjfjtATYbPWEI5nGulQ2ngH1Sx07ElxUoW7x5NQc=w435-h251-p-b1-c0x00999999"><meta name="twitter:player:width" content="435"><meta name="twitter:player:height" content="251"><meta name="twitter:player" content="https://docs.google.com/forms/d/1__CYdYzqK2NcZvz4JHCEpVqHQR3A9rRYw_guvXOC-xQ/viewform?embedded=true&amp;usp=embed_twitter"><meta name="twitter:description" content="Help us serve you better!"><meta name="twitter:site" content="@googledocs">
+<meta property="og:title" content="CarCrew Feedback"><meta property="og:type" content="article"><meta property="og:site_name" content="Google Docs"><meta property="og:url" content="https://docs.google.com/forms/d/1__CYdYzqK2NcZvz4JHCEpVqHQR3A9rRYw_guvXOC-xQ/viewform?usp=embed_facebook"><meta property="og:image" content="https://lh4.googleusercontent.com/igig_iaW1Fqa1ZIV5gv9sOuTqGxBjfjtATYbPWEI5nGulQ2ngH1Sx07ElxUoW7x5NQc=w1200-h630-p"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:description" content="Help us serve you better!"><meta name="twitter:card" content="player"><meta name="twitter:title" content="CarCrew Feedback"><meta name="twitter:url" content="https://docs.google.com/forms/d/1__CYdYzqK2NcZvz4JHCEpVqHQR3A9rRYw_guvXOC-xQ/viewform?usp=embed_twitter"><meta name="twitter:image" content="https://lh4.googleusercontent.com/igig_iaW1Fqa1ZIV5gv9sOuTqGxBjfjtATYbPWEI5nGulQ2ngH1Sx07ElxUoW7x5NQc=w435-h251-p-b1-c0x00999999"><meta name="twitter:player:width" content="435"><meta name="twitter:player:height" content="251"><meta name="twitter:player" content="https://docs.google.com/forms/d/1__CYdYzqK2NcZvz4JHCEpVqHQR3A9rRYw_guvXOC-xQ/viewform?embedded=true&amp;usp=embed_twitter"><meta name="twitter:description" content="Help us serve you better!"><meta name="twitter:site" content="@googledocs">
 <style id="style-1-cropbar-clipper">/* Copyright 2014 Evernote Corporation. All rights reserved. */
 .en-markup-crop-options {
     top: 18px !important;
@@ -5043,7 +5043,7 @@ input[type='text'], input:not([type]), textarea {
 }
 </style><style type="text/css" id="GINGER_SOFTWARE_style">.GINGER_SOFTWARE_noMark { background : transparent; }  .GINGER_SOFTWARE_wrapper{ position: absolute; overflow: hidden; margin: 0px; padding: 0px; border: 0px solid transparent } .GINGER_SOFTWARE_contour { position : absolute; margin: 0px; }  .GINGER_SOFTWARE_richText { margin : 0px; padding-bottom: 3px; border-width: 0px; border-color: transparent; display: block; color: transparent; -webkit-text-fill-color: transparent; overflow: hidden; white-space: pre-wrap;}  .GINGER_SOFTWARE_inputWrapper .GINGER_SOFTWARE_richText {position: absolute;}  .GINGER_SOFTWARE_canvas { display:none; background-repeat:no-repeat;}  .GINGER_SOFTWARE_control .GINGER_SOFTWARE_correct, .GINGER_SOFTWARE_control .GINGER_SOFTWARE_SpellingCorrect, .GINGER_SOFTWARE_control .GINGER_SOFTWARE_spelling, .GINGER_SOFTWARE_control .GINGER_SOFTWARE_mark {border-top-left-radius:2px; border-top-right-radius:2px; border-bottom-right-radius:2px; border-bottom-left-radius:2px;} .GINGER_SOFTWARE_control .GINGER_SOFTWARE_correct, .GINGER_SOFTWARE_control .GINGER_SOFTWARE_SpellingCorrect, .GINGER_SOFTWARE_control .GINGER_SOFTWARE_spelling, .GINGER_SOFTWARE_control .GINGER_SOFTWARE_mark {background-image:url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyBpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBXaW5kb3dzIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjhFQ0Y2OENGMzE5OTExRTI4NjMxOTExNTUyMDhEMDMwIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjhFQ0Y2OEQwMzE5OTExRTI4NjMxOTExNTUyMDhEMDMwIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6OEVDRjY4Q0QzMTk5MTFFMjg2MzE5MTE1NTIwOEQwMzAiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6OEVDRjY4Q0UzMTk5MTFFMjg2MzE5MTE1NTIwOEQwMzAiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5RRxRxAAAAD0lEQVR42mK48+w7QIABAAVbAroowN08AAAAAElFTkSuQmCC)!important;} .GINGER_SOFTWARE_control .GINGER_SOFTWARE_correct.GINGER_SOFTWARE_synonym, .GINGER_SOFTWARE_control .GINGER_SOFTWARE_SpellingCorrect.GINGER_SOFTWARE_synonym, .GINGER_SOFTWARE_control .GINGER_SOFTWARE_spelling.GINGER_SOFTWARE_synonym, .GINGER_SOFTWARE_control .GINGER_SOFTWARE_mark.GINGER_SOFTWARE_synonym {background-image:url(data:image/gif;base64,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)!important;} .GINGER_SOFTWARE_control .GINGER_SOFTWARE_correct.GINGER_SOFTWARE_noSuggestion, .GINGER_SOFTWARE_control .GINGER_SOFTWARE_SpellingCorrect.GINGER_SOFTWARE_noSuggestion, .GINGER_SOFTWARE_control .GINGER_SOFTWARE_spelling.GINGER_SOFTWARE_noSuggestion, .GINGER_SOFTWARE_control .GINGER_SOFTWARE_mark.GINGER_SOFTWARE_noSuggestion {background-image:url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyBpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBXaW5kb3dzIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjhFQ0Y2OENGMzE5OTExRTI4NjMxOTExNTUyMDhEMDMwIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjhFQ0Y2OEQwMzE5OTExRTI4NjMxOTExNTUyMDhEMDMwIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6OEVDRjY4Q0QzMTk5MTFFMjg2MzE5MTE1NTIwOEQwMzAiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6OEVDRjY4Q0UzMTk5MTFFMjg2MzE5MTE1NTIwOEQwMzAiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5RRxRxAAAAD0lEQVR42mK48+w7QIABAAVbAroowN08AAAAAElFTkSuQmCC)!important;} .GINGER_SOFTWARE_richText .GINGER_SOFTWARE_correct, .GINGER_SOFTWARE_richText .GINGER_SOFTWARE_SpellingCorrect, .GINGER_SOFTWARE_richText .GINGER_SOFTWARE_spelling, .GINGER_SOFTWARE_richText .GINGER_SOFTWARE_mark {position:relative; background-image:none!important;} .GINGER_SOFTWARE_richText .GINGER_SOFTWARE_markHighlightLeft { position : absolute; left:-2px; top:0px; bottom:0px; width:2px;} .GINGER_SOFTWARE_richText .GINGER_SOFTWARE_markHighlightRight { position : absolute; right:-2px; top:0px; bottom:0px; width:2px;} .GINGER_SOFTWARE_richText .GINGER_SOFTWARE_markHighlightTop { position : absolute; left:0px; right:0px; top:-2px; height:3px;} .GINGER_SOFTWARE_richText .GINGER_SOFTWARE_markHighlightBottom { position : absolute; left:0px; right:0px; bottom:-2px; height:3px;}</style></head>
 <body dir="ltr" class="ss-base-body" ginger_software_stylesheet="true" ginger_software_doc="true"><div itemscope="" itemtype="http://schema.org/CreativeWork/FormObject">
-<meta itemprop="name" content="ClickGarage Feedback">
+<meta itemprop="name" content="CarCrew Feedback">
 <meta itemprop="description" content="Help us serve you better!">
 
 <meta itemprop="url" content="https://docs.google.com/forms/d/1__CYdYzqK2NcZvz4JHCEpVqHQR3A9rRYw_guvXOC-xQ/viewform">
@@ -5053,7 +5053,7 @@ input[type='text'], input:not([type]), textarea {
 
 
 <div class="ss-form-container"><div class="ss-header-image-container"><div class="ss-header-image-image"><div class="ss-header-image-sizer"></div></div></div>
-<div class="ss-top-of-page"><div class="ss-form-heading"><h1 class="ss-form-title" dir="ltr">ClickGarage Feedback</h1>
+<div class="ss-top-of-page"><div class="ss-form-heading"><h1 class="ss-form-title" dir="ltr">CarCrew Feedback</h1>
 <div class="ss-form-desc ss-no-ignore-whitespace" dir="ltr">Help us serve you better!</div>
 
 <div class="ss-required-asterisk" aria-hidden="true">*Required</div></div></div>
@@ -5120,7 +5120,7 @@ input[type='text'], input:not([type]), textarea {
 <td class="ss-scalerow ss-rightlabel" aria-hidden="true">Excellent</td></tr></tbody></table>
 </div></div></div> <div class="ss-form-question errorbox-good" role="listitem">
 <div dir="auto" class="ss-item ss-item-required ss-scale"><div class="ss-form-entry">
-<label class="ss-q-item-label" for="entry_1622944453"><div class="ss-q-title" style="padding-top:10px;">How likely are you to recommend ClickGarage services to others?
+<label class="ss-q-item-label" for="entry_1622944453"><div class="ss-q-title" style="padding-top:10px;">How likely are you to recommend CarCrew services to others?
 <label for="itemView.getDomIdToLabel()" aria-label="(Required field)"></label>
 <span class="ss-required-asterisk" aria-hidden="true">*</span></div>
 <div class="ss-q-help ss-secondary-text" dir="auto"></div></label>
@@ -5128,7 +5128,7 @@ input[type='text'], input:not([type]), textarea {
 <table border="0" cellpadding="5" cellspacing="0" id="entry_787110920"><tbody><tr aria-hidden="true"><td class="ss-scalenumbers"></td>
 <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_1">1</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_2">2</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_3">3</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_4">4</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_5">5</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_6">6</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_7">7</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_8">8</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_9">9</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_10">10</label></td>
 <td class="ss-scalenumbers"></td></tr>
-<tr role="radiogroup" aria-label="How likely are you to recommend ClickGarage services to others?  Select a value from a range from 1,No, Never, to 10,Yes, Definitely,."><td class="ss-scalerow ss-leftlabel"><div aria-hidden="true" class="aria-todo">No, Never</div></td>
+<tr role="radiogroup" aria-label="How likely are you to recommend CarCrew services to others?  Select a value from a range from 1,No, Never, to 10,Yes, Definitely,."><td class="ss-scalerow ss-leftlabel"><div aria-hidden="true" class="aria-todo">No, Never</div></td>
 <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="1" id="group_787110920_1" role="radio" class="ss-q-radio" aria-label="1" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="2" id="group_787110920_2" role="radio" class="ss-q-radio" aria-label="2" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="3" id="group_787110920_3" role="radio" class="ss-q-radio" aria-label="3" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="4" id="group_787110920_4" role="radio" class="ss-q-radio" aria-label="4" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="5" id="group_787110920_5" role="radio" class="ss-q-radio" aria-label="5" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="6" id="group_787110920_6" role="radio" class="ss-q-radio" aria-label="6" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="7" id="group_787110920_7" role="radio" class="ss-q-radio" aria-label="7" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="8" id="group_787110920_8" role="radio" class="ss-q-radio" aria-label="8" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="9" id="group_787110920_9" role="radio" class="ss-q-radio" aria-label="9" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="10" id="group_787110920_10" role="radio" class="ss-q-radio" aria-label="10" required="" aria-required="true"></div></td>
 <td class="ss-scalerow ss-rightlabel" aria-hidden="true">Yes, Definitely</td></tr></tbody></table>
 </div></div></div> <div class="ss-form-question errorbox-good" role="listitem">
@@ -5207,14 +5207,14 @@ input[type='text'], input:not([type]), textarea {
 
                                                 <tbody><tr>
                                                     <td align="center" valign="top" class="mcnFollowIconContent" style="padding-right:10px; padding-bottom:5px;">
-                                                        <a href="http://www.facebook.com/theclickgarage" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-facebook-96.png" alt="Facebook" class="mcnFollowBlockIcon" width="48" style="width:48px; max-width:48px; display:block;"></a>
+                                                        <a href="http://www.facebook.com/carcrew.in" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-facebook-96.png" alt="Facebook" class="mcnFollowBlockIcon" width="48" style="width:48px; max-width:48px; display:block;"></a>
                                                     </td>
                                                 </tr>
 
 
                                                 <tr>
                                                     <td align="center" valign="top" class="mcnFollowTextContent" style="padding-right:10px; padding-bottom:9px;">
-                                                        <a href="http://www.facebook.com/theclickgarage" target="_blank" style="color: #606060;font-family: Arial;font-size: 11px;font-weight: normal;text-decoration: none;line-height: 100%;text-align: center;">Facebook</a>
+                                                        <a href="http://www.facebook.com/carcrew.in" target="_blank" style="color: #606060;font-family: Arial;font-size: 11px;font-weight: normal;text-decoration: none;line-height: 100%;text-align: center;">Facebook</a>
                                                     </td>
                                                 </tr>
 
@@ -5247,14 +5247,14 @@ input[type='text'], input:not([type]), textarea {
 
                                                 <tbody><tr>
                                                     <td align="center" valign="top" class="mcnFollowIconContent" style="padding-right:0; padding-bottom:5px;">
-                                                        <a href="http://www.clickgarage.in" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-link-96.png" alt="Website" class="mcnFollowBlockIcon" width="48" style="width:48px; max-width:48px; display:block;"></a>
+                                                        <a href="http://www.carcrew.in" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-link-96.png" alt="Website" class="mcnFollowBlockIcon" width="48" style="width:48px; max-width:48px; display:block;"></a>
                                                     </td>
                                                 </tr>
 
 
                                                 <tr>
                                                     <td align="center" valign="top" class="mcnFollowTextContent" style="padding-right:0; padding-bottom:9px;">
-                                                        <a href="http://www.clickgarage.in" target="_blank" style="color: #606060;font-family: Arial;font-size: 11px;font-weight: normal;text-decoration: none;line-height: 100%;text-align: center;">Website</a>
+                                                        <a href="http://www.carcrew.in" target="_blank" style="color: #606060;font-family: Arial;font-size: 11px;font-weight: normal;text-decoration: none;line-height: 100%;text-align: center;">Website</a>
                                                     </td>
                                                 </tr>
 
@@ -5302,7 +5302,7 @@ input[type='text'], input:not([type]), textarea {
                         <td valign="top" class="mcnTextContent" style="padding-top:9px; padding-right: 18px; padding-bottom: 9px; padding-left: 18px;">
 
                             <div style="text-align: center;"><em>Copyright (C) 2015 Sui Generis Innovations, All rights reserved.</em><br>
-Email : info@clickgarage.in | Phone No. : +91-9555950000<br>
+Email : sales@carcrew.in | Phone No. : +91-7045996415<br>
 <br>
 W-22, Second Floor, Green Park, New Delhi - 110016</div>
 
@@ -5977,10 +5977,10 @@ def send_feedback(to_address,to_name,booking_id):
 	Booking ID #"""+booking_id+"""</h3>
 	&nbsp;
 
-	<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span id="docs-internal-guid-a5acf9b5-2d61-8cb0-61dd-92f1d4247aeb"><span style="background-color: transparent;color: #000000;font-family: arial;font-size: 14.6666666666667px;vertical-align: baseline;white-space: pre-wrap;">Hello """+to_name+"""! Your ClickGarage booking is complete. It was a pleasure serving you. Kindly spare some time to share your valuable feedback.</span></span></p>
+	<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span id="docs-internal-guid-a5acf9b5-2d61-8cb0-61dd-92f1d4247aeb"><span style="background-color: transparent;color: #000000;font-family: arial;font-size: 14.6666666666667px;vertical-align: baseline;white-space: pre-wrap;">Hello """+to_name+"""! Your CarCrew booking is complete. It was a pleasure serving you. Kindly spare some time to share your valuable feedback.</span></span></p>
 <!--Python-->
 
-<title>ClickGarage Feedback</title>
+<title>CarCrew Feedback</title>
 <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:400,700">
 
 <link href="/static/forms/client/css/251396771-formview_st_ltr.css" type="text/css" rel="stylesheet">
@@ -6251,7 +6251,7 @@ padding-top:10px;}
 
         </script><style type="text/css"></style>
 <link rel="alternate" type="text/xml+oembed" href="https://docs.google.com/forms/d/1__CYdYzqK2NcZvz4JHCEpVqHQR3A9rRYw_guvXOC-xQ/oembed?url=https://docs.google.com/forms/d/1__CYdYzqK2NcZvz4JHCEpVqHQR3A9rRYw_guvXOC-xQ/viewform&amp;format=xml">
-<meta property="og:title" content="ClickGarage Feedback"><meta property="og:type" content="article"><meta property="og:site_name" content="Google Docs"><meta property="og:url" content="https://docs.google.com/forms/d/1__CYdYzqK2NcZvz4JHCEpVqHQR3A9rRYw_guvXOC-xQ/viewform?usp=embed_facebook"><meta property="og:image" content="https://lh4.googleusercontent.com/igig_iaW1Fqa1ZIV5gv9sOuTqGxBjfjtATYbPWEI5nGulQ2ngH1Sx07ElxUoW7x5NQc=w1200-h630-p"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:description" content="Help us serve you better!"><meta name="twitter:card" content="player"><meta name="twitter:title" content="ClickGarage Feedback"><meta name="twitter:url" content="https://docs.google.com/forms/d/1__CYdYzqK2NcZvz4JHCEpVqHQR3A9rRYw_guvXOC-xQ/viewform?usp=embed_twitter"><meta name="twitter:image" content="https://lh4.googleusercontent.com/igig_iaW1Fqa1ZIV5gv9sOuTqGxBjfjtATYbPWEI5nGulQ2ngH1Sx07ElxUoW7x5NQc=w435-h251-p-b1-c0x00999999"><meta name="twitter:player:width" content="435"><meta name="twitter:player:height" content="251"><meta name="twitter:player" content="https://docs.google.com/forms/d/1__CYdYzqK2NcZvz4JHCEpVqHQR3A9rRYw_guvXOC-xQ/viewform?embedded=true&amp;usp=embed_twitter"><meta name="twitter:description" content="Help us serve you better!"><meta name="twitter:site" content="@googledocs">
+<meta property="og:title" content="CarCrew Feedback"><meta property="og:type" content="article"><meta property="og:site_name" content="Google Docs"><meta property="og:url" content="https://docs.google.com/forms/d/1__CYdYzqK2NcZvz4JHCEpVqHQR3A9rRYw_guvXOC-xQ/viewform?usp=embed_facebook"><meta property="og:image" content="https://lh4.googleusercontent.com/igig_iaW1Fqa1ZIV5gv9sOuTqGxBjfjtATYbPWEI5nGulQ2ngH1Sx07ElxUoW7x5NQc=w1200-h630-p"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:description" content="Help us serve you better!"><meta name="twitter:card" content="player"><meta name="twitter:title" content="CarCrew Feedback"><meta name="twitter:url" content="https://docs.google.com/forms/d/1__CYdYzqK2NcZvz4JHCEpVqHQR3A9rRYw_guvXOC-xQ/viewform?usp=embed_twitter"><meta name="twitter:image" content="https://lh4.googleusercontent.com/igig_iaW1Fqa1ZIV5gv9sOuTqGxBjfjtATYbPWEI5nGulQ2ngH1Sx07ElxUoW7x5NQc=w435-h251-p-b1-c0x00999999"><meta name="twitter:player:width" content="435"><meta name="twitter:player:height" content="251"><meta name="twitter:player" content="https://docs.google.com/forms/d/1__CYdYzqK2NcZvz4JHCEpVqHQR3A9rRYw_guvXOC-xQ/viewform?embedded=true&amp;usp=embed_twitter"><meta name="twitter:description" content="Help us serve you better!"><meta name="twitter:site" content="@googledocs">
 <style id="style-1-cropbar-clipper">/* Copyright 2014 Evernote Corporation. All rights reserved. */
 .en-markup-crop-options {
     top: 18px !important;
@@ -6267,7 +6267,7 @@ padding-top:10px;}
 }
 </style><style type="text/css" id="GINGER_SOFTWARE_style">.GINGER_SOFTWARE_noMark { background : transparent; }  .GINGER_SOFTWARE_wrapper{ position: absolute; overflow: hidden; margin: 0px; padding: 0px; border: 0px solid transparent } .GINGER_SOFTWARE_contour { position : absolute; margin: 0px; }  .GINGER_SOFTWARE_richText { margin : 0px; padding-bottom: 3px; border-width: 0px; border-color: transparent; display: block; color: transparent; -webkit-text-fill-color: transparent; overflow: hidden; white-space: pre-wrap;}  .GINGER_SOFTWARE_inputWrapper .GINGER_SOFTWARE_richText {position: absolute;}  .GINGER_SOFTWARE_canvas { display:none; background-repeat:no-repeat;}  .GINGER_SOFTWARE_control .GINGER_SOFTWARE_correct, .GINGER_SOFTWARE_control .GINGER_SOFTWARE_SpellingCorrect, .GINGER_SOFTWARE_control .GINGER_SOFTWARE_spelling, .GINGER_SOFTWARE_control .GINGER_SOFTWARE_mark {border-top-left-radius:2px; border-top-right-radius:2px; border-bottom-right-radius:2px; border-bottom-left-radius:2px;} .GINGER_SOFTWARE_control .GINGER_SOFTWARE_correct, .GINGER_SOFTWARE_control .GINGER_SOFTWARE_SpellingCorrect, .GINGER_SOFTWARE_control .GINGER_SOFTWARE_spelling, .GINGER_SOFTWARE_control .GINGER_SOFTWARE_mark {background-image:url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyBpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBXaW5kb3dzIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjhFQ0Y2OENGMzE5OTExRTI4NjMxOTExNTUyMDhEMDMwIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjhFQ0Y2OEQwMzE5OTExRTI4NjMxOTExNTUyMDhEMDMwIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6OEVDRjY4Q0QzMTk5MTFFMjg2MzE5MTE1NTIwOEQwMzAiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6OEVDRjY4Q0UzMTk5MTFFMjg2MzE5MTE1NTIwOEQwMzAiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5RRxRxAAAAD0lEQVR42mK48+w7QIABAAVbAroowN08AAAAAElFTkSuQmCC)!important;} .GINGER_SOFTWARE_control .GINGER_SOFTWARE_correct.GINGER_SOFTWARE_synonym, .GINGER_SOFTWARE_control .GINGER_SOFTWARE_SpellingCorrect.GINGER_SOFTWARE_synonym, .GINGER_SOFTWARE_control .GINGER_SOFTWARE_spelling.GINGER_SOFTWARE_synonym, .GINGER_SOFTWARE_control .GINGER_SOFTWARE_mark.GINGER_SOFTWARE_synonym {background-image:url(data:image/gif;base64,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)!important;} .GINGER_SOFTWARE_control .GINGER_SOFTWARE_correct.GINGER_SOFTWARE_noSuggestion, .GINGER_SOFTWARE_control .GINGER_SOFTWARE_SpellingCorrect.GINGER_SOFTWARE_noSuggestion, .GINGER_SOFTWARE_control .GINGER_SOFTWARE_spelling.GINGER_SOFTWARE_noSuggestion, .GINGER_SOFTWARE_control .GINGER_SOFTWARE_mark.GINGER_SOFTWARE_noSuggestion {background-image:url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyBpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBXaW5kb3dzIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjhFQ0Y2OENGMzE5OTExRTI4NjMxOTExNTUyMDhEMDMwIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjhFQ0Y2OEQwMzE5OTExRTI4NjMxOTExNTUyMDhEMDMwIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6OEVDRjY4Q0QzMTk5MTFFMjg2MzE5MTE1NTIwOEQwMzAiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6OEVDRjY4Q0UzMTk5MTFFMjg2MzE5MTE1NTIwOEQwMzAiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5RRxRxAAAAD0lEQVR42mK48+w7QIABAAVbAroowN08AAAAAElFTkSuQmCC)!important;} .GINGER_SOFTWARE_richText .GINGER_SOFTWARE_correct, .GINGER_SOFTWARE_richText .GINGER_SOFTWARE_SpellingCorrect, .GINGER_SOFTWARE_richText .GINGER_SOFTWARE_spelling, .GINGER_SOFTWARE_richText .GINGER_SOFTWARE_mark {position:relative; background-image:none!important;} .GINGER_SOFTWARE_richText .GINGER_SOFTWARE_markHighlightLeft { position : absolute; left:-2px; top:0px; bottom:0px; width:2px;} .GINGER_SOFTWARE_richText .GINGER_SOFTWARE_markHighlightRight { position : absolute; right:-2px; top:0px; bottom:0px; width:2px;} .GINGER_SOFTWARE_richText .GINGER_SOFTWARE_markHighlightTop { position : absolute; left:0px; right:0px; top:-2px; height:3px;} .GINGER_SOFTWARE_richText .GINGER_SOFTWARE_markHighlightBottom { position : absolute; left:0px; right:0px; bottom:-2px; height:3px;}</style></head>
 <body dir="ltr" class="ss-base-body" ginger_software_stylesheet="true" ginger_software_doc="true"><div itemscope="" itemtype="http://schema.org/CreativeWork/FormObject">
-<meta itemprop="name" content="ClickGarage Feedback">
+<meta itemprop="name" content="CarCrew Feedback">
 <meta itemprop="description" content="Help us serve you better!">
 
 <meta itemprop="url" content="https://docs.google.com/forms/d/1__CYdYzqK2NcZvz4JHCEpVqHQR3A9rRYw_guvXOC-xQ/viewform">
@@ -6278,7 +6278,7 @@ padding-top:10px;}
 
 
 <div class="ss-form-container"><div class="ss-header-image-container"><div class="ss-header-image-image"><div class="ss-header-image-sizer"></div></div></div>
-<div class="ss-top-of-page"><div class="ss-form-heading"><h1 class="ss-form-title" dir="ltr">ClickGarage Feedback</h1>
+<div class="ss-top-of-page"><div class="ss-form-heading"><h1 class="ss-form-title" dir="ltr">CarCrew Feedback</h1>
 <div class="ss-form-desc ss-no-ignore-whitespace" dir="ltr">Help us serve you better!</div>
 
 <div class="ss-required-asterisk" aria-hidden="true"></div></div></div>
@@ -6366,7 +6366,7 @@ padding-top:10px;}
 </div></div></div> <div class="ss-form-question errorbox-good" role="listitem">
 <br>
 <div dir="auto" class="ss-item ss-item-required ss-scale"><div class="ss-form-entry">
-<label class="ss-q-item-label" for="entry_1622944453"><div class="ss-q-title">6. How likely are you to recommend ClickGarage services to others?
+<label class="ss-q-item-label" for="entry_1622944453"><div class="ss-q-title">6. How likely are you to recommend CarCrew services to others?
 <label for="itemView.getDomIdToLabel()" aria-label="(Required field)"></label>
 <span class="ss-required-asterisk" aria-hidden="true">*</span></div>
 <div class="ss-q-help ss-secondary-text" dir="auto"></div></label>
@@ -6374,7 +6374,7 @@ padding-top:10px;}
 <table border="0" cellpadding="5" cellspacing="0" id="entry_787110920"><tbody><tr aria-hidden="true"><td class="ss-scalenumbers"></td>
 <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_1">1</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_2">2</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_3">3</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_4">4</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_5">5</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_6">6</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_7">7</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_8">8</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_9">9</label></td> <td class="ss-scalenumbers"><label class="ss-scalenumber" for="group_787110920_10">10</label></td>
 <td class="ss-scalenumbers"></td></tr>
-<tr role="radiogroup" aria-label="How likely are you to recommend ClickGarage services to others?  Select a value from a range of 1,No, Never, to 10,Yes, Definitely,."><td class="ss-scalerow ss-leftlabel"><div aria-hidden="true" class="aria-todo">No, Never</div></td>
+<tr role="radiogroup" aria-label="How likely are you to recommend CarCrew services to others?  Select a value from a range of 1,No, Never, to 10,Yes, Definitely,."><td class="ss-scalerow ss-leftlabel"><div aria-hidden="true" class="aria-todo">No, Never</div></td>
 <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="1" id="group_787110920_1" role="radio" class="ss-q-radio" aria-label="1" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="2" id="group_787110920_2" role="radio" class="ss-q-radio" aria-label="2" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="3" id="group_787110920_3" role="radio" class="ss-q-radio" aria-label="3" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="4" id="group_787110920_4" role="radio" class="ss-q-radio" aria-label="4" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="5" id="group_787110920_5" role="radio" class="ss-q-radio" aria-label="5" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="6" id="group_787110920_6" role="radio" class="ss-q-radio" aria-label="6" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="7" id="group_787110920_7" role="radio" class="ss-q-radio" aria-label="7" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="8" id="group_787110920_8" role="radio" class="ss-q-radio" aria-label="8" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="9" id="group_787110920_9" role="radio" class="ss-q-radio" aria-label="9" required="" aria-required="true"></div></td> <td class="ss-scalerow"><div class="ss-scalerow-fieldcell"><input type="radio" name="entry.787110920" value="10" id="group_787110920_10" role="radio" class="ss-q-radio" aria-label="10" required="" aria-required="true"></div></td>
 <td class="ss-scalerow ss-rightlabel" aria-hidden="true">Yes, Definitely</td></tr></tbody></table>
 </div></div></div> <div class="ss-form-question errorbox-good" role="listitem">
@@ -6453,14 +6453,14 @@ padding-top:10px;}
 
                                                 <tbody><tr>
                                                     <td align="center" valign="top" class="mcnFollowIconContent" style="padding-right:10px; padding-bottom:5px;">
-                                                        <a href="http://www.facebook.com/theclickgarage" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-facebook-96.png" alt="Facebook" class="mcnFollowBlockIcon" width="48" style="width:48px; max-width:48px; display:block;"></a>
+                                                        <a href="http://www.facebook.com/carcrew.in" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-facebook-96.png" alt="Facebook" class="mcnFollowBlockIcon" width="48" style="width:48px; max-width:48px; display:block;"></a>
                                                     </td>
                                                 </tr>
 
 
                                                 <tr>
                                                     <td align="center" valign="top" class="mcnFollowTextContent" style="padding-right:10px; padding-bottom:9px;">
-                                                        <a href="http://www.facebook.com/theclickgarage" target="_blank" style="color: #606060;font-family: Arial;font-size: 11px;font-weight: normal;text-decoration: none;line-height: 100%;text-align: center;">Facebook</a>
+                                                        <a href="http://www.facebook.com/carcrew.in" target="_blank" style="color: #606060;font-family: Arial;font-size: 11px;font-weight: normal;text-decoration: none;line-height: 100%;text-align: center;">Facebook</a>
                                                     </td>
                                                 </tr>
 
@@ -6488,19 +6488,18 @@ padding-top:10px;}
 
 
 
-
                                             <table align="left" border="0" cellpadding="0" cellspacing="0" class="mcnFollowStacked">
 
                                                 <tbody><tr>
                                                     <td align="center" valign="top" class="mcnFollowIconContent" style="padding-right:0; padding-bottom:5px;">
-                                                        <a href="http://www.clickgarage.in" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-link-96.png" alt="Website" class="mcnFollowBlockIcon" width="48" style="width:48px; max-width:48px; display:block;"></a>
+                                                        <a href="http://www.CarCrew.in" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-link-96.png" alt="Website" class="mcnFollowBlockIcon" width="48" style="width:48px; max-width:48px; display:block;"></a>
                                                     </td>
                                                 </tr>
 
 
                                                 <tr>
                                                     <td align="center" valign="top" class="mcnFollowTextContent" style="padding-right:0; padding-bottom:9px;">
-                                                        <a href="http://www.clickgarage.in" target="_blank" style="color: #606060;font-family: Arial;font-size: 11px;font-weight: normal;text-decoration: none;line-height: 100%;text-align: center;">Website</a>
+                                                        <a href="http://www.CarCrew.in" target="_blank" style="color: #606060;font-family: Arial;font-size: 11px;font-weight: normal;text-decoration: none;line-height: 100%;text-align: center;">Website</a>
                                                     </td>
                                                 </tr>
 
@@ -6548,7 +6547,7 @@ padding-top:10px;}
                         <td valign="top" class="mcnTextContent" style="padding-top:9px; padding-right: 18px; padding-bottom: 9px; padding-left: 18px;">
 
                             <div style="text-align: center;"><em>Copyright (C) 2015 Sui Generis Innovations, All rights reserved.</em><br>
-Email : info@clickgarage.in | Phone No. : +91-9555950000<br>
+Email : sales@carcrew.in | Phone No. : +91-7045996415<br>
 <br>
 W-22, Second Floor, Green Park, New Delhi - 110016</div>
 
@@ -6836,7 +6835,7 @@ def send_mail_coupon(to_address,wash,bike,service):
 
 	# Create message container - the correct MIME type is multipart/alternative.
 	msg = MIMEMultipart('alternative')
-	msg['Subject'] = "ClickGarage - Your Car and Bike Care Made Hassle Free"
+	msg['Subject'] = "CarCrew - Your Car and Bike Care Made Hassle Free"
 	msg['From'] = me
 	msg['To'] = you
 
@@ -7435,7 +7434,7 @@ def send_mail_coupon(to_address,wash,bike,service):
 
 							<td valign="top" class="mcnTextContent" style="padding-top:9px; padding-right: 18px; padding-bottom: 9px; padding-left: 18px;">
 
-								<h1><span style="font-size:18px">ClickGarage</span></h1>
+								<h1><span style="font-size:18px">CarCrew</span></h1>
 
 	<p style="box-sizing: border-box;margin: 0px 0px 27px;color: #565656;font-family: 'Source Sans Pro', sans-serif;font-size: 14px;line-height: 23.1px;"><span style="box-sizing:border-box">We are an online one-stop-shop which you can go to for any car or bike related&nbsp;service, be it regular maintenance, exterior detailing, repairs, or roadside assistance. You can select from, both authorized as well our&nbsp;standardized multi-brand workshops.<br>
 	<br>
@@ -7463,7 +7462,7 @@ def send_mail_coupon(to_address,wash,bike,service):
 						<tbody>
 							<tr>
 								<td align="center" valign="middle" class="mcnButtonContent" style="font-family: Arial; font-size: 16px; padding: 15px;">
-									<a class="mcnButton " title="Book Now" href="http://www.clickgarage.in" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">Book Now</a>
+									<a class="mcnButton " title="Book Now" href="http://www.carcrew.in" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">Book Now</a>
 								</td>
 							</tr>
 						</tbody>
@@ -7517,7 +7516,7 @@ def send_mail_coupon(to_address,wash,bike,service):
 			<td class="mcnImageCardBottomImageContent" align="left" valign="top" style="padding-top:0px; padding-right:0px; padding-bottom:0; padding-left:0px;">
 
 
-				<a href="http://www.clickgarage.in" title="" class="" target="_blank">
+				<a href="http://www.carcrew.in" title="" class="" target="_blank">
 
 
 				<img alt="" src="https://gallery.mailchimp.com/2cf3731a4f89990fe68c1bf2a/images/e5129954-b32c-4e65-8c75-bb5d23c446e5.jpg" width="564" style="max-width:640px;" class="mcnImage">
@@ -7585,7 +7584,7 @@ def send_mail_coupon(to_address,wash,bike,service):
 		</tr>
 		<tr>
 			<td class="mcnTextContent" valign="top" style="padding: 9px 18px;color: #F2F2F2;font-family: Helvetica;font-size: 14px;font-weight: normal;text-align: center;" width="546">
-				<span style="font-size:13px">Car servicing at Quality ClickGarage workshop. Use '""" +service+"""' to avail the discount.</span>
+				<span style="font-size:13px">Car servicing at Quality carcrew workshop. Use '""" +service+"""' to avail the discount.</span>
 			</td>
 		</tr>
 	</tbody></table>
@@ -7648,7 +7647,7 @@ def send_mail_coupon(to_address,wash,bike,service):
 																			<tbody><tr>
 
 																					<td align="center" valign="middle" width="24" class="mcnFollowIconContent">
-																						<a href="http://www.twitter.com/theclickgarage" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-twitter-48.png" style="display:block;" height="24" width="24" class=""></a>
+																						<a href="http://www.twitter.com/theCarCrew" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-twitter-48.png" style="display:block;" height="24" width="24" class=""></a>
 																					</td>
 
 
@@ -7680,7 +7679,7 @@ def send_mail_coupon(to_address,wash,bike,service):
 																			<tbody><tr>
 
 																					<td align="center" valign="middle" width="24" class="mcnFollowIconContent">
-																						<a href="http://www.facebook.com/theclickgarage" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-facebook-48.png" style="display:block;" height="24" width="24" class=""></a>
+																						<a href="http://www.facebook.com/carcrew.in" target="_blank"><img src="http://cdn-images.mailchimp.com/icons/social-block-v2/color-facebook-48.png" style="display:block;" height="24" width="24" class=""></a>
 																					</td>
 
 
@@ -7806,13 +7805,13 @@ def send_mail_coupon(to_address,wash,bike,service):
 
 							<td valign="top" class="mcnTextContent" style="padding-top:9px; padding-right: 18px; padding-bottom: 9px; padding-left: 18px;">
 
-								<em>Copyright - 2015 Sui Generis Innovations Pvt. Ltd., All rights reserved.</em><br>
+								<em>Copyright - 2015 Carcrew TechnologyPvt. Ltd., All rights reserved.</em><br>
 	<br>
 	<strong>Our mailing address is:</strong><br>
-	info@clickgarage.in<br>
+	sales@carcrew.in<br>
 	<br>
 	<strong>Contact:</strong><br>
-	+91-9555950000<br>
+	+91-7045996415<br>
 	&nbsp;
 							</td>
 						</tr>
@@ -8040,16 +8039,16 @@ def send_booking_confirm(email,name,booking_id,number,service_list,car_bike):
 
 	if booking.clickgarage_flag == True and booking.status != "Lead":
 		if booking.cust_vehicle_type == "Car":
-			message = "Hi " + name + "! Your ClickGarage order has been placed. You will recieve a call shortly to confirm the order. For further assistance, please contact your relationship manager " + cgpoc + " and quote your booking ID: " + str(booking_id)
+			message = "Hi " + name + "! Your CarCrew order has been placed. You will recieve a call shortly to confirm the order. For further assistance, please contact your relationship manager " + cgpoc + " and quote your booking ID: " + str(booking_id)
 		else:
-			message = "Hi " + name + "! Currently our bike operations are on hold for improvements. Apologies for the inconvinience caused. Happy Motoring, Team ClickGarage!"
+			message = "Hi " + name + "! Currently our bike operations are on hold for improvements. Apologies for the inconvinience caused. Happy Motoring, Team CarCrew!"
 		send_sms_2factor(number, message)
 	elif booking.clickgarage_flag == True and booking.status == "Lead":
-		message = "Hi " + name + "! Thank you for visiting ClickGarage! Your relationship manager will get in touch with you shortly to understand your requirements. Happy Motoring! Team ClickGarage."
+		message = "Hi " + name + "! Thank you for visiting CarCrew! Your relationship manager will get in touch with you shortly to understand your requirements. Happy Motoring! Team CarCrew."
 		send_sms_2factor(number, message)
 	else:
 		message = "Hi " + name + "! Your booking with " + full_agent_name + " has been confirmed for " + str(booking.time_booking) + " on " + str(booking.date_booking) + ".  For further assistance, please contact us on " + agent_num + " and quote your booking ID: " + str(
-			booking_id) + ". Booking tracking link: https://www.clickgarage.in/track/" + booking.id + "/details"
+			booking_id) + ". Booking tracking link: https://www.CarCrew.in/track/" + booking.id + "/details"
 		# print message
 		send_sms_2factor_EZY(number, message)
 
@@ -8101,7 +8100,7 @@ def send_sms_customer_manual(dataid,message):
 	booking = Bookings.objects.filter(id=dataid)[0]
 	customer_number = booking.cust_number
 	if booking.clickgarage_flag:
-		message = "Hello " + booking.cust_name + "," + message + " Happy Motoring, Team ClickGarage!"
+		message = "Hello " + booking.cust_name + "," + message + " Happy Motoring, Team CarCrew!"
 		send_sms_2factor(customer_number, message)
 	else:
 		message = "Hello " + booking.cust_name + "," + message
@@ -8120,15 +8119,15 @@ def send_sms_customer(name,number,booking_id,date,time,agent_details = None,esti
 
 	if status =="Confirmed":
 		if booking.clickgarage_flag == True:
-			message = "Hi " + name + "! Your ClickGarage order has been confirmed for "+ str(time) + " on " + str(date) +". You will recieve the engineer details shortly. For further assistance, please contact your relationship manager " + cgpoc + " and quote your booking ID: " + str(
+			message = "Hi " + name + "! Your CarCrew order has been confirmed for "+ str(time) + " on " + str(date) +". You will recieve the engineer details shortly. For further assistance, please contact your relationship manager " + cgpoc + " and quote your booking ID: " + str(
 				booking_id)
 			send_sms_2factor(number, message)
 		else:
-			message = "Hi " + name + "! Your booking with"+ full_agent_name +" has been confirmed for " + str(time) + " on " + str(date) + ".  For further assistance, please contact us on " + agent_num + " and quote your booking ID: " + str(booking_id) + ". Booking tracking link: https://www.clickgarage.in/track/" + booking.id + "/details"
+			message = "Hi " + name + "! Your booking with"+ full_agent_name +" has been confirmed for " + str(time) + " on " + str(date) + ".  For further assistance, please contact us on " + agent_num + " and quote your booking ID: " + str(booking_id) + ". Booking tracking link: https://www.carcrew.in/track/" + booking.id + "/details"
 			send_sms_2factor_EZY(number, message)
 	if status == "Assigned":
 		if booking.clickgarage_flag == True:
-			message = "Hi " + name + "! CG Service engineer "+full_agent_name+ " has been assigned for your order. For further assistance, please contact your relationship manager " + cgpoc + " and quote your booking ID: " + str(booking_id)  + ".For driver details and other relevant info. use our Booking tracking link: https://www.clickgarage.in/track/" + booking.id + "/details"
+			message = "Hi " + name + "! CG Service engineer "+full_agent_name+ " has been assigned for your order. For further assistance, please contact your relationship manager " + cgpoc + " and quote your booking ID: " + str(booking_id)  + ".For driver details and other relevant info. use our Booking tracking link: https://www.carcrew.in/track/" + booking.id + "/details"
 			send_sms_2factor(number, message)
 	if status =="Engineer Left":
 		if booking.clickgarage_flag == True:
@@ -8193,13 +8192,13 @@ def send_sms_customer(name,number,booking_id,date,time,agent_details = None,esti
 def send_sms_agent(agent_name, agent_num, cust_num,date,time,booking_id,cust_name, comments, total, address,vehicle ):
 	booking = Bookings.objects.filter(booking_id = booking_id)[0]
 	booking_data_id = booking.id
-	message = "ClickGarage Booking ID:"+str(booking_id)+" | Date:" + str(date) + " | Time: " + str(time) + "| Name:"+ cust_name + "("+cust_num+")| Vehicle:"+ vehicle
+	message = "CarCrew Booking ID:"+str(booking_id)+" | Date:" + str(date) + " | Time: " + str(time) + "| Name:"+ cust_name + "("+cust_num+")| Vehicle:"+ vehicle
 	# i = 1
 	# for comment in comments:
 	# 	message += str(i) + ") "+ comment['Job']
 	# 	i = i + 1
 	message +=  " | Address: "+str(address)
-	message += " | Link: https://www.clickgarage.in/adminpanel/bookings/single/" + str(booking_data_id)
+	message += " | Link: https://www.carcrew.in/adminpanel/bookings/single/" + str(booking_data_id)
 	print message
 	# message = message.replace(" ", "+")
 	send_sms_2factor(agent_num, message)
@@ -8371,8 +8370,7 @@ def html_to_send(name, booking_id, service_list,car_bike):
     <td width="600" valign="top">
 <![endif]-->
 
-  <img class="max-width"  width="600"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/bb5c8b37fb8b5c18fa56b1adbdf4ea31daedb73c1df75bc47974c47504873b3b58f73a89ce248498a65fd30bb1dbf308b456ef84787f9c516588b95bb4e21728.jpg" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 600px !important; width: 100% !important; height: auto !important; " />
-
+  
 <!--[if mso]>
 </td></tr></table>
 </center>
@@ -8446,7 +8444,7 @@ def html_to_send(name, booking_id, service_list,car_bike):
 </tr>
 </table><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%227%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
 <tr>
-  <td role="module-content"  valign="top" height="100%" style="padding: 7px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: center;"><span style="font-size:14px;">ClickGarage cleaning experts drop by at the location, equipped with machines</span></div> </td>
+  <td role="module-content"  valign="top" height="100%" style="padding: 7px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: center;"><span style="font-size:14px;">CarCrewcleaning experts drop by at the location, equipped with machines</span></div> </td>
 </tr>
 </table>
 
@@ -8512,7 +8510,7 @@ def html_to_send(name, booking_id, service_list,car_bike):
             <tr>
               <td class="leftColumnContent" role="column-one" height="100%" style="height:100%;"><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
 <tr>
-  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="font-size:12px;line-height:150%;margin:0;text-align:center;">This email was sent by: ClickGarage (Sui Generis Innovations Private Limited), &nbsp;W-22, Green Park, New Delhi | To unsubscribe click: <a href="[Unsubscribe]">here</a></div> </td>
+  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="font-size:12px;line-height:150%;margin:0;text-align:center;">This email was sent by: CarCrew(Carcrew Technology Private Limited), &nbsp;W-22, Green Park, New Delhi | To unsubscribe click: <a href="[Unsubscribe]">here</a></div> </td>
 </tr>
 </table>
 </td>
@@ -8671,7 +8669,6 @@ def html_to_send(name, booking_id, service_list,car_bike):
     <td width="600" valign="top">
 <![endif]-->
 
-  <img class="max-width"  width="600"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/bb5c8b37fb8b5c18fa56b1adbdf4ea31daedb73c1df75bc47974c47504873b3b58f73a89ce248498a65fd30bb1dbf308b456ef84787f9c516588b95bb4e21728.jpg" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 600px !important; width: 100% !important; height: auto !important; " />
 
 <!--[if mso]>
 </td></tr></table>
@@ -8746,7 +8743,7 @@ def html_to_send(name, booking_id, service_list,car_bike):
 </tr>
 </table><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%227%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
 <tr>
-  <td role="module-content"  valign="top" height="100%" style="padding: 7px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: center;"><span style="font-size:14px;">ClickGarage experts drop by at the location to pick the vehicle</span></div> </td>
+  <td role="module-content"  valign="top" height="100%" style="padding: 7px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: center;"><span style="font-size:14px;">CarCrewexperts drop by at the location to pick the vehicle</span></div> </td>
 </tr>
 </table>
 
@@ -8812,7 +8809,7 @@ def html_to_send(name, booking_id, service_list,car_bike):
             <tr>
               <td class="leftColumnContent" role="column-one" height="100%" style="height:100%;"><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
 <tr>
-  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="font-size:12px;line-height:150%;margin:0;text-align:center;">This email was sent by: ClickGarage (Sui Generis Innovations Private Limited), &nbsp;W-22, Green Park, New Delhi | To unsubscribe click: <a href="[Unsubscribe]">here</a></div> </td>
+  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="font-size:12px;line-height:150%;margin:0;text-align:center;">This email was sent by: CarCrew(Carcrew Technology Private Limited), &nbsp;W-22, Green Park, New Delhi | To unsubscribe click: <a href="[Unsubscribe]">here</a></div> </td>
 </tr>
 </table>
 </td>
@@ -8971,7 +8968,6 @@ def html_to_send(name, booking_id, service_list,car_bike):
     <td width="600" valign="top">
 <![endif]-->
 
-  <img class="max-width"  width="600"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/bb5c8b37fb8b5c18fa56b1adbdf4ea31daedb73c1df75bc47974c47504873b3b58f73a89ce248498a65fd30bb1dbf308b456ef84787f9c516588b95bb4e21728.jpg" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 600px !important; width: 100% !important; height: auto !important; " />
 
 <!--[if mso]>
 </td></tr></table>
@@ -9047,7 +9043,7 @@ def html_to_send(name, booking_id, service_list,car_bike):
 </tr>
 </table><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%227%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
 <tr>
-  <td role="module-content"  valign="top" height="100%" style="padding: 7px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: center;"><span style="font-size:14px;">ClickGarage experts will drop by at the location, equipped with necessary equipment</span></div> </td>
+  <td role="module-content"  valign="top" height="100%" style="padding: 7px 0px 0px 0px;" bgcolor="#ffffff"><div style="text-align: center;"><span style="font-size:14px;">CarCrewexperts will drop by at the location, equipped with necessary equipment</span></div> </td>
 </tr>
 </table>
 
@@ -9113,7 +9109,7 @@ def html_to_send(name, booking_id, service_list,car_bike):
             <tr>
               <td class="leftColumnContent" role="column-one" height="100%" style="height:100%;"><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
 <tr>
-  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="font-size:12px;line-height:150%;margin:0;text-align:center;">This email was sent by: ClickGarage (Sui Generis Innovations Private Limited), &nbsp;W-22, Green Park, New Delhi | To unsubscribe click: <a href="[Unsubscribe]">here</a></div> </td>
+  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="font-size:12px;line-height:150%;margin:0;text-align:center;">This email was sent by: CarCrew(Carcrew Technology Private Limited), &nbsp;W-22, Green Park, New Delhi | To unsubscribe click: <a href="[Unsubscribe]">here</a></div> </td>
 </tr>
 </table>
 </td>
@@ -9272,8 +9268,7 @@ def html_to_send(name, booking_id, service_list,car_bike):
     <td width="600" valign="top">
 <![endif]-->
 
-  <img class="max-width"  width="600"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/bb5c8b37fb8b5c18fa56b1adbdf4ea31daedb73c1df75bc47974c47504873b3b58f73a89ce248498a65fd30bb1dbf308b456ef84787f9c516588b95bb4e21728.jpg" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 600px !important; width: 100% !important; height: auto !important; " />
-
+ 
 <!--[if mso]>
 </td></tr></table>
 </center>
@@ -9413,7 +9408,7 @@ def html_to_send(name, booking_id, service_list,car_bike):
             <tr>
               <td class="leftColumnContent" role="column-one" height="100%" style="height:100%;"><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
 <tr>
-  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="font-size:12px;line-height:150%;margin:0;text-align:center;">This email was sent by: ClickGarage (Sui Generis Innovations Private Limited), &nbsp;W-22, Green Park, New Delhi | To unsubscribe click: <a href="[Unsubscribe]">here</a></div> </td>
+  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="font-size:12px;line-height:150%;margin:0;text-align:center;">This email was sent by: CarCrew(Carcrew Technology Private Limited), &nbsp;W-22, Green Park, New Delhi | To unsubscribe click: <a href="[Unsubscribe]">here</a></div> </td>
 </tr>
 </table>
 </td>
@@ -9575,7 +9570,6 @@ def html_to_send(name, booking_id, service_list,car_bike):
     <td width="600" valign="top">
 <![endif]-->
 
-  <img class="max-width"  width="600"   height=""  src="https://marketing-image-production.s3.amazonaws.com/uploads/bb5c8b37fb8b5c18fa56b1adbdf4ea31daedb73c1df75bc47974c47504873b3b58f73a89ce248498a65fd30bb1dbf308b456ef84787f9c516588b95bb4e21728.jpg" alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 600px !important; width: 100% !important; height: auto !important; " />
 
 <!--[if mso]>
 </td></tr></table>
@@ -9716,7 +9710,7 @@ def html_to_send(name, booking_id, service_list,car_bike):
             <tr>
               <td class="leftColumnContent" role="column-one" height="100%" style="height:100%;"><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
 <tr>
-  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="font-size:12px;line-height:150%;margin:0;text-align:center;">This email was sent by: ClickGarage (Sui Generis Innovations Private Limited), &nbsp;W-22, Green Park, New Delhi | To unsubscribe click: <a href="[Unsubscribe]">here</a></div> </td>
+  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="font-size:12px;line-height:150%;margin:0;text-align:center;">This email was sent by: CarCrew(Carcrew Technology Private Limited), &nbsp;W-22, Green Park, New Delhi | To unsubscribe click: <a href="[Unsubscribe]">here</a></div> </td>
 </tr>
 </table>
 </td>
@@ -9906,9 +9900,9 @@ body, p, div { font-family: arial,sans-serif; }
 <![endif]-->
 <img class="max-width"  width="600"   height=""  src='"""
 	if bill_estimate == "Bill":
-		html += """https://www.clickgarage.in/static/revamp/img/bill_email.jpg"""
+		html += """https://www.carcrew.in/static/revamp/img/bill_email.jpg"""
 	elif bill_estimate == "Estimate":
-		html += """https://www.clickgarage.in/static/revamp/img/estimate_email.jpg"""
+		html += """https://www.carcrew.in/static/revamp/img/estimate_email.jpg"""
 	html += """' alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 600px !important; width: 100% !important; height: auto !important; " />
 <!--[if mso]>
 </td></tr></table>
@@ -9921,9 +9915,9 @@ body, p, div { font-family: arial,sans-serif; }
 <tr>"""
 	if bill_estimate == "Bill":
 		if booking_id != "":
-			html += """<td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """+name+"""<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Thank you for using ClickGarage. Your order of Booking ID: """+booking_id+""" is complete. Your total due amount is Rs."""+total_amount + """ Please find attached your bill with the email. &nbsp;</div> </td>"""
+			html += """<td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """+name+"""<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Thank you for using CarCrew. Your order of Booking ID: """+booking_id+""" is complete. Your total due amount is Rs."""+total_amount + """ Please find attached your bill with the email. &nbsp;</div> </td>"""
 		else:
-			html += """<td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """ + name + """<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Thank you for using ClickGarage. Your total due amount is  Rs.""" + total_amount + """ Please find attached your bill with the email. The bill summary is as follows: &nbsp;</div> </td>"""
+			html += """<td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """ + name + """<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Thank you for using CarCrew. Your total due amount is  Rs.""" + total_amount + """ Please find attached your bill with the email. The bill summary is as follows: &nbsp;</div> </td>"""
 	elif bill_estimate == "Estimate" and confirmed:
 		html += """<td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """+name+"""<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Your vehicle inspection is complete for the booking ID: """+booking_id+""". The total estimated amount is Rs."""+total_amount + """. Detailed breakup of the jobs is as follows.&nbsp;</div> </td>"""
 	elif bill_estimate == "Estimate":
@@ -9955,7 +9949,7 @@ body, p, div { font-family: arial,sans-serif; }
     text-decoration: none;
     line-height: 25px;
     width:100%;
-    font-weight: bold;" href='https://www.clickgarage.in/track/""" + data_id + """/estimate'>Approve Items</a></div>"""
+    font-weight: bold;" href='https://www.carcrew.in/track/""" + data_id + """/estimate'>Approve Items</a></div>"""
 	html +="""<table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22spacing%22%3A30%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
 	<tr><td role="module-content" style="padding: 0px 0px 30px 0px;" bgcolor="#ffffff"></td></tr></table>
 	<table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" class="module footer" role="module" data-type="footer" data-attributes='%7B%22dropped%22%3Atrue%2C%22columns%22%3A1%2C%22padding%22%3A%2210%2C5%2C10%2C5%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
@@ -9968,7 +9962,7 @@ body, p, div { font-family: arial,sans-serif; }
 				<tr>
 				  <td class="leftColumnContent" role="column-one" height="100%" style="height:100%;"><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
 	<tr>
-	  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="font-size:12px;line-height:150%;margin:0;text-align:center;">This email was sent by: ClickGarage (Sui Generis Innovations Private Limited), &nbsp;W-22, Green Park, New Delhi</div> </td>
+	  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="font-size:12px;line-height:150%;margin:0;text-align:center;">This email was sent by: CarCrew(Carcrew Technology Private Limited), &nbsp;W-22, Green Park, New Delhi</div> </td>
 	</tr>
 	</table>
 	</td>
@@ -10145,7 +10139,7 @@ body, p, div { font-family: arial,sans-serif; }
 <td width="600" valign="top">
 <![endif]-->
 <img class="max-width"  width="600"   height=""  src='"""
-	html += """https://www.clickgarage.in/static/revamp/img/bill_email.jpg"""
+	# html += """https://www.carcrew.in/static/revamp/img/bill_email.jpg"""
 	html += """' alt="" border="0" style="display: block; color: #000; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;  max-width: 600px !important; width: 100% !important; height: auto !important; " />
 <!--[if mso]>
 </td></tr></table>
@@ -10157,9 +10151,9 @@ body, p, div { font-family: arial,sans-serif; }
 <table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C12%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
 <tr>"""
 	if booking_id != "":
-		html += """<td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """+name+"""<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Thank you for using ClickGarage. Your vehicle inspection is complete (Booking ID: """+booking_id+""").  Please find attached your vehicle inspection report in the email. &nbsp;</div> </td>"""
+		html += """<td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """+name+"""<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Thank you for using CarCrew. Your vehicle inspection is complete (Booking ID: """+booking_id+""").  Please find attached your vehicle inspection report in the email. &nbsp;</div> </td>"""
 	else:
-		html += """<td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """ + name + """<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Your vehicle inspection is complete. Thank you for using ClickGarage. Please find attached your vehicle inspection report in the email. &nbsp;</div> </td>"""
+		html += """<td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 12px 0px;" bgcolor="#ffffff"><div>Hi """ + name + """<span style="color: rgb(116, 120, 126); font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; background-color: rgb(255, 255, 255);">,</span></div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Your vehicle inspection is complete. Thank you for using CarCrew. Please find attached your vehicle inspection report in the email. &nbsp;</div> </td>"""
 
 	html += """</tr><tr><br>"""
 
@@ -10181,7 +10175,7 @@ body, p, div { font-family: arial,sans-serif; }
 				<tr>
 				  <td class="leftColumnContent" role="column-one" height="100%" style="height:100%;"><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%220%2C0%2C0%2C0%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
 	<tr>
-	  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="font-size:12px;line-height:150%;margin:0;text-align:center;">This email was sent by: ClickGarage (Sui Generis Innovations Private Limited), &nbsp;W-22, Green Park, New Delhi</div> </td>
+	  <td role="module-content"  valign="top" height="100%" style="padding: 0px 0px 0px 0px;" bgcolor="#ffffff"><div style="font-size:12px;line-height:150%;margin:0;text-align:center;">This email was sent by: CarCrew(Carcrew Technology Private Limited), &nbsp;W-22, Green Park, New Delhi</div> </td>
 	</tr>
 	</table>
 	</td>
@@ -10239,7 +10233,7 @@ def send_bill(cust_name,booking_id,cust_email,price_total,serviceitems,cust_numb
 	if booking_id != "":
 		msg['Subject'] = "Job Completed! Booking ID: " + str(booking_id)
 	else:
-		msg['Subject'] = "ClickGarage | Bill"
+		msg['Subject'] = "CarCrew| Bill"
 
 	html = html_to_send_bill_estimate(name=cust_name, booking_id=booking_id, bill_estimate=bill_estimate,total_amount=price_total, service_list=serviceitems,data_id= "")
 	script = MIMEText(html, 'html')
@@ -10271,7 +10265,7 @@ def send_report(cust_name,booking_id,cust_email,filename):
 	if booking_id != "":
 		msg['Subject'] = "Inspection Report! Booking ID: " + str(booking_id)
 	else:
-		msg['Subject'] = "ClickGarage | Inspection Report"
+		msg['Subject'] = "CarCrew | Inspection Report"
 
 	html = html_to_send_report(name=cust_name, booking_id=booking_id)
 
@@ -10537,9 +10531,9 @@ page[size="A5"][layout="portrait"] {
 			<tr>
 				<td class="title company-name">"""
 	if logo:
-		html += """<img id="bill-logo" src="https://www.clickgarage.in/static/revamp/img/Bill%20Logos/ClickGarage.png" style="width:100%; max-width:150px;"><br>"""
+		html += """<img id="bill-logo" src="https://www.carcrew.in/static/revamp/img/Bill%20Logos/ClickGarage.png" style="width:100%; max-width:150px;"><br>"""
 	else:
-		html += """<img id="bill-logo" src="https://www.clickgarage.in/static/revamp/img/Bill%20Logos/""" + string.replace(agent_name, ' ', '%20') + """.png" style="width:100%; max-width:150px;"><br>"""
+		html += """<img id="bill-logo" src="https://www.carcrew.in/static/revamp/img/Bill%20Logos/""" + string.replace(agent_name, ' ', '%20') + """.png" style="width:100%; max-width:150px;"><br>"""
 
 	html += """<span id="agent-name">"""+ agent_name +"""</span><br>
 					<span id="agent-address">"""+ agent_address +"""</span><br>
@@ -11088,9 +11082,9 @@ page[size="A5"][layout="portrait"] {
 			<tr>
 				<td class="title company-name">"""
 	if logo:
-		html += """<img id="bill-logo" src="https://www.clickgarage.in/static/revamp/img/Bill%20Logos/ClickGarage.png" style="width:100%; max-width:150px;"><br>"""
+		html += """<img id="bill-logo" src="https://www.carcrew.in/static/revamp/img/Bill%20Logos/ClickGarage.png" style="width:100%; max-width:150px;"><br>"""
 	else:
-		html += """<img id="bill-logo" src="https://www.clickgarage.in/static/revamp/img/Bill%20Logos/""" + string.replace(agent_name, ' ', '%20') + """.png" style="width:100%; max-width:150px;"><br>"""
+		html += """<img id="bill-logo" src="https://www.carcrew.in/static/revamp/img/Bill%20Logos/""" + string.replace(agent_name, ' ', '%20') + """.png" style="width:100%; max-width:150px;"><br>"""
 
 	html += """<span id="agent-name">"""+ agent_name +"""</span><br>
 					<span id="agent-address">"""+ agent_address +"""</span><br>

@@ -1380,7 +1380,7 @@ def place_emergency_order(request):
         html_list.append(    booking_id)
         html_list.append(            '</b><br><p>Hi ')
         html_list.append(name)
-        html_list.append(',<br> Your ClickGarage emergency service booking has been confirmed.  ')
+        html_list.append(',<br> Your CarCrew emergency service booking has been confirmed.  ')
         html_list.append(            '. If further assistance is needed, please contact us on 09717353148 and quote your booking confirmation number #')
         html_list.append(            booking_id)
         html_list.append(            '.</p>')
@@ -4377,7 +4377,7 @@ def send_otp_new(request):
     phn = get_param(request,'phone',None)
     otp = random.randint(1000, 9999)
     otpdatetime = datetime.datetime.now()
-    message = "Your ClickGarage one time password is " + str(otp) + ". Please enter the same to complete your mobile verification."
+    message = "Your CarCrew one time password is " + str(otp) + ". Please enter the same to complete your mobile verification."
     message = message.replace(" ","+")
 
     newFlag = False
