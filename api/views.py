@@ -3746,7 +3746,7 @@ def send_otp(request):
     phn = get_param(request,'phone',None)
     otp = random.randint(1000, 9999)
     otpdatetime = datetime.datetime.now()
-    message = "Your ClickGarage one time password is " + str(otp) + ". Please enter the same to complete your mobile verification."
+    message = "Your CarCrew one time password is " + str(otp) + ". Please enter the same to complete your mobile verification."
     # message = message.replace(" ","+")
     newFlag = False
     username = None
@@ -6378,7 +6378,6 @@ def get_all_feedback(request):
     obj['counter'] = 1
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
-
 
 
 def view_all_bookings(request):

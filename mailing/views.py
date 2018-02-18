@@ -16,7 +16,7 @@ escalation_number = "9717353148"
 
 key = "ab33f626-fba5-4bff-9a2b-68a7e9eed43c"
 # ab33f626-fba5-4bff-9a2b-68a7e9eed43c
-sendername = "CLKGRG"
+sendername = "CARCRW"
 staffmails = ["shashwat@clickgarage.in", "bhuvan@clickgarage.in","bookings@clickgarage.in", "rajiv@clickgarage.in","amit.kumar@clickgarage.in","jitendra@clickgarage.in"]
 booking_mail = ["bookings@clickgarage.in"]
 
@@ -7875,14 +7875,14 @@ import json
 def send_promo_campaign_cg(to,message):
 	# url = "http://2factor.in/API/V1/e5fd3098-a453-11e6-a40f-00163ef91450/ADDON_SERVICES/SEND/PSMS"
 	# payload = {
-	# 	"From": "CLKGRG",
+	# 	"From": "CARCRW",
 	# 	"To": to	,
 	# 	"Msg" :message
 	# }
 	# response = requests.request("GET", url, data = json.dumps(payload))
 	# print(response.text)
 	message = message.replace(" ", "+")
-	url  = "http://api.msg91.com/api/sendhttp.php?route=4&country=IN&flash=0&unicode=0&campaign=viaSOCKET&authkey=151673AJzvZcNCte59758f85&mobiles=" + to +"&message=" + message + "&sender=CLKGRG"
+	url  = "http://api.msg91.com/api/sendhttp.php?route=4&country=IN&flash=0&unicode=0&campaign=viaSOCKET&authkey=151673AJzvZcNCte59758f85&mobiles=" + to +"&message=" + message + "&sender=CARCRW"
 	# url = "http://sms.hspsms.com/sendSMS?username=clickgarage&message=" + message + "&sendername=" + sendername + "&smstype=" + type + "&numbers=" + to + "&apikey=" + key
 	r = urllib2.urlopen(url)
 
@@ -7911,7 +7911,7 @@ def send_sms_2factor(to,message):
 
 	# url = "http://2factor.in/API/V1/e5fd3098-a453-11e6-a40f-00163ef91450/ADDON_SERVICES/SEND/TSMS"
 	# payload = {
-	# 	"From":"CLKGRG",
+	# 	"From":"CARCRW",
 	# 	"To": to	   ,
 	# 	"Msg":message
 	# }
@@ -7920,13 +7920,13 @@ def send_sms_2factor(to,message):
 
 	# Message 91
 	message = message.replace(" ", "+")
-	url  = "http://api.msg91.com/api/sendhttp.php?route=4&country=IN&flash=0&unicode=0&campaign=viaSOCKET&authkey=151673AJzvZcNCte59758f85&mobiles=" + to +"&message=" + message + "&sender=CLKGRG"
+	url  = "http://api.msg91.com/api/sendhttp.php?route=4&country=IN&flash=0&unicode=0&campaign=viaSOCKET&authkey=151673AJzvZcNCte59758f85&mobiles=" + to +"&message=" + message + "&sender=CARCRW"
 	# url = "http://sms.hspsms.com/sendSMS?username=clickgarage&message=" + message + "&sendername=" + sendername + "&smstype=" + type + "&numbers=" + to + "&apikey=" + key
 	r = urllib2.urlopen(url)
 
 def send_sms_msg91(to,message):
 	message = message.replace(" ", "+")
-	url  = "http://api.msg91.com/api/sendhttp.php?route=4&country=IN&flash=0&unicode=0&campaign=viaSOCKET&authkey=151673AJzvZcNCte59758f85&mobiles=" + to +"&message=" + message + "&sender=CLKGRG"
+	url  = "http://api.msg91.com/api/sendhttp.php?route=4&country=IN&flash=0&unicode=0&campaign=viaSOCKET&authkey=151673AJzvZcNCte59758f85&mobiles=" + to +"&message=" + message + "&sender=CARCRW"
 	# url = "http://sms.hspsms.com/sendSMS?username=clickgarage&message=" + message + "&sendername=" + sendername + "&smstype=" + type + "&numbers=" + to + "&apikey=" + key
 	r = urllib2.urlopen(url)
 
