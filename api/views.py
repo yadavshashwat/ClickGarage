@@ -38,6 +38,8 @@ from activity.models import Transactions, CGUser, CGUserNew
 # from lxml import html
 import csv
 
+from django.utils.encoding import python_2_unicode_compatible
+
 PRODUCTION = False
 
 if os.getcwd()=='/home/ubuntu/beta/suigen':
