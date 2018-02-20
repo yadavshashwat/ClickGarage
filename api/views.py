@@ -38,7 +38,7 @@ from activity.models import Transactions, CGUser, CGUserNew
 # from lxml import html
 import csv
 
-from django.utils.encoding import python_2_unicode_compatible
+# from django.utils.encoding import python_2_unicode_compatible
 
 PRODUCTION = False
 
@@ -7278,7 +7278,7 @@ def view_all_bookings(request):
                                 str(item_unit_price),
                                 str(type_part),
                                 str(item_quantity),
-                                str(name),
+                                str(name.encode('utf-8')),
                                 str(trans.price_total),
                                 str(trans.price_labour),
                                 str(trans.price_part),
