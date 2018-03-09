@@ -7866,7 +7866,7 @@ region ='us-west-2'
 aws_access='AKIAJNAYBONVQTNTSLZQ'
 aws_secret='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'
 
-cgpoc = "Shubham - 8800249924 "
+cgpoc = "Bhuvan - 9953008804 "
 
 import requests
 import json
