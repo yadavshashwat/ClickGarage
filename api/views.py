@@ -4801,7 +4801,7 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
     if clickgarage_flag:
         mviews.send_booking(firstname=name,lastname ="", number=number,email=email, car_bike=veh_type, make=make, model=model, fuel_type=fuel,locality=locality,address=address,date_requested=date,time_requested=time_str)
         if booking_flag:
-            number_list = ["9717353148",  "9910060501", "9555950000"]
+            number_list = ["9953008804"]
             message = "Job | Name: "+str(name)+" | Number: "+str(number)+" | Vehicle: "+str(make)+" "+str(model)+" "+str(fuel)+" | Jobs: "
         else:
             # number_list = ["9953008804","9910060501"]
@@ -4813,9 +4813,9 @@ def place_booking(user_id, name, number, email, reg_number, address, locality, c
                 message += job['Job'] + ", "
 
         if booking_flag:
-            message += " | Link :" + "https://www.clickgarage.in/adminpanel/bookings/single/" + tt.id
+            message += " | Link :" + "https://www.carcrew.in/adminpanel/bookings/single/" + tt.id
         else:
-            message += " | Link :" + "https://www.clickgarage.in/adminpanel/leads/single/" + tt.id
+            message += " | Link :" + "https://www.carcrew.in/adminpanel/leads/single/" + tt.id
 
         if not reminder:
             for num in number_list:
@@ -9096,7 +9096,7 @@ def change_status_actual(booking_id,status_id,send_sms):
                 if send_sms_bool:
                     print "SMS Sent"
                     mviews.send_sms_customer(booking.cust_name,booking.cust_number,booking.booking_id,booking.date_booking,booking.time_booking,status="Confirmed")
-            number_list = ["9717353148",  "9910060501", "9555950000"]
+            number_list = ["9953008804"]
             message = "Job | Name: " + str(booking.cust_name) + " | Number: " + str(booking.cust_number) + " | Vehicle: " + str(booking.cust_make) + " " + str(booking.cust_model) + " " + str(booking.cust_fuel_varient) + " | Jobs: "
             for job in booking.jobssummary:
                 try:
@@ -9104,7 +9104,7 @@ def change_status_actual(booking_id,status_id,send_sms):
                         message += job['Job'] + ", "
                 except:
                     None
-            message += " | Link :" + "https://www.clickgarage.in/adminpanel/bookings/single/" + booking.id
+            message += " | Link :" + "https://www.carcrew.in/adminpanel/bookings/single/" + booking.id
             for num in number_list:
                 mviews.send_sms_2factor(num, message)
 
@@ -9524,12 +9524,12 @@ def generate_bill(request):
             tran_len = len(Bills.objects.filter(owner=bill_owner,bill_type = "Invoice"))
             if tran_len:
                 tran = Bills.objects.filter(owner=bill_owner,bill_type = "Invoice").aggregate(Max('invoice_number'))
-                if invoice_number > 20000:
+                if invoice_number > 100000:
                     invoice_number = int(tran['invoice_number__max'] + 1)
                 else:
-                    invoice_number = 20001
+                    invoice_number = 100001
             else:
-                invoice_number = 20001
+                invoice_number = 100001
 
     # if bill_owner == "Agent Bill" or bill_owner = "":
     #     bill_owner
@@ -9845,9 +9845,12 @@ def generate_bill(request):
     time_stamp = time.time()
     status = "Generated"
 
+    if clickgarage_flag:
+        invoice_number_print = "CCD"+"-"+str(invoice_number)
 
     tt = Bills(clickgarage_flag         = clickgarage_flag
                , invoice_number         = str(invoice_number)
+               ,invoice_number_print = invoice_number_print
                , total_amount           = total_amount
                , part_amount            = part_amount
                , lube_amount            = lube_amount
@@ -9939,7 +9942,7 @@ def generate_bill(request):
             html = mviews.bill_html(agent_name = full_agent_name,agent_address= agent_address,invoice_number="Pre-Invoice",booking_id = "",created_date = date_today ,tin_number = agent_vat_no, cin_number=agent_cin,stax_number = agent_stax,cust_name= cust_name,cust_address= cust_address,cust_locality=cust_locality,cust_city=cust_city,cust_reg=reg_number,cust_veh=vehicle,service_items = service_items,vat_part_percent=vat_part_percent,vat_lube_percent=vat_lube_percent,vat_consumable_percent=vat_consumable_percent,stax_percent=service_tax_percent,vat_part=vat_part,vat_lube=vat_lube,vat_consumable=vat_consumable,stax_amount=service_tax,total=total_amount,recommendation=notes,logo=clickgarage_flag,amount_paid ="0",gst_number=agent_gst_no,gst_part_percent=gst_part_percent,gst_lube_percent=gst_lube_percent,gst_consumable_percent=gst_consumable_percent,gst_service_percent=gst_service_percent,gst_18=gst_18,gst_28=gst_28,cust_odo=cust_odo,gst_type =gst_type, state_of_supply = state_of_supply,cust_gst=cust_gst_number)
     else:
         if booking:
-            html = mviews.bill_html(agent_name=full_agent_name, agent_address=agent_address, invoice_number=invoice_number,
+            html = mviews.bill_html(agent_name=full_agent_name, agent_address=agent_address, invoice_number=invoice_number_print,
                                     booking_id=booking_id, created_date=date_today, tin_number=agent_vat_no, cin_number=agent_cin,
                                     stax_number=agent_stax, cust_name=cust_name, cust_address=cust_address,
                                     cust_locality=cust_locality, cust_city=cust_city, cust_reg=reg_number, cust_veh=vehicle,
@@ -9950,7 +9953,7 @@ def generate_bill(request):
                                     recommendation=notes,logo=clickgarage_flag,amount_paid =pre_paid_amount,gst_number=agent_gst_no,gst_part_percent=gst_part_percent,gst_lube_percent=gst_lube_percent,gst_consumable_percent=gst_consumable_percent,gst_service_percent=gst_service_percent,gst_18=gst_18,gst_28=gst_28,cust_odo=cust_odo,gst_type =gst_type, state_of_supply = state_of_supply,cust_gst=cust_gst_number)
         else:
             html = mviews.bill_html(agent_name=full_agent_name, agent_address=agent_address,
-                                    invoice_number=invoice_number,
+                                    invoice_number=invoice_number_print,
                                     booking_id="", created_date=date_today, tin_number=agent_vat_no,
                                     cin_number=agent_cin,
                                     stax_number=agent_stax, cust_name=cust_name, cust_address=cust_address,
@@ -9970,6 +9973,7 @@ def generate_bill(request):
             cmd = pdfkit.from_string(html,'/home/ubuntu/testing/website/Bills/'+bill_type+'-'+str(invoice_number)+'_'+tt2.id+'.pdf')
     else:
         cmd = pdfkit.from_string(html, '/Users/shashwatyadav/Desktop/Coding/suigenwebsite/Bills/' + bill_type + '-' + str(invoice_number) + '_' + tt2.id + '.pdf')
+
 
 
     if socket.gethostname().startswith('ip-'):
@@ -11083,8 +11087,8 @@ def generate_report(booking_id):
     obj['result'] = []
     booking = Bookings.objects.filter(booking_id=booking_id)[0]
     if (booking.clickgarage_flag):
-        agent_name = "Sui Generis Innovations Private Limited"
-        agent_address = "W22, Second Floor, Green Park Main, New Delhi - 110016"
+        agent_name = "Carcrew Technology Private Limited"
+        agent_address = "139, A1 Shah Nahar, Lower Parel (West), Mumbai, Maharashtra - 400013"
         logo = True
     else:
         agent_name = booking.agent
@@ -11329,4 +11333,3 @@ def view_all_campaigns(request):
     obj['counter'] = 1
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
-

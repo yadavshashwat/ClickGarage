@@ -52,7 +52,7 @@ class Servicing(models.Model):
     paid_free           = models.CharField(max_length=50)
     part_replacement    = ListField(models.CharField(max_length=200))
     dealer              = ListField(models.CharField(max_length=200))
-    
+
 class ServiceDealerCat(models.Model):
     name                = models.CharField(max_length=200)
     brand               = models.CharField(max_length=50)
@@ -225,8 +225,8 @@ class VASCategoryServices(models.Model):
 class WindShieldCat(models.Model):
     brand    = models.CharField(max_length=50)
     vendor   = models.CharField(max_length=50)
-    carname  = models.CharField(max_length=50)   
-    ws_type  = models.CharField(max_length=50)   
+    carname  = models.CharField(max_length=50)
+    ws_type  = models.CharField(max_length=50)
 
 
 
@@ -247,8 +247,8 @@ class WindShieldServiceDetails(models.Model):
     rating          = ListField(models.CharField(max_length=50))
     reviews         = ListField(models.CharField(max_length=500))
 
-#Wheel Services 
-#List of wheel services 
+#Wheel Services
+#List of wheel services
 class WheelServices(models.Model):
     name        = models.CharField(max_length=50)
     service     = models.CharField(max_length=50)
@@ -643,6 +643,7 @@ class BookingsBackup(models.Model):
 class Bills(models.Model):
     clickgarage_flag            = models.BooleanField()
     invoice_number              = models.IntegerField()
+    invoice_number_print        = models.CharField(max_length=200)
     total_amount                = models.CharField(max_length=200)
     part_amount                 = models.CharField(max_length=200)
     lube_amount                 = models.CharField(max_length=200)
@@ -684,7 +685,7 @@ class Bills(models.Model):
     gst_lube_percent = models.CharField(max_length=50)
     gst_consumable_percent = models.CharField(max_length=50)
     gst_service_percent = models.CharField(max_length=50)
-    
+
     agent_name                  = models.CharField(max_length=200)
     agent_address               = models.CharField(max_length=200)
     # agent_locality              = models.CharField(max_length=200)
