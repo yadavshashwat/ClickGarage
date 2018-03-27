@@ -91,7 +91,7 @@ def ad_landing_cars(request, service):
         print ad_landing_map['car'][service]
         title = ad_landing_map['car'][service]['title']
         meta_desc = ad_landing_map['car'][service]['meta_desc']
-        logoText = 'ClickGarage'
+        logoText = 'CarCrew'
         category_list = []
         dd = {
             'servicing':'Servicing',
@@ -139,7 +139,7 @@ def ad_landing_bikes(request, service):
         title = ad_landing_map['bike'][service]['title']
 
         meta_desc = ad_landing_map['bike'][service]['meta_desc']
-        logoText = 'ClickGarage'
+        logoText = 'CarCrew'
         category_list = []
         dd = {
             'servicing':'Servicing'
@@ -821,7 +821,7 @@ def cart(request):
                     if (serviceDetail.discount) and len(serviceDetail.discount):
                         try:
                             disc = float(serviceDetail.discount)
-                        except ValueError: 
+                        except ValueError:
                             disc = 0
                     total_price = int(total_price*(1-disc))
                     # total_price = float(serviceDetail.price_parts) + float(serviceDetail.price_labour)
@@ -1371,34 +1371,34 @@ def advert(request,service='',veh_type='', source=''):
     description = ""
     if veh_type == "Car":
         if service == "CarCare":
-            title = "ClickGarage - Car Care Specialties in Gurgaon, Delhi NCR"
-            description = "Keep the exterior & interior of your car looking great with ClickGarage. Choose from a wide range of treatments and get it done while sitting in the comfort of your home."
+            title = "Carcrew - Car Care Specialties in India"
+            description = "Keep the exterior & interior of your car looking great with Carcrew. Choose from a wide range of treatments and get it done while sitting in the comfort of your home."
         elif service == "Servicing":
-            title = "ClickGarage - Book Car Service Online 24/7"
-            description = "Get online quotes for a car service from ClickGarage. Our service stations offer quality service in Gurgaon, Delhi NCR using genuine parts"
+            title = "Carcrew - Book Car Service Online 24/7"
+            description = "Get online quotes for a car service from Carcrew. Our service stations offer quality service in India using genuine parts"
         elif service == "Repairing":
-            title = "ClickGarage - Book Car Repair Online 24/7 at ClickGarage"
-            description = "Get online quotes for a car repair from ClickGarage. Our service stations offer all type of quality repair in Gurgaon, Delhi NCR using genuine parts"
+            title = "Carcrew - Book Car Repair Online 24/7 at CarCrew"
+            description = "Get online quotes for a car repair from Carcrew. Our service stations offer all type of quality repair in India using genuine parts"
         elif service == "Denting":
-            title = "ClickGarage - Denting/Painting Specialties in Gurgaon, Delhi NCR "
-            description = "Get online quotes for any kind of body shop work. Make your car look like new with denting and paining jobs of yourr car"
+            title = "Carcrew - Denting/Painting Specialties in India "
+            description = "Get online quotes for any kind of body shop work. Make your car look like new with denting and paining jobs of your car"
         else:
             title = "Car and Bike - Repair, Cleaning, Servicing , Road Side Assistance , Doorstep services"
-            description = "Click Garage is the ideal one-stop solution for all types of car & bike repair, service, interior cleaning and other associated works. We also offer quick and efficient road side assistance for cars (Nissan, Datsun, Volkswagen, Toyota, Tata, Skoda,  Renault, Maruti Suzuki, Mahindra, Hyundai, Honda, Ford, Fiat, Chevrolet) and bikes (Royal Enfield, Suzuki, TVS, Bajaj, KTM, Yamaha, Hero)."
+            description = "Carcrew is the ideal one-stop solution for all types of car & bike repair, service, interior cleaning and other associated works. We also offer quick and efficient road side assistance for cars (Nissan, Datsun, Volkswagen, Toyota, Tata, Skoda,  Renault, Maruti Suzuki, Mahindra, Hyundai, Honda, Ford, Fiat, Chevrolet) and bikes (Royal Enfield, Suzuki, TVS, Bajaj, KTM, Yamaha, Hero)."
     elif veh_type == "Bike":
         if service == "Servicing":
-            title = "ClickGarage - Book Bike Service & Repairs Online 24/7"
-            description = "Get online quotes for a bike service from ClickGarage. Our service  stations offer quality service in Gurgaon, Delhi NCR"
+            title = "Carcrew - Book Bike Service & Repairs Online 24/7"
+            description = "Get online quotes for a bike service from Carcrew. Our service  stations offer quality service in India"
         elif service == "Repairing":
-            title = "ClickGarage - Book Bike Repair Online 24/7"
-            description = "Get online quotes for a bike repair from ClickGarage. Our service stations offer all type of quality repair in Gurgaon, Delhi NCR using genuine parts"
+            title = "Carcrew - Book Bike Repair Online 24/7"
+            description = "Get online quotes for a bike repair from Carcrew. Our service stations offer all type of quality repair in India using genuine parts"
     else:
         title = "Car and Bike - Repair, Cleaning, Servicing , Road Side Assistance , Doorstep services"
-        description = "Click Garage is the ideal one-stop solution for all types of car & bike repair, service, interior cleaning and other associated works. We also offer quick and efficient road side assistance for cars (Nissan, Datsun, Volkswagen, Toyota, Tata, Skoda,  Renault, Maruti Suzuki, Mahindra, Hyundai, Honda, Ford, Fiat, Chevrolet) and bikes (Royal Enfield, Suzuki, TVS, Bajaj, KTM, Yamaha, Hero)."
+        description = "Carcrew is the ideal one-stop solution for all types of car & bike repair, service, interior cleaning and other associated works. We also offer quick and efficient road side assistance for cars (Nissan, Datsun, Volkswagen, Toyota, Tata, Skoda,  Renault, Maruti Suzuki, Mahindra, Hyundai, Honda, Ford, Fiat, Chevrolet) and bikes (Royal Enfield, Suzuki, TVS, Bajaj, KTM, Yamaha, Hero)."
     context = RequestContext(request ,locals())
 
-    
-    
+
+
     return HttpResponse(template.render(context))
 
 def index(request):
