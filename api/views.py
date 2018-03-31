@@ -9850,7 +9850,7 @@ def generate_bill(request):
 
     tt = Bills(clickgarage_flag         = clickgarage_flag
                , invoice_number         = str(invoice_number)
-               ,invoice_number_print = invoice_number_print
+               , invoice_number_print   = invoice_number_print
                , total_amount           = total_amount
                , part_amount            = part_amount
                , lube_amount            = lube_amount
@@ -9916,7 +9916,7 @@ def generate_bill(request):
 
                )
     tt.save()
-    tt2 = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner, time_stamp= time_stamp, booking_data_id=data_id, status="Generated", bill_type=bill_type, invoice_number=invoice_number)[0]
+    tt2 = Bills.objects.filter(clickgarage_flag=clickgarage_flag, owner=bill_owner, time_stamp= time_stamp, booking_data_id=data_id, status="Generated", bill_type=bill_type, invoice_number=str(invoice_number))[0]
     if booking:
         booking.bill_id = tt2.id
         cust_odo = booking.odometer
