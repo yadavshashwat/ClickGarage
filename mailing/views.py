@@ -10531,7 +10531,7 @@ page[size="A5"][layout="portrait"] {
 			<tr>
 				<td class="title company-name">"""
 	if logo:
-		html += """<img id="bill-logo" src="https://www.carcrew.in/static/revamp/img/Bill%20Logos/ClickGarage.png" style="width:100%; max-width:150px;"><br>"""
+		html += """<img id="bill-logo" src="https://www.carcrew.in/static/revamp/img/Bill%20Logos/Carcrew.png" style="width:100%; max-width:150px;"><br>"""
 	else:
 		html += """<img id="bill-logo" src="https://www.carcrew.in/static/revamp/img/Bill%20Logos/""" + string.replace(agent_name, ' ', '%20') + """.png" style="width:100%; max-width:150px;"><br>"""
 
