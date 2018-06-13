@@ -7939,10 +7939,6 @@ def send_sms_msg91(to,message):
 
 
 
-"http://enterprise.smsgupshup.com/GatewayAPI/rest?method=SendMessage&send_to=9717353148&msg=test&msg_type=TEXT&userid=2000177606&auth_scheme=plain&password=DgQTlzCg5&v=1.1&format=text"
-
-
-
 def send_sms_2factor_EZY(to,message):
 	# 2 Factor
 
