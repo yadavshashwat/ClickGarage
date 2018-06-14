@@ -7885,7 +7885,7 @@ def send_promo_campaign_cg(to,message):
 	# print(response.text)
 	message = message.replace(" ", "+")
 	# url  = "http://api.msg91.com/api/sendhttp.php?route=4&country=IN&flash=0&unicode=0&campaign=viaSOCKET&authkey=151673AJzvZcNCte59758f85&mobiles=" + to +"&message=" + message + "&sender=CARCRW"
-	url = "http://enterprise.smsgupshup.com/GatewayAPI/rest?method=SendMessage&send_to="+to+"&msg="+message+"&msg_type=TEXT&userid=2000177606&auth_scheme=plain&password=DgQTlzCg5&v=1.1&format=text"
+	url = "http://enterprise.smsgupshup.com/GatewayAPI/rest?method=SendMessage&send_to="+to+"&msg="+message+"&msg_type=TEXT&userid=2000177606&auth_scheme=plain&password=DgQTlzCg5&v=1.1&override_dnd=true&format=text"
 	# url = "http://sms.hspsms.com/sendSMS?username=clickgarage&message=" + message + "&sendername=" + sendername + "&smstype=" + type + "&numbers=" + to + "&apikey=" + key
 	r = urllib2.urlopen(url)
 
@@ -7901,7 +7901,7 @@ def send_promo_campaign_agent(to,message):
 	# response = requests.request("GET", url, data = json.dumps(payload))
 	# print(response.text)
 	message = message.replace(" ", "+")
-	url = "http://enterprise.smsgupshup.com/GatewayAPI/rest?method=SendMessage&send_to="+to+"&msg="+message+"&msg_type=TEXT&userid=2000177606&auth_scheme=plain&password=DgQTlzCg5&v=1.1&format=text"
+	url = "http://enterprise.smsgupshup.com/GatewayAPI/rest?method=SendMessage&send_to="+to+"&msg="+message+"&msg_type=TEXT&userid=2000177606&auth_scheme=plain&password=DgQTlzCg5&v=1.1&override_dnd=true&format=text"
 
 	# url  = "http://api.msg91.com/api/sendhttp.php?route=4&country=IN&flash=0&unicode=0&campaign=viaSOCKET&authkey=151673AJzvZcNCte59758f85&mobiles=" + to +"&message=" + message + "&sender=EZYGRG"
 	# url = "http://sms.hspsms.com/sendSMS?username=clickgarage&message=" + message + "&sendername=" + sendername + "&smstype=" + type + "&numbers=" + to + "&apikey=" + key
@@ -7926,7 +7926,7 @@ def send_sms_2factor(to,message):
 	# Message 91
 	message = message.replace(" ", "+")
 	# url  = "http://api.msg91.com/api/sendhttp.php?route=4&country=IN&flash=0&unicode=0&campaign=viaSOCKET&authkey=151673AJzvZcNCte59758f85&mobiles=" + to +"&message=" + message + "&sender=CARCRW"
-	url = "http://enterprise.smsgupshup.com/GatewayAPI/rest?method=SendMessage&send_to="+to+"&msg="+message+"&msg_type=TEXT&userid=2000177606&auth_scheme=plain&password=DgQTlzCg5&v=1.1&format=text"
+	url = "http://enterprise.smsgupshup.com/GatewayAPI/rest?method=SendMessage&send_to="+to+"&msg="+message+"&msg_type=TEXT&userid=2000177606&auth_scheme=plain&password=DgQTlzCg5&v=1.1&override_dnd=true&format=text"
 
 	# url = "http://sms.hspsms.com/sendSMS?username=clickgarage&message=" + message + "&sendername=" + sendername + "&smstype=" + type + "&numbers=" + to + "&apikey=" + key
 	r = urllib2.urlopen(url)
@@ -7955,7 +7955,7 @@ def send_sms_2factor_EZY(to,message):
 	# Message 91
 	message = message.replace(" ", "+")
 	# url = "http://api.msg91.com/api/sendhttp.php?route=4&country=IN&flash=0&unicode=0&campaign=viaSOCKET&authkey=151673AJzvZcNCte59758f85&mobiles=" + to + "&message=" + message + "&sender=EZYGRG"
-	url = "http://enterprise.smsgupshup.com/GatewayAPI/rest?method=SendMessage&send_to="+to+"&msg="+message+"&msg_type=TEXT&userid=2000177606&auth_scheme=plain&password=DgQTlzCg5&v=1.1&format=text"
+	url = "http://enterprise.smsgupshup.com/GatewayAPI/rest?method=SendMessage&send_to="+to+"&msg="+message+"&msg_type=TEXT&userid=2000177606&auth_scheme=plain&password=DgQTlzCg5&v=1.1&override_dnd=true&format=text"
 
 	# url = "http://sms.hspsms.com/sendSMS?username=clickgarage&message=" + message + "&sendername=" + sendername + "&smstype=" + type + "&numbers=" + to + "&apikey=" + key
 	r = urllib2.urlopen(url)
