@@ -11,7 +11,7 @@ from email.MIMEBase import MIMEBase
 from email import Encoders
 
 helpline_number = "7045996415"
-escalation_number = "9953008804"
+escalation_number = "9953083005"
 
 
 key = "ab33f626-fba5-4bff-9a2b-68a7e9eed43c"
@@ -7866,7 +7866,7 @@ region ='us-west-2'
 aws_access='AKIAJNAYBONVQTNTSLZQ'
 aws_secret='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'
 
-cgpoc = "Bhuvan - 9953008804 "
+cgpoc = "Saurabh - 9953083005 "
 
 import requests
 import json
