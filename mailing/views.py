@@ -46,7 +46,6 @@ def send_sms(type,to,message):
 	r = urllib2.urlopen(url)
 
 
-
 def send_trans_sms(to, message):
 	url = "http://sms.hspsms.com/sendSMS?username=clickgarage&message=" + message + "&sendername=" + sendername + "&smstype=TRANS&numbers=" + to + "&apikey=" + key
 	r = urllib2.urlopen(url)
@@ -96,6 +95,20 @@ def send_postdrop(to_name,to,booking_id):
 def prompt(prompt):
 	return raw_input(prompt).strip()
 
+
+def send_parts_inquiry(data):
+	me = "parts@carcrew.in"
+	you = "ishaansutaria@gmail.com"
+	msg = MIMEMultipart('alternative')
+	msg['Subject'] = "Parts Inquiry"
+	msg['From'] = me
+	msg['To'] = you
+	html1 = "test "
+	script = MIMEText(html1, 'html')
+	msg.attach(script)
+	conn = boto.ses.connect_to_region('us-west-2', aws_access_key_id='AKIAJNAYBONVQTNTSLZQ',
+									  aws_secret_access_key='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')
+	result = conn.send_raw_email(msg.as_string())
 
 
 def send_booking_email_doorstep(to_address,to_name,time_start,date,booking_id):
