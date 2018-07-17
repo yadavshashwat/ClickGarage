@@ -4031,6 +4031,17 @@ def get_type_make(request):
     obj['msg'] = "Success"
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+
+def parts_inquiry(request):
+    make = get_param(request, 'make', None)
+    model = get_param(request, 'model', None)
+    pd = get_param(request, 'pd', None)
+    name = get_param(request, 'name', None)
+    phone = get_param(request, 'phone', None)
+    mviews.send_parts_inquiry(make, model, pd, name, phone)
+    return HttpResponse(json.dumps({"msg": "success"}), content_type="application/json")
+
+
 def get_make_model_old(request):
     vehicle_type = get_param(request, 'vehicle_type', None)
     make_id = get_param(request,'make_id',None)
@@ -4319,7 +4330,8 @@ def post_lead(request):
     date_requested = get_param(request, 'date_requested', None)
     time_requested = get_param(request, 'time_requested', None)
     number = get_param(request, 'number', None)
-    email = get_param(request, 'email', None)
+    e\
+        = get_param(request, 'email', None)
     source = get_param(request, 'source', None)
     time_stamp = get_param(request, 'time_stamp', None)
 
