@@ -9,6 +9,8 @@ from email.MIMEText import MIMEText
 from email.MIMEImage import MIMEImage
 from email.MIMEBase import MIMEBase
 from email import Encoders
+import sendgrid
+from sendgrid.helpers.mail import *
 
 helpline_number = "7045996415"
 escalation_number = "9953083005"
@@ -96,20 +98,30 @@ def prompt(prompt):
 	return raw_input(prompt).strip()
 
 
-def send_parts_inquiry(data):
-	me = "parts@carcrew.in"
-	you = "ishaansutaria@gmail.com"
-	msg = MIMEMultipart('alternative')
-	msg['Subject'] = "Parts Inquiry"
-	msg['From'] = me
-	msg['To'] = you
-	html1 = "test "
-	script = MIMEText(html1, 'html')
-	msg.attach(script)
-	conn = boto.ses.connect_to_region('us-west-2', aws_access_key_id='AKIAJNAYBONVQTNTSLZQ',
-									  aws_secret_access_key='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')
-	result = conn.send_raw_email(msg.as_string())
+def send_parts_inquiry(make, model, pd, name, phone):
+	print "Sedning email for parts inquiry"
+	sg = sendgrid.SendGridAPIClient("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")
+	data = "Parts Inquiry \n Make: {0} \n Model: {1} \n Part: {2} \n Name: {3} \n Phone: {4}".format(make, model, pd, name, phone)
+	from_email = Email("parts@carcrew.in")
+	to_email = Email("mrunal.saxena@carcrew.in")
+	subject = "Parts Inquiry"
+	content = Content("text/plain", data)
+	mail = Mail(from_email, subject, to_email, content)
+	#mail.set_from(Email("test@example.com", "Example User"))
+	# mail.set_subject("Hello World from the SendGrid Python Library")
+    #
+	# personalization = Personalization()
+	# personalization.add_to(Email("test1@example.com", "Example User"))
+	# personalization.add_to(Email("test2@example.com", "Example User"))
+	# mail.add_personalization(personalization)
+    #
+	# mail.add_content(Content("text/plain", "some text here"))
+	# mail.add_content(Content("text/html", "<html><body>some text here</body></html>"))
 
+	response = sg.client.mail.send.post(request_body=mail.get())
+	print(response.status_code)
+	print(response.body)
+	print(response.headers)
 
 def send_booking_email_doorstep(to_address,to_name,time_start,date,booking_id):
 	me = from_address

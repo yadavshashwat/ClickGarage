@@ -4038,12 +4038,8 @@ def parts_inquiry(request):
     pd = get_param(request, 'pd', None)
     name = get_param(request, 'name', None)
     phone = get_param(request, 'phone', None)
-    mviews.send_parts_inquiry(phone)
-    temp = {
-        ['msg']: "Success"
-    }
-    return HttpResponse(json.dumps(temp), content_type='application/json')
-
+    mviews.send_parts_inquiry(make, model, pd, name, phone)
+    return HttpResponse(json.dumps({"msg": "success"}), content_type="application/json")
 
 
 def get_make_model_old(request):
